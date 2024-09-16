@@ -28,34 +28,34 @@ fi
 
 # help panel
 for arg in "$@"; do
-if [ "$arg" == "-h" ]; then
-    echo "HELP PANEL"
-    echo
-    echo "Use \"./make-pdf {doc_folder}\" or \"../make-pdf {doc_folder}\" to build the pdf of the corresponding document"
-    echo
-    echo "Flags:"
-    echo "  -h  print help panel"
-    echo "  -v  run pdflatex verbose"
-    echo "  -t  run typos check"
-    echo "  -w  write out typos fixes (use with -t)"
-    echo "  -r  clean trailing pdflatex files"
-    exit 0
-fi
+    if [ "$arg" == "-h" ]; then
+        echo "HELP PANEL"
+        echo
+        echo "Use \"./make-pdf {doc_folder}\" or \"../make-pdf {doc_folder}\" to build the pdf of the corresponding document"
+        echo
+        echo "Flags:"
+        echo "  -h  print help panel"
+        echo "  -v  run pdflatex verbose"
+        echo "  -t  run typos check"
+        echo "  -w  write out typos fixes (use with -t)"
+        echo "  -r  clean trailing pdflatex files"
+        exit 0
+    fi
 done
 
 # doc selection
 selected_doc=""
 
 for arg in "$@"; do
-if [[ $arg != -* ]]; then
-    selected_doc="$arg"
-    break
-fi
+    if [[ $arg != -* ]]; then
+        selected_doc="$arg"
+        break
+    fi
 done
 
 if [ "$selected_doc" == "" ]; then
     echo "No document has been selected"
-    echo "Use \"make-pdf {doc_folder}\" to build the corresponding document"
+    echo "Use \"make-pdf -h\" to print the help panel"
     exit 1
 fi
 
@@ -70,23 +70,23 @@ cd $selected_doc
 
 # typos run
 for arg in "$@"; do
-if [ "$arg" == "-t" ]; then
-  echo -e "\e[32m[Typos check]\e[0m"
+    if [ "$arg" == "-t" ]; then
+        echo -e "\e[32m[Typos check]\e[0m"
 
-  write_typos=""
-  for arg in "$@"; do
-  if [ "$arg" == "-w" ]; then
-    write_typos="-w"
-    echo "Writing fixes out"
-  fi
-  done
+        write_typos=""
+        for arg in "$@"; do
+            if [ "$arg" == "-w" ]; then
+                write_typos="-w"
+                echo "Writing fixes out"
+            fi
+        done
 
-  typos $write_typos
+        typos $write_typos
 
-  if [ "$write_typos" == "" ] && [ $? -eq 0 ]; then
-    echo "No typo has been found"
-  fi
-fi
+        if [ "$write_typos" == "" ] && [ $? -eq 0 ]; then
+            echo "No typo has been found"
+        fi
+    fi
 done
 
 # pdflatex run
@@ -95,39 +95,43 @@ echo -e "\e[32m[Pdf build]\e[0m"
 mkdir .main >/dev/null 2>&1
 mv .main/* . >/dev/null 2>&1
 
+cleanup() {
+    mv $latex_files .main >/dev/null 2>&1
+    rm main.tex $typos_file >/dev/null 2>&1
+    mv main.pdf "$selected_doc.pdf" >/dev/null 2>&1
+
+    # .main removal
+    for arg in "$@"; do
+        if [ "$arg" == "-r" ]; then
+            rm -rf .main
+        fi
+    done
+}
+
 for arg in "$@"; do
-if [ "$arg" == "-v" ]; then
-  pdflatex main.tex
-  exit_code=$?
-  mv $latex_files .main >/dev/null 2>&1
-  rm main.tex $typos_file >/dev/null 2>&1
-  mv main.pdf "$selected_doc.pdf" >/dev/null 2>&1
-  exit $exit_code
-fi
+    if [ "$arg" == "-v" ]; then
+        pdflatex main.tex
+        exit_code=$?
+        cleanup "$@"
+        exit $exit_code
+    fi
 done
 
 pdflatex -interaction=nonstopmode main.tex >/dev/null 2>&1
+exit_code=$?
 
 if [ $? -ne 0 ]; then
-  echo "Unable to produce pdf from $(pwd)/main.tex"
-  echo "Use \"make-pdf -v\" to see \"pdflatex main.tex\" output"
-  mv $latex_files .main >/dev/null 2>&1
-  rm main.tex $typos_file >/dev/null 2>&1
-  mv main.pdf "$selected_doc.pdf" >/dev/null 2>&1
-  exit 1
+    echo "Unable to produce pdf from $(pwd)/main.tex"
+    echo "Use \"make-pdf -v\" to see \"pdflatex main.tex\" output"
+    cleanup "$@"
+    exit $exit_code
 fi
 
 pdflatex -interaction=nonstop main.tex >/dev/null 2>&1
+exit_code=$?
 
-mv $latex_files .main >/dev/null 2>&1
-rm main.tex $typos_file >/dev/null 2>&1
-mv main.pdf "$selected_doc.pdf" >/dev/null 2>&1
+cleanup "$@"
 
-# .main removal
-for arg in "$@"; do
-if [ "$arg" == "-r" ]; then
-    rm -r .main
-fi
-done
+echo "Successfully built pdf from $(pwd)/"
 
-echo "Successfully built pdf from $(pwd)/main.tex"
+exit $exit_code
