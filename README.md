@@ -1,6 +1,6 @@
 # 2024 Software Engineering 2 Polimi Course Project
 
-## Build commands
+## Application build
 
 ###### Commands are to be run from the root folder
 
@@ -25,14 +25,16 @@
 
 ## Document redaction
 
-In order to build LaTeX documents install texlive.
-- Windows: `winget install texlive.texlive`
-- MacOS: `brew install --cask mactex`
-- Debian Linux: `sudo apt install texlive-latex-base`
+###### Command is to be run from the document folder
+
+- Build document
+```
+    pdflatex main.tex
+```
 
 - - -
 
-TODO:
+##### TODO
 - [ ] configure docker for both client and server
 
 ###### C# code written by Francesco Ostidich, Matteo Salari, Francesco Rivitti
