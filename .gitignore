@@ -1,5 +1,9 @@
 **/obj/
 **/bin/
 
-**/.main/
-**/.typos/
+doc/**/*.aux
+doc/**/*.log
+doc/**/*.out
+doc/**/*.toc
+doc/**/.main/
+doc/**/.typos/
