@@ -1,6 +1,6 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
-    <PropertyGroup Condition="'$(Configuration)' == 'debug'">
+    <PropertyGroup Condition="'$(Configuration)' == 'Debug'">
         <OutputType>Exe</OutputType>
         <TargetFramework>net8.0</TargetFramework>
         <Optimize>false</Optimize>
@@ -8,7 +8,7 @@
         <AssemblyName>server</AssemblyName>
     </PropertyGroup>
 
-    <PropertyGroup Condition="'$(Configuration)' == 'release'">
+    <PropertyGroup Condition="'$(Configuration)' == 'Release'">
         <OutputType>Exe</OutputType>
         <TargetFramework>net8.0</TargetFramework>
         <Optimize>true</Optimize>

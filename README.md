@@ -4,23 +4,15 @@
 
 ###### Commands are to be run from the root folder
 
-- Build project
+- Run project (debug)
 ```
-    dotnet build app/client/client.csproj
-    dotnet build app/server/server.csproj
+    dotnet run --project app/client
+    dotnet run --project app/server
 ```
-- Run project
+- Run project (release)
 ```
-    dotnet run --project app/client/client.csproj
-    dotnet run --project app/server/server.csproj
-```
-- Build optimized releases
-```
-    dotnet build --configuration release
-```
-- Clean from old build files
-```
-    dotnet clean
+    docker compose run client
+    docker compose run server
 ```
 
 ## Document redaction
@@ -35,6 +27,7 @@
 - - -
 
 ##### TODO
-- [ ] configure docker for both client and server
+- [x] configure dotnet for both client and server
+- [x] configure docker for both client and server
 
 ###### C# code written by Francesco Ostidich, Matteo Salari, Francesco Rivitti
