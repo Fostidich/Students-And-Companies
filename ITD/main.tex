@@ -1,0 +1,73 @@
+% ------ SETTINGS ------ %
+
+\documentclass{article}
+\usepackage[a4paper, top=2cm, bottom=2cm, left=3cm, right=3cm, marginparwidth=1.75cm]{geometry}
+
+% \usepackage{times}
+% \usepackage{palatino}
+% \usepackage{mathptmx}
+\usepackage{charter}
+
+\usepackage{enumitem}
+\setlist[itemize]{label=\scriptsize\textbullet}
+\setlist[itemize]{noitemsep, topsep=1pt}
+\setlist[enumerate]{noitemsep, topsep=1pt}
+
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{float}
+\usepackage{subcaption}
+
+% ---------------------- %
+
+% ------- COLORS ------- %
+
+\usepackage{xcolor}
+\usepackage{fancyvrb}
+
+\definecolor{ccode}{RGB}{0, 0, 191}
+
+\DefineVerbatimEnvironment{verbatim}{Verbatim}
+{fontfamily=courier, fontsize=\small, formatcom=\color{ccode}}
+
+\RenewDocumentCommand{\verb}{v}
+{\begingroup\color{ccode}\fontfamily{pcr}\selectfont#1\endgroup}
+
+\usepackage[
+  colorlinks=true,
+  linkcolor=black,
+  urlcolor=blue,
+  citecolor=blue,
+  pdfborder={0 0 0}
+]{hyperref}
+
+% ---------------------- %
+
+% ------ COMMANDS ------ %
+
+\newcommand{\frontpage}[4]{
+    \title{\Huge #1 \\[4mm] \huge #2 \\[8mm]}
+    \author{#3}
+    \date{Version #4, \today}
+    \maketitle
+    \vspace{12mm}
+    \tableofcontents
+    \newpage
+}
+
+\newcommand{\newpar}[0]{\vspace{2mm}\noindent}
+\newcommand{\htitle}[1]{\newpar\textbf{#1 -}}
+\newcommand{\hyperlabel}[1]{\hypertarget{#1}\phantomsection\label{#1}}
+\newcommand{\hyperitem}[2]{\item \hyperlink{#1}{#2}\leaders\hbox to 0.8em{\hss.\hss}\hfill\hbox to 1.8em{\hss\pageref{#1}}}
+\newcommand{\stdtilde}[0]{\raise.17ex\hbox{$\scriptstyle\sim$}}
+\newcommand{\xor}[0]{\char`\^}
+\newcommand{\saveformula}[2]{\newbox{#1}\savebox{#1}{#2}}
+\newcommand{\useformula}[1]{\usebox{#1}}
+
+% ---------------------- %
+
+\begin{document}
+
+\input{body.tex}
+
+\end{document}

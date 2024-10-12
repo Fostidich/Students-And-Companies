@@ -1,0 +1,19 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup Condition="'$(Configuration)' == 'Debug'">
+        <OutputType>Exe</OutputType>
+        <TargetFramework>net8.0</TargetFramework>
+        <Optimize>false</Optimize>
+        <OutputPath>bin\Debug\</OutputPath>
+        <AssemblyName>server</AssemblyName>
+    </PropertyGroup>
+
+    <PropertyGroup Condition="'$(Configuration)' == 'Release'">
+        <OutputType>Exe</OutputType>
+        <TargetFramework>net8.0</TargetFramework>
+        <Optimize>true</Optimize>
+        <OutputPath>bin\Release\</OutputPath>
+        <AssemblyName>server-release</AssemblyName>
+    </PropertyGroup>
+
+</Project>
