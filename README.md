@@ -11,8 +11,8 @@
 ```
 - Run project (release)
 ```
-    docker compose run client
-    docker compose run server
+    docker compose run --rm --build client && docker image prune -f
+    docker compose run --rm --build server && docker image prune -f
 ```
 
 ## Document redaction
@@ -29,5 +29,6 @@
 ##### TODO
 - [x] configure dotnet for both client and server
 - [x] configure docker for both client and server
+- [ ] configure cake for ease of use
 
 ###### C# code written by Francesco Ostidich, Matteo Salari, Francesco Rivitti
