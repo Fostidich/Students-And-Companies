@@ -9,9 +9,9 @@
 **/obj/
 **/bin/
 
-doc/**/*.aux
-doc/**/*.log
-doc/**/*.out
-doc/**/*.toc
-doc/**/.main/
-doc/**/.typos/
+**/*.aux
+**/*.log
+**/*.out
+**/*.toc
+**/.main/
+**/.typos/
