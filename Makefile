@@ -70,11 +70,11 @@ client-docker:
 server:
 ifeq ($(OS),Windows_NT)
 	@docker build -t sc-server ./apps/server > NUL 2>&1
-	@docker run --rm -it -p 5001:80 sc-server
+	@docker run --rm -it -p 5000:80 sc-server
 	@docker image prune -f > NUL
 else
 	@docker build -t sc-server ./apps/server > /dev/null 2>&1
-	@docker run --rm -it -p 5001:80 sc-server
+	@docker run --rm -it -p 5000:80 sc-server
 	@docker image prune -f > /dev/null
 endif
 
