@@ -1,9 +1,0 @@
-services:
-  client:
-    build: ./app/client
-    ports:
-      - "5001:80"
-  server:
-    build: ./app/server
-    ports:
-      - "5000:80"
