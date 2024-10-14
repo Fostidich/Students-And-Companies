@@ -34,6 +34,8 @@ ifeq ($(OS),Windows_NT)
 	rmdir /S /Q apps\server\obj
 	docker container prune -f
 	docker image prune -f
+	docker rmi sc-client -f
+	docker rmi sc-server -f
 else
 	rm -f RASD/*.aux RASD/*.log RASD/*.out RASD/*.toc
 	rm -f DD/*.aux DD/*.log DD/*.out DD/*.toc
@@ -45,6 +47,8 @@ else
 	rm -rf apps/server/obj
 	docker container prune -f
 	docker image prune -f
+	docker rmi sc-client -f
+	docker rmi sc-server -f
 endif
 
 client:
