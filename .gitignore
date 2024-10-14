@@ -1,15 +1,19 @@
 **/.idea/
 **/.vscode/
-
 **/.DS_Store
 
 **/build/
 **/target/
-
 **/obj/
 **/bin/
 
+**/_typos.toml
 **/*.aux
 **/*.log
 **/*.out
 **/*.toc
+RASD/*.pdf
+DD/*.pdf
+ITD/*.pdf
+ATD/*.pdf
+

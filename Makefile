@@ -1,3 +1,5 @@
+.PHONY: help clean client client-build client-run client-docker server server-build server-run server-docker rasd dd itd atd
+
 help:
 	@echo ""
 	@echo "    make help                Print help panel"
@@ -48,11 +50,11 @@ endif
 client:
 ifeq ($(OS),Windows_NT)
 	@docker build -t sc-client ./apps/client > NUL 2>&1
-	@docker run --rm -it -p 5001:80 sc-client
+	@docker run --rm -it -p 4674:80 sc-client
 	@docker image prune -f > NUL
 else
 	@docker build -t sc-client ./apps/client > /dev/null 2>&1
-	@docker run --rm -it -p 5001:80 sc-client
+	@docker run --rm -it -p 4674:80 sc-client
 	@docker image prune -f > /dev/null
 endif
 
@@ -64,17 +66,17 @@ client-run:
 
 client-docker:
 	docker build -t sc-client ./apps/client
-	docker run --rm -it -p 5001:80 sc-client
+	docker run --rm -it -p 4674:80 sc-client
 	docker image prune -f
 
 server:
 ifeq ($(OS),Windows_NT)
 	@docker build -t sc-server ./apps/server > NUL 2>&1
-	@docker run --rm -it -p 5000:80 sc-server
+	@docker run --rm -it -p 4673:80 sc-server
 	@docker image prune -f > NUL
 else
 	@docker build -t sc-server ./apps/server > /dev/null 2>&1
-	@docker run --rm -it -p 5000:80 sc-server
+	@docker run --rm -it -p 4673:80 sc-server
 	@docker image prune -f > /dev/null
 endif
 
@@ -86,7 +88,7 @@ server-run:
 
 server-docker:
 	docker build -t sc-server ./apps/server
-	docker run --rm -it -p 5000:80 sc-server
+	docker run --rm -it -p 4673:80 sc-server
 	docker image prune -f
 
 rasd:
