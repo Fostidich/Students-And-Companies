@@ -1,6 +1,28 @@
 .PHONY: help clean client client-build client-run client-docker server server-build server-run server-docker rasd dd itd atd
 
 help:
+ifeq ($(OS),Windows_NT)
+	@cmd /c "echo."
+	@echo    make help                Print help panel"
+	@cmd /c "echo."
+	@echo    make clean               Clean project tree from build files"
+	@cmd /c "echo."
+	@echo    make client              Launch a clean client docker run"
+	@echo    make client-build        Build client app"
+	@echo    make client-run          Run client app"
+	@echo    make client-docker       Dockerize client release app"
+	@cmd /c "echo."
+	@echo    make server              Launch a clean server docker run"
+	@echo    make server-build        Build server app"
+	@echo    make server-run          Run server app"
+	@echo    make server-docker       Dockerize server release app"
+	@cmd /c "echo."
+	@echo    make rasd                Compile RASD.pdf from LaTeX"
+	@echo    make dd                  Compile DD.pdf from LaTeX"
+	@echo    make itd                 Compile ITD.pdf from LaTeX"
+	@echo    make atd                 Compile ATD.pdf from LaTeX"
+	@cmd /c "echo."
+else
 	@echo ""
 	@echo "    make help                Print help panel"
 	@echo ""
@@ -21,6 +43,7 @@ help:
 	@echo "    make itd                 Compile ITD.pdf from LaTeX"
 	@echo "    make atd                 Compile ATD.pdf from LaTeX"
 	@echo ""
+endif
 
 clean:
 ifeq ($(OS),Windows_NT)
@@ -28,10 +51,10 @@ ifeq ($(OS),Windows_NT)
 	del /Q /F DD\*.aux DD\*.log DD\*.out DD\*.toc
 	del /Q /F ITD\*.aux ITD\*.log ITD\*.out ITD\*.toc
 	del /Q /F ATD\*.aux ATD\*.log ATD\*.out ATD\*.toc
-	rmdir /S /Q apps\client\bin
-	rmdir /S /Q apps\client\obj
-	rmdir /S /Q apps\server\bin
-	rmdir /S /Q apps\server\obj
+	rmdir /S /Q apps\client\bin || rem
+	rmdir /S /Q apps\client\obj || rem
+	rmdir /S /Q apps\server\bin || rem
+	rmdir /S /Q apps\server\obj || rem
 	docker container prune -f
 	docker image prune -f
 	docker rmi sc-client -f

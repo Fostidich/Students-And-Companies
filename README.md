@@ -12,7 +12,9 @@ To list all available commands, run `make help`.
 
 ### Docker run
 
-If `make` is installed, a clean release `docker` build and `docker` run can be launched with
+On Windows, Docker Desktop must be turned on before launching the apps from the terminal line.
+
+If `make` is installed, a clean release `docker` build and run can be launched with
 
 ```
 make client
@@ -26,12 +28,10 @@ otherwise, if `make` does not suit you, the apps can be run directly with `docke
 ```
 docker build -t sc-client ./apps/client
 docker run --rm -it -p 4674:80 sc-client
-docker image prune -f
 ```
 ```
 docker build -t sc-server ./apps/server
 docker run --rm -it -p 4673:80 sc-server
-docker image prune -f
 ```
 
 ### Dotnet run
@@ -63,17 +63,18 @@ The applications source code can be found [here](apps).
 
 - - -
 
-### TODO
+## TODO
 
-#### General
+### General
 
 - [x] Configure dotnet for both client and server
 - [x] Configure docker for both client and server
 - [x] Configure make for ease of use
+- [ ] Explain the installing process for dotnet and docker
 
-#### RASD
+### RASD
 
-##### Project scope
+#### Project scope
 
 - [ ] Personal data upload
 - [ ] Selction process management
@@ -85,7 +86,7 @@ The applications source code can be found [here](apps).
 - [ ] Recommendation system
 - [ ] Suggestion system
 
-##### Project descriptors
+#### Project descriptors
 
 - [ ] Goals ~5
 - [ ] Features ~5
