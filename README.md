@@ -25,12 +25,12 @@ otherwise, if `make` does not suit you, the apps can be run directly with `docke
 
 ```
 docker build -t sc-client ./apps/client
-docker run --rm -it -p 5001:80 sc-client
+docker run --rm -it -p 4674:80 sc-client
 docker image prune -f
 ```
 ```
 docker build -t sc-server ./apps/server
-docker run --rm -it -p 5000:80 sc-server
+docker run --rm -it -p 4673:80 sc-server
 docker image prune -f
 ```
 
@@ -63,9 +63,36 @@ The applications source code can be found [here](apps).
 
 - - -
 
-##### TODO
-- [x] configure dotnet for both client and server
-- [x] configure docker for both client and server
-- [x] configure make for ease of use
+### TODO
+
+#### General
+
+- [x] Configure dotnet for both client and server
+- [x] Configure docker for both client and server
+- [x] Configure make for ease of use
+
+#### RASD
+
+##### Project scope
+
+- [ ] Personal data upload
+- [ ] Selction process management
+- [ ] Other part information querying
+- [ ] Internship management
+- [ ] Complaints handling
+- [ ] Statistics collection
+- [ ] Feedback collection
+- [ ] Recommendation system
+- [ ] Suggestion system
+
+##### Project descriptors
+
+- [ ] Goals ~5
+- [ ] Features ~5
+- [ ] World phenomena ~7
+- [ ] Shared phenomena ~20
+- [ ] Scenarios ~10
+- [ ] Requirements ~25
+- [ ] Use cases ~15
 
 ###### C# code written by Francesco Ostidich, Matteo Salari, Francesco Rivitti
