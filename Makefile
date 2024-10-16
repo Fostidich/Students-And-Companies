@@ -123,7 +123,8 @@ ifeq ($(OS),Windows_NT)
 	pdflatex -output-directory=RASD RASD/main.tex > NUL
 	pdflatex -output-directory=RASD RASD/main.tex > NUL
 	del /Q /F RASD\*.aux RASD\*.log RASD\*.out RASD\*.toc
-	move RASD\main.pdf RASD\RASD.pdf
+	del RASD\RASD.pdf
+	cd RASD && rename main.pdf RASD.pdf
 else
 	pdflatex -output-directory=RASD RASD/main.tex > /dev/null
 	pdflatex -output-directory=RASD RASD/main.tex > /dev/null
@@ -136,7 +137,8 @@ ifeq ($(OS),Windows_NT)
 	pdflatex -output-directory=DD DD/main.tex > NUL
 	pdflatex -output-directory=DD DD/main.tex > NUL
 	del /Q /F DD\*.aux DD\*.log DD\*.out DD\*.toc
-	move DD\main.pdf DD\DD.pdf
+	del DD\DD.pdf
+	cd DD && rename main.pdf DD.pdf
 else
 	pdflatex -output-directory=DD DD/main.tex > /dev/null
 	pdflatex -output-directory=DD DD/main.tex > /dev/null
@@ -149,7 +151,8 @@ ifeq ($(OS),Windows_NT)
 	pdflatex -output-directory=ITD ITD/main.tex > NUL
 	pdflatex -output-directory=ITD ITD/main.tex > NUL
 	del /Q /F ITD\*.aux ITD\*.log ITD\*.out ITD\*.toc
-	move ITD\main.pdf ITD\ITD.pdf
+	del ITD\ITD.pdf
+	cd ITD && rename main.pdf ITD.pdf
 else
 	pdflatex -output-directory=ITD ITD/main.tex > /dev/null
 	pdflatex -output-directory=ITD ITD/main.tex > /dev/null
@@ -162,7 +165,8 @@ ifeq ($(OS),Windows_NT)
 	pdflatex -output-directory=ATD ATD/main.tex > NUL
 	pdflatex -output-directory=ATD ATD/main.tex > NUL
 	del /Q /F ATD\*.aux ATD\*.log ATD\*.out ATD\*.toc
-	move ATD\main.pdf ATD\ATD.pdf
+	del ATD\ATD.pdf
+	cd ATD && rename main.pdf ATD.pdf
 else
 	pdflatex -output-directory=ATD ATD/main.tex > /dev/null
 	pdflatex -output-directory=ATD ATD/main.tex > /dev/null
