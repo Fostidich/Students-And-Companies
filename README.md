@@ -9,6 +9,7 @@ All commands are meant to be run from the [project root folder](.).
 For ease of use, we recommend installing `make`, as it allows useful commands to be launched directly via the `Makefile`.
 To list all available commands, run `make help`.
 
+- - -
 
 ### Docker run
 
@@ -70,7 +71,9 @@ The applications source code can be found [here](apps).
 - [x] Configure dotnet for both client and server
 - [x] Configure docker for both client and server
 - [x] Configure make for ease of use
-- [ ] Explain the installing process for dotnet and docker
+- [ ] Explain the installing process for Dotnet, Docker and Make
+    - [ ] Recommend an update & upgrade
+    - [ ] Add installations commands in Makefile
 
 ### RASD
 
