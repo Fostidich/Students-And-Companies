@@ -47,10 +47,10 @@ endif
 
 clean:
 ifeq ($(OS),Windows_NT)
-	del /Q /F RASD\*.aux RASD\*.log RASD\*.out RASD\*.toc
-	del /Q /F DD\*.aux DD\*.log DD\*.out DD\*.toc
-	del /Q /F ITD\*.aux ITD\*.log ITD\*.out ITD\*.toc
-	del /Q /F ATD\*.aux ATD\*.log ATD\*.out ATD\*.toc
+	del /Q /F RASD\*.aux RASD\*.log RASD\*.out RASD\*.toc RASD\*.fls
+	del /Q /F DD\*.aux DD\*.log DD\*.out DD\*.toc DD\*.fls
+	del /Q /F ITD\*.aux ITD\*.log ITD\*.out ITD\*.toc ITD\*.fls
+	del /Q /F ATD\*.aux ATD\*.log ATD\*.out ATD\*.toc ATD\*.fls
 	rmdir /S /Q apps\client\bin || rem
 	rmdir /S /Q apps\client\obj || rem
 	rmdir /S /Q apps\server\bin || rem
@@ -60,12 +60,12 @@ ifeq ($(OS),Windows_NT)
 	docker rmi sc-client -f || rem
 	docker rmi sc-server -f || rem
 else
-	rm -f RASD/*.aux RASD/*.log RASD/*.out RASD/*.toc
-	rm -f DD/*.aux DD/*.log DD/*.out DD/*.toc
-	rm -f ITD/*.aux ITD/*.log ITD/*.out ITD/*.toc
-	rm -f ATD/*.aux ATD/*.log ATD/*.out ATD/*.toc
+	rm -f RASD/*.aux RASD/*.log RASD/*.out RASD/*.toc RASD/*.fls
+	rm -f DD/*.aux DD/*.log DD/*.out DD/*.toc DD/*.fls
+	rm -f ITD/*.aux ITD/*.log ITD/*.out ITD/*.toc ITD/*.fls
+	rm -f ATD/*.aux ATD/*.log ATD/*.out ATD/*.toc ATD/*.fls
 	rm -rf apps/client/bin
-	rm -rf apps/client/obj
+	rm -rf apps/-f client/obj
 	rm -rf apps/server/bin
 	rm -rf apps/server/obj
 	docker container prune -f
@@ -122,13 +122,13 @@ rasd:
 ifeq ($(OS),Windows_NT)
 	pdflatex -output-directory=RASD RASD/main.tex > NUL
 	pdflatex -output-directory=RASD RASD/main.tex > NUL
-	del /Q /F RASD\*.aux RASD\*.log RASD\*.out RASD\*.toc
+	del /Q /F RASD\*.aux RASD\*.log RASD\*.out RASD\*.toc RASD\*.fls
 	del RASD\RASD.pdf
 	cd RASD && rename main.pdf RASD.pdf
 else
 	pdflatex -output-directory=RASD RASD/main.tex > /dev/null
 	pdflatex -output-directory=RASD RASD/main.tex > /dev/null
-	rm RASD/*.aux RASD/*.log RASD/*.out RASD/*.toc
+	rm -f RASD/*.aux RASD/*.log RASD/*.out RASD/*.toc RASD/*.fls
 	mv RASD/main.pdf RASD/RASD.pdf
 endif
 
@@ -136,13 +136,13 @@ dd:
 ifeq ($(OS),Windows_NT)
 	pdflatex -output-directory=DD DD/main.tex > NUL
 	pdflatex -output-directory=DD DD/main.tex > NUL
-	del /Q /F DD\*.aux DD\*.log DD\*.out DD\*.toc
+	del /Q /F DD\*.aux DD\*.log DD\*.out DD\*.toc DD\*.fls
 	del DD\DD.pdf
 	cd DD && rename main.pdf DD.pdf
 else
 	pdflatex -output-directory=DD DD/main.tex > /dev/null
 	pdflatex -output-directory=DD DD/main.tex > /dev/null
-	rm DD/*.aux DD/*.log DD/*.out DD/*.toc
+	rm -f DD/*.aux DD/*.log DD/*.out DD/*.toc DD/*.fls
 	mv DD/main.pdf DD/DD.pdf
 endif
 
@@ -150,13 +150,13 @@ itd:
 ifeq ($(OS),Windows_NT)
 	pdflatex -output-directory=ITD ITD/main.tex > NUL
 	pdflatex -output-directory=ITD ITD/main.tex > NUL
-	del /Q /F ITD\*.aux ITD\*.log ITD\*.out ITD\*.toc
+	del /Q /F ITD\*.aux ITD\*.log ITD\*.out ITD\*.toc ITD\*.fls
 	del ITD\ITD.pdf
 	cd ITD && rename main.pdf ITD.pdf
 else
 	pdflatex -output-directory=ITD ITD/main.tex > /dev/null
 	pdflatex -output-directory=ITD ITD/main.tex > /dev/null
-	rm ITD/*.aux ITD/*.log ITD/*.out ITD/*.toc
+	rm -f ITD/*.aux ITD/*.log ITD/*.out ITD/*.toc ITD/*.fls
 	mv ITD/main.pdf ITD/ITD.pdf
 endif
 
@@ -164,12 +164,12 @@ atd:
 ifeq ($(OS),Windows_NT)
 	pdflatex -output-directory=ATD ATD/main.tex > NUL
 	pdflatex -output-directory=ATD ATD/main.tex > NUL
-	del /Q /F ATD\*.aux ATD\*.log ATD\*.out ATD\*.toc
+	del /Q /F ATD\*.aux ATD\*.log ATD\*.out ATD\*.toc ATD\*.fls
 	del ATD\ATD.pdf
 	cd ATD && rename main.pdf ATD.pdf
 else
 	pdflatex -output-directory=ATD ATD/main.tex > /dev/null
 	pdflatex -output-directory=ATD ATD/main.tex > /dev/null
-	rm ATD/*.aux ATD/*.log ATD/*.out ATD/*.toc
+	rm -f ATD/*.aux ATD/*.log ATD/*.out ATD/*.toc ATD/*.fls
 	mv ATD/main.pdf ATD/ATD.pdf
 endif

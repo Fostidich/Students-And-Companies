@@ -1,5 +1,5 @@
-**/.idea/
-**/.vscode/
+.idea/
+.vscode/
 **/.DS_Store
 
 **/build/
@@ -12,6 +12,7 @@
 **/*.log
 **/*.out
 **/*.toc
+**/*.fls
 RASD/*.pdf
 DD/*.pdf
 ITD/*.pdf
