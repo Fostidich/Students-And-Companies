@@ -80,7 +80,7 @@ The applications source code can be found [here](apps).
 #### Project scope
 
 - [ ] Personal data upload
-- [ ] Selction process management
+- [ ] Selection process management
 - [ ] Other part information querying
 - [ ] Internship management
 - [ ] Complaints handling
