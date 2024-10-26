@@ -22,6 +22,11 @@ ifeq ($(OS),Windows_NT)
 	@echo    make itd                 Compile ITD.pdf from LaTeX
 	@echo    make atd                 Compile ATD.pdf from LaTeX
 	@cmd /c "echo."
+	@echo    make rasd-verbose        Run pdflatex verbosely for RASD
+	@echo    make dd-verbose          Run pdflatex verbosely for DD
+	@echo    make itd-verbose         Run pdflatex verbosely for ITD
+	@echo    make atd-verbose         Run pdflatex verbosely for ATD
+	@cmd /c "echo."
 else
 	@echo ""
 	@echo "    make help                Print help panel"
@@ -42,6 +47,11 @@ else
 	@echo "    make dd                  Compile DD.pdf from LaTeX"
 	@echo "    make itd                 Compile ITD.pdf from LaTeX"
 	@echo "    make atd                 Compile ATD.pdf from LaTeX"
+	@echo ""
+	@echo "    make rasd-verbose        Run pdflatex verbosely for RASD"
+	@echo "    make dd-verbose          Run pdflatex verbosely for DD"
+	@echo "    make itd-verbose         Run pdflatex verbosely for ITD"
+	@echo "    make atd-verbose         Run pdflatex verbosely for ATD"
 	@echo ""
 endif
 
@@ -173,3 +183,18 @@ else
 	rm -f ATD/*.aux ATD/*.log ATD/*.out ATD/*.toc ATD/*.fls
 	mv ATD/main.pdf ATD/ATD.pdf
 endif
+
+rasd-verbose:
+	pdflatex -output-directory=RASD RASD/main.tex
+
+
+dd-verbose:
+	pdflatex -output-directory=DD DD/main.tex
+
+
+itd-verbose:
+	pdflatex -output-directory=ITD ITD/main.tex
+
+
+atd-verbose:
+	pdflatex -output-directory=ATD ATD/main.tex
