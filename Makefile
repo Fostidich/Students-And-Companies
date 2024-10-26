@@ -187,14 +187,11 @@ endif
 rasd-verbose:
 	pdflatex -output-directory=RASD RASD/main.tex
 
-
 dd-verbose:
 	pdflatex -output-directory=DD DD/main.tex
 
-
 itd-verbose:
 	pdflatex -output-directory=ITD ITD/main.tex
-
 
 atd-verbose:
 	pdflatex -output-directory=ATD ATD/main.tex
