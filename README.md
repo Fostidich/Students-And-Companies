@@ -77,26 +77,16 @@ The applications source code can be found [here](apps).
 
 ### RASD
 
-#### Project scope
+#### Chapters
 
-- [ ] Personal data upload
-- [ ] Selection process management
-- [ ] Other part information querying
-- [ ] Internship management
-- [ ] Complaints handling
-- [ ] Statistics collection
-- [ ] Feedback collection
-- [ ] Recommendation system
-- [ ] Suggestion system
-
-#### Project descriptors
-
-- [ ] Goals ~5
-- [ ] Features ~5
-- [ ] World phenomena ~7
-- [ ] Shared phenomena ~20
-- [ ] Scenarios ~10
-- [ ] Requirements ~25
-- [ ] Use cases ~15
+- [ ] Introduction
+- [ ] Overall description
+- [ ] Specific requirements
+    - [ ] External interface requirements
+    - [ ] Functional requirements
+    - [ ] Performance requirements
+    - [ ] Design constraints
+    - [ ] Software system attributes
+- [ ] Formal analysis using Alloy
 
 ###### C# code written by Francesco Ostidich, Matteo Salari, Francesco Rivitti
