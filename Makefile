@@ -53,14 +53,16 @@ else
 	@echo "    make itd-verbose         Run pdflatex verbosely for ITD"
 	@echo "    make atd-verbose         Run pdflatex verbosely for ATD"
 	@echo ""
+	@echo "    make layout-export       Copy main LaTeX layout to all documents"
+	@echo ""
 endif
 
 clean:
 ifeq ($(OS),Windows_NT)
-	del /Q /F RASD\*.aux RASD\*.log RASD\*.out RASD\*.toc RASD\*.fls
-	del /Q /F DD\*.aux DD\*.log DD\*.out DD\*.toc DD\*.fls
-	del /Q /F ITD\*.aux ITD\*.log ITD\*.out ITD\*.toc ITD\*.fls
-	del /Q /F ATD\*.aux ATD\*.log ATD\*.out ATD\*.toc ATD\*.fls
+	del /Q /F documents\RASD\*.aux documents\RASD\*.log documents\RASD\*.out documents\RASD\*.toc documents\RASD\*.fls
+	del /Q /F documents\DD\*.aux documents\DD\*.log documents\DD\*.out documents\DD\*.toc documents\DD\*.fls
+	del /Q /F documents\ITD\*.aux documents\ITD\*.log documents\ITD\*.out documents\ITD\*.toc documents\ITD\*.fls
+	del /Q /F documents\ATD\*.aux documents\ATD\*.log documents\ATD\*.out documents\ATD\*.toc documents\ATD\*.fls
 	rmdir /S /Q apps\client\bin || rem
 	rmdir /S /Q apps\client\obj || rem
 	rmdir /S /Q apps\server\bin || rem
@@ -70,10 +72,10 @@ ifeq ($(OS),Windows_NT)
 	docker rmi sc-client -f || rem
 	docker rmi sc-server -f || rem
 else
-	rm -f RASD/*.aux RASD/*.log RASD/*.out RASD/*.toc RASD/*.fls
-	rm -f DD/*.aux DD/*.log DD/*.out DD/*.toc DD/*.fls
-	rm -f ITD/*.aux ITD/*.log ITD/*.out ITD/*.toc ITD/*.fls
-	rm -f ATD/*.aux ATD/*.log ATD/*.out ATD/*.toc ATD/*.fls
+	rm -f documents/RASD/*.aux documents/RASD/*.log documents/RASD/*.out documents/RASD/*.toc documents/RASD/*.fls
+	rm -f documents/DD/*.aux documents/DD/*.log documents/DD/*.out documents/DD/*.toc documents/DD/*.fls
+	rm -f documents/ITD/*.aux documents/ITD/*.log documents/ITD/*.out documents/ITD/*.toc documents/ITD/*.fls
+	rm -f documents/ATD/*.aux documents/ATD/*.log documents/ATD/*.out documents/ATD/*.toc documents/ATD/*.fls
 	rm -rf apps/client/bin
 	rm -rf apps/-f client/obj
 	rm -rf apps/server/bin
@@ -128,70 +130,83 @@ server-docker:
 	docker run --rm -it -p 4673:80 sc-server
 	docker image prune -f
 
-rasd:
+rasd: layout-export
 ifeq ($(OS),Windows_NT)
-	pdflatex -output-directory=RASD RASD/main.tex > NUL
-	pdflatex -output-directory=RASD RASD/main.tex > NUL
-	del /Q /F RASD\*.aux RASD\*.log RASD\*.out RASD\*.toc RASD\*.fls
-	del RASD\RASD.pdf
-	cd RASD && rename main.pdf RASD.pdf
+	pdflatex -output-directory=documents/RASD documents/RASD/main.tex > NUL
+	pdflatex -output-directory=documents/RASD documents/RASD/main.tex > NUL
+	del /Q /F documents\RASD\*.aux documents\RASD\*.log documents\RASD\*.out documents\RASD\*.toc documents\RASD\*.fls
+	del documents\RASD\RASD.pdf
+	cd documents\RASD && rename main.pdf RASD.pdf
 else
-	pdflatex -output-directory=RASD RASD/main.tex > /dev/null
-	pdflatex -output-directory=RASD RASD/main.tex > /dev/null
-	rm -f RASD/*.aux RASD/*.log RASD/*.out RASD/*.toc RASD/*.fls
-	mv RASD/main.pdf RASD/RASD.pdf
+	pdflatex -output-directory=documents/RASD documents/RASD/main.tex > /dev/null
+	pdflatex -output-directory=documents/RASD documents/RASD/main.tex > /dev/null
+	rm -f documents/RASD/*.aux documents/RASD/*.log documents/RASD/*.out documents/RASD/*.toc documents/RASD/*.fls
+	mv documents/RASD/main.pdf documents/RASD/RASD.pdf
 endif
 
-dd:
+dd: layout-export
 ifeq ($(OS),Windows_NT)
-	pdflatex -output-directory=DD DD/main.tex > NUL
-	pdflatex -output-directory=DD DD/main.tex > NUL
-	del /Q /F DD\*.aux DD\*.log DD\*.out DD\*.toc DD\*.fls
-	del DD\DD.pdf
-	cd DD && rename main.pdf DD.pdf
+	pdflatex -output-directory=documents/DD documents/DD/main.tex > NUL
+	pdflatex -output-directory=documents/DD documents/DD/main.tex > NUL
+	del /Q /F documents\DD\*.aux documents\DD\*.log documents\DD\*.out documents\DD\*.toc documents\DD\*.fls
+	del documents\DD\DD.pdf
+	cd documents\DD && rename main.pdf DD.pdf
 else
-	pdflatex -output-directory=DD DD/main.tex > /dev/null
-	pdflatex -output-directory=DD DD/main.tex > /dev/null
-	rm -f DD/*.aux DD/*.log DD/*.out DD/*.toc DD/*.fls
-	mv DD/main.pdf DD/DD.pdf
+	pdflatex -output-directory=documents/DD documents/DD/main.tex > /dev/null
+	pdflatex -output-directory=documents/DD documents/DD/main.tex > /dev/null
+	rm -f documents/DD/*.aux documents/DD/*.log documents/DD/*.out documents/DD/*.toc documents/DD/*.fls
+	mv documents/DD/main.pdf documents/DD/DD.pdf
 endif
 
-itd:
+itd: layout-export
 ifeq ($(OS),Windows_NT)
-	pdflatex -output-directory=ITD ITD/main.tex > NUL
-	pdflatex -output-directory=ITD ITD/main.tex > NUL
-	del /Q /F ITD\*.aux ITD\*.log ITD\*.out ITD\*.toc ITD\*.fls
-	del ITD\ITD.pdf
-	cd ITD && rename main.pdf ITD.pdf
+	pdflatex -output-directory=documents/ITD documents/ITD/main.tex > NUL
+	pdflatex -output-directory=documents/ITD documents/ITD/main.tex > NUL
+	del /Q /F documents\ITD\*.aux documents\ITD\*.log documents\ITD\*.out documents\ITD\*.toc documents\ITD\*.fls
+	del documents\ITD\ITD.pdf
+	cd documents\ITD && rename main.pdf ITD.pdf
 else
-	pdflatex -output-directory=ITD ITD/main.tex > /dev/null
-	pdflatex -output-directory=ITD ITD/main.tex > /dev/null
-	rm -f ITD/*.aux ITD/*.log ITD/*.out ITD/*.toc ITD/*.fls
-	mv ITD/main.pdf ITD/ITD.pdf
+	pdflatex -output-directory=documents/ITD documents/ITD/main.tex > /dev/null
+	pdflatex -output-directory=documents/ITD documents/ITD/main.tex > /dev/null
+	rm -f documents/ITD/*.aux documents/ITD/*.log documents/ITD/*.out documents/ITD/*.toc documents/ITD/*.fls
+	mv documents/ITD/main.pdf documents/ITD/ITD.pdf
 endif
 
-atd:
+atd: layout-export
 ifeq ($(OS),Windows_NT)
-	pdflatex -output-directory=ATD ATD/main.tex > NUL
-	pdflatex -output-directory=ATD ATD/main.tex > NUL
-	del /Q /F ATD\*.aux ATD\*.log ATD\*.out ATD\*.toc ATD\*.fls
-	del ATD\ATD.pdf
-	cd ATD && rename main.pdf ATD.pdf
+	pdflatex -output-directory=documents/ATD documents/ATD/main.tex > NUL
+	pdflatex -output-directory=documents/ATD documents/ATD/main.tex > NUL
+	del /Q /F documents\ATD\*.aux documents\ATD\*.log documents\ATD\*.out documents\ATD\*.toc documents\ATD\*.fls
+	del documents\ATD\ATD.pdf
+	cd documents\ATD && rename main.pdf ATD.pdf
 else
-	pdflatex -output-directory=ATD ATD/main.tex > /dev/null
-	pdflatex -output-directory=ATD ATD/main.tex > /dev/null
-	rm -f ATD/*.aux ATD/*.log ATD/*.out ATD/*.toc ATD/*.fls
-	mv ATD/main.pdf ATD/ATD.pdf
+	pdflatex -output-directory=documents/ATD documents/ATD/main.tex > /dev/null
+	pdflatex -output-directory=documents/ATD documents/ATD/main.tex > /dev/null
+	rm -f documents/ATD/*.aux documents/ATD/*.log documents/ATD/*.out documents/ATD/*.toc documents/ATD/*.fls
+	mv documents/ATD/main.pdf documents/ATD/ATD.pdf
 endif
 
 rasd-verbose:
-	pdflatex -output-directory=RASD RASD/main.tex
+	pdflatex -output-directory=documents/RASD documents/RASD/main.tex
 
 dd-verbose:
-	pdflatex -output-directory=DD DD/main.tex
+	pdflatex -output-directory=documents/DD documents/DD/main.tex
 
 itd-verbose:
-	pdflatex -output-directory=ITD ITD/main.tex
+	pdflatex -output-directory=documents/ITD documents/ITD/main.tex
 
 atd-verbose:
-	pdflatex -output-directory=ATD ATD/main.tex
+	pdflatex -output-directory=documents/ATD documents/ATD/main.tex
+
+layout-export:
+ifeq ($(OS),Windows_NT)
+	@copy assets\layout.tex documents\RASD
+	@copy assets\layout.tex documents\DD
+	@copy assets\layout.tex documents\ITD
+	@copy assets\layout.tex documents\ATD
+else
+	@cp assets/layout.tex documents/RASD
+	@cp assets/layout.tex documents/DD
+	@cp assets/layout.tex documents/ITD
+	@cp assets/layout.tex documents/ATD
+endif

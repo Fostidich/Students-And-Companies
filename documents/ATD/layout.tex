@@ -1,0 +1,86 @@
+\documentclass{report}
+
+% ------ PACKAGES ------ %
+
+% \usepackage{times}
+% \usepackage{palatino}
+% \usepackage{mathptmx}
+\usepackage{charter}
+\usepackage{geometry}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{float}
+\usepackage{subcaption}
+\usepackage{enumitem}
+\usepackage{titlesec}
+\usepackage{hyperref}
+\usepackage{xcolor}
+\usepackage{fancyvrb}
+
+% ---------------------- %
+
+% ------ GENERALS ------ %
+
+\geometry{margin=1in}
+
+\setlist[itemize]{label=\scriptsize\textbullet}
+\setlist[itemize]{noitemsep, topsep=1pt}
+\setlist[enumerate]{noitemsep, topsep=1pt}
+
+% \setcounter{tocdepth}{3}
+% \setcounter{secnumdepth}{3}
+
+\titleformat{\chapter}[hang]
+    {\normalfont\huge\bfseries}{\thechapter}{1em}{}
+
+% ---------------------- %
+
+% ------- COLORS ------- %
+
+\definecolor{ccode}{RGB}{0, 0, 192}
+
+\DefineVerbatimEnvironment{verbatim}{Verbatim}
+    {fontfamily=courier, fontsize=\small, formatcom=\color{ccode}}
+
+\RenewDocumentCommand{\verb}{v}
+    {\begingroup\color{ccode}\fontfamily{pcr}\selectfont#1\endgroup}
+
+\hypersetup{
+    colorlinks=true,
+    linkcolor=black,
+    urlcolor=blue,
+    citecolor=blue,
+    pdfborder={0 0 0}
+}
+
+% ---------------------- %
+
+% ------ COMMANDS ------ %
+
+\newcommand{\newpar}[0]{\vspace{2mm}\noindent}
+\newcommand{\htitle}[1]{\newpar\textbf{#1 -}}
+\newcommand{\hyperlabel}[1]{\hypertarget{#1}\phantomsection\label{#1}}
+\newcommand{\hyperitem}[2]{\item \hyperlink{#1}{#2}\leaders\hbox to 0.8em{\hss.\hss}\hfill\hbox to 1.8em{\hss\pageref{#1}}}
+\newcommand{\stdtilde}[0]{\raise.17ex\hbox{$\scriptstyle\sim$}}
+\newcommand{\xor}[0]{\char`\^}
+\newcommand{\saveformula}[2]{\newbox{#1}\savebox{#1}{#2}}
+\newcommand{\useformula}[1]{\usebox{#1}}
+
+\newcommand{\frontpage}[3]{
+    \title{
+        \fontsize{30}{36}\selectfont #1
+        \\[2.5cm] \Large #2
+    }
+    \author{#3}
+    \date{\today}
+    \maketitle
+    \tableofcontents
+}
+
+% ---------------------- %
+
+\begin{document}
+
+\input{body.tex}
+
+\end{document}

@@ -1,4 +1,17 @@
-# 2024 Software Engineering 2 Polimi Course Project
+<p align="center">
+  <img src="assets/SC-logo.png" alt="S&C logo" width="250">
+</p>
+
+# Students & Companies
+
+Students&Companies (S&C) is a platform designed to connect university students with companies offering internships.
+It simplifies the internship searches of students and the projects advertisement for companies.
+
+The platform employs recommendation mechanisms to match students and companies based on experience, skills, and project requirements.
+S&C also supports the selection process by managing interviews and collecting feedbacks.
+Additionally, it provides suggestions for improving CVs and project descriptions.
+
+- - -
 
 ## Usage
 
@@ -8,8 +21,6 @@ All commands are meant to be run from the [project root folder](.).
 
 For ease of use, we recommend installing `make`, as it allows useful commands to be launched directly via the `Makefile`.
 To list all available commands, run `make help`.
-
-- - -
 
 ### Docker run
 
@@ -79,7 +90,7 @@ The applications source code can be found [here](apps).
 
 #### Chapters
 
-- [ ] Introduction
+- [x] Introduction
 - [ ] Overall description
 - [ ] Specific requirements
     - [ ] External interface requirements
