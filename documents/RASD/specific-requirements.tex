@@ -14,7 +14,8 @@
 
 \begin{table}[H]
     \centering
-    \begin{tabular}{|>{\centering\arraybackslash}m{3cm}|m{10cm}|}
+    \begin{tabular}{|l|m{10cm}|}
+        \hline \multicolumn{2}{|c|}{\textbf{StudentSignsUp}} \\
         \hline \textbf{Actor} & Student, Students\&Companies, EmailService \\
         \hline \textbf{Entry condition} & The student is not already registered \\
         \hline \textbf{Event flow} &
@@ -27,13 +28,17 @@
                 \item The student verifies the account
                 \item The platform registers the new student account
                 \item The platform shows the student profile page
-            \end{enumerate}
-        \\
+            \end{enumerate} \\
         \hline \textbf{Exit condition} & The student is registered \\
         \hline \textbf{Exceptions} & The student is already registered \\
         \hline
     \end{tabular}
 \end{table}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth]{../../assets/sequence-diagrams/StudentsSignsUp.png}
+\end{figure}
 
 \subsubsection{CompanySignsUp}
 

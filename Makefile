@@ -202,13 +202,13 @@ atd-verbose:
 
 layout-export:
 ifeq ($(OS),Windows_NT)
-	@copy assets\layout.tex documents\RASD
-	@copy assets\layout.tex documents\DD
-	@copy assets\layout.tex documents\ITD
-	@copy assets\layout.tex documents\ATD
+	@copy assets\layout.tex documents\RASD\main.tex
+	@copy assets\layout.tex documents\DD\main.tex
+	@copy assets\layout.tex documents\ITD\main.tex
+	@copy assets\layout.tex documents\ATD\main.tex
 else
-	@cp assets/layout.tex documents/RASD
-	@cp assets/layout.tex documents/DD
-	@cp assets/layout.tex documents/ITD
-	@cp assets/layout.tex documents/ATD
+	@cp assets/layout.tex documents/RASD/main.tex
+	@cp assets/layout.tex documents/DD/main.tex
+	@cp assets/layout.tex documents/ITD/main.tex
+	@cp assets/layout.tex documents/ATD/main.tex
 endif
