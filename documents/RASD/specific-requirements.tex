@@ -10,26 +10,64 @@
 
 \subsection{Use cases}
 
-\begin{enumerate}[label=\textbf{UC\arabic* -}]
-    \item StudentSignsUp
-    \item CompanySignsUp
-    \item UserLogsIn
-    \item StudentUploadsCV
-    \item CompanyCreatesAdvertisement
-    \item StudentVisualizesAdvertisements
-    \item CompanyVisualizesCandidates
-    \item CompanyCreatesQuestionnaire
-    \item StudentFillsQuestionnaire
-    \item CompanyAcceptsStudentEnrollment
-    \item StudentVisualizesInternshipInformation
-    \item CompanyVisualizesInternshipsInformation
-    \item StudentSendsComplaint
-    \item CompanySendsComplaint
-    \item UniversityVisualizesComplaints
-    \item UniversityEndsInternship
-    \item InternshipExpires
-    \item StudentFillsFeedbackForm
-\end{enumerate}
+\subsubsection{StudentSignsUp}
+
+\begin{table}[H]
+    \centering
+    \begin{tabular}{|>{\centering\arraybackslash}m{3cm}|m{10cm}|}
+        \hline \textbf{Actor} & Student, Students\&Companies, EmailService \\
+        \hline \textbf{Entry condition} & The student is not already registered \\
+        \hline \textbf{Event flow} &
+            \begin{enumerate}
+                \item The student opens the sign up page
+                \item The platform shows the sign up page
+                \item The student fills in the required informations and clicks the sign up button
+                \item The platform checks that the information provided is valid
+                \item The platform sends an email through the email service to verify the student account
+                \item The student verifies the account
+                \item The platform registers the new student account
+                \item The platform shows the student profile page
+            \end{enumerate}
+        \\
+        \hline \textbf{Exit condition} & The student is registered \\
+        \hline \textbf{Exceptions} & The student is already registered \\
+        \hline
+    \end{tabular}
+\end{table}
+
+\subsubsection{CompanySignsUp}
+
+\subsubsection{UserLogsIn}
+
+\subsubsection{StudentUploadsCV}
+
+\subsubsection{CompanyCreatesAdvertisement}
+
+\subsubsection{StudentVisualizesAdvertisements}
+
+\subsubsection{CompanyVisualizesCandidates}
+
+\subsubsection{CompanyCreatesQuestionnaire}
+
+\subsubsection{StudentFillsQuestionnaire}
+
+\subsubsection{CompanyAcceptsStudentEnrollment}
+
+\subsubsection{StudentVisualizesInternshipInformation}
+
+\subsubsection{CompanyVisualizesInternshipsInformation}
+
+\subsubsection{StudentSendsComplaint}
+
+\subsubsection{CompanySendsComplaint}
+
+\subsubsection{UniversityVisualizesComplaints}
+
+\subsubsection{UniversityEndsInternship}
+
+\subsubsection{InternshipExpires}
+
+\subsubsection{StudentFillsFeedbackForm}
 
 \subsection{Mapping}
 

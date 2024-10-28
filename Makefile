@@ -1,4 +1,4 @@
-.PHONY: help clean client client-build client-run client-docker server server-build server-run server-docker rasd dd itd atd
+.PHONY: help clean client client-build client-run client-docker server server-build server-run server-docker rasd dd itd atd rasd-verbose dd-verbose itd-verbose atd-verbose layout-export
 
 help:
 ifeq ($(OS),Windows_NT)
@@ -26,6 +26,8 @@ ifeq ($(OS),Windows_NT)
 	@echo    make dd-verbose          Run pdflatex verbosely for DD
 	@echo    make itd-verbose         Run pdflatex verbosely for ITD
 	@echo    make atd-verbose         Run pdflatex verbosely for ATD
+	@cmd /c "echo."
+    @echo    make layout-export       Copy main LaTeX layout to all documents
 	@cmd /c "echo."
 else
 	@echo ""

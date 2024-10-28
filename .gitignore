@@ -13,8 +13,8 @@
 **/*.out
 **/*.toc
 **/*.fls
-RASD/*.pdf
-DD/*.pdf
-ITD/*.pdf
-ATD/*.pdf
+documents/RASD/*.pdf
+documents/DD/*.pdf
+documents/ITD/*.pdf
+documents/ATD/*.pdf
 
