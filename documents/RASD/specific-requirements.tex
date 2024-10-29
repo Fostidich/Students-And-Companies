@@ -1,22 +1,87 @@
 \chapter{Specific requirements}
 
 \section{External interface requirements}
+
+The system provides all the main functions described in section 2.2.1.
+Users are able to access all the information they are granted permission for.
+Given such purposes, any device is suitable to make use of all the S\&C functionalities, allowing convenient acces through any web browser.
+
 \subsection{User Interfaces}
+
+\begin{figure}[H]
+    \centering
+    \begin{minipage}{0.45\textwidth}
+        \centering
+        \fcolorbox{gray}{white}{
+            \includegraphics[width=\linewidth]{../../assets/user-interfaces/signup.png}
+        }
+        \subcaption{Sign up page}
+    \end{minipage}
+    \hfill
+    \begin{minipage}{0.45\textwidth}
+        \centering
+        \fcolorbox{gray}{white}{
+            \includegraphics[width=\linewidth]{../../assets/user-interfaces/login.png}
+        }
+        \subcaption{Log in page}
+    \end{minipage}
+
+    \vspace{3em}
+
+    \begin{minipage}{0.45\textwidth}
+        \centering
+        \fcolorbox{gray}{white}{
+            \includegraphics[width=\linewidth]{../../assets/user-interfaces/home.png}
+        }
+        \subcaption{Home page}
+    \end{minipage}
+    \hfill
+    \begin{minipage}{0.45\textwidth}
+        \centering
+        \fcolorbox{gray}{white}{
+            \includegraphics[width=\linewidth]{../../assets/user-interfaces/profile.png}
+        }
+        \subcaption{Profile page}
+    \end{minipage}
+
+    \vspace{3em}
+
+    \begin{minipage}{0.45\textwidth}
+        \centering
+        \fcolorbox{gray}{white}{
+            \includegraphics[width=\linewidth]{../../assets/user-interfaces/notifications.png}
+        }
+        \subcaption{Notifications page}
+    \end{minipage}
+    \hfill
+    \begin{minipage}{0.45\textwidth}
+        \centering
+        \fcolorbox{gray}{white}{
+            \includegraphics[width=\linewidth]{../../assets/user-interfaces/complaint.png}
+        }
+        \subcaption{Complaint page}
+    \end{minipage}
+\end{figure}
+
 \subsection{Hardware Interfaces}
 
-The platform requires a device with a web browser to be accessed.
+In order be accessed, the platform requires a suitable device with a web browser.
 
 \subsection{Software Interfaces}
 
-S\&C is a web application that requires a web browser to be accessed.
+The system should integrate a notication service to keep users up of any event on the platform.
+An email service is used for the registration process.
 
 \subsection{Communication Interfaces}
 
-All the communication between the platform and the users is done through the web application, via HTTPS.
+The system requires a stable internet connection to work properly.
+The connection is used to exchange data between users and the web server, which queries the requested information in a DB.
 
 \section{Functional requirements}
 
-\subsection{Use cases}
+\subsection{Use cases diagram}
+
+\subsection{Use cases descriptions}
 
 \begin{enumerate}[label=\textbf{UC\arabic* -}]
 
@@ -325,7 +390,9 @@ All the communication between the platform and the users is done through the web
 
 \end{enumerate}
 
-\subsection{Mapping}
+\subsection{Use cases sequence diagrams}
+
+\subsection{Use cases mapping}
 
 \section{Performance requirements}
 
