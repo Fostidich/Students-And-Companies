@@ -10,7 +10,9 @@
 
 \subsection{Use cases}
 
-\subsubsection{StudentSignsUp}
+\begin{enumerate}[label=\textbf{UC\arabic* -}]
+
+\item \subsubsection{StudentSignsUp}
 
 \begin{table}[H]
     \centering
@@ -19,60 +21,198 @@
         \hline \textbf{Actor} & Student, Students\&Companies, EmailService \\
         \hline \textbf{Entry condition} & The student is not already registered \\
         \hline \textbf{Event flow} &
-            \begin{enumerate}
+            \begin{enumerate}[label=\arabic*]
                 \item The student opens the sign up page
-                \item The platform shows the sign up page
                 \item The student fills in the required informations and clicks the sign up button
                 \item The platform checks that the information provided is valid
                 \item The platform sends an email through the email service to verify the student account
-                \item The student verifies the account
+                \item The student verifies the account via the link found in the email
                 \item The platform registers the new student account
-                \item The platform shows the student profile page
+                \item The platform shows the student feed page
             \end{enumerate} \\
         \hline \textbf{Exit condition} & The student is registered \\
-        \hline \textbf{Exceptions} & The student is already registered \\
+        \hline \textbf{Exceptions} & The student is already registered (3) \\
         \hline
     \end{tabular}
 \end{table}
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.8\textwidth]{../../assets/sequence-diagrams/StudentsSignsUp.png}
+    \fcolorbox{black}{white}{
+        \includegraphics[width=0.75\textwidth]{../../assets/sequence-diagrams/StudentSignsUp.png}
+    }
 \end{figure}
 
-\subsubsection{CompanySignsUp}
+\item \subsubsection{CompanySignsUp}
 
-\subsubsection{UserLogsIn}
+\item \subsubsection{UserLogsIn}
 
-\subsubsection{StudentUploadsCV}
+\item \subsubsection{StudentUploadsCV}
 
-\subsubsection{CompanyCreatesAdvertisement}
+\begin{table}[H]
+    \centering
+    \begin{tabular}{|l|m{10cm}|}
+        \hline \multicolumn{2}{|c|}{\textbf{StudentUploadsCV}} \\
+        \hline \textbf{Actor} & Student, Students\&Companies \\
+        \hline \textbf{Entry condition} & The student is registered \\
+        \hline \textbf{Event flow} &
+            \begin{enumerate}[label=\arabic*]
+                \item The student opens the profile page
+                \item The student clicks the upload CV button
+                \item The student chooses the CV file and lets it upload
+                \item The platform receives the file and stores it
+                \item The platform shows the student profile page
+            \end{enumerate} \\
+        \hline \textbf{Exit condition} & The student profile page shows the new CV \\
+        \hline \textbf{Exceptions} & None \\
+        \hline
+    \end{tabular}
+\end{table}
 
-\subsubsection{StudentVisualizesAdvertisements}
+\begin{figure}[H]
+    \centering
+    \fcolorbox{black}{white}{
+        \includegraphics[width=0.45\textwidth]{../../assets/sequence-diagrams/StudentUploadsCV.png}
+    }
+\end{figure}
 
-\subsubsection{CompanyVisualizesCandidates}
+\item \subsubsection{CompanyCreatesAdvertisement}
 
-\subsubsection{CompanyCreatesQuestionnaire}
+\item \subsubsection{StudentVisualizesAdvertisements}
 
-\subsubsection{StudentFillsQuestionnaire}
+\item \subsubsection{CompanyVisualizesCandidates}
 
-\subsubsection{CompanyAcceptsStudentEnrollment}
+\begin{table}[H]
+    \centering
+    \begin{tabular}{|l|m{10cm}|}
+        \hline \multicolumn{2}{|c|}{\textbf{CompanyVisualizesCandidates}} \\
+        \hline \textbf{Actor} & Company, Students\&Companies \\
+        \hline \textbf{Entry condition} & The company is registered \\
+        \hline \textbf{Event flow} &
+            \begin{enumerate}[label=\arabic*]
+                \item The company opens the feed page
+                \item The platform searches suitable students to show
+                \item The platform sends the potential students list to the company
+                \item The company feed page shows the received list
+            \end{enumerate} \\
+        \hline \textbf{Exit condition} & The company visualizes potential students in the feed \\
+        \hline \textbf{Exceptions} & None \\
+        \hline
+    \end{tabular}
+\end{table}
 
-\subsubsection{StudentVisualizesInternshipInformation}
+\begin{figure}[H]
+    \centering
+    \fcolorbox{black}{white}{
+        \includegraphics[width=0.55\textwidth]{../../assets/sequence-diagrams/CompanyVisualizesCandidates.png}
+    }
+\end{figure}
 
-\subsubsection{CompanyVisualizesInternshipsInformation}
+\item \subsubsection{CompanyCreatesQuestionnaire}
 
-\subsubsection{StudentSendsComplaint}
+\item \subsubsection{StudentFillsQuestionnaire}
 
-\subsubsection{CompanySendsComplaint}
+\item \subsubsection{CompanyAcceptsStudentEnrollment}
 
-\subsubsection{UniversityVisualizesComplaints}
+\begin{table}[H]
+    \centering
+    \begin{tabular}{|l|m{10cm}|}
+        \hline \multicolumn{2}{|c|}{\textbf{CompanyAcceptsStudentEnrollment}} \\
+        \hline \textbf{Actor} & Student, Company, Students\&Companies \\
+        \hline \textbf{Entry condition} & The student has sent the questionnaire back to the company \\
+        \hline \textbf{Event flow} &
+            \begin{enumerate}[label=\arabic*]
+                \item The company opens the page with the student questionnaire
+                \item The company reviews the questionnaire and clicks the accept student button
+                \item The platform notifies the student that it has been accepted
+                \item The student opens the notifications page and clicks the accept button
+                \item The platform checks that all information is valid
+                \item The platform initiates the internship between student and company
+                \item The platform shows the internship page to the student
+                \item The platform notifies the company that the internship has started
+            \end{enumerate} \\
+        \hline \textbf{Exit condition} & An internship is started between student and company \\
+        \hline \textbf{Exceptions} & The student meanwhile accepted another internship (5) \\
+        \hline
+    \end{tabular}
+\end{table}
 
-\subsubsection{UniversityEndsInternship}
+\begin{figure}[H]
+    \centering
+    \fcolorbox{black}{white}{
+        \includegraphics[width=0.8\textwidth]{../../assets/sequence-diagrams/CompanyAcceptsStudentEnrollment.png}
+    }
+\end{figure}
 
-\subsubsection{InternshipExpires}
+\item \subsubsection{StudentVisualizesInternshipInformation}
 
-\subsubsection{StudentFillsFeedbackForm}
+\item \subsubsection{CompanyVisualizesInternshipsInformation}
+
+\item \subsubsection{StudentSendsComplaint}
+
+\begin{table}[H]
+    \centering
+    \begin{tabular}{|l|m{10cm}|}
+        \hline \multicolumn{2}{|c|}{\textbf{StudentSendsComplaint}} \\
+        \hline \textbf{Actor} & Student, University, Students\&Companies \\
+        \hline \textbf{Entry condition} & The student is currently enrolled in an internship \\
+        \hline \textbf{Event flow} &
+            \begin{enumerate}[label=\arabic*]
+                \item The student opens the complaints page
+                \item The student fills in the complaint text box and clicks the send button
+                \item The platform notifies the university of the complaint
+                \item The university opens the notifications/complaint page and views the complaint
+            \end{enumerate} \\
+        \hline \textbf{Exit condition} & The university visualizes the complaint \\
+        \hline \textbf{Exceptions} & None \\
+        \hline
+    \end{tabular}
+\end{table}
+
+\begin{figure}[H]
+    \centering
+    \fcolorbox{black}{white}{
+        \includegraphics[width=0.75\textwidth]{../../assets/sequence-diagrams/StudentSendsComplaint.png}
+    }
+\end{figure}
+
+\item \subsubsection{CompanySendsComplaint}
+
+\item \subsubsection{UniversityVisualizesComplaints}
+
+\item \subsubsection{UniversityEndsInternship}
+
+\begin{table}[H]
+    \centering
+    \begin{tabular}{|l|m{10cm}|}
+        \hline \multicolumn{2}{|c|}{\textbf{UniversityEndsInternship}} \\
+        \hline \textbf{Actor} & Student, Company, University, Students\&Companies \\
+        \hline \textbf{Entry condition} & Student and company are currently linked in an internship \\
+        \hline \textbf{Event flow} &
+            \begin{enumerate}[label=\arabic*]
+                \item The university opens the ongoing internships page and clicks the interruption button
+                \item The platform registers the internship as concluded
+                \item The company is notified of the internship conclusion
+                \item The student is notified of the internship conclusion
+            \end{enumerate} \\
+        \hline \textbf{Exit condition} & The internship is registered as concluded \\
+        \hline \textbf{Exceptions} & None \\
+        \hline
+    \end{tabular}
+\end{table}
+
+\begin{figure}[H]
+    \centering
+    \fcolorbox{black}{white}{
+        \includegraphics[width=0.75\textwidth]{../../assets/sequence-diagrams/UniversityEndsInternship.png}
+    }
+\end{figure}
+
+\item \subsubsection{InternshipExpires}
+
+\item \subsubsection{StudentFillsFeedbackForm}
+
+\end{enumerate}
 
 \subsection{Mapping}
 

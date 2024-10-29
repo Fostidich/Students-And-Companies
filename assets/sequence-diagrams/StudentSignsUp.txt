@@ -1,0 +1,31 @@
+title StudentSignsUp
+
+participant "Student" as S
+participant "Students&Companies" as SC
+participant "EmailService" as ES
+
+activate S
+activate SC
+S->SC:request(signUpPage)
+SC-->S:show(signUpPage)
+S->SC:submit(signUpForm)
+SC->SC:check(signUpForm)
+
+alt Validation successful
+
+SC-->S:show(emailVerification)
+SC->ES:send(studentEmail)
+deactivate SC
+activate ES
+ES->S:send(verificationEmail)
+deactivate ES
+S->SC:click(verificationLink)
+activate SC
+SC->SC:register(student)
+SC-->S:show(registrationSuccesful)
+
+else Validation failed
+
+SC-->S:error(invalidInformation)
+
+end

@@ -1,0 +1,32 @@
+title UniversityEndsInternship
+
+participant "Student" as S
+participant "Company" as C
+participant "Students&Companies" as SC
+participant "University" as U
+
+activate U
+activate SC
+U->SC:request(internshipPage)
+SC-->U:show(internshipPage)
+U->SC:click(interruption)
+SC->SC:interrupt(internship)
+SC-->U:show(internshipInterrupted)
+deactivate U
+SC->SC:notify(studentInternshipEnd)
+SC->SC:notify(companyInternshipEnd)
+deactivate SC
+
+S->SC:request(notificationPage)
+activate S
+activate SC
+SC-->S:show(notificationPage)
+deactivate S
+deactivate SC
+
+C->SC:request(notificationPage)
+activate C
+activate SC
+SC-->C:show(notificationPage)
+deactivate C
+deactivate SC

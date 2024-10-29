@@ -92,10 +92,13 @@ The applications source code can be found [here](apps).
 
 - [x] Introduction
 - [ ] Overall description
+    - [ ] Scenarios descriptions
+    - [ ] Class diagram
+    - [ ] State charts
 - [ ] Specific requirements
-    - [ ] External interface requirements
-    - [ ] Functional requirements
-    - [ ] Performance requirements
+    - [ ] External interfaces
+    - [ ] Use case diagram
+    - [ ] Use cases
     - [ ] Design constraints
     - [ ] Software system attributes
 - [ ] Formal analysis using Alloy

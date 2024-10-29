@@ -1,0 +1,11 @@
+title CompanyVisualizesCandidates
+
+participant "Company" as C
+participant "Students&Companies" as SC
+
+activate C
+activate SC
+C->SC:request(feedPage)
+SC-->C:show(feedPage)
+SC->SC:search(suitableStudents)
+SC-->C:update(feedPage)
