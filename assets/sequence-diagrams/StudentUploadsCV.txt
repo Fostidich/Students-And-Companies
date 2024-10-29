@@ -8,5 +8,5 @@ activate SC
 S->SC:request(profilePage)
 SC-->S:show(profilePage)
 S->SC:submit(CVfile)
-SC->SC:store(CVfil)
+SC->SC:store(CVfile)
 SC-->S:show(profilePage)
