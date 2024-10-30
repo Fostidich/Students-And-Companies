@@ -1,0 +1,11 @@
+title StudentVisualizesInternshipInformation
+
+participant "Student" as S
+participant "Students&Companies" as SC
+
+activate S
+activate SC
+S->SC:request(profilePage)
+SC-->S:show(profilePage)
+S->SC:request(internshipInformation)
+SC-->S:show(internshipInformation)

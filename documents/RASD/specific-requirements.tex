@@ -108,7 +108,6 @@ The connection is used to exchange data between users and the web server, which 
     \subcaption*{Internship iter use cases}
 \end{figure}
 
-
 \subsection{Use cases descriptions}
 
 \begin{enumerate}[label=\textbf{UC\arabic* -}]
@@ -137,14 +136,29 @@ The connection is used to exchange data between users and the web server, which 
     \end{tabular}
 \end{table}
 
-\begin{figure}[H]
-    \centering
-    \fcolorbox{black}{white}{
-        \includegraphics[width=0.75\textwidth]{../../assets/sequence-diagrams/StudentSignsUp.png}
-    }
-\end{figure}
-
 \item \subsubsection{CompanySignsUp}
+
+\begin{table}[H]
+    \centering
+    \begin{tabular}{|l|m{10cm}|}
+        \hline \multicolumn{2}{|c|}{\textbf{CompanySignsUp}} \\
+        \hline \textbf{Actor} & Company, Students\&Companies, EmailService \\
+        \hline \textbf{Entry condition} & The company is not already registered \\
+        \hline \textbf{Event flow} &
+            \begin{enumerate}[label=\arabic*]
+                \item The company opens the sign up page
+                \item The company fills in the required information and clicks the sign up button
+                \item The platform checks that the information provided is valid
+                \item The platform sends an email through the email service to verify the company account
+                \item The company verifies the account via the link found in the email
+                \item The platform registers the new company account
+                \item The platform shows the company feed page
+            \end{enumerate} \\
+        \hline \textbf{Exit condition} & The company is registered \\
+        \hline \textbf{Exceptions} & The company is already registered (3) \\
+        \hline
+    \end{tabular}
+\end{table}
 
 \item \subsubsection{UserLogsIn}
 
@@ -155,25 +169,17 @@ The connection is used to exchange data between users and the web server, which 
         \hline \textbf{Actor} & Student, Company, University, Students\&Companies \\
         \hline \textbf{Entry condition} & User is registered \\
         \hline \textbf{Event flow} &
-            \begin{enumerate}
+            \begin{enumerate}[label=\arabic*]
                 \item The user opens the log in page
-                \item The platform shows the log in page
                 \item The user enters its credentials and clicks the log in button
                 \item The platform checks that the account exists and the credentials are correct
                 \item The platform shows the home page
             \end{enumerate} \\
         \hline \textbf{Exit condition} & The user is logged in \\
-        \hline \textbf{Exceptions} & The student is not registered (4) \\
+        \hline \textbf{Exceptions} & The student is not registered (3) \\
         \hline
     \end{tabular}
 \end{table}
-
-\begin{figure}[H]
-    \centering
-    \fcolorbox{black}{white}{
-        \includegraphics[width=0.5\textwidth]{../../assets/sequence-diagrams/UserLogsIn.png}
-    }
-\end{figure}
 
 \item \subsubsection{StudentUploadsCV}
 
@@ -182,7 +188,7 @@ The connection is used to exchange data between users and the web server, which 
     \begin{tabular}{|l|m{10cm}|}
         \hline \multicolumn{2}{|c|}{\textbf{StudentUploadsCV}} \\
         \hline \textbf{Actor} & Student, Students\&Companies \\
-        \hline \textbf{Entry condition} & The student is registered \\
+        \hline \textbf{Entry condition} & The student is logged in \\
         \hline \textbf{Event flow} &
             \begin{enumerate}[label=\arabic*]
                 \item The student opens the profile page
@@ -197,14 +203,26 @@ The connection is used to exchange data between users and the web server, which 
     \end{tabular}
 \end{table}
 
-\begin{figure}[H]
-    \centering
-    \fcolorbox{black}{white}{
-        \includegraphics[width=0.45\textwidth]{../../assets/sequence-diagrams/StudentUploadsCV.png}
-    }
-\end{figure}
-
 \item \subsubsection{CompanyCreatesAdvertisement}
+
+\begin{table}[H]
+    \centering
+    \begin{tabular}{|l|m{10cm}|}
+        \hline \multicolumn{2}{|c|}{\textbf{CompanyCreatesAdvertisement}} \\
+        \hline \textbf{Actor} & Company, Students\&Companies \\
+        \hline \textbf{Entry condition} & The company is logged in \\
+        \hline \textbf{Event flow} &
+            \begin{enumerate}[label=\arabic*]
+                \item The company opens the home page and clicks the create advertisement button
+                \item The company writes out the advertisement details and clicks the post button
+                \item The platform receives the advertisements details and stores it
+                \item The platform shows the company home page
+            \end{enumerate} \\
+        \hline \textbf{Exit condition} & The advertisements can be found in the students feed \\
+        \hline \textbf{Exceptions} & None \\
+        \hline
+    \end{tabular}
+\end{table}
 
 \item \subsubsection{StudentVisualizesAdvertisements}
 
@@ -213,25 +231,19 @@ The connection is used to exchange data between users and the web server, which 
     \begin{tabular}{|l|m{10cm}|}
         \hline \multicolumn{2}{|c|}{\textbf{StudentVisualizesAdvertisements}} \\
         \hline \textbf{Actor} & Student, Students\&Companies \\
-        \hline \textbf{Entry condition} & User is logged in \\
+        \hline \textbf{Entry condition} & The student is logged in \\
         \hline \textbf{Event flow} &
-            \begin{enumerate}
-                \item The user opens the home page
-                \item The platform finds the advertisements that match the student profile
-                \item The platform shows the home page with the advertisements
+            \begin{enumerate}[label=\arabic*]
+                \item The student opens the feed page
+                \item The platform searches suitable advertisements to show
+                \item The platform sends the advertisements list to the student
+                \item The student feed page shows the received list
             \end{enumerate} \\
-        \hline \textbf{Exit condition} & The user click on a advertisement or changhe the page \\
+        \hline \textbf{Exit condition} & The student visualizes interesting advertisements in the feed \\
         \hline \textbf{Exceptions} & None \\
         \hline
     \end{tabular}
 \end{table}
-
-\begin{figure}[H]
-    \centering
-    \fcolorbox{black}{white}{
-        \includegraphics[width=0.5\textwidth]{../../assets/sequence-diagrams/StudentVisualizesAdvertisements.png}
-    }
-\end{figure}
 
 \item \subsubsection{CompanyVisualizesCandidates}
 
@@ -240,12 +252,12 @@ The connection is used to exchange data between users and the web server, which 
     \begin{tabular}{|l|m{10cm}|}
         \hline \multicolumn{2}{|c|}{\textbf{CompanyVisualizesCandidates}} \\
         \hline \textbf{Actor} & Company, Students\&Companies \\
-        \hline \textbf{Entry condition} & The company is registered \\
+        \hline \textbf{Entry condition} & The company is logged in \\
         \hline \textbf{Event flow} &
             \begin{enumerate}[label=\arabic*]
                 \item The company opens the feed page
                 \item The platform searches suitable students to show
-                \item The platform sends the potential students list to the company
+                \item The platform sends the students list to the company
                 \item The company feed page shows the received list
             \end{enumerate} \\
         \hline \textbf{Exit condition} & The company visualizes potential students in the feed \\
@@ -254,14 +266,26 @@ The connection is used to exchange data between users and the web server, which 
     \end{tabular}
 \end{table}
 
-\begin{figure}[H]
-    \centering
-    \fcolorbox{black}{white}{
-        \includegraphics[width=0.55\textwidth]{../../assets/sequence-diagrams/CompanyVisualizesCandidates.png}
-    }
-\end{figure}
-
 \item \subsubsection{CompanyCreatesQuestionnaire}
+
+\begin{table}[H]
+    \centering
+    \begin{tabular}{|l|m{10cm}|}
+        \hline \multicolumn{2}{|c|}{\textbf{CompanyCreatesQuestionnaire}} \\
+        \hline \textbf{Actor} & Company, Students\&Companies \\
+        \hline \textbf{Entry condition} & The company is logged in \\
+        \hline \textbf{Event flow} &
+            \begin{enumerate}[label=\arabic*]
+                \item The company opens the home page and clicks the create questionnaire button
+                \item The company builds the questionnaire form and clicks the save button
+                \item The platform receives the questionnaire form and stores it
+                \item The platform shows the company home page
+            \end{enumerate} \\
+        \hline \textbf{Exit condition} & The questionnaire can be sent to students who have applied \\
+        \hline \textbf{Exceptions} & None \\
+        \hline
+    \end{tabular}
+\end{table}
 
 \item \subsubsection{StudentFillsQuestionnaire}
 
@@ -269,26 +293,20 @@ The connection is used to exchange data between users and the web server, which 
     \centering
     \begin{tabular}{|l|m{10cm}|}
         \hline \multicolumn{2}{|c|}{\textbf{StudentFillsQuestionnaire}} \\
-        \hline \textbf{Actor} & Student, Company, Students\&Companies \\
-        \hline \textbf{Entry condition} & User is logged in \\
+        \hline \textbf{Actor} & Student, Students\&Companies \\
+        \hline \textbf{Entry condition} & The student has received a questionnaire to fill \\
         \hline \textbf{Event flow} &
-            \begin{enumerate}
-                \item The company creates a questionnaire
-                \item The student opens the profile page
-                \item The student fills the form in the profile page and clicks the submit button
+            \begin{enumerate}[label=\arabic*]
+                \item The student opens the notifications page
+                \item The student opens the questionnaire that the company has sent
+                \item The student fills the questionnaire form and clicks the submit button
+                \item The platform sends the filled questionnaire to the company
             \end{enumerate} \\
-        \hline \textbf{Exit condition} & The questionnaire button is no longer available \\
+        \hline \textbf{Exit condition} & The company receives the filled questionnaire \\
         \hline \textbf{Exceptions} & None \\
         \hline
     \end{tabular}
 \end{table}
-
-\begin{figure}[H]
-    \centering
-    \fcolorbox{black}{white}{
-        \includegraphics[width=0.5\textwidth]{../../assets/sequence-diagrams/StudentFillsQuestionnaire.png}
-    }
-\end{figure}
 
 \item \subsubsection{CompanyAcceptsStudentEnrollment}
 
@@ -315,42 +333,45 @@ The connection is used to exchange data between users and the web server, which 
     \end{tabular}
 \end{table}
 
-\begin{figure}[H]
-    \centering
-    \fcolorbox{black}{white}{
-        \includegraphics[width=0.8\textwidth]{../../assets/sequence-diagrams/CompanyAcceptsStudentEnrollment.png}
-    }
-\end{figure}
-
 \item \subsubsection{StudentVisualizesInternshipInformation}
+
+\begin{table}[H]
+    \centering
+    \begin{tabular}{|l|m{10cm}|}
+        \hline \multicolumn{2}{|c|}{\textbf{StudentVisualizesInternshipInformation}} \\
+        \hline \textbf{Actor} & Student, Students\&Companies \\
+        \hline \textbf{Entry condition} & Student is enrolled in an internship \\
+        \hline \textbf{Event flow} &
+            \begin{enumerate}[label=\arabic*]
+                \item The student opens the profile page
+                \item The student selects its internship project panel
+                \item The platform shows the student internship information
+            \end{enumerate} \\
+        \hline \textbf{Exit condition} & The student visualizes its ongoing internship information \\
+        \hline \textbf{Exceptions} & None \\
+        \hline
+    \end{tabular}
+\end{table}
+
+\item \subsubsection{CompanyVisualizesInternshipsInformation}
 
 \begin{table}[H]
     \centering
     \begin{tabular}{|l|m{10cm}|}
         \hline \multicolumn{2}{|c|}{\textbf{CompanyVisualizesInternshipsInformation}} \\
         \hline \textbf{Actor} & Company, Students\&Companies \\
-        \hline \textbf{Entry condition} & Company is logged in \\
+        \hline \textbf{Entry condition} & Company has students enrolled in its internships \\
         \hline \textbf{Event flow} &
-            \begin{enumerate}
+            \begin{enumerate}[label=\arabic*]
                 \item The company opens the profile page
-                \item The company selects an internship from the list of all internships
-                \item The system shows the internship information and the student enrolled
+                \item The company selects one of its active internship projects
+                \item The platform shows the enrolled students and the internship information
             \end{enumerate} \\
-        \hline \textbf{Exit condition} & The company displays all the information \\
+        \hline \textbf{Exit condition} & The company visualizes its ongoing internship information \\
         \hline \textbf{Exceptions} & None \\
         \hline
     \end{tabular}
 \end{table}
-
-\begin{figure}[H]
-    \centering
-    \fcolorbox{black}{white}{
-        \includegraphics[width=0.5\textwidth]{../../assets/sequence-diagrams/CompanyVisualizesInternshipsInformation.png}
-    }
-\end{figure}
-
-
-\item \subsubsection{CompanyVisualizesInternshipsInformation}
 
 \item \subsubsection{StudentSendsComplaint}
 
@@ -365,24 +386,52 @@ The connection is used to exchange data between users and the web server, which 
                 \item The student opens the complaints page
                 \item The student fills in the complaint text box and clicks the send button
                 \item The platform notifies the university of the complaint
-                \item The university opens the notifications/complaint page and views the complaint
+            \end{enumerate} \\
+        \hline \textbf{Exit condition} & The university is notified of the complaint \\
+        \hline \textbf{Exceptions} & None \\
+        \hline
+    \end{tabular}
+\end{table}
+
+\item \subsubsection{CompanySendsComplaint}
+
+\begin{table}[H]
+    \centering
+    \begin{tabular}{|l|m{10cm}|}
+        \hline \multicolumn{2}{|c|}{\textbf{CompanySendsComplaint}} \\
+        \hline \textbf{Actor} & Company, University, Students\&Companies \\
+        \hline \textbf{Entry condition} & The company has a student currently enrolled in its internship \\
+        \hline \textbf{Event flow} &
+            \begin{enumerate}[label=\arabic*]
+                \item The company opens the complaints page
+                \item The company fills in the complaint text box and clicks the send button
+                \item The platform notifies the university of the complaint
+            \end{enumerate} \\
+        \hline \textbf{Exit condition} & The university is notified of the complaint \\
+        \hline \textbf{Exceptions} & None \\
+        \hline
+    \end{tabular}
+\end{table}
+
+\item \subsubsection{UniversityVisualizesComplaints}
+
+\begin{table}[H]
+    \centering
+    \begin{tabular}{|l|m{10cm}|}
+        \hline \multicolumn{2}{|c|}{\textbf{UniversityVisualizesComplaints}} \\
+        \hline \textbf{Actor} & University, Students\&Companies \\
+        \hline \textbf{Entry condition} & A complaint has been sent by a student or a company \\
+        \hline \textbf{Event flow} &
+            \begin{enumerate}[label=\arabic*]
+                \item The university opens the notifications/complaint page
+                \item The university selects one complaint notification
+                \item The university visualizes the full complaint message and information
             \end{enumerate} \\
         \hline \textbf{Exit condition} & The university visualizes the complaint \\
         \hline \textbf{Exceptions} & None \\
         \hline
     \end{tabular}
 \end{table}
-
-\begin{figure}[H]
-    \centering
-    \fcolorbox{black}{white}{
-        \includegraphics[width=0.75\textwidth]{../../assets/sequence-diagrams/StudentSendsComplaint.png}
-    }
-\end{figure}
-
-\item \subsubsection{CompanySendsComplaint}
-
-\item \subsubsection{UniversityVisualizesComplaints}
 
 \item \subsubsection{UniversityEndsInternship}
 
@@ -405,20 +454,218 @@ The connection is used to exchange data between users and the web server, which 
     \end{tabular}
 \end{table}
 
+\item \subsubsection{InternshipExpires}
+
+\begin{table}[H]
+    \centering
+    \begin{tabular}{|l|m{10cm}|}
+        \hline \multicolumn{2}{|c|}{\textbf{InternshipExpires}} \\
+        \hline \textbf{Actor} & Student, Company, Students\&Companies \\
+        \hline \textbf{Entry condition} & An ongoing internship reaches its conclusion date \\
+        \hline \textbf{Event flow} &
+            \begin{enumerate}[label=\arabic*]
+                \item The platform sees that the internship has reached its conclusion date
+                \item The platform registers the internship as concluded
+                \item The company is notified of the internship conclusion
+                \item The student is notified of the internship conclusion
+            \end{enumerate} \\
+        \hline \textbf{Exit condition} & The internship is registered as concluded \\
+        \hline \textbf{Exceptions} & None \\
+        \hline
+    \end{tabular}
+\end{table}
+
+\item \subsubsection{StudentFillsFeedbackForm}
+
+\begin{table}[H]
+    \centering
+    \begin{tabular}{|l|m{10cm}|}
+        \hline \multicolumn{2}{|c|}{\textbf{StudentFillsFeedbackForm}} \\
+        \hline \textbf{Actor} & Student, Students\&Companies \\
+        \hline \textbf{Entry condition} & The internship has ended \\
+        \hline \textbf{Event flow} &
+            \begin{enumerate}[label=\arabic*]
+                \item The platform notifies the student that a feedback form can be filled in
+                \item The student opens the notifications page
+                \item The student opens the feedback form page
+                \item The student fills in the form and submits it
+                \item The platform receives the feedback form and stores it
+            \end{enumerate} \\
+        \hline \textbf{Exit condition} & The platform receives feedback data about a company \\
+        \hline \textbf{Exceptions} & None \\
+        \hline
+    \end{tabular}
+\end{table}
+
+\end{enumerate}
+
+\subsection{Use cases sequence diagrams}
+
+\begin{enumerate}[label=\textbf{UC\arabic* -}]
+
+\item \subsubsection{StudentSignsUp}
+
 \begin{figure}[H]
     \centering
     \fcolorbox{black}{white}{
-        \includegraphics[width=0.75\textwidth]{../../assets/sequence-diagrams/UniversityEndsInternship.png}
+        \includegraphics[width=0.8\textwidth]{../../assets/sequence-diagrams/StudentSignsUp.png}
+    }
+\end{figure}
+
+\item \subsubsection{CompanySignsUp}
+
+\begin{figure}[H]
+    \centering
+    \fcolorbox{black}{white}{
+        \includegraphics[width=0.8\textwidth]{../../assets/sequence-diagrams/CompanySignsUp.png}
+    }
+\end{figure}
+
+\item \subsubsection{UserLogsIn}
+
+\begin{figure}[H]
+    \centering
+    \fcolorbox{black}{white}{
+        \includegraphics[width=0.5\textwidth]{../../assets/sequence-diagrams/UserLogsIn.png}
+    }
+\end{figure}
+
+\item \subsubsection{StudentUploadsCV}
+
+\begin{figure}[H]
+    \centering
+    \fcolorbox{black}{white}{
+        \includegraphics[width=0.5\textwidth]{../../assets/sequence-diagrams/StudentUploadsCV.png}
+    }
+\end{figure}
+
+\item \subsubsection{CompanyCreatesAdvertisement}
+
+\begin{figure}[H]
+    \centering
+    \fcolorbox{black}{white}{
+        \includegraphics[width=0.5\textwidth]{../../assets/sequence-diagrams/CompanyCreatesAdvertisement.png}
+    }
+\end{figure}
+
+\item \subsubsection{StudentVisualizesAdvertisements}
+
+\begin{figure}[H]
+    \centering
+    \fcolorbox{black}{white}{
+        \includegraphics[width=0.5\textwidth]{../../assets/sequence-diagrams/StudentVisualizesAdvertisements.png}
+    }
+\end{figure}
+
+\item \subsubsection{CompanyVisualizesCandidates}
+
+\begin{figure}[H]
+    \centering
+    \fcolorbox{black}{white}{
+        \includegraphics[width=0.5\textwidth]{../../assets/sequence-diagrams/CompanyVisualizesCandidates.png}
+    }
+\end{figure}
+
+\item \subsubsection{CompanyCreatesQuestionnaire}
+
+\begin{figure}[H]
+    \centering
+    \fcolorbox{black}{white}{
+        \includegraphics[width=0.5\textwidth]{../../assets/sequence-diagrams/CompanyCreatesQuestionnaire.png}
+    }
+\end{figure}
+
+\item \subsubsection{StudentFillsQuestionnaire}
+
+\begin{figure}[H]
+    \centering
+    \fcolorbox{black}{white}{
+        \includegraphics[width=0.8\textwidth]{../../assets/sequence-diagrams/StudentFillsQuestionnaire.png}
+    }
+\end{figure}
+
+\item \subsubsection{CompanyAcceptsStudentEnrollment}
+
+\begin{figure}[H]
+    \centering
+    \fcolorbox{black}{white}{
+        \includegraphics[width=0.8\textwidth]{../../assets/sequence-diagrams/CompanyAcceptsStudentEnrollment.png}
+    }
+\end{figure}
+
+\item \subsubsection{StudentVisualizesInternshipInformation}
+
+\begin{figure}[H]
+    \centering
+    \fcolorbox{black}{white}{
+        \includegraphics[width=0.5\textwidth]{../../assets/sequence-diagrams/StudentVisualizesInternshipInformation.png}
+    }
+\end{figure}
+
+\item \subsubsection{CompanyVisualizesInternshipsInformation}
+
+\begin{figure}[H]
+    \centering
+    \fcolorbox{black}{white}{
+        \includegraphics[width=0.5\textwidth]{../../assets/sequence-diagrams/CompanyVisualizesInternshipsInformation.png}
+    }
+\end{figure}
+
+\item \subsubsection{StudentSendsComplaint}
+
+\begin{figure}[H]
+    \centering
+    \fcolorbox{black}{white}{
+        \includegraphics[width=0.8\textwidth]{../../assets/sequence-diagrams/StudentSendsComplaint.png}
+    }
+\end{figure}
+
+\item \subsubsection{CompanySendsComplaint}
+
+\begin{figure}[H]
+    \centering
+    \fcolorbox{black}{white}{
+        \includegraphics[width=0.8\textwidth]{../../assets/sequence-diagrams/CompanySendsComplaint.png}
+    }
+\end{figure}
+
+\item \subsubsection{UniversityVisualizesComplaints}
+
+\begin{figure}[H]
+    \centering
+    \fcolorbox{black}{white}{
+        \includegraphics[width=0.5\textwidth]{../../assets/sequence-diagrams/UniversityVisualizesComplaints.png}
+    }
+\end{figure}
+
+\item \subsubsection{UniversityEndsInternship}
+
+\begin{figure}[H]
+    \centering
+    \fcolorbox{black}{white}{
+        \includegraphics[width=0.8\textwidth]{../../assets/sequence-diagrams/UniversityEndsInternship.png}
     }
 \end{figure}
 
 \item \subsubsection{InternshipExpires}
 
+\begin{figure}[H]
+    \centering
+    \fcolorbox{black}{white}{
+        \includegraphics[width=0.8\textwidth]{../../assets/sequence-diagrams/InternshipExpires.png}
+    }
+\end{figure}
+
 \item \subsubsection{StudentFillsFeedbackForm}
 
-\end{enumerate}
+\begin{figure}[H]
+    \centering
+    \fcolorbox{black}{white}{
+        \includegraphics[width=0.5\textwidth]{../../assets/sequence-diagrams/StudentFillsFeedbackForm.png}
+    }
+\end{figure}
 
-\subsection{Use cases sequence diagrams}
+\end{enumerate}
 
 \subsection{Use cases mapping}
 
