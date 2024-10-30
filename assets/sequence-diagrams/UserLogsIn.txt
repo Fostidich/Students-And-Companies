@@ -1,22 +1,22 @@
 title UserLogsIn
-actor "Student, Company, University" as user
-participant "Student&Companies" as sc
 
-activate user
-activate sc
-user->sc:request(LoginPage)
-sc-->user:show(LoginPage)
+participant "User" as U
+participant "Students&Companies" as SC
 
-user->sc: send(credentials) 
-sc->sc:check(credentials)
-sc-->user:show(HomePage)
+activate U
+activate SC
+U->SC:request(loginPage)
+SC-->U:show(loginPage)
+U->SC:submit(credetials)
+SC->SC:check(credentials)
 
-alt incorrect credentials
-sc-->user: send(error)
-else correct credentials
-sc-->user: show(HomePage)
+alt Validation successful
 
-deactivate user
-deactivate sc
+SC-->U:show(homePage)
+
+else Validation failed
+
+SC-->U:error(wrongCredentials)
+SC-->U:show(loginPage)
 
 end

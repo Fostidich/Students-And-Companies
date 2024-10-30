@@ -1,20 +1,11 @@
-title StudentFillsQuestionnaire
+title StudentVisualizesAdvertisements
 
-actor "Student" as user
-participant "Student&Companies" as sc
-participant "Company" as comp
+participant "Student" as S
+participant "Students&Companies" as SC
 
-
-activate sc
-activate comp
-activate user
-comp->sc: send(questionnaire)
-deactivate comp
-user->sc: request(ProfilePage)
-sc-->user: show(ProfilePage)
-user->sc:respond(questionnaire)
-activate comp
-sc-->comp:send(questionnaire)
-deactivate comp
-deactivate user
-deactivate sc
+activate S
+activate SC
+S->SC:request(feedPage)
+SC-->S:show(feedPage)
+SC->SC:search(suitableAdvertisements)
+SC-->S:update(feedPage)

@@ -1,20 +1,31 @@
 title StudentFillsQuestionnaire
 
-actor "Student" as user
-participant "Student&Companies" as sc
-participant "Company" as comp
+participant "Student" as S
+participant "Student&Companies" as SC
+participant "Company" as C
 
+activate C
+activate SC
+C->SC:send(studentQuestionnaire)
+SC->SC:store(studentQuestionnaire)
+SC->SC:notify(studentQuestionnaire)
+SC-->C:show(homePage)
+deactivate C
+deactivate SC
 
-activate sc
-activate comp
-activate user
-comp->sc: send(questionnaire)
-deactivate comp
-user->sc: request(ProfilePage)
-sc-->user: show(ProfilePage)
-user->sc:respond(questionnaire)
-activate comp
-sc-->comp:send(questionnaire)
-deactivate comp
-deactivate user
-deactivate sc
+S->SC:request(notificationsPage)
+activate S
+activate SC
+SC-->S:show(notificationsPage)
+S->SC:request(receivedQuestionnaire)
+SC-->S:show(receivedQuestionnaire)
+S->SC:submit(questionnaire)
+SC->SC:store(questionnaire)
+SC->SC:notify(companyQuestionnaire)
+deactivate S
+deactivate SC
+
+C->SC:request(notificationsPage)
+activate C
+activate SC
+SC-->C:show(notificationsPage)
