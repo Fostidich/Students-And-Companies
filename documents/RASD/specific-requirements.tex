@@ -4,7 +4,7 @@
 
 The system provides all the main functions described in section 2.2.1.
 Users are able to access all the information they are granted permission for.
-Given such purposes, any device is suitable to make use of all the S\&C functionalities, allowing convenient acces through any web browser.
+Given such purposes, any device is suitable to make use of all the S\&C functionalities, allowing convenient access through any web browser.
 
 \subsection{User Interfaces}
 
@@ -69,7 +69,7 @@ In order be accessed, the platform requires a suitable device with a web browser
 
 \subsection{Software Interfaces}
 
-The system should integrate a notication service to keep users up of any event on the platform.
+The system should integrate a notification service to keep users up of any event on the platform.
 An email service is used for the registration process.
 
 \subsection{Communication Interfaces}
@@ -79,12 +79,35 @@ The connection is used to exchange data between users and the web server, which 
 
 \section{Functional requirements}
 
-\subsection{Use cases diagram}
+\subsection{Use cases diagrams}
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.75\textwidth]{../../assets/use-cases-diagram.png}
+    \includegraphics[width=0.3\linewidth]{../../assets/use-case-diagrams/user-common.png}
+    \subcaption*{User common use cases}
 \end{figure}
+
+\begin{figure}[H]
+    \centering
+    \begin{minipage}{0.3\textwidth}
+        \centering
+        \includegraphics[width=\linewidth]{../../assets/use-case-diagrams/student-unique.png}
+        \subcaption*{Student unique use cases}
+    \end{minipage}
+    \hspace{1in}
+    \begin{minipage}{0.3\textwidth}
+        \centering
+        \includegraphics[width=\linewidth]{../../assets/use-case-diagrams/company-unique.png}
+        \subcaption*{Company unique use cases}
+    \end{minipage}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\linewidth]{../../assets/use-case-diagrams/internship-iter.png}
+    \subcaption*{Internship iter use cases}
+\end{figure}
+
 
 \subsection{Use cases descriptions}
 
@@ -101,7 +124,7 @@ The connection is used to exchange data between users and the web server, which 
         \hline \textbf{Event flow} &
             \begin{enumerate}[label=\arabic*]
                 \item The student opens the sign up page
-                \item The student fills in the required informations and clicks the sign up button
+                \item The student fills in the required information and clicks the sign up button
                 \item The platform checks that the information provided is valid
                 \item The platform sends an email through the email service to verify the student account
                 \item The student verifies the account via the link found in the email
@@ -310,7 +333,7 @@ The connection is used to exchange data between users and the web server, which 
         \hline \textbf{Event flow} &
             \begin{enumerate}
                 \item The company opens the profile page
-                \item The company selects an internship from the list of all interships
+                \item The company selects an internship from the list of all internships
                 \item The system shows the internship information and the student enrolled
             \end{enumerate} \\
         \hline \textbf{Exit condition} & The company displays all the information \\

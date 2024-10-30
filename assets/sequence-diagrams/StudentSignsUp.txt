@@ -22,7 +22,7 @@ deactivate ES
 S->SC:click(verificationLink)
 activate SC
 SC->SC:register(student)
-SC-->S:show(registrationSuccesful)
+SC-->S:show(registrationSuccessful)
 
 else Validation failed
 
