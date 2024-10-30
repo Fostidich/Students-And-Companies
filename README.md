@@ -98,9 +98,9 @@ The applications source code can be found [here](apps).
 - [ ] Specific requirements
     - [x] External interfaces
     - [x] Use cases diagrams
-    - [ ] Use cases description
+    - [ ] Use cases descriptions
     - [ ] Use cases sequence diagrams
-    - [ ] Use cases mapping
+    - [ ] Use cases mappings
     - [ ] Performance requirements
     - [ ] Design constraints
     - [ ] Software system attributes

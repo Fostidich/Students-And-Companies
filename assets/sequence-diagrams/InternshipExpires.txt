@@ -1,0 +1,26 @@
+title InternshipExpires
+
+participant "Student" as S
+participant "Company" as C
+participant "Students&Companies" as SC
+
+activate SC
+SC->SC:expire(internship)
+SC->SC:interrupt(internship)
+SC->SC:notify(studentInternshipEnd)
+SC->SC:notify(companyInternshipEnd)
+deactivate SC
+
+S->SC:request(notificationPage)
+activate S
+activate SC
+SC-->S:show(notificationPage)
+deactivate S
+deactivate SC
+
+C->SC:request(notificationPage)
+activate C
+activate SC
+SC-->C:show(notificationPage)
+deactivate C
+deactivate SC

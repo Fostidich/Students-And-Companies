@@ -1,0 +1,11 @@
+title UniversityVisualizesComplaints
+
+participant "Students&Companies" as SC
+participant "University" as U
+
+activate U
+activate SC
+U->SC:request(notificationPage)
+SC-->U:show(notificationPage)
+U->SC:request(complaintPage)
+SC-->U:show(complaintPage)

@@ -1,0 +1,14 @@
+title CompanyCreatesAdvertisement
+
+participant "Company" as C
+participant "Students&Companies" as SC
+
+activate C
+activate SC
+C->SC:request(homePage)
+SC-->C:show(homePage)
+C->SC:request(newPost)
+SC-->C:show(newPost)
+C->SC:submit(newAdvertisement)
+SC->SC:store(newAdvertisement)
+SC-->C:show(homePage)

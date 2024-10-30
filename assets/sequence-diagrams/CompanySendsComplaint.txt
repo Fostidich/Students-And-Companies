@@ -1,0 +1,22 @@
+title CompanySendsComplaint
+
+participant "Company" as C
+participant "Students&Companies" as SC
+participant "University" as U
+
+activate C
+activate SC
+C->SC:request(sendComplaintPage)
+SC-->C:show(sendComplaintPage)
+C->SC:submit(complaint)
+SC->SC:notify(universityCompanyComplaint)
+SC-->C:show(universityNotified)
+deactivate C
+deactivate SC
+
+U->SC:request(notificationPage)
+activate SC
+activate U
+SC-->U:show(notificationPage)
+U->SC:request(complaintsPage)
+SC-->U:show(complaintsPage)
