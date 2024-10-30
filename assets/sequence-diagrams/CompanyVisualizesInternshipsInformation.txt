@@ -1,0 +1,14 @@
+title CompanyVisualizesInternshipsInformation
+
+participant "Student&Companies" as sc
+participant "Company" as comp
+
+activate comp
+activate sc
+comp->sc: requestInternshipInformation(internship)
+sc->sc: find(internshipInformation + studentInformation)
+sc-->comp: send(internshipInformation + studentInformation)
+
+
+deactivate sc
+deactivate comp

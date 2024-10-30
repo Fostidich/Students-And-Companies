@@ -1,0 +1,22 @@
+title UserLogsIn
+actor "Student, Company, University" as user
+participant "Student&Companies" as sc
+
+activate user
+activate sc
+user->sc:request(LoginPage)
+sc-->user:show(LoginPage)
+
+user->sc: send(credentials) 
+sc->sc:check(credentials)
+sc-->user:show(HomePage)
+
+alt incorrect credentials
+sc-->user: send(error)
+else correct credentials
+sc-->user: show(HomePage)
+
+deactivate user
+deactivate sc
+
+end

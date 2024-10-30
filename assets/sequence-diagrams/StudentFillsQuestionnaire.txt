@@ -1,0 +1,20 @@
+title StudentFillsQuestionnaire
+
+actor "Student" as user
+participant "Student&Companies" as sc
+participant "Company" as comp
+
+
+activate sc
+activate comp
+activate user
+comp->sc: send(questionnaire)
+deactivate comp
+user->sc: request(ProfilePage)
+sc-->user: show(ProfilePage)
+user->sc:respond(questionnaire)
+activate comp
+sc-->comp:send(questionnaire)
+deactivate comp
+deactivate user
+deactivate sc
