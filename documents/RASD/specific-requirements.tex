@@ -475,23 +475,23 @@ The connection is used to exchange data between users and the web server, which 
     \end{tabular}
 \end{table}
 
-\item \subsubsection{StudentFillsFeedbackForm}
+\item \subsubsection{ParticipantFillsFeedbackForm}
 
 \begin{table}[H]
     \centering
     \begin{tabular}{|l|m{10cm}|}
         \hline \multicolumn{2}{|c|}{\textbf{StudentFillsFeedbackForm}} \\
-        \hline \textbf{Actor} & Student, Students\&Companies \\
+        \hline \textbf{Actor} & Student, Company, Students\&Companies \\
         \hline \textbf{Entry condition} & The internship has ended \\
         \hline \textbf{Event flow} &
             \begin{enumerate}[label=\arabic*]
-                \item The platform notifies the student that a feedback form can be filled in
-                \item The student opens the notifications page
-                \item The student opens the feedback form page
-                \item The student fills in the form and submits it
+                \item The platform notifies the student/company that a feedback form can be filled in
+                \item The student/company opens the notifications page
+                \item The student/company opens the feedback form page
+                \item The student/company fills in the form and submits it
                 \item The platform receives the feedback form and stores it
             \end{enumerate} \\
-        \hline \textbf{Exit condition} & The platform receives feedback data about a company \\
+        \hline \textbf{Exit condition} & The platform receives feedback data about the internship \\
         \hline \textbf{Exceptions} & None \\
         \hline
     \end{tabular}
@@ -656,12 +656,12 @@ The connection is used to exchange data between users and the web server, which 
     }
 \end{figure}
 
-\item \subsubsection{StudentFillsFeedbackForm}
+\item \subsubsection{ParticipantFillsFeedbackForm}
 
 \begin{figure}[H]
     \centering
     \fcolorbox{black}{white}{
-        \includegraphics[width=0.5\textwidth]{../../assets/sequence-diagrams/StudentFillsFeedbackForm.png}
+        \includegraphics[width=0.8\textwidth]{../../assets/sequence-diagrams/ParticipantFillsFeedbackForm.png}
     }
 \end{figure}
 

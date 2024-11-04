@@ -7,7 +7,7 @@ activate U
 activate SC
 U->SC:request(loginPage)
 SC-->U:show(loginPage)
-U->SC:submit(credetials)
+U->SC:submit(credentials)
 SC->SC:check(credentials)
 
 alt Validation successful
