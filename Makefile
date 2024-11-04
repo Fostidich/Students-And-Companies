@@ -27,7 +27,7 @@ ifeq ($(OS),Windows_NT)
 	@echo    make itd-verbose         Run pdflatex verbosely for ITD
 	@echo    make atd-verbose         Run pdflatex verbosely for ATD
 	@cmd /c "echo."
-    @echo    make layout-export       Copy main LaTeX layout to all documents
+	@echo    make layout-export       Copy main LaTeX layout to all documents
 	@cmd /c "echo."
 else
 	@echo ""
@@ -212,3 +212,4 @@ else
 	@cp assets/layout.tex documents/ITD/main.tex
 	@cp assets/layout.tex documents/ATD/main.tex
 endif
+

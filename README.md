@@ -98,8 +98,8 @@ The applications source code can be found [here](apps).
 - [ ] Specific requirements
     - [x] External interfaces
     - [x] Use cases diagrams
-    - [ ] Use cases descriptions
-    - [ ] Use cases sequence diagrams
+    - [x] Use cases descriptions
+    - [x] Use cases sequence diagrams
     - [ ] Use cases mappings
     - [ ] Performance requirements
     - [ ] Design constraints
