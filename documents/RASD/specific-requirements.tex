@@ -944,46 +944,48 @@ However, the system strives to satisfy the following requirements in order to of
 
 \section{Design constraints}
 
-This section is devoted to design constraints that affect the system.
-The main purpose is to document all constraints that impact design decisions, whether imposed by standards, regulatory requirements, or specific design requests.
-These constraints may include technical compliance limitations, such as hardware restrictions, specific protocols, security requirements, or other guidelines.
+This section outlines the constraints impacting design choices, including regulatory standards, technical limitations, and specific requirements.
+These constraints guide compliance and design feasibility.
 
 \subsection{Standards compliance}
 
-\begin{itemize}
-    \item The system must comply with the General Data Protection Regulation (GDPR).
-    \item The system must comply IEEE 830-1998 standard for software requirements specifications.
-\end{itemize}
+Specications described in this document must be respected by the system.
+The source code of the application must be commented and documented adequately.
+
+Moreover, the system should respect the laws about privacy and data protection of the country in which it is used.
 
 \subsection{Hardware limitations}
 
-\begin{itemize}
-    \item To access the system the user must have a device with a web browser.
-    \item To access the system the user must have a device with an internet connection.
-\end{itemize}
+To access the system the user must have a device with a web browser and an internet connection.
 
 %\subsection{Any other constraint}
 
 \section{Software system attributes}
 
-This section is devoted to the software system attributes that affect the system.
-The main purpose is to document all attributes that impact design decisions, whether imposed by standards, regulatory requirements, or specific design requests.
-These attributes may include technical compliance limitations, such as hardware restrictions, specific protocols, security requirements, or other guidelines.
+This section describes essential software attributes like performance, security, and maintainability, which define the quality and user experience of the system.
 
-\subsection{Reliability and availability}
+\subsection{Availability}
 
-The system must be available 24/7, with a downtime of less than 1\%.
-The system must be able to recover from failures in less than 1 hour.
-To achieve this, the system should provide a high rendundancy and fault tolerance.
+The system must operate continuously, ensuring 24/7 access with downtime below 1\%.
+Any failure must be resolved within 1 hour to minimize service disruption.
+
+\subsection{Reliability}
+
+To maintain consistent performance, the system should be designed with high redundancy and fault tolerance, reducing the risk of critical failures.
 
 \subsection{Security}
 
-\begin{itemize}
-    \item \textbf{Data Encryption}: all sensitive user data, including personal information and passwords, must be encrypted both in transit and at rest to prevent unauthorized access.
-    \item \textbf{Access Control}: a robust authentication and authorization mechanism is in place to restrict access to data and functionalities based on user roles. Passwords are hashed and stored securely.
-    \item \textbf{Compliance with GDPR}: the system adheres to GDPR guidelines, ensuring that personal data is handled responsibly and with user consent. Procedures are implemented for data protection, right to access, and data deletion upon user request.
-    \item \textbf{Regular Security Audits}: to maintain high security standards, regular audits and vulnerability assessments will be conducted, identifying and mitigating potential risks.
-\end{itemize}
+Data encryption is crucial to protect sensitive user information, including personal details and passwords.
+All such data must be encrypted both in transit and at rest, ensuring it remains secure against unauthorized access.
+
+Access control is enforced through a robust authentication and authorization mechanism that restricts data and functionality access according to user roles.
+Passwords are securely hashed and stored, further safeguarding user credentials.
+
+The system ensures responsible handling of personal data, requiring explicit user consent and implementing clear procedures for data protection.
+Users have the right to access their data and request its deletion, promoting transparency and control over personal information.
+
+To uphold high security standards, regular security audits and vulnerability assessments are scheduled.
+These help identify and mitigate any emerging risks, continuously enhancing system security.
 
 \subsection{Maintainability}
 

@@ -91,19 +91,19 @@ The applications source code can be found [here](apps).
 #### Chapters
 
 - [x] Introduction
-- [ ] Overall description
-    - [ ] Scenarios descriptions
-    - [ ] Class diagram
-    - [ ] State charts
-- [ ] Specific requirements
+- [x] Overall description
+    - [x] Scenarios descriptions
+    - [x] Class diagram
+    - [x] State charts
+- [x] Specific requirements
     - [x] External interfaces
     - [x] Use cases diagrams
     - [x] Use cases descriptions
     - [x] Use cases sequence diagrams
-    - [ ] Use cases mappings
-    - [ ] Performance requirements
-    - [ ] Design constraints
-    - [ ] Software system attributes
+    - [x] Use cases mappings
+    - [x] Performance requirements
+    - [x] Design constraints
+    - [x] Software system attributes
 - [ ] Formal analysis using Alloy
 
 ###### C# code written by Francesco Ostidich, Matteo Salari, Francesco Rivitti
