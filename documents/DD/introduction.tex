@@ -1,8 +1,77 @@
 \chapter{Introduction}
 
 \section{Purpose}
+
+This document contains the design description of the Students\&Companies system.
+It includes the architectural design, the user interface design, and the descriptions of all the operations that the system will perform.
+It also shows how the requirements and the use cases detailed in the RASD document are satisfied by the design of the system.
+This document is intended to be read by the developers, the testers and the project managers of the system.
+It is also intended to be used as a reference for any future maintenance.
+
 \section{Scope}
+
+Students\&Companies (S\&C) is a platform designed to connect university students with companies offering internships. 
+It simplifies the internship searches of students and the projects advertisement for companies.
+The platform employs recommendation mechanisms to match students and companies based on experience, skills, and project requirements. 
+S\&C also supports the selection process by managing interviews and collecting feedbacks. 
+Additionally, it provides suggestions for improving CVs and project descriptions.
+
+A more detailed description of the system can be found in the RASD document.
+This document provides a detailed description of the design that is to implement the requirements and the use cases found in the RASD document.
+
 \section{Definitions, acronyms, abbreviations}
+
+\begin{itemize}
+    \item \textbf{Internship project}: the description of the skills, technologies and roles the student will be working with during the internship, along with the set of tasks that will be covered
+    \item \textbf{Internship advertisement}: the public post created by companies to promote available internships on the platform, aimed at attracting suitable candidates by highlighting its key aspects
+    \item \textbf{Internship information}: general data about the (ongoing) internship, including the elapsed and remaining time, the compensation and the description of the project the student is working on
+    \item \textbf{Enrollment request}: the submission of a student to indicate interest in a specific internship, initiating the selection process by formally applying
+    \item \textbf{Enrollment suggestion}: the recommendation made by the platform to guide students in finding projects that best suit them
+    \item \textbf{Custom questionnaire}: the tailored set of questions used by companies during interviews to assess a candidate fit for the internship
+    \item \textbf{Candidate student}: a student who has applied for an internship and is currently under consideration by a company, moving forward in the selection process
+    \item \textbf{Eligible student}: a student who meets the qualifications for an internship, making them viable candidates for recommendation and application
+    \item \textbf{Suitable student}: a student who meets the qualifications for an internship, making them potential candidates to be recommended in the companies feed
+    \item \textbf{Complaint}: a report submitted by a student or company to the university, regarding issues during the internship, such as unmet expectations, mistreatments, or procedural problems
+    \item \textbf{Feedback form}: a structured form for students and companies used to provide feedback on their internship experience, enabling the platform to gather data for analysis, improvements, and recommendations
+\end{itemize}
+
+\subsection{Acronyms}
+
+\begin{itemize}
+    \item \textbf{S\&C}: Students\&Companies
+\end{itemize}
+
+\subsection{Abbreviations}
+
+\begin{itemize}
+    \item \textbf{Rn}: n-th requirement
+    \item \textbf{En}: n-th entity manager
+    \item \textbf{Cn}: n-th component manager
+\end{itemize}
+
 \section{Revision history}
+
+\begin{itemize}
+    \item \textbf{Revised on}: \today
+    \item \textbf{Version}: 1.0
+    \item \textbf{Description}: document initial release
+\end{itemize}
+
 \section{Reference documents}
+
+\begin{itemize}
+    \item \textbf{Polimi Software Engineering 2 AY 2024/2025 assignment document}: goal, schedule and rules of the requirement engineering and design project
+    \item \textbf{Polimi Software Engineering 2 AY 2024/2025 course slides}: the lecture slides provided during the course
+\end{itemize}
+
 \section{Document structure}
+
+\begin{itemize}
+    \item \textbf{Chapter 1}: this section provides a brief description of the purpose and the scope of the system; moreover it contains the definitions, acronyms and abbreviations used in the document.
+    \item \textbf{Chapter 2}: this section provides a description of the architecture of the system, including the components and the interfaces between them; it also includes the runtime view of the most important operations of the system, along the deployment view and the architectural styles and patterns used.
+    \item \textbf{Chapter 3}: here are included the mockups of the user interfaces.
+    \item \textbf{Chapter 4}: this section shows how the requirements described in the RASD document are satisfied by the design implementation.
+    \item \textbf{Chapter 5}: here is included a step-by-step plan for the implementation and testing of the system.
+    \item \textbf{Chapter 6}: this section highlights the effort spent to redact this document by each member of the group.
+\end{itemize}
+

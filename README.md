@@ -88,22 +88,17 @@ The applications source code can be found [here](apps).
 
 ### RASD
 
-#### Chapters
+- [ ] Review all
+- [ ] Conclude Alloy if needed
+
+### DD
 
 - [x] Introduction
-- [x] Overall description
-    - [x] Scenarios descriptions
-    - [x] Class diagram
-    - [x] State charts
-- [x] Specific requirements
-    - [x] External interfaces
-    - [x] Use cases diagrams
-    - [x] Use cases descriptions
-    - [x] Use cases sequence diagrams
-    - [x] Use cases mappings
-    - [x] Performance requirements
-    - [x] Design constraints
-    - [x] Software system attributes
-- [ ] Formal analysis using Alloy
+- [ ] Architectural design
+- [ ] User interface design
+- [ ] Requirements traceability
+- [ ] Implementation, integration and test plan
+- [ ] Effort spent
+- [ ] References
 
 ###### C# code written by Francesco Ostidich, Matteo Salari, Francesco Rivitti
