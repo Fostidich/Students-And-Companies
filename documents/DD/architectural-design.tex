@@ -1,8 +1,47 @@
 \chapter{Architectural design}
 
 \section{Overview}
+
+In the S\&C application, four high-level components can be distinguished: the backend server, the DBMS, the email service, and the frontend interface.
+
+The backend server is the main component of the system, as it contains every piece of business logic required to satisfy the goals specified in the RASD document.
+The role of the DBMS is the usual, which is providing interaction with a database by executing command operations.
+The email service is used to validate the user account at sign up time, since the verification link is sent via email.  
+Lastly, the frontend interface is the web page reachable by the user from a browser.
+
 \section{Component view}
-\section{Deployment view}
+
+\htitle{Frontend interface}
+It is the the web application used by the client, which is reachable by any browser.
+The full range of operations that it provides to the user can only be used after the authentication process, performed by the \textit{Authentication service}.
+It allows both students and companies to perform a certain set of actions based on the type of user.
+
+\htitle{Web application}
+It is used as an intermediary between the frontend and the backend.
+Its purpose is to manage the browser UI pages independently and transparently from the point of view of the other server components.
+Its APIs are meant to ease the HTML body filling process done from other components.
+
+\htitle{Authentication service}
+It provides the set of procedures required to handle the authentication of a user into the system.
+It manages the log in and sign up phases.
+
+\htitle{Email service}
+Its main goal is to implement all the procedures that the server requires in order to send email messages to the user.
+Mainly, this component allows the \textit{authentication service} to send a verification email when handling the sign up of a user.  
+
+\htitle{Notification service}
+The purpose of this component is to collect and manage all the notifications that a user receives.
+It defines the notification types and allows other components easily to send them.
+
+query service
+recommendation service
+suggestion service
+profile manager
+enrollment manager
+internship manager
+complaint manager
+feedback manager
+
 \section{Runtime view}
 \section{Component interfaces}
 \section{Selected architectural styles and patterns}
