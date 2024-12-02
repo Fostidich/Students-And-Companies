@@ -61,12 +61,12 @@ dotnet run --project apps/server --configuration Release
 
 ## Locations
 
-The latest version of the project documents can be found [here](Delivery).
+The latest version of the project documents can be found [here](delivery).
 
-- [RASD](Delivery/RASDv0.1.pdf)
-- [DD](Delivery/DDv0.1.pdf)
-- [ITD](Delivery/ITDv0.1.pdf)
-- [ATD](Delivery/ATDv0.1.pdf)
+- [RASD](delivery/RASDv0.1.pdf)
+- [DD](delivery/DDv0.1.pdf)
+- [ITD](delivery/ITDv0.1.pdf)
+- [ATD](delivery/ATDv0.1.pdf)
 
 The applications source code can be found [here](apps).
 
