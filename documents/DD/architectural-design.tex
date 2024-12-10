@@ -23,6 +23,19 @@ Its purpose is to manage the browser UI pages independently and transparently fr
 The web server main tasks are the static resources delivery and the web pages content retrieval and forwarding.
 After receiving an HTTP request, the web server retrieves from the application server the data needed to fill the corresponding HTML template, which are then both returned to the user, along with the static style assets.
 
+\htitle{DMBS}
+The DBMS, which manages the DB containing all the data that the platform utilizes, stays on a separate machine.
+It is then the query service component that, by providing the necessary SQL queries to other components, allows the application server to reach for the stored data.
+
+\htitle{Email server}
+The email server represents the external machines that the email service reaches in order to send messages.
+Those machines are property of the actual email providers, but they show how the application server email service component can utilize them via their APIs.
+
+\htitle{Request dispatcher}
+The web server processes incoming HTTP requests by calling the appropriate application server component.
+The components are responsible for retrieving the necessary data that the web server uses to populate the HTML template, which is then returned to the user.
+Since different web pages may require data from different components, the request dispatcher ensures that each request is routed to the correct application server component.
+
 \htitle{Authentication service}
 This component provides the set of procedures required to handle the authentication of a user into the system.
 It manages the log in and sign up phases.
@@ -68,6 +81,11 @@ Since complaints must have a valid reference to an ongoing internship, the inter
 When an internship ends, both parties are requested to fill in a feedback form.
 This component handles this operation, by sending, receiving and acting accordingly to the feedback forms content.
 Since feedback forms must have a valid reference to an internship that has concluded, the internship manager component APIs are here used.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\linewidth]{../../assets/components-diagrams/components-diagram.png}
+\end{figure}
 
 \section{Deployment view}
 
