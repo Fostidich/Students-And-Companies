@@ -143,6 +143,37 @@ The diagrams include the component described in the previous sections, and the e
 
 \section{Component interfaces}
 
+\subsection{Application APIs}
+
+\subsubsection{POST api/login/user/\{user\}}
+\begin{itemize}
+    \item Request parameters - \verb|{user: User}|
+    \item Response 200 - \verb|{username: String, token: String}|
+    \item Response 400 - \verb|{validationError: Error}|
+    \item Response 401 - \verb|{loginError: Error}|
+\end{itemize}
+
+\subsubsection{POST api/login/user/\{user\}}
+\begin{itemize}
+    \item Request parameters - \verb|{user: User}|
+    \item Response 200 - \verb|{username: String, token: String}|
+    \item Response 400 - \verb|{validationError: Error}|
+    \item Response 401 - \verb|{loginError: Error}|
+\end{itemize}
+
+\subsection{Interface methods}
+
+\subsubsection{Authentication interface}
+\begin{itemize}
+    \item \verb|User login(username: String, password: String)|
+    \item \verb|bool register(info: UserInfo)|
+\end{itemize}
+
+\subsubsection{Notification interface}
+\begin{itemize}
+    \item \verb|List<Notification> notificationPanel(user: User)|
+\end{itemize}
+
 \section{Architectural styles and patterns}
 
 \htitle{Three-tier architecture}
@@ -152,9 +183,9 @@ Each tier has its specific functions, ensuring separation of concerns and effici
 It allows scalability, simplifies maintenance, and enhances control and security.
 
 \htitle{REST}
-The communication between the client and the server is based on the REST architectural style.
-REST is stateless, meaning that the server does not need to store any information about the client session, allowing higher scalability.
-Moreover, it provides a uniform interface to the client via the HTTP methods (GET, POST, PUT, DELETE).
+The communication between the web server and the application server is based on the REST architectural style.
+REST is stateless, meaning that the server does not need to store any information about the session, allowing higher scalability.
+Moreover, it provides a uniform and easy interface via the HTTP methods (GET, POST, PUT, DELETE).
 
 \htitle{MVC}
 The MVC pattern is used to separate the presentation layer from the business logic.

@@ -36,14 +36,6 @@
 
 % ------- COLORS ------- %
 
-\definecolor{ccode}{RGB}{0, 0, 192}
-
-\DefineVerbatimEnvironment{verbatim}{Verbatim}
-    {fontfamily=courier, fontsize=\small, formatcom=\color{ccode}}
-
-\RenewDocumentCommand{\verb}{v}
-    {\begingroup\color{ccode}\fontfamily{pcr}\selectfont#1\endgroup}
-
 \hypersetup{
     colorlinks=true,
     linkcolor=black,
@@ -58,6 +50,7 @@
 
 \newcommand{\newpar}[0]{\vspace{2mm}\noindent}
 \newcommand{\htitle}[1]{\newpar\textbf{#1 -}}
+\newcommand{\ititle}[1]{\newpar\hspace{1em}\textbf{#1}}
 \newcommand{\hyperlabel}[1]{\hypertarget{#1}\phantomsection\label{#1}}
 \newcommand{\hyperitem}[2]{\item \hyperlink{#1}{#2}\leaders\hbox to 0.8em{\hss.\hss}\hfill\hbox to 1.8em{\hss\pageref{#1}}}
 \newcommand{\stdtilde}[0]{\raise.17ex\hbox{$\scriptstyle\sim$}}
