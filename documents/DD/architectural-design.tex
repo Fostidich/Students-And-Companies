@@ -145,21 +145,124 @@ The diagrams include the component described in the previous sections, and the e
 
 \subsection{Application APIs}
 
-\subsubsection{POST api/login/user/\{user\}}
+\subsubsection{POST api/register/user}
 \begin{itemize}
-    \item Request parameters - \verb|{user: User}|
-    \item Response 200 - \verb|{username: String, token: String}|
-    \item Response 400 - \verb|{validationError: Error}|
-    \item Response 401 - \verb|{loginError: Error}|
+    \item Request body - \verb|{user: RegistrationForm}|
+    \item Response 201 - Created
+    \item Response 401 - Validation Error \verb|{error: Error}|
 \end{itemize}
 
-\subsubsection{POST api/login/user/\{user\}}
+\subsubsection{POST api/login/user}
 \begin{itemize}
-    \item Request parameters - \verb|{user: User}|
-    \item Response 200 - \verb|{username: String, token: String}|
-    \item Response 400 - \verb|{validationError: Error}|
-    \item Response 401 - \verb|{loginError: Error}|
+    \item Request body - \verb|{user: Credentials}|
+    \item Response 200 - OK \verb|{UserID: String, token: String}|
+    \item Response 401 - Unauthorized \verb|{error: Error}|
 \end{itemize}
+
+\subsubsection{POST api/user/\{userID\}/upload/cv}
+\begin{itemize}
+    \item Request body - \verb|{cv: File}|
+    \item Response 200 - OK
+    \item Response 400 - Invalid File \verb|{error: Error}|
+    \item Response 401 - Unauthorized \verb|{error: Error}|
+\end{itemize}
+
+\subsubsection{POST api/user/\{userID\}/create/advertisement}
+\begin{itemize}
+    \item Request body - \verb|{advertisement: Advertisement}|
+    \item Response 201 - Created
+    \item Response 400 - Validation Error \verb|{error: Error}|
+    \item Response 401 - Unauthorized \verb|{error: Error}|
+\end{itemize}
+
+\subsubsection{GET api/user/\{userID\}/retrieve/advertisements}
+\begin{itemize}
+    \item Response 200 - OK \verb|{advertisements: Advertisement[]}|
+    \item Response 400 - Validation Error \verb|{error: Error}|
+    \item Response 401 - Unauthorized \verb|{error: Error}|
+\end{itemize}
+
+\subsubsection{GET api/user/\{userID\}/retrieve/candidates}
+\begin{itemize}
+    \item Response 200 - OK \verb|{candidates: Candidate[]}|
+    \item Response 400 - Validation Error \verb|{error: Error}|
+    \item Response 401 - Unauthorized \verb|{error: Error}|
+\end{itemize}
+
+\subsubsection{POST api/user/\{userID\}/create/questionnaire}
+\begin{itemize}
+    \item Request body - \verb|{questionnaire: Questionnaire}|
+    \item Response 201 - Created
+    \item Response 400 - Validation Error \verb|{error: Error}|
+    \item Response 401 - Unauthorized \verb|{error: Error}|
+\end{itemize}
+
+\subsubsection{GET api/user/\{userID\}/retrieve/questionnaire/\{questionnaireID\}}
+\begin{itemize}
+    \item Response 200 - OK \verb|{questionnaire: Questionnaire}|
+    \item Response 400 - Validation Error \verb|{error: Error}|
+    \item Response 401 - Unauthorized \verb|{error: Error}|
+\end{itemize}
+
+\subsubsection{POST api/user/\{userID\}/fill/questionnaire/\{questionnaireID\}}
+\begin{itemize}
+    \item Request body - \verb|{questionnaire: Questionnaire}|
+    \item Response 201 - Created
+    \item Response 400 - Validation Error \verb|{error: Error}|
+    \item Response 401 - Unauthorized \verb|{error: Error}|
+\end{itemize}
+
+\subsubsection{POST api/user/\{userID\}/accept/enrollment/\{enrollmentID\}}
+\begin{itemize}
+    \item Response 200 - OK
+    \item Response 400 - Validation Error \verb|{error: Error}|
+    \item Response 401 - Unauthorized \verb|{error: Error}|
+\end{itemize}
+
+\subsubsection{GET api/user/\{userID\}/retrieve/internship/\{internshipID\}}
+\begin{itemize}
+    \item Response 200 - OK \verb|{internship: Internship}|
+    \item Response 400 - Validation Error \verb|{error: Error}|
+    \item Response 401 - Unauthorized \verb|{error: Error}|
+\end{itemize}
+
+\subsubsection{POST api/user/\{userID\}/create/complaint}
+\begin{itemize}
+    \item Request body - \verb|{complaint: Complaint}|
+    \item Response 201 - Created
+    \item Response 400 - Validation Error \verb|{error: Error}|
+    \item Response 401 - Unauthorized \verb|{error: Error}|
+\end{itemize}
+
+\subsubsection{GET api/user/\{userID\}/retrieve/complaints}
+\begin{itemize}
+    \item Response 200 - OK \verb|{complaints: Complaint[]}|
+    \item Response 400 - Validation Error \verb|{error: Error}|
+    \item Response 401 - Unauthorized \verb|{error: Error}|
+\end{itemize}
+
+\subsubsection{POST api/user/\{userID\}/interrupt/internship/\{internshipID\}}
+\begin{itemize}
+    \item Response 200 - OK
+    \item Response 400 - Validation Error \verb|{error: Error}|
+    \item Response 401 - Unauthorized \verb|{error: Error}|
+\end{itemize}
+
+\subsubsection{POST api/user/\{userID\}/feedback/internship/\{internshipID\}}
+\begin{itemize}
+    \item Request body - \verb|{feedbackForm: FeedbackForm}|
+    \item Response 201 - Created
+    \item Response 400 - Validation Error \verb|{error: Error}|
+    \item Response 401 - Unauthorized \verb|{error: Error}|
+\end{itemize}
+
+\subsubsection{GET api/user/\{userID\}/retrieve/notifications}
+\begin{itemize}
+    \item Response 200 - OK \verb|{notifications: Notification[]}|
+    \item Response 400 - Validation Error \verb|{error: Error}|
+    \item Response 401 - Unauthorized \verb|{error: Error}|
+\end{itemize}
+
 
 \subsection{Interface methods}
 
@@ -173,6 +276,7 @@ The diagrams include the component described in the previous sections, and the e
 \begin{itemize}
     \item \verb|List<Notification> notificationPanel(user: User)|
 \end{itemize}
+
 
 \section{Architectural styles and patterns}
 
