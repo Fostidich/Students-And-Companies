@@ -145,124 +145,228 @@ The diagrams include the component described in the previous sections, and the e
 
 \subsection{Application APIs}
 
-\subsubsection{POST api/register/user}
+\subsubsection{POST api/register}
 \begin{itemize}
+    \item Description: user is registered from form information
     \item Request body - \verb|{user: RegistrationForm}|
     \item Response 201 - Created
-    \item Response 401 - Validation Error \verb|{error: Error}|
+    \item Response 400 - Validation Error \verb|{error: Error}|
 \end{itemize}
 
-\subsubsection{POST api/login/user}
+\subsubsection{POST api/login}
 \begin{itemize}
+    \item Description: authentication token is returned if credentials are correct
     \item Request body - \verb|{user: Credentials}|
     \item Response 200 - OK \verb|{UserID: String, token: String}|
     \item Response 401 - Unauthorized \verb|{error: Error}|
 \end{itemize}
 
-\subsubsection{POST api/user/\{userID\}/upload/cv}
+\subsubsection{GET api/profile}
 \begin{itemize}
+    \item Description: user profile information is returned
+    \item Request header - \verb|{Authorization: Bearer <token>}|
+    \item Response 200 - OK \verb|{profile: ProfileData}|
+    \item Response 400 - Invalid File \verb|{error: Error}|
+    \item Response 401 - Unauthorized \verb|{error: Error}|
+\end{itemize}
+
+\subsubsection{POST api/profile}
+\begin{itemize}
+    \item Description: user profile information is updated
+    \item Request header - \verb|{Authorization: Bearer <token>}|
+    \item Request body - \verb|{profile: ProfileData}|
+    \item Response 200 - OK
+    \item Response 400 - Invalid File \verb|{error: Error}|
+    \item Response 401 - Unauthorized \verb|{error: Error}|
+\end{itemize}
+
+\subsubsection{GET api/profile/cv}
+\begin{itemize}
+    \item Description: CV file is downloaded
+    \item Request header - \verb|{Authorization: Bearer <token>}|
+    \item Response 200 - OK \verb|{cv: File}|
+    \item Response 400 - Invalid File \verb|{error: Error}|
+    \item Response 401 - Unauthorized \verb|{error: Error}|
+\end{itemize}
+
+\subsubsection{POST api/profile/cv}
+\begin{itemize}
+    \item Description: CV file is uploaded
+    \item Request header - \verb|{Authorization: Bearer <token>}|
     \item Request body - \verb|{cv: File}|
     \item Response 200 - OK
     \item Response 400 - Invalid File \verb|{error: Error}|
     \item Response 401 - Unauthorized \verb|{error: Error}|
 \end{itemize}
 
-\subsubsection{POST api/user/\{userID\}/create/advertisement}
+\subsubsection{GET api/advertisements}
 \begin{itemize}
+    \item Description: a set of advertisements is returned
+    \item Request header - \verb|{Authorization: Bearer <token>}|
+    \item Response 200 - OK \verb|{advertisements: Advertisement[]}|
+    \item Response 400 - Validation Error \verb|{error: Error}|
+    \item Response 401 - Unauthorized \verb|{error: Error}|
+\end{itemize}
+
+\subsubsection{POST api/advertisements}
+\begin{itemize}
+    \item Description: an advertisement is created
+    \item Request header - \verb|{Authorization: Bearer <token>}|
     \item Request body - \verb|{advertisement: Advertisement}|
     \item Response 201 - Created
     \item Response 400 - Validation Error \verb|{error: Error}|
     \item Response 401 - Unauthorized \verb|{error: Error}|
 \end{itemize}
 
-\subsubsection{GET api/user/\{userID\}/retrieve/advertisements}
+\subsubsection{GET api/candidates}
 \begin{itemize}
-    \item Response 200 - OK \verb|{advertisements: Advertisement[]}|
-    \item Response 400 - Validation Error \verb|{error: Error}|
-    \item Response 401 - Unauthorized \verb|{error: Error}|
-\end{itemize}
-
-\subsubsection{GET api/user/\{userID\}/retrieve/candidates}
-\begin{itemize}
+    \item Description: a set of candidates is returned
+    \item Request header - \verb|{Authorization: Bearer <token>}|
     \item Response 200 - OK \verb|{candidates: Candidate[]}|
     \item Response 400 - Validation Error \verb|{error: Error}|
     \item Response 401 - Unauthorized \verb|{error: Error}|
 \end{itemize}
 
-\subsubsection{POST api/user/\{userID\}/create/questionnaire}
+\subsubsection{GET api/applications}
 \begin{itemize}
-    \item Request body - \verb|{questionnaire: Questionnaire}|
+    \item Description: application requests are returned
+    \item Request header - \verb|{Authorization: Bearer <token>}|
+    \item Response 200 - OK \verb|{applications: Application[]}|
+    \item Response 400 - Validation Error \verb|{error: Error}|
+    \item Response 401 - Unauthorized \verb|{error: Error}|
+\end{itemize}
+
+\subsubsection{POST api/applications}
+\begin{itemize}
+    \item Description: the application request is registered
+    \item Request header - \verb|{Authorization: Bearer <token>}|
+    \item Request body - \verb|{application: Application}|
     \item Response 201 - Created
     \item Response 400 - Validation Error \verb|{error: Error}|
     \item Response 401 - Unauthorized \verb|{error: Error}|
 \end{itemize}
 
-\subsubsection{GET api/user/\{userID\}/retrieve/questionnaire/\{questionnaireID\}}
+\subsubsection{POST api/application/\{applicationID\}}
 \begin{itemize}
-    \item Response 200 - OK \verb|{questionnaire: Questionnaire}|
-    \item Response 400 - Validation Error \verb|{error: Error}|
-    \item Response 401 - Unauthorized \verb|{error: Error}|
-\end{itemize}
-
-\subsubsection{POST api/user/\{userID\}/fill/questionnaire/\{questionnaireID\}}
-\begin{itemize}
-    \item Request body - \verb|{questionnaire: Questionnaire}|
-    \item Response 201 - Created
-    \item Response 400 - Validation Error \verb|{error: Error}|
-    \item Response 401 - Unauthorized \verb|{error: Error}|
-\end{itemize}
-
-\subsubsection{POST api/user/\{userID\}/accept/enrollment/\{enrollmentID\}}
-\begin{itemize}
+    \item Description: the application request is accepted
+    \item Request header - \verb|{Authorization: Bearer <token>}|
     \item Response 200 - OK
     \item Response 400 - Validation Error \verb|{error: Error}|
     \item Response 401 - Unauthorized \verb|{error: Error}|
 \end{itemize}
 
-\subsubsection{GET api/user/\{userID\}/retrieve/internship/\{internshipID\}}
+\subsubsection{POST api/questionnaires}
 \begin{itemize}
+    \item Description: a custom questionnaire is created
+    \item Request header - \verb|{Authorization: Bearer <token>}|
+    \item Request body - \verb|{questionnaire: Questionnaire}|
+    \item Response 201 - Created
+    \item Response 400 - Validation Error \verb|{error: Error}|
+    \item Response 401 - Unauthorized \verb|{error: Error}|
+\end{itemize}
+
+\subsubsection{GET api/questionnaires/\{questionnaireID\}}
+\begin{itemize}
+    \item Description: the questionnaire is returned
+    \item Request header - \verb|{Authorization: Bearer <token>}|
+    \item Response 200 - OK \verb|{questionnaire: Questionnaire}|
+    \item Response 400 - Validation Error \verb|{error: Error}|
+    \item Response 401 - Unauthorized \verb|{error: Error}|
+\end{itemize}
+
+\subsubsection{POST api/questionnaires/\{questionnaireID\}}
+\begin{itemize}
+    \item Description: the filled in questionnaire is stored
+    \item Request header - \verb|{Authorization: Bearer <token>}|
+    \item Request body - \verb|{questionnaire: Questionnaire}|
+    \item Response 201 - Created
+    \item Response 400 - Validation Error \verb|{error: Error}|
+    \item Response 401 - Unauthorized \verb|{error: Error}|
+\end{itemize}
+
+\subsubsection{GET api/proposals}
+\begin{itemize}
+    \item Description: proposals are returned
+    \item Request header - \verb|{Authorization: Bearer <token>}|
+    \item Response 200 - OK \verb|{proposals: Proposal[]}|
+    \item Response 400 - Validation Error \verb|{error: Error}|
+    \item Response 401 - Unauthorized \verb|{error: Error}|
+\end{itemize}
+
+\subsubsection{POST api/proposals}
+\begin{itemize}
+    \item Description: a proposal is registered
+    \item Request header - \verb|{Authorization: Bearer <token>}|
+    \item Request body - \verb|{proposal: Proposal}|
+    \item Response 201 - Created
+    \item Response 400 - Validation Error \verb|{error: Error}|
+    \item Response 401 - Unauthorized \verb|{error: Error}|
+\end{itemize}
+
+\subsubsection{POST api/proposals/\{proposalID\}}
+\begin{itemize}
+    \item Description: the proposal is accepted
+    \item Request header - \verb|{Authorization: Bearer <token>}|
+    \item Response 200 - OK
+    \item Response 400 - Validation Error \verb|{error: Error}|
+    \item Response 401 - Unauthorized \verb|{error: Error}|
+\end{itemize}
+
+\subsubsection{GET api/internships}
+\begin{itemize}
+    \item Description: internship information is returned
+    \item Request header - \verb|{Authorization: Bearer <token>}|
     \item Response 200 - OK \verb|{internship: Internship}|
     \item Response 400 - Validation Error \verb|{error: Error}|
     \item Response 401 - Unauthorized \verb|{error: Error}|
 \end{itemize}
 
-\subsubsection{POST api/user/\{userID\}/create/complaint}
+\subsubsection{GET api/internship/\{internshipID\}/complaints}
 \begin{itemize}
+    \item Description: complaints about an internship are returned
+    \item Request header - \verb|{Authorization: Bearer <token>}|
+    \item Response 200 - OK \verb|{complaints: Complaint[]}|
+    \item Response 400 - Validation Error \verb|{error: Error}|
+    \item Response 401 - Unauthorized \verb|{error: Error}|
+\end{itemize}
+
+\subsubsection{POST api/internship/\{internshipID\}/complaints}
+\begin{itemize}
+    \item Description: a complaint about an internship is created
+    \item Request header - \verb|{Authorization: Bearer <token>}|
     \item Request body - \verb|{complaint: Complaint}|
     \item Response 201 - Created
     \item Response 400 - Validation Error \verb|{error: Error}|
     \item Response 401 - Unauthorized \verb|{error: Error}|
 \end{itemize}
 
-\subsubsection{GET api/user/\{userID\}/retrieve/complaints}
+\subsubsection{POST api/internship/\{internshipID\}/interrupt}
 \begin{itemize}
-    \item Response 200 - OK \verb|{complaints: Complaint[]}|
-    \item Response 400 - Validation Error \verb|{error: Error}|
-    \item Response 401 - Unauthorized \verb|{error: Error}|
-\end{itemize}
-
-\subsubsection{POST api/user/\{userID\}/interrupt/internship/\{internshipID\}}
-\begin{itemize}
+    \item Description: the internship is interrupted
+    \item Request header - \verb|{Authorization: Bearer <token>}|
     \item Response 200 - OK
     \item Response 400 - Validation Error \verb|{error: Error}|
     \item Response 401 - Unauthorized \verb|{error: Error}|
 \end{itemize}
 
-\subsubsection{POST api/user/\{userID\}/feedback/internship/\{internshipID\}}
+\subsubsection{POST api/internships/\{internshipID\}/feedback}
 \begin{itemize}
+    \item Description: a filled in feedback form about an internship is stored
+    \item Request header - \verb|{Authorization: Bearer <token>}|
     \item Request body - \verb|{feedbackForm: FeedbackForm}|
     \item Response 201 - Created
     \item Response 400 - Validation Error \verb|{error: Error}|
     \item Response 401 - Unauthorized \verb|{error: Error}|
 \end{itemize}
 
-\subsubsection{GET api/user/\{userID\}/retrieve/notifications}
+\subsubsection{GET api/notifications}
 \begin{itemize}
+    \item Description: the notifications of the user are returned
+    \item Request header - \verb|{Authorization: Bearer <token>}|
     \item Response 200 - OK \verb|{notifications: Notification[]}|
     \item Response 400 - Validation Error \verb|{error: Error}|
     \item Response 401 - Unauthorized \verb|{error: Error}|
 \end{itemize}
-
 
 \subsection{Interface methods}
 
