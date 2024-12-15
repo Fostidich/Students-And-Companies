@@ -370,17 +370,121 @@ The diagrams include the component described in the previous sections, and the e
 
 \subsection{Interface methods}
 
-\subsubsection{Authentication interface}
+\subsubsection{Notification interface}
 \begin{itemize}
-    \item \verb|User login(username: String, password: String)|
-    \item \verb|bool register(info: UserInfo)|
+    \item \verb|List<Notification> getNotificationList(user: User)|
 \end{itemize}
 
-\subsubsection{Notification interface}
+\subsubsection{Profile notification interface}
 \begin{itemize}
     \item \verb|List<Notification> notificationPanel(user: User)|
 \end{itemize}
 
+\subsubsection{Recommendation notification interface}
+\begin{itemize}
+    \item \verb|List<Notification> notificationPanel(user: User)|
+\end{itemize}
+
+\subsubsection{Enrollment notification interface}
+\begin{itemize}
+    \item \verb|List<Notification> notificationPanel(user: User)|
+\end{itemize}
+
+\subsubsection{Internship notification interface}
+\begin{itemize}
+    \item \verb|List<Notification> notificationPanel(user: User)|
+\end{itemize}
+
+\subsubsection{Authentication interface}
+\begin{itemize}
+    \item \verb|Token login(credentials: Credentials)|
+    \item \verb|boolean logout(token: Token)|
+    \item \verb|boolean validateToken(token: Token)|
+\end{itemize}
+
+\subsubsection{Profile interface}
+\begin{itemize}
+    \item \verb|User getUser(userID: String)|
+    \item \verb|boolean updateProfile(user: User, updates: Map<String, String>)|
+\end{itemize}
+
+\subsubsection{Recommendation interface}
+\begin{itemize}
+    \item \verb|List<Advertisement> recommendedAdvertisements(student: Student)|
+    \item \verb|List<Student> recommendedCandidates(company: Company, | \\ \makebox[10em][l]{} \verb|advertisement: Advertisement)|
+    \item \verb|List<Advertisement> searchAdvertisements(searched: String)|
+    \item \verb|List<Student> searchCandidates(searched: String)|
+\end{itemize}
+
+\subsubsection{Enrollment interface}
+\begin{itemize}
+    \item \verb|ENROLLMENT_STATUS getEnrollmentStatus(user: User, | \\ \makebox[10em][l]{} \verb|advertisement: Advertisement)|
+    \item \verb|boolean requestApplication(student: Student, | \\ \makebox[10em][l]{} \verb|advertisement: Advertisement)|
+    \item \verb|boolean buildQuestionnaire(company: Company, | \\ \makebox[10em][l]{} \verb|questionnaire: Questionnaire)|
+    \item \verb|List<Questionnaire> getQuestionnaires(company: Company)|
+    \item \verb|boolean sendQuestionnaire(company: Company, student: Student, | \\ \makebox[10em][l]{} \verb|questionnaire: Questionnaire)|
+    \item \verb|boolean fillQuestionnaire(student: Student, | \\ \makebox[10em][l]{} \verb|questionnaire: Questionnaire)|
+    \item \verb|boolean acceptEnrollment(company: Company, student: Student, | \\ \makebox[10em][l]{} \verb|Advertisement: advertisement)|
+    \item \verb|boolean acceptProposal(student: Student, company: Company, | \\ \makebox[10em][l]{} \verb|Advertisement: advertisement)|
+\end{itemize}
+
+\subsubsection{Internship interface}
+\begin{itemize}
+    \item
+    \item \verb|Internship getOngoingInternship(student: Student)|
+    \item \verb|List<Internship> getOngoingInternships(company: Company)|
+    \item \verb|boolean sendComplain(user: User, internship: Internship, | \\ \makebox[10em][l]{} \verb|complaint: Complaint)|
+    \item \verb|List<Complaint> getComplaints(university: University)|
+    \item \verb|boolean interruptInternship(university: University, | \\ \makebox[10em][l]{} \verb|internship: Internship)|
+    \item \verb|boolean sendFeedback(user: User, feedback: Feedback)|
+\end{itemize}
+
+\subsubsection{Email interface}
+\begin{itemize}
+    \item \verb|boolean sendEmail(email: Email)|
+\end{itemize}
+
+\subsubsection{Suggestion interface}
+\begin{itemize}
+    \item \verb|List<Suggestion> proposeProfileSuggestions(student: Student)|
+    \item \verb|List<Suggestion> proposeAdvertisementSuggestions(| \\ \makebox[10em][l]{} \verb|Advertisement: advertisement)|
+\end{itemize}
+
+\subsubsection{Complaint interface}
+\begin{itemize}
+    \item \verb|boolean sendComplain(user: User, internship: Internship, | \\ \makebox[10em][l]{} \verb|complaint: Complaint)|
+    \item \verb|List<Complaint> getComplaints(university: University)|
+\end{itemize}
+
+\subsubsection{Feedback interface}
+\begin{itemize}
+    \item \verb|boolean sendFeedback(user: User, feedback: Feedback)|
+\end{itemize}
+
+\subsubsection{Authentication query interface}
+\begin{itemize}
+    \item \verb|List<Notification> notificationPanel(user: User)|
+\end{itemize}
+
+\subsubsection{Profile query interface}
+\begin{itemize}
+    \item \verb|List<Notification> notificationPanel(user: User)|
+\end{itemize}
+
+\subsubsection{Recommendation query interface}
+\begin{itemize}
+    \item \verb|List<Notification> notificationPanel(user: User)|
+\end{itemize}
+
+\subsubsection{Enrollment query interface}
+\begin{itemize}
+    \item \verb|List<Notification> notificationPanel(user: User)|
+\end{itemize}
+
+\subsubsection{Internship query interface}
+\begin{itemize}
+    \item \verb|List<Notification> notificationPanel(user: User)|
+\end{itemize}
 
 \section{Architectural styles and patterns}
 
