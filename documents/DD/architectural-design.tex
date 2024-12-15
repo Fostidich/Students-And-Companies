@@ -12,75 +12,79 @@ Lastly, the browser interface is the application, in the form of web pages, that
 
 \section{Components view}
 
-\htitle{Browser interface}
+\begin{enumerate}[label=\textbf{C\arabic* -}]
+
+\item \htitle{Browser interface}
 This is the the web application used by the client, which is reachable by any browser.
 The full range of operations that it provides can only be used after the authentication process, performed by the authentication service, results successful.
 It allows both students and companies to perform a certain set of actions based on the type of user.
 
-\htitle{Web server}
+\item \htitle{Web server}
 This is the intermediary between the frontend and the backend.
 Its purpose is to manage the browser UI pages independently and transparently from the point of view of the other servers components.
 The web server main tasks are the static resources delivery and the web pages content retrieval and forwarding.
 After receiving an HTTP request, the web server retrieves from the application server the data needed to fill the corresponding HTML template, which are then both returned to the user, along with the static style assets.
 
-\htitle{DMBS}
+\item \htitle{DMBS}
 The DBMS, which manages the DB containing all the data that the platform utilizes, stays on a separate machine.
 It is then the query service component that, by providing the necessary SQL queries to other components, allows the application server to reach for the stored data.
 
-\htitle{Email server}
+\item \htitle{Email server}
 The email server represents the external machines that the email service reaches in order to send messages.
 Those machines are property of the actual email providers, but they show how the application server email service component can utilize them via their APIs.
 
-\htitle{Request dispatcher}
+\item \htitle{Request dispatcher}
 The web server processes incoming HTTP requests by calling the appropriate application server component.
 The components are responsible for retrieving the necessary data that the web server uses to populate the HTML template, which is then returned to the user.
 Since different web pages may require data from different components, the request dispatcher ensures that each request is routed to the correct application server component.
 
-\htitle{Authentication service}
+\item \htitle{Authentication service}
 This component provides the set of procedures required to handle the authentication of a user into the system.
 It manages the log in and sign up phases.
 
-\htitle{Email service}
+\item \htitle{Email service}
 The main goal of this component is to implement all the procedures that the server requires in order to send email messages to the user.
 Mainly, this component allows the authentication service to send a verification email when handling the sign up of a user.
 
-\htitle{Notification service}
+\item \htitle{Notification service}
 The purpose of this component is to collect and manage all the notifications that a user receives.
 It defines the notification types and allows other components to easily send them.
 
-\htitle{Query service}
+\item \htitle{Query service}
 This service acts as a mediator between the server components and the DBMS.
 It uses the DBMS APIs to implement a set of functions which have the sole purpose of manipulating the database or retrieving information from it.
 
-\htitle{Recommendation service}
+\item \htitle{Recommendation service}
 This service provides the algorithms necessary for finding suitable advertisements and candidates.
 These are called when the user opens the feed in the home page, or when looking for strong matches that are to be notified.
 
-\htitle{Suggestion service}
+\item \htitle{Suggestion service}
 This service provides the algorithms necessary for evaluating the user profiles, in order to propose enhancements.
 These are called by the profile manager component when the user provides new profile information.
 
-\htitle{Profile manager}
+\item \htitle{Profile manager}
 Users must be able to insert and edit their profile information.
 Validity checks and DB updates are performed by this component.
 The query service and the suggestion service APIs are used when data is to be updated.
 
-\htitle{Enrollment manager}
+\item \htitle{Enrollment manager}
 This component manages all the selection process phases, from the student application request to the start of the internship.
 It also handles the questionnaires that companies send to students to fill in.
 
-\htitle{Internship manager}
+\item \htitle{Internship manager}
 This component handles the operations that the internship may allow or require when it is in the ongoing status.
 Along initializing and interrupting the internship, it permits users to visualize its annex information.
 
-\htitle{Complaint manager}
+\item \htitle{Complaint manager}
 This component allows students and companies to send complaints regarding an ongoing internship, hence allowing the university to visualize and handle them.
 Since complaints must have a valid reference to an ongoing internship, the internship manager component APIs are here used.
 
-\htitle{Feedback manager}
+\item \htitle{Feedback manager}
 When an internship ends, both parties are requested to fill in a feedback form.
 This component handles this operation, by sending, receiving and acting accordingly to the feedback forms content.
 Since feedback forms must have a valid reference to an internship that has concluded, the internship manager component APIs are here used.
+
+\end{enumerate}
 
 \begin{figure}[H]
     \centering
@@ -430,7 +434,6 @@ The diagrams include the component described in the previous sections, and the e
 
 \subsubsection{Internship interface}
 \begin{itemize}
-    \item
     \item \verb|Internship getOngoingInternship(student: Student)|
     \item \verb|List<Internship> getOngoingInternships(company: Company)|
     \item \verb|boolean sendComplain(user: User, internship: Internship, | \\ \makebox[10em][l]{} \verb|complaint: Complaint)|
