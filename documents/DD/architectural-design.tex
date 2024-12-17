@@ -124,8 +124,15 @@ The diagrams include the component described in the previous sections, and the e
 
 \begin{enumerate}[label=\textbf{RV\arabic* -}]
 
-\item \subsubsection{StudentSignsUp}
-\item \subsubsection{CompanySignsUp}
+\item \subsubsection{UserSignsUp}
+
+\begin{figure}[H]
+    \centering
+    \fcolorbox{black}{white}{
+        \includegraphics[width=0.8\linewidth]{../../assets/sequence-diagrams/runtime-views/UserSignsUp.png}
+    }
+\end{figure}
+
 \item \subsubsection{UserLogsIn}
 \item \subsubsection{StudentUploadsCV}
 \item \subsubsection{CompanyCreatesAdvertisement}
@@ -408,7 +415,7 @@ The diagrams include the component described in the previous sections, and the e
 
 \subsubsection{Authentication interface}
 \begin{itemize}
-    \item \verb|boolean registerUser(credentials: Credentials)|
+    \item \verb|boolean registerUser(user: User)|
     \item \verb|boolean verifyUser(verificationCode: String)|
     \item \verb|Token login(credentials: Credentials)|
     \item \verb|boolean logout(token: Token)|
@@ -476,7 +483,7 @@ The diagrams include the component described in the previous sections, and the e
 \subsubsection{Authentication query interface}
 \begin{itemize}
     \item \verb|User getUser(credentials: Credentials)|
-    \item \verb|boolean registerUser(credentials: Credentials)|
+    \item \verb|boolean registerUser(user: User)|
     \item \verb|boolean verifyUser(verificationCode: String)|
     \item \verb|boolean checkCredentials(credentials: Credentials)|
     \item \verb|boolean setToken(userID: String, token: Token)|

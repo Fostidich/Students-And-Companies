@@ -1,0 +1,50 @@
+title UserSignsUp
+
+participant "BroswerInterface" as BI
+participant "WebServer" as WS
+participant "RequestDispatcher" as RD
+participant "AuthenticationService" as AS
+participant "QueryService" as QS
+participant "EmailService" as ES
+
+BI->WS:register(user)
+activate BI
+activate WS
+WS->RD:api/register
+activate RD
+RD->AS:registerUser(user)
+activate AS
+AS->QS:registerUser(user)
+activate QS
+AS<--QS:
+deactivate QS
+AS->ES:sendEmail(email, content)
+activate ES
+AS<--ES:
+deactivate ES
+RD<--AS:
+deactivate AS
+WS<--RD:201
+deactivate RD
+BI<--WS:
+deactivate WS
+deactivate BI
+
+BI->WS:verify(user)
+activate BI
+activate WS
+WS->RD:api/register/verification/{ID}
+activate RD
+RD->AS:verifyUser(verificationCode)
+activate AS
+AS->QS:verifyUser(verificationCode)
+activate QS
+AS<--QS:
+deactivate QS
+RD<--AS:
+deactivate AS
+WS<--RD: 201
+deactivate RD
+BI<--WS:
+deactivate WS
+deactivate BI
