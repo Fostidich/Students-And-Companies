@@ -33,6 +33,24 @@
 
 \chapter{Formal analysis using Alloy}
 
+In our formal analysis, we have focused on modeling a dynamic system for internship management, 
+incorporating both static and temporal constraints. Our model aims to represent the interplay between students, 
+universities, companies, advertisements, and internships while ensuring the consistency of assignments, 
+status transitions, and relationships among the entities. 
+
+We leveraged Alloy’s temporal logic features to capture the evolution of internships and advertisements over time, 
+allowing us to model preconditions, invariants, and dynamic behavior in a rigorous manner. 
+The design emphasizes clarity and precision, ensuring that key system properties, such as unique assignment 
+of internships and adherence to procedural rules, are verifiable.
+
+To maintain a balance between complexity and manageability, we incorporated multiple predicates and facts 
+that ensure a consistent representation of system behaviors, such as application processing, advertisement closure, 
+and feedback provision. Temporal constraints, such as ensuring no return to previous states (e.g., WAITING) 
+or eventual resolution of complaints, were introduced to demonstrate the system's progression over time without 
+overcomplicating the analysis. This approach enabled us to comprehensively capture the problem's intricacies while 
+facilitating the exploration of its temporal dynamics.
+
+
 \section{Alloy Code}
 
 
@@ -78,7 +96,7 @@ sig Advertisement {
 sig Internship {
     offeredBy: one Company,
     var assignedTo: lone Student,
-	var feedback: lone Feedbacks,
+    var feedback: lone Feedbacks,
     var status: one InternshipStatus,
 }
 
@@ -381,8 +399,8 @@ fact EventuallyOpenComplaint {
         eventually OpenComplaint[i]
 }
 
--- Ensures that internships in the REVIEW state will eventually have their complaints resolved
-fact ReviewTransitionWithEvent {
+-- Ensures that internships in the REVIEW state will have their complaints resolved
+fact AlwaysResolveComplaint {
     all i: Internship | {
         always (i.status = REVIEW => ResolveComplaint[i])
     }
@@ -398,8 +416,7 @@ assert InternshipAssignmentRequiresApplication {
         i in a.internship and i.assignedTo in a.applicants
 }
 
--- Ensures that internships follow the exact state sequence:
--- WAITING -> ONGOING -> REVIEW (optional) -> FINISHED, without skipping or repeating states
+-- Ensures that internships follow the exact state sequence: WAITING -> ONGOING -> REVIEW (optional) -> FINISHED, without skipping or repeating states
 assert ExactStateSequence {
     all i: Internship | {
         always (i.status = WAITING => not once (i.status in (ONGOING + REVIEW + FINISHED)))
@@ -409,10 +426,10 @@ assert ExactStateSequence {
     }
 }
 
--- Ensures that if an internship enters the REVIEW state, it will eventually transition to the FINISHED state
+-- Ensures that if an internship enters the REVIEW state, it will transition to the FINISHED state
 assert ReviewEventuallyLeadsToFinished {
     all i: Internship | {
-        once (i.status = REVIEW) => eventually (i.status = FINISHED)
+        once (i.status = REVIEW) => always (i.status = FINISHED)
     }
 }
 
@@ -455,12 +472,89 @@ run show for 10
 
 \section{Assertion Results}
 
-\begin{lstlisting}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=350px]{../../assets/alloy-assertion/I_assertion.png}
+    \caption{An Internship can only be assigned to a student if the student has applied to the associated advertisement}
+\end{figure}
 
-\end{lstlisting}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=350px]{../../assets/alloy-assertion/II_assertion.png}
+    \caption{Internships follow the exact temporal sequence}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=350px]{../../assets/alloy-assertion/III_assertion.png}
+    \caption{if an internship enters the REVIEW state, it will transition to the FINISHED state}
+\end{figure}
+
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=350px]{../../assets/alloy-assertion/IV_assertion.png}
+    \caption{An advertisement can only be closed if all its internships are assigned}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=350px]{../../assets/alloy-assertion/V_assertion.png}
+    \caption{Each student is assigned to only one internship at a time}
+\end{figure}
+
+
 
 \section{World Generated}
-    
-\begin{lstlisting}
+ 
+ 
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=450px]{../../assets/alloy-world/world_steps.png}
+    \caption{show the total temporal steps}
+\end{figure}
 
-\end{lstlisting}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=450px]{../../assets/alloy-world/I_step.png}
+    \caption{I - Temporal step}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=450px]{../../assets/alloy-world/II_step.png}
+     \caption{II - Temporal step}
+\end{figure}
+
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=450px]{../../assets/alloy-world/III_step.png}
+    \caption{III - Temporal step}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=450px]{../../assets/alloy-world/IV_step.png}
+    \caption{IV - Temporal step}
+\end{figure}
+
+\begin{figure}[H]
+     \centering
+     \includegraphics[width=450px]{../../assets/alloy-world/V_step.png}
+     \caption{V - Temporal step}
+\end{figure}
+
+\begin{figure}[H]
+     \centering
+     \includegraphics[width=450px]{../../assets/alloy-world/VI_step.png}
+     \caption{VI - Temporal step}
+\end{figure}
+
+\begin{figure}[H]
+     \centering
+     \includegraphics[width=450px]{../../assets/alloy-world/VII_step.png}
+     \caption{VII - Temporal step}
+\end{figure}
+
+
