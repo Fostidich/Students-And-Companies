@@ -6,7 +6,7 @@
 \lstdefinelanguage{Alloy}{
     keywords={all, no, some, one, implies, and, in, not, lone, var},
     keywordstyle=\color{blue}\bfseries,
-    morekeywords={assert, sig, abstract, extends, pred, run, for, but, let, set, fact},
+    morekeywords={assert, sig, abstract, extends, pred, run, for, but, let, set, fact, check},
     sensitive=true,
     comment=[l]{--},
     commentstyle=\color{darkgreen}\itshape,
@@ -270,13 +270,19 @@ fact UniqueDescriptions {
     all disj a1, a2: Advertisement | a1.description != a2.description
 }
 
+-- Ensures that the number of the Feedbacks is equal to the number of Internship
+fact NumOfInternshipMatchNumOfFeedback {
+	#Feedbacks = #Internship
+}
+
 
 --------------------------ALWAYS TRUE FACTS------------------------------
 
--- Ensures that once an internship is marked as FINISHED, it will always remain FINISHED
+-- Ensures that once an internship is marked as FINISHED, it will always not change
 fact InternshipStayFinished {
     all i: Internship | 
-        always (i.status = FINISHED => always i.status = FINISHED)
+        always (i.status = FINISHED => some i.feedback and 
+            always (i.status = FINISHED and i.feedback' = i.feedback ))
 }
 
 -- Ensures that once an advertisement is assigned, it will always remain assigned and its list of applicants will not change
@@ -288,7 +294,7 @@ fact AdvertisementStayClose {
 -- Ensures that internships in certain statuses (ONGOING, REVIEW, FINISHED) always have an assigned student, and those in WAITING have no assigned student
 fact AssignedStatusConsistency {
     all i: Internship |
-        always (i.status in (ONGOING + REVIEW + FINISHED) => some i.assignedTo) and
+        always (i.status in (ONGOING + REVIEW + FINISHED) => some i.assignedTo and i.assignedTo' = i.assignedTo) and
         always (i.status = WAITING => no i.assignedTo)
 }
 
@@ -371,7 +377,7 @@ fact EventuallyCloseInternship {
 
 -- Ensures that eventually, at least one internship will have a complaint opened
 fact EventuallyOpenComplaint {
-    one i: Internship | 
+    some i: Internship | 
         eventually OpenComplaint[i]
 }
 
@@ -383,7 +389,78 @@ fact ReviewTransitionWithEvent {
 }
 
 
+-----------------------------ASSERTIONS----------------------------------
+
+-- Ensures that an internship can only be assigned to a student if the student has applied to the associated advertisement
+assert InternshipAssignmentRequiresApplication {
+    all i: Internship | 
+    some i.assignedTo => some a: Advertisement | 
+        i in a.internship and i.assignedTo in a.applicants
+}
+
+-- Ensures that internships follow the exact state sequence:
+-- WAITING -> ONGOING -> REVIEW (optional) -> FINISHED, without skipping or repeating states
+assert ExactStateSequence {
+    all i: Internship | {
+        always (i.status = WAITING => not once (i.status in (ONGOING + REVIEW + FINISHED)))
+        always (i.status = ONGOING => once (i.status = WAITING) and not once (i.status = FINISHED))
+        always (i.status = REVIEW => once (i.status in (ONGOING + WAITING) and not once (i.status = FINISHED)))
+        always (i.status = FINISHED => once (i.status = REVIEW or i.status = ONGOING))
+    }
+}
+
+-- Ensures that if an internship enters the REVIEW state, it will eventually transition to the FINISHED state
+assert ReviewEventuallyLeadsToFinished {
+    all i: Internship | {
+        once (i.status = REVIEW) => eventually (i.status = FINISHED)
+    }
+}
+
+-- Ensures that an advertisement can only be closed if all its internships are assigned
+assert NoClosedAdvertisementWithoutAssignedInternships {
+    all a: Advertisement | 
+    a.assigned = true => all i: a.internship | some i.assignedTo
+}
+
+-- Ensures that each student is assigned to only one internship at a time
+assert UniqueAssignmentPerStudent {
+    always (all disj i1, i2: Internship | 
+        (i1.status != WAITING and i2.status != WAITING) => i1.assignedTo != i2.assignedTo)
+}
+
+
+-------------------------------RUN-----------------------------------
+
+check InternshipAssignmentRequiresApplication for 5
+check ExactStateSequence for 5
+check ReviewEventuallyLeadsToFinished for 5
+check NoClosedAdvertisementWithoutAssignedInternships for 5
+check UniqueAssignmentPerStudent for 5
+
+pred show {
+    #Advertisement = 2
+    #internship = 5
+    #University = 2
+    #Company = 2
+    #Student = 6
+    #Skill = 2
+    eventually (one i: Internship | i.status = REVIEW)
+}
+
+run show for 10
 
 
 \end{lstlisting}
+
+
+\section{Assertion Results}
+
+\begin{lstlisting}
+
+\end{lstlisting}
+
+\section{World Generated}
     
+\begin{lstlisting}
+
+\end{lstlisting}
