@@ -124,8 +124,15 @@ The diagrams include the component described in the previous sections, and the e
 
 \begin{enumerate}[label=\textbf{RV\arabic* -}]
 
-\item \subsubsection{StudentSignsUp}
-\item \subsubsection{CompanySignsUp}
+\item \subsubsection{UserSignsUp}
+
+\begin{figure}[H]
+    \centering
+    \fcolorbox{black}{white}{
+        \includegraphics[width=0.8\linewidth]{../../assets/sequence-diagrams/runtime-views/UserSignsUp.png}
+    }
+\end{figure}
+
 \item \subsubsection{UserLogsIn}
 \item \subsubsection{StudentUploadsCV}
 \item \subsubsection{CompanyCreatesAdvertisement}
@@ -153,6 +160,13 @@ The diagrams include the component described in the previous sections, and the e
 \begin{itemize}
     \item Description: user is registered from form information
     \item Request body - \verb|{user: RegistrationForm}|
+    \item Response 201 - Created
+    \item Response 400 - Validation Error \verb|{error: Error}|
+\end{itemize}
+
+\subsubsection{POST api/register/verification/\{verificationID\}}
+\begin{itemize}
+    \item Description: user is verified through the verification code
     \item Response 201 - Created
     \item Response 400 - Validation Error \verb|{error: Error}|
 \end{itemize}
@@ -381,26 +395,28 @@ The diagrams include the component described in the previous sections, and the e
 
 \subsubsection{Profile notification interface}
 \begin{itemize}
-    \item \verb|List<Notification> notificationPanel(user: User)|
+    \item \verb|boolean notify(user: User, notification: Notification)|
 \end{itemize}
 
 \subsubsection{Recommendation notification interface}
 \begin{itemize}
-    \item \verb|List<Notification> notificationPanel(user: User)|
+    \item \verb|boolean notify(user: User, notification: Notification)|
 \end{itemize}
 
 \subsubsection{Enrollment notification interface}
 \begin{itemize}
-    \item \verb|List<Notification> notificationPanel(user: User)|
+    \item \verb|boolean notify(user: User, notification: Notification)|
 \end{itemize}
 
 \subsubsection{Internship notification interface}
 \begin{itemize}
-    \item \verb|List<Notification> notificationPanel(user: User)|
+    \item \verb|boolean notify(user: User, notification: Notification)|
 \end{itemize}
 
 \subsubsection{Authentication interface}
 \begin{itemize}
+    \item \verb|boolean registerUser(user: User)|
+    \item \verb|boolean verifyUser(verificationCode: String)|
     \item \verb|Token login(credentials: Credentials)|
     \item \verb|boolean logout(token: Token)|
     \item \verb|boolean validateToken(token: Token)|
@@ -422,7 +438,7 @@ The diagrams include the component described in the previous sections, and the e
 
 \subsubsection{Enrollment interface}
 \begin{itemize}
-    \item \verb|ENROLLMENT_STATUS getEnrollmentStatus(user: User, | \\ \makebox[10em][l]{} \verb|advertisement: Advertisement)|
+    \item \verb|EnrollmentStatus getEnrollmentStatus(user: User, | \\ \makebox[10em][l]{} \verb|advertisement: Advertisement)|
     \item \verb|boolean requestApplication(student: Student, | \\ \makebox[10em][l]{} \verb|advertisement: Advertisement)|
     \item \verb|boolean buildQuestionnaire(company: Company, | \\ \makebox[10em][l]{} \verb|questionnaire: Questionnaire)|
     \item \verb|List<Questionnaire> getQuestionnaires(company: Company)|
@@ -436,15 +452,15 @@ The diagrams include the component described in the previous sections, and the e
 \begin{itemize}
     \item \verb|Internship getOngoingInternship(student: Student)|
     \item \verb|List<Internship> getOngoingInternships(company: Company)|
-    \item \verb|boolean sendComplain(user: User, internship: Internship, | \\ \makebox[10em][l]{} \verb|complaint: Complaint)|
+    \item \verb|boolean registerComplaint(user: User, internship: Internship, | \\ \makebox[10em][l]{} \verb|complaint: Complaint)|
     \item \verb|List<Complaint> getComplaints(university: University)|
     \item \verb|boolean interruptInternship(university: University, | \\ \makebox[10em][l]{} \verb|internship: Internship)|
-    \item \verb|boolean sendFeedback(user: User, feedback: Feedback)|
+    \item \verb|boolean registerFeedback(user: User, feedback: Feedback)|
 \end{itemize}
 
 \subsubsection{Email interface}
 \begin{itemize}
-    \item \verb|boolean sendEmail(email: Email)|
+    \item \verb|boolean sendEmail(email: Email, content: String)|
 \end{itemize}
 
 \subsubsection{Suggestion interface}
@@ -466,27 +482,50 @@ The diagrams include the component described in the previous sections, and the e
 
 \subsubsection{Authentication query interface}
 \begin{itemize}
-    \item \verb|List<Notification> notificationPanel(user: User)|
+    \item \verb|User getUser(credentials: Credentials)|
+    \item \verb|boolean registerUser(user: User)|
+    \item \verb|boolean verifyUser(verificationCode: String)|
+    \item \verb|boolean checkCredentials(credentials: Credentials)|
+    \item \verb|boolean setToken(userID: String, token: Token)|
+    \item \verb|boolean checkToken(userID: String, token: Token)|
+    \item \verb|boolean deleteToken(userID: String)|
 \end{itemize}
 
 \subsubsection{Profile query interface}
 \begin{itemize}
-    \item \verb|List<Notification> notificationPanel(user: User)|
+    \item \verb|User getUser(userID: String)|
+    \item \verb|boolean updateProfile(userID: String, updates: Map<String, String>)|
 \end{itemize}
 
 \subsubsection{Recommendation query interface}
 \begin{itemize}
-    \item \verb|List<Notification> notificationPanel(user: User)|
+    \item \verb|User getUser(userID: String)|
+    \item \verb|List<Advertisement> getMatchingAdvertisements(keyWords: List<String>)|
+    \item \verb|List<Student> getMatchingCandidates(keyWords: List<String>)|
 \end{itemize}
 
 \subsubsection{Enrollment query interface}
 \begin{itemize}
-    \item \verb|List<Notification> notificationPanel(user: User)|
+    \item \verb|User getUser(userID: String)|
+    \item \verb|EnrollmentStatus getEnrollmentStatus(userID: String, | \\ \makebox[10em][l]{} \verb|advertisementID: String)|
+    \item \verb|boolean requestApplication(userID: String, advertisementID: String)|
+    \item \verb|boolean buildQuestionnaire(userID: String, questionnaire: Questionnaire)|
+    \item \verb|List<Questionnaire> getQuestionnaires(userID: String)|
+    \item \verb|boolean sendQuestionnaire(companyID: String, studentID: String, | \\ \makebox[10em][l]{} \verb|questionnaireID: String)|
+    \item \verb|boolean fillEnrollment(studentID: String, questionnaire: Questionnaire)|
+    \item \verb|boolean sendQuestionnaire(companyID: String, studentID: String, | \\ \makebox[10em][l]{} \verb|questionnaireID: String)|
+    \item \verb|boolean acceptProposal(studentID: String, companyID: String, | \\ \makebox[10em][l]{} \verb|advertisementID: String)|
 \end{itemize}
 
 \subsubsection{Internship query interface}
 \begin{itemize}
-    \item \verb|List<Notification> notificationPanel(user: User)|
+    \item \verb|User getUser(userID: String)|
+    \item \verb|Internship getOngoingInternship(userID: String)|
+    \item \verb|List<Internship> getOngoingInternships(userID: String)|
+    \item \verb|boolean registerComplaint(userID: String, internshipID: String, | \\ \makebox[10em][l]{} \verb|complaint: Complaint)|
+    \item \verb|List<Complaint> getComplaints(userID: String)|
+    \item \verb|boolean interruptInternship(internshipID: String)|
+    \item \verb|boolean registerFeedback(userId: User, feedback: Feedback)|
 \end{itemize}
 
 \section{Architectural styles and patterns}
