@@ -37,254 +37,351 @@
 
 
 \begin{lstlisting}
-    ------ ENUM ------
-    
-    enum InternshipStatus {WAITING, ONGOING, FINISHED}
-    
-    ------ DEFINITION OF SIGNATURES ------
-    
-    abstract sig User {}
-    
-    sig Student extends User {
-        var skills: set Skill,
-        university: one University,
-        var assignedInternship: lone Internship,
-    }
-    
-    sig Company extends User {
-        var activeAdvertisement : set Advertisement,
-        var oldAdvertisement : set Advertisement,
-        var activeInternships: set Internship,
-        var finishedInternships: set Internship,
-    }
-    
-    sig University {
-        var students: set Student,
-        var monitoredInternships: set Internship,
-        var finishedInternships: set Internship,
-    }
-    
-    sig Advertisement {
-        requirements: set Skill,
-        offeredBy: Company,
-        spots: one Int,
-        var applicants: set Student,
-        var assigned: one Bool,
-        internship: set Internship,
-    }
-    
-    sig Internship {
-        offeredBy: Company,
-        var assignedTo: lone Student,
-        var status: one InternshipStatus,
-        studentFeedbacks: one Feedback,
-        companyFeedbacks: one Feedback,
-        complaints: one Complaint,
-    }
-    
-    sig Feedback {
-        var evaluator: lone User,
-        var recipient: lone User,
-        rating: one Rating,
-        comment: one TextContent,
-    }
-    
-    sig Complaint {
-        var complainer: lone User,
-        var target: lone User,
-        var details: lone TextContent,
-    }
-    
-    sig Rating {
-        var value: lone Int
-    } {
-        value > 0 and value < 10
-    }
-    
-    -- One skill is associated with a tag, that a student can choose as a personal skill in order to be matched with internships--
-    sig Skill {
-        tag: one String
-    }
-    
-    sig TextContent {
-        var content: lone String
-    }
+-------------------- DEFINITION OF ENUM --------------------
+
+enum InternshipStatus {WAITING, ONGOING, REVIEW, FINISHED}
+enum Bool {true, false}
     
     
-    ------PREDICATES------
+-------------------- DEFINITION OF SIGNATURES --------------------
+
+
+
+abstract sig User {}
     
-    
-    
-    ------ FACTS ------
-    
-    fact StudentMustHaveUniversity {
-        all s: Student | some s.university
-    }
-    
-    fact UniversityHasOnlyItsStudents {
-        all u: University | u.students = {s: Student | s.university = u}
-    }
-    
-    fact UniversityMonitorsOwnInternships {
-        all u: University |
-            all i: u.monitoredInternships + u.finishedInternships |
-                i.assignedTo.university = u
-    }
-    
-    fact AdsAndInternshipsMustHaveCompany {
-        all a: Advertisement | some a.offeredBy
-        all i: Internship | some i.offeredBy
-    }
-    
-    -- A student participating in an Internship cannot apply for another Internship --
-    fact StudentNoConcurrentInternships {
-        all s: Student |
-            some s.assignedInternship =>
-                all a: Advertisement | 
-                    (a in s.assignedInternship.internship) or (s not in a.applicants)
-    }
-    
-    fact NoDuplicateApplications {
-        all a: Advertisement | all s: Student | s in a.applicants => lone s
-    }
-    
-    fact NoDuplicateUniversityEnrollment {
-        all u: University | all s: u.students | lone s
-    }
-    
-    -- Ensures that the number of Internship positions matches the number of available spots in each Advertisement --
-    fact AdvertisementSpotsMatchInternships {
-        all a: Advertisement | #a.internship = a.spots
-    }
-    
-    -- Guarantees that a Student assigned to an Internship appears in the applicants list for the relevant Advertisement --
-    fact AssignedStudentMustBeApplicant {
-        all i: Internship | 
-            some i.assignedTo => i.assignedTo in i.offeredBy.activeAdvertisement.applicants
-    }
-    
-    -- When an Internship status is FINISHED, there must be a student feedback given to the company by the assigned student --
-    fact StudentFeedbackOnCompletion {
-        all i: Internship | 
-            i.status = FINISHED =>
-                some i.studentFeedbacks and
-                i.studentFeedbacks.evaluator = i.assignedTo and
-                i.studentFeedbacks.recipient = i.offeredBy
-    }
-    
-    -- When an Internship status is FINISHED, there must be a company feedback given to the student by the company --
-    fact CompanyFeedbackOnCompletion {
-        all i: Internship | 
-            i.status = FINISHED =>
-                some i.companyFeedbacks and
-                i.companyFeedbacks.evaluator = i.offeredBy and
-                i.companyFeedbacks.recipient = i.assignedTo
-    }
-    
-    fact ComplaintDirectionOrNone {
-        all c: Complaint |
-            (c.complainer in Student and c.target in Company) or
-            (c.complainer in Company and c.target in Student) or
-            (no c.complainer and no c.target)
+sig Student extends User {
+    skills: set Skill,
+    var assignedInternship: lone Internship,
+}{
+	 #skills > 0
+}
+
+sig Company extends User {
+	advertisement : set Advertisement,
+}
+
+sig University extends User {
+    students: set Student,
+}
+
+sig Advertisement {
+    requirements: set Skill,
+    description: one Description,
+    spots: one Int,
+    var applicants: set Student,
+    var assigned: one Bool,
+    internship: set Internship,
+}{
+    spots > 1 and spots < 3 
+}
+
+sig Internship {
+    offeredBy: one Company,
+    var assignedTo: lone Student,
+	var feedback: lone Feedbacks,
+    var status: one InternshipStatus,
+}
+
+sig Feedbacks {}
+
+sig Description{}
+
+sig Skill {}
+
+-----------------------------PREDICATES------------------------------
+
+-- This predicate handles the application of a student to an advertisement
+pred Apply[s: Student, a: Advertisement] {
+    -- Precondition: all internships related to the advertisement must have a status of WAITING
+    all i: a.internship |
+        i.status = WAITING
+
+    -- No changes allowed 
+    a.assigned' = a.assigned
+    all i: a.internship | {
+        i.status' = i.status and
+        i.assignedTo' = i.assignedTo
     }
 
-    -- If an Advertisement is unassigned, its Internships must also be unassigned and in WAITING status --
-    fact UnassignedAdvertisementConditions {
-        all a: Advertisement | 
-            a.assigned = false =>
-                all i: a.internship | 
-                    no i.assignedTo and i.status = WAITING
-    }
-    
-    -- If an Internship is in WAITING or ASSIGNED status, Feedback fields should be none, without evaluator, recipient, rating, or content --
-    fact NoFeedbackDetailsBeforeCompletion {
-        all i: Internship |
-            i.status in (WAITING + ASSIGNED) =>
-                no i.studentFeedbacks.evaluator and 
-                no i.studentFeedbacks.recipient and
-                no i.studentFeedbacks.rating.value and
-                no i.studentFeedbacks.comment.content and
-                no i.companyFeedbacks.evaluator and 
-                no i.companyFeedbacks.recipient and
-                no i.companyFeedbacks.rating.value and
-                no i.companyFeedbacks.comment.content
-    }
-    
-    -- If the Internship status is WAITING, all fields in Complaint should be set to none--
-    fact NoComplaintDetailsWhenWaiting {
-        all i: Internship |
-            i.status = WAITING =>
-                no i.complaints.complainer and
-                no i.complaints.target and
-                no i.complaints.details.content
-    }
-    
-    -- In a University, an Internship can be either monitored or finished, but not both--
-    fact UniversityInternshipStatus {
-        all u: University |
-            no u.monitoredInternships & u.finishedInternships
-    }
-    
-    --All Internships in the ONGOING state must appear in the monitoredInternships list of the university associated with the relevant student --
-    fact OngoingInternshipsMonitoredByUniversity {
-        all i: Internship |
-            i.status = ASSIGNED => 
-                i in i.assignedTo.university.monitoredInternships
-    }
-    
-    --All Internships in the ONGOING state must appear in the activeInternships list of their respective company--
-    fact OngoingInternshipsInCompanyList {
-        all i: Internship |
-            i.status = ASSIGNED =>
-                i in i.offeredBy.activeInternships
-    }
-    
-    --All Internships in the FINISHED state must appear in the finishedInternships list of the university associated with the relevant student--
-    fact FinishedInternshipsInUniversity {
-        all i: Internship |
-            i.status = FINISHED =>
-                i in i.assignedTo.university.finishedInternships
-    }
-    
-    --All Internships in the FINISHED state must appear in the finishedInternships list of their respective company--
-    fact FinishedInternshipsInCompany {
-        all i: Internship |
-            i.status = FINISHED =>
-                i in i.offeredBy.finishedInternships
-    }
-    
-    --All Internships in the WAITING state must not appear in the monitoredInternships list of the university or in any internship lists of the company--    
-    fact WaitingInternshipsNotMonitored {
-        all i: Internship |
-            i.status = WAITING =>
-                (i not in i.assignedTo.university.monitoredInternships) and
-                (i not in i.offeredBy.activeInternships) and
-                (i not in i.offeredBy.finishedInternships)
-    }
-    
-    --If an Advertisement is assigned, it must appear in the activeAdvertisement list of the company; if not assigned, it must appear in the oldAdvertisement list of the company--
-    fact AdvertisementPlacementByAssignment {
-        all a: Advertisement |
-            (a.assigned = true => a in a.offeredBy.activeAdvertisement) and
-            (a.assigned = false => a in a.offeredBy.oldAdvertisement)
-    }
-    
-    --An Internship should not appear in both monitoredInternships and finishedInternships for a University--
-    fact NoDuplicateInternshipInUniversity {
-        all u: University |
-            no u.monitoredInternships & u.finishedInternships
+    -- Postcondition: the student is added to the list of applicants
+    a.applicants' = a.applicants + s
+}
+
+-- This predicate closes an advertisement and assigns internships to applicants
+pred CloseAdv[a: Advertisement] {
+    -- Precondition: the number of applicants must be greater than or equal to the available spots, and the advertisement is not yet assigned
+    #a.applicants >= a.spots
+    a.assigned = false
+    all i: a.internship |
+        i.status = WAITING
+
+    -- No changes allowed 
+    a.applicants' = a.applicants
+
+    -- Postcondition: the advertisement is marked as assigned, and internships are assigned
+    a.assigned' = true
+    AssignInternship[a]
+}
+
+-- This predicate assigns internships to students in an advertisement
+pred AssignInternship[a: Advertisement] {
+    -- Precondition: the number of applicants must be greater than or equal to the available spots, and the advertisement is not yet assigned
+    #a.applicants >= a.spots
+    a.assigned = false
+    all i: a.internship |
+        i.status = WAITING
+
+    -- Postcondition: every internship is assigned to a unique student
+    all i: a.internship | {
+        some s: a.applicants | {
+            i.assignedTo' = s and
+            assignedInternship' = ~assignedTo'
+        }
     }
 
-    fact UniqueAdvertisementForEachInternship {
-        all i: Internship | 
-            one a: Advertisement | i in a.internship
-    }
+    -- Ensure that each internship is assigned to a different student
+    all disj i1, i2: a.internship |
+        i1.assignedTo' != i2.assignedTo'
 
-    --An Internship should not appear in both activeInternships and finishedInternships for a Company--
-    fact NoDuplicateInternshipInCompany {
-        all c: Company |
-            no c.activeInternships & c.finishedInternships
+    -- Update the status of all internships to ONGOING
+    all i: a.internship |
+        i.status' = ONGOING
+}
+
+-- This predicate closes an internship, marking it as finished
+pred CloseInternship[i: Internship] {
+    -- Precondition: the internship must have a status of ONGOING
+    i.status = ONGOING
+
+    -- No changes allowed to the assigned student
+    i.assignedTo' = i.assignedTo
+
+    -- Postcondition: the internship status is updated to FINISHED, and feedback is provided
+    i.status' = FINISHED
+    some i.feedback'
+}
+
+-- This predicate opens a complaint for an internship 
+pred OpenComplaint[i: Internship] {
+    -- Precondition: the internship must have a status of ONGOING
+    i.status = ONGOING
+
+    -- No changes allowed 
+    i.assignedTo' = i.assignedTo
+    i.assignedTo.assignedInternship' = i.assignedTo.assignedInternship
+
+    -- Postcondition: the internship status is updated to REVIEW
+    i.status' = REVIEW
+}
+
+-- This predicate resolves a complaint for an internship
+pred ResolveComplaint[i: Internship] {
+    -- Precondition: the internship must have a status of REVIEW
+    i.status = REVIEW
+
+    -- No changes allowed 
+    i.assignedTo' = i.assignedTo
+    i.assignedTo.assignedInternship' = i.assignedTo.assignedInternship
+
+    -- Postcondition: the internship status is updated to either ONGOING or FINISHED
+    i.status' = ONGOING or i.status' = FINISHED
+}
+
+
+------------------------INITIAL DYNAMIC CONDITIONS------------------------
+
+-- Ensures that initially, no student is assigned to any internship
+fact InitialConditionStudent {
+    all s: Student |
+        no s.assignedInternship
+}
+
+-- Ensures that initially, no advertisement has any applicants, and none are assigned
+fact InitialConditionAdv {
+    all a: Advertisement | {
+        #a.applicants = 0 and
+        a.assigned = false
     }
+}
+
+-- Ensures that initially, internships have no assigned students, no feedback, and are in a WAITING state
+fact InitialConditionInternship {
+    all i: Internship |{
+        no i.assignedTo and
+        no i.feedback and
+        i.status = WAITING
+    }
+}
+
+
+-----------------------------STATIC FACTS------------------------------
+
+-- Ensures that the number of spots in an advertisement equals the number of internships associated with it
+fact SpotForInternship {
+    all a: Advertisement |
+        a.spots = #a.internship
+}
+
+-- Ensures that each internship is associated with exactly one advertisement
+fact UniqueAdvertisementForEachInternship {
+    all i: Internship | 
+        one a: Advertisement | i in a.internship
+}
+
+-- Ensures that each student belongs to one and only one university
+fact UniqueUniversityPerStudent {
+    all s: Student | {
+        one u: University | s in u.students and
+        all disj u1, u2: University | {
+            s in u1.students => s not in u2.students
+        }
+    }
+}
+
+-- Ensures that no university is empty; every university must have at least one student
+fact NoEmptyUniversity {
+    all u: University | some u.students
+}
+
+-- Ensures that each advertisement belongs to exactly one company
+fact UniqueCompanyPerAdvertisement {
+    all a: Advertisement | {
+        one c: Company | a in c.advertisement and
+        all disj c1, c2: Company | {
+            a in c1.advertisement => a not in c2.advertisement
+        }
+    }
+}
+
+-- Ensures that no company is empty; every company must have at least one advertisement
+fact NoEmptyCompany {
+    all c: Company | some c.advertisement
+}
+
+-- Ensures that internships are offered by the company that published their associated advertisement
+fact ConsistentCompanyAdvertisementInternship {
+    all c: Company | all a: c.advertisement | {
+        all i: a.internship | i.offeredBy = c
+    }
+}
+
+-- Ensures that all advertisements have unique descriptions
+fact UniqueDescriptions {
+    all disj a1, a2: Advertisement | a1.description != a2.description
+}
+
+
+--------------------------ALWAYS TRUE FACTS------------------------------
+
+-- Ensures that once an internship is marked as FINISHED, it will always remain FINISHED
+fact InternshipStayFinished {
+    all i: Internship | 
+        always (i.status = FINISHED => always i.status = FINISHED)
+}
+
+-- Ensures that once an advertisement is assigned, it will always remain assigned and its list of applicants will not change
+fact AdvertisementStayClose {
+    all a: Advertisement |
+        always (a.assigned = true => always (a.assigned = true and a.applicants' = a.applicants))
+}
+
+-- Ensures that internships in certain statuses (ONGOING, REVIEW, FINISHED) always have an assigned student, and those in WAITING have no assigned student
+fact AssignedStatusConsistency {
+    all i: Internship |
+        always (i.status in (ONGOING + REVIEW + FINISHED) => some i.assignedTo) and
+        always (i.status = WAITING => no i.assignedTo)
+}
+
+-- Ensures that internships in ONGOING or REVIEW statuses always have their assigned student linked to that internship
+fact InternshipAssignedStudentConsistency {
+    all i: Internship |
+        always (i.status in (ONGOING + REVIEW) => i.assignedTo.assignedInternship = i)
+}
+
+-- Ensures that a student cannot have an assigned internship before it starts or after it is finished
+fact ValidStudentAssignment {
+    all s: Student | 
+        always (some s.assignedInternship => s.assignedInternship.status in (ONGOING + REVIEW))
+}
+
+-- Ensures consistent historical state transitions for internships
+fact CheckStateHistory {
+    all i: Internship | {
+        always (i.status = ONGOING => once i.status = WAITING)
+        always (i.status = REVIEW => once i.status = ONGOING)
+        always (i.status = FINISHED => once i.status = ONGOING)
+    }
+}
+
+-- Ensures that if an advertisement is not assigned, all its internships must be in the WAITING state
+fact AdvOpen {
+    all a: Advertisement |
+        always (a.assigned = false => (all i: a.internship | i.status = WAITING))
+}
+
+-- Ensures that once an internship leaves the WAITING state, it cannot return to it
+fact NoReturnToWaiting {
+    all i: Internship | always (once (i.status != WAITING) => always (i.status != WAITING))
+}
+
+-- Ensures that any student assigned to an internship must have applied to its advertisement
+fact AssignedStudentApplied {
+    always (all i: Internship | {
+        some i.assignedTo => some a: Advertisement | {
+            i in a.internship and i.assignedTo in a.applicants
+        }
+    })
+}
+
+-- Ensures that feedback can only be given after an internship is finished
+fact NoFeedbackBeforeFinished {
+    always (all i: Internship | {
+        i.status != FINISHED => no i.feedback
+    })
+}
+
+-- Ensures that feedback is unique for each internship
+fact UniqueFeedbackPerInternship {
+    always (all disj i1, i2: Internship | 
+        i1.status = FINISHED and i2.status = FINISHED => i1.feedback != i2.feedback)
+}
+
+
+----------------------------DYNAMIC FACTS-------------------------------
+
+-- Ensures that if an advertisement is not assigned, eventually a student will apply to it
+fact EventuallyApply {
+    all a: Advertisement | {
+        a.assigned = false => eventually (some s: Student | 
+            no s.assignedInternship and s not in a.applicants and Apply[s, a])
+    }
+}
+
+-- Ensures that if an advertisement is not assigned, it will eventually be closed
+fact EventuallyCloseAdv {
+    all a: Advertisement |
+        a.assigned = false => eventually (CloseAdv[a])
+}
+
+-- Ensures that all internships will eventually be closed
+fact EventuallyCloseInternship {
+    all i: Internship |
+        eventually (CloseInternship[i])
+}
+
+-- Ensures that eventually, at least one internship will have a complaint opened
+fact EventuallyOpenComplaint {
+    one i: Internship | 
+        eventually OpenComplaint[i]
+}
+
+-- Ensures that internships in the REVIEW state will eventually have their complaints resolved
+fact ReviewTransitionWithEvent {
+    all i: Internship | {
+        always (i.status = REVIEW => ResolveComplaint[i])
+    }
+}
+
 
 
 
