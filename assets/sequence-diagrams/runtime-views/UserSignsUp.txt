@@ -1,6 +1,6 @@
 title UserSignsUp
 
-participant "BroswerInterface" as BI
+participant "BrowserInterface" as BI
 participant "WebServer" as WS
 participant "RequestDispatcher" as RD
 participant "AuthenticationService" as AS

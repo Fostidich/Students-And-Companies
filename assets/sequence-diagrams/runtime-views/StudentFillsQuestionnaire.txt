@@ -1,0 +1,38 @@
+title StudentFillsQuestionnaire
+
+participant "BrowserInterface" as BI
+participant "WebServer" as WS
+participant "RequestDispatcher" as RD
+participant "AuthenticationService" as AS
+participant "EnrollmentManager" as EM
+participant "QueryService" as QS
+
+BI->WS:fillQuestionnaire(questionnaire)
+activate BI
+activate WS
+WS->RD:api/questionnaires/{ID}
+activate RD
+RD->AS:validateToken(token)
+activate AS
+AS->QS:checkToken(userID, token)
+activate QS
+QS<--AS:
+deactivate QS
+RD<--AS:
+deactivate AS
+
+RD->EM:fillQuestionnaire(student, questionnaire)
+activate EM
+EM->QS:fillQuestionnaire(userID, questionnaire)
+activate QS
+EM<--QS:
+deactivate QS
+RD<--EM:
+deactivate EM
+
+WS<--RD:201
+deactivate RD
+BI<--WS:
+deactivate WS
+deactivate BI
+

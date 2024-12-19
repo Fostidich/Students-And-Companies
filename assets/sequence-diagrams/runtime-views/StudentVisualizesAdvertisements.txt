@@ -1,0 +1,39 @@
+title StudentVisualizesAdvertisements
+
+participant "BrowserInterface" as BI
+participant "WebServer" as WS
+participant "RequestDispatcher" as RD
+participant "AuthenticationService" as AS
+participant "RecommendationService" as RS
+participant "QueryService" as QS
+
+BI->WS:recommendedAdvertisements()
+activate BI
+activate WS
+WS->RD:api/advertisements
+activate RD
+RD->AS:validateToken(token)
+activate AS
+AS->QS:checkToken(userID, token)
+activate QS
+QS<--AS:
+deactivate QS
+RD<--AS:
+deactivate AS
+
+RD->RS:recommendedAdvertisements(student)
+activate RS
+RS->QS:getMatchingAdvertisements(keyWords)
+activate QS
+RS->QS:Advertisement[]
+deactivate QS
+RD<--RS:Advertisement[]
+deactivate RS
+
+WS<--RD:200
+deactivate RD
+BI<--WS:Advertisement[]
+deactivate WS
+deactivate BI
+
+

@@ -1,0 +1,38 @@
+title CompanyAcceptsStudentEnrollment
+
+participant "BrowserInterface" as BI
+participant "WebServer" as WS
+participant "RequestDispatcher" as RD
+participant "AuthenticationService" as AS
+participant "EnrollmentManager" as EM
+participant "QueryService" as QS
+
+BI->WS:acceptEnrollment(student, advertisement)
+activate BI
+activate WS
+WS->RD:api/proposals
+activate RD
+RD->AS:validateToken(token)
+activate AS
+AS->QS:checkToken(userID, token)
+activate QS
+QS<--AS:
+deactivate QS
+RD<--AS:
+deactivate AS
+
+RD->EM:acceptEnrollment(company, student, advertisement)
+activate EM
+EM->QS:acceptEnrollment(companyID, studentID, advertisementID)
+activate QS
+EM<--QS:
+deactivate QS
+RD<--EM:
+deactivate EM
+
+WS<--RD:201
+deactivate RD
+BI<--WS:
+deactivate WS
+deactivate BI
+

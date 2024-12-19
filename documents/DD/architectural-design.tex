@@ -134,13 +134,77 @@ The diagrams include the component described in the previous sections, and the e
 \end{figure}
 
 \item \subsubsection{UserLogsIn}
+
+\begin{figure}[H]
+    \centering
+    \fcolorbox{black}{white}{
+        \includegraphics[width=0.8\linewidth]{../../assets/sequence-diagrams/runtime-views/UserLogsIn.png}
+    }
+\end{figure}
+
 \item \subsubsection{StudentUploadsCV}
+
+\begin{figure}[H]
+    \centering
+    \fcolorbox{black}{white}{
+        \includegraphics[width=0.8\linewidth]{../../assets/sequence-diagrams/runtime-views/StudentUploadsCV.png}
+    }
+\end{figure}
+
 \item \subsubsection{CompanyCreatesAdvertisement}
+
+\begin{figure}[H]
+    \centering
+    \fcolorbox{black}{white}{
+        \includegraphics[width=0.8\linewidth]{../../assets/sequence-diagrams/runtime-views/CompanyCreatesAdvertisement.png}
+    }
+\end{figure}
+
 \item \subsubsection{StudentVisualizesAdvertisements}
+
+\begin{figure}[H]
+    \centering
+    \fcolorbox{black}{white}{
+        \includegraphics[width=0.8\linewidth]{../../assets/sequence-diagrams/runtime-views/StudentVisualizesAdvertisements.png}
+    }
+\end{figure}
+
 \item \subsubsection{CompanyVisualizesCandidates}
+
+\begin{figure}[H]
+    \centering
+    \fcolorbox{black}{white}{
+        \includegraphics[width=0.8\linewidth]{../../assets/sequence-diagrams/runtime-views/CompanyVisualizesCandidates.png}
+    }
+\end{figure}
+
 \item \subsubsection{CompanyCreatesQuestionnaire}
+
+\begin{figure}[H]
+    \centering
+    \fcolorbox{black}{white}{
+        \includegraphics[width=0.8\linewidth]{../../assets/sequence-diagrams/runtime-views/CompanyCreatesQuestionnaire.png}
+    }
+\end{figure}
+
 \item \subsubsection{StudentFillsQuestionnaire}
+
+\begin{figure}[H]
+    \centering
+    \fcolorbox{black}{white}{
+        \includegraphics[width=0.8\linewidth]{../../assets/sequence-diagrams/runtime-views/StudentFillsQuestionnaire.png}
+    }
+\end{figure}
+
 \item \subsubsection{CompanyAcceptsStudentEnrollment}
+
+\begin{figure}[H]
+    \centering
+    \fcolorbox{black}{white}{
+        \includegraphics[width=0.8\linewidth]{../../assets/sequence-diagrams/runtime-views/CompanyAcceptsStudentEnrollment.png}
+    }
+\end{figure}
+
 \item \subsubsection{StudentVisualizesInternshipInformation}
 \item \subsubsection{CompanyVisualizesInternshipsInformation}
 \item \subsubsection{StudentSendsComplaint}
@@ -175,7 +239,7 @@ The diagrams include the component described in the previous sections, and the e
 \begin{itemize}
     \item Description: authentication token is returned if credentials are correct
     \item Request body - \verb|{user: Credentials}|
-    \item Response 200 - OK \verb|{UserID: String, token: String}|
+    \item Response 200 - OK \verb|{token: String}|
     \item Response 401 - Unauthorized \verb|{error: Error}|
 \end{itemize}
 
@@ -426,6 +490,8 @@ The diagrams include the component described in the previous sections, and the e
 \begin{itemize}
     \item \verb|User getUser(userID: String)|
     \item \verb|boolean updateProfile(user: User, updates: Map<String, String>)|
+    \item \verb|boolean saveCV(student: Student, cv: File)|
+    \item \verb|boolean postAdvertisement(company: Company, advertisement: Advertisement)|
 \end{itemize}
 
 \subsubsection{Recommendation interface}
@@ -465,8 +531,9 @@ The diagrams include the component described in the previous sections, and the e
 
 \subsubsection{Suggestion interface}
 \begin{itemize}
-    \item \verb|List<Suggestion> proposeProfileSuggestions(student: Student)|
-    \item \verb|List<Suggestion> proposeAdvertisementSuggestions(| \\ \makebox[10em][l]{} \verb|Advertisement: advertisement)|
+    \item \verb|List<Suggestion> proposeProfileSuggestions(user: User)|
+    \item \verb|List<Suggestion> proposeCVSuggestions(cv: File)|
+    \item \verb|List<Suggestion> proposeAdvertisementSuggestions(| \\ \makebox[10em][l]{} \verb|advertisement: Advertisement)|
 \end{itemize}
 
 \subsubsection{Complaint interface}
@@ -502,6 +569,8 @@ The diagrams include the component described in the previous sections, and the e
 \begin{itemize}
     \item \verb|User getUser(userID: String)|
     \item \verb|boolean updateProfile(userID: String, updates: Map<String, String>)|
+    \item \verb|boolean saveCV(userID: String, cv: File)|
+    \item \verb|boolean postAdvertisement(userID: String, advertisement: Advertisement)|
 \end{itemize}
 
 \subsubsection{Recommendation query interface}
@@ -519,8 +588,8 @@ The diagrams include the component described in the previous sections, and the e
     \item \verb|boolean buildQuestionnaire(userID: String, questionnaire: Questionnaire)|
     \item \verb|List<Questionnaire> getQuestionnaires(userID: String)|
     \item \verb|boolean sendQuestionnaire(companyID: String, studentID: String, | \\ \makebox[10em][l]{} \verb|questionnaireID: String)|
-    \item \verb|boolean fillEnrollment(studentID: String, questionnaire: Questionnaire)|
-    \item \verb|boolean sendQuestionnaire(companyID: String, studentID: String, | \\ \makebox[10em][l]{} \verb|questionnaireID: String)|
+    \item \verb|boolean fillQuestionnaire(userID: String, questionnaire: Questionnaire)|
+    \item \verb|boolean acceptEnrollment(companyID: String, studentID: String, | \\ \makebox[10em][l]{} \verb|advertisementID: String)|
     \item \verb|boolean acceptProposal(studentID: String, companyID: String, | \\ \makebox[10em][l]{} \verb|advertisementID: String)|
 \end{itemize}
 
@@ -532,7 +601,7 @@ The diagrams include the component described in the previous sections, and the e
     \item \verb|boolean registerComplaint(userID: String, internshipID: String, | \\ \makebox[10em][l]{} \verb|complaint: Complaint)|
     \item \verb|List<Complaint> getComplaints(userID: String)|
     \item \verb|boolean interruptInternship(internshipID: String)|
-    \item \verb|boolean registerFeedback(userId: User, feedback: Feedback)|
+    \item \verb|boolean registerFeedback(userID: User, feedback: Feedback)|
 \end{itemize}
 
 \section{Architectural styles and patterns}
