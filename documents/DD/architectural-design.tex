@@ -109,7 +109,7 @@ This allows the application to be more scalable, since it eases the addition of 
 Those are placed between the client and the web server, and between the web server and the application server.
 
 Lastly, to protect the application from external attacks, multiple firewalls are in use to filter the traffic.
-In particular, those are placed between the client and the web server, between the web servers and the application server, and before the database.
+In particular, those are placed between the client and the web server, between the web servers and the application server, before the database, and between the application server and the provider's email server.
 This allows the application to execute in a more secure environment, since the firewall will filter the traffic before it reaches the designeted component.
 
 \begin{figure}[H]
@@ -478,6 +478,13 @@ The diagrams include the component described in the previous sections, and the e
 \subsubsection{Feedback interface}
 \begin{itemize}
     \item \verb|boolean sendFeedback(user: User, feedback: Feedback)|
+\end{itemize}
+
+\subsubsection{Notification query interface}
+\begin{itemize}
+    \item \verb|User getUser(userID: String)|
+    \item \verb|List<Notification> getNotifications(userID: String)|
+    \item \verb|boolean addNotification(userID: String, notification: Notification)|
 \end{itemize}
 
 \subsubsection{Authentication query interface}
