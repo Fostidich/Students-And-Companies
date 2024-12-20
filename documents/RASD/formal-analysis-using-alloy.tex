@@ -90,7 +90,7 @@ sig Advertisement {
     var assigned: one Bool,
     internship: set Internship,
 }{
-    spots > 1 and spots < 3 
+    spots >= 1 and spots <= 3 
 }
 
 sig Internship {
