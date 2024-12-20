@@ -1,0 +1,42 @@
+title UniversityVisualizesComplaints
+
+participant "BrowserInterface" as BI
+participant "WebServer" as WS
+participant "RequestDispatcher" as RD
+participant "AuthenticationService" as AS
+participant "InternshipManager" as IM
+participant "ComplaintManager" as CM
+participant "QueryService" as QS
+
+BI->WS:getComplaints()
+activate BI
+activate WS
+WS->RD:api/internship/{ID}/complaints
+activate RD
+RD->AS:validateToken(token)
+activate AS
+AS->QS:checkToken(userID, token)
+activate QS
+QS<--AS:
+deactivate QS
+RD<--AS:
+deactivate AS
+
+RD->IM:getComplaints(university)
+activate IM
+IM->QS:getComplaints(userID)
+activate QS
+IM<--QS:Complaint[]
+deactivate QS
+IM->CM:adjustComplaints(complaints)
+activate CM
+IM<--CM:Complaint[]
+deactivate CM
+RD<--IM:Complaint[]
+deactivate IM
+
+WS<--RD:200
+deactivate RD
+BI<--WS:Complaint[]
+deactivate WS
+deactivate BI

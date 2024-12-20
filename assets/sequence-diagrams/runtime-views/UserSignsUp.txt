@@ -4,10 +4,10 @@ participant "BrowserInterface" as BI
 participant "WebServer" as WS
 participant "RequestDispatcher" as RD
 participant "AuthenticationService" as AS
-participant "QueryService" as QS
 participant "EmailService" as ES
+participant "QueryService" as QS
 
-BI->WS:register(user)
+BI->WS:registerUser(user)
 activate BI
 activate WS
 WS->RD:api/register
@@ -18,7 +18,7 @@ AS->QS:registerUser(user)
 activate QS
 AS<--QS:
 deactivate QS
-AS->ES:sendEmail(email, content)
+AS->ES:sendEmail(email, verificationCode)
 activate ES
 AS<--ES:
 deactivate ES
@@ -30,7 +30,7 @@ BI<--WS:
 deactivate WS
 deactivate BI
 
-BI->WS:verify(user)
+BI->WS:verifyUser(verificationCode)
 activate BI
 activate WS
 WS->RD:api/register/verification/{ID}

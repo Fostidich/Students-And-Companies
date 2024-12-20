@@ -1,0 +1,37 @@
+title StudentVisualizesInternshipInformation
+
+participant "BrowserInterface" as BI
+participant "WebServer" as WS
+participant "RequestDispatcher" as RD
+participant "AuthenticationService" as AS
+participant "InternshipManager" as IM
+participant "QueryService" as QS
+
+BI->WS:getOngoingInternship()
+activate BI
+activate WS
+WS->RD:api/internships
+activate RD
+RD->AS:validateToken(token)
+activate AS
+AS->QS:checkToken(userID, token)
+activate QS
+QS<--AS:
+deactivate QS
+RD<--AS:
+deactivate AS
+
+RD->IM:getOngoingInternship(student)
+activate IM
+IM->QS:getOngoingInternship(userID)
+activate QS
+IM<--QS:Internship
+deactivate QS
+RD<--IM:Internship
+deactivate IM
+
+WS<--RD:200
+deactivate RD
+BI<--WS:Internship
+deactivate WS
+deactivate BI

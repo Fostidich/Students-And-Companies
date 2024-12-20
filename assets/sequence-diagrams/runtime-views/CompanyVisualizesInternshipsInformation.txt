@@ -1,0 +1,37 @@
+title CompanyVisualizesInternshipsInformation
+
+participant "BrowserInterface" as BI
+participant "WebServer" as WS
+participant "RequestDispatcher" as RD
+participant "AuthenticationService" as AS
+participant "InternshipManager" as IM
+participant "QueryService" as QS
+
+BI->WS:getOngoingInternships()
+activate BI
+activate WS
+WS->RD:api/internships
+activate RD
+RD->AS:validateToken(token)
+activate AS
+AS->QS:checkToken(userID, token)
+activate QS
+QS<--AS:
+deactivate QS
+RD<--AS:
+deactivate AS
+
+RD->IM:getOngoingInternships(company)
+activate IM
+IM->QS:getOngoingInternships(userID)
+activate QS
+IM<--QS:Internship[]
+deactivate QS
+RD<--IM:Internship[]
+deactivate IM
+
+WS<--RD:200
+deactivate RD
+BI<--WS:Internship[]
+deactivate WS
+deactivate BI

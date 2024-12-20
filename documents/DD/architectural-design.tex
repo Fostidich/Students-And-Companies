@@ -206,13 +206,58 @@ The diagrams include the component described in the previous sections, and the e
 \end{figure}
 
 \item \subsubsection{StudentVisualizesInternshipInformation}
+
+\begin{figure}[H]
+    \centering
+    \fcolorbox{black}{white}{
+        \includegraphics[width=0.8\linewidth]{../../assets/sequence-diagrams/runtime-views/StudentVisualizesInternshipInformation.png}
+    }
+\end{figure}
+
 \item \subsubsection{CompanyVisualizesInternshipsInformation}
-\item \subsubsection{StudentSendsComplaint}
-\item \subsubsection{CompanySendsComplaint}
+
+\begin{figure}[H]
+    \centering
+    \fcolorbox{black}{white}{
+        \includegraphics[width=0.8\linewidth]{../../assets/sequence-diagrams/runtime-views/CompanyVisualizesInternshipsInformation.png}
+    }
+\end{figure}
+
+\item \subsubsection{UserSendsComplaint}
+
+\begin{figure}[H]
+    \centering
+    \fcolorbox{black}{white}{
+        \includegraphics[width=0.8\linewidth]{../../assets/sequence-diagrams/runtime-views/UserSendsComplaint.png}
+    }
+\end{figure}
+
 \item \subsubsection{UniversityVisualizesComplaints}
+
+\begin{figure}[H]
+    \centering
+    \fcolorbox{black}{white}{
+        \includegraphics[width=0.8\linewidth]{../../assets/sequence-diagrams/runtime-views/UniversityVisualizesComplaints.png}
+    }
+\end{figure}
+
 \item \subsubsection{UniversityEndsInternship}
-\item \subsubsection{InternshipExpires}
+
+\begin{figure}[H]
+    \centering
+    \fcolorbox{black}{white}{
+        \includegraphics[width=0.8\linewidth]{../../assets/sequence-diagrams/runtime-views/UniversityEndsInternship.png}
+    }
+\end{figure}
+
 \item \subsubsection{ParticipantFillsFeedbackForm}
+
+\begin{figure}[H]
+    \centering
+    \fcolorbox{black}{white}{
+        \includegraphics[width=0.8\linewidth]{../../assets/sequence-diagrams/runtime-views/ParticipantFillsFeedbackForm.png}
+    }
+\end{figure}
 
 \end{enumerate}
 
@@ -538,13 +583,13 @@ The diagrams include the component described in the previous sections, and the e
 
 \subsubsection{Complaint interface}
 \begin{itemize}
-    \item \verb|boolean sendComplain(user: User, internship: Internship, | \\ \makebox[10em][l]{} \verb|complaint: Complaint)|
-    \item \verb|List<Complaint> getComplaints(university: University)|
+    \item \verb|Complaint buildComplaint(user: User, internship: Internship, | \\ \makebox[10em][l]{} \verb|complaint: Complaint)|
+    \item \verb|List<Complaint> adjustComplaints(complaints: List<Complaint>)|
 \end{itemize}
 
 \subsubsection{Feedback interface}
 \begin{itemize}
-    \item \verb|boolean sendFeedback(user: User, feedback: Feedback)|
+    \item \verb|Feedback buildFeedback(user: User, feedback: Feedback)|
 \end{itemize}
 
 \subsubsection{Notification query interface}
