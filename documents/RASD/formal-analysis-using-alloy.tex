@@ -1,8 +1,5 @@
-% Definizione di un colore verde scuro personalizzato
-\definecolor{darkgreen}{rgb}{0,0.5,0}  % Verde scuro RGB
+\definecolor{darkgreen}{rgb}{0,0.5,0}
 
-
-% Definizione dello stile per il codice Alloy
 \lstdefinelanguage{Alloy}{
     keywords={all, no, some, one, implies, and, in, not, lone, var},
     keywordstyle=\color{blue}\bfseries,
@@ -30,43 +27,39 @@
     stringstyle=\color{red}
 }
 
-
 \chapter{Formal analysis using Alloy}
 
-In our formal analysis, we have focused on modeling a dynamic system for internship management, 
-incorporating both static and temporal constraints. Our model aims to represent the interplay between students, 
-universities, companies, advertisements, and internships while ensuring the consistency of assignments, 
-status transitions, and relationships among the entities. 
+In our formal analysis, we have focused on modeling a dynamic system for internship management,
+incorporating both static and temporal constraints. Our model aims to represent the interplay between students,
+universities, companies, advertisements, and internships, while ensuring the consistency of assignments,
+status transitions, and relationships among the entities.
 
-We leveraged Alloy’s temporal logic features to capture the evolution of internships and advertisements over time, 
-allowing us to model preconditions, invariants, and dynamic behavior in a rigorous manner. 
-The design emphasizes clarity and precision, ensuring that key system properties, such as unique assignment 
+We leveraged Alloy temporal logic features to capture the evolution of internships and advertisements over time,
+allowing us to model preconditions, invariants, and dynamic behavior in a rigorous manner.
+The design emphasizes clarity and precision, ensuring that key system properties, such as unique assignment
 of internships and adherence to procedural rules, are verifiable.
 
-To maintain a balance between complexity and manageability, we incorporated multiple predicates and facts 
-that ensure a consistent representation of system behaviors, such as application processing, advertisement closure, 
-and feedback provision. Temporal constraints, such as ensuring no return to previous states (e.g., WAITING) 
-or eventual resolution of complaints, were introduced to demonstrate the system's progression over time without 
-overcomplicating the analysis. This approach enabled us to comprehensively capture the problem's intricacies while 
+To maintain a balance between complexity and manageability, we incorporated multiple predicates and facts
+that ensure a consistent representation of system behaviors, such as application processing, advertisement closure,
+and feedback provision. Temporal constraints, such as ensuring no return to previous states (e.g., WAITING)
+or eventual resolution of complaints, were introduced to demonstrate the system progression over time without
+overcomplicating the analysis. This approach enabled us to comprehensively capture the problem intricacies while
 facilitating the exploration of its temporal dynamics.
-
 
 \section{Alloy Code}
 
-
 \begin{lstlisting}
--------------------- DEFINITION OF ENUM --------------------
+
+-------------------- DEFINITION OF ENUM --------------------------
 
 enum InternshipStatus {WAITING, ONGOING, REVIEW, FINISHED}
 enum Bool {true, false}
-    
-    
+
+
 -------------------- DEFINITION OF SIGNATURES --------------------
 
-
-
 abstract sig User {}
-    
+
 sig Student extends User {
     skills: set Skill,
     var assignedInternship: lone Internship,
@@ -75,7 +68,7 @@ sig Student extends User {
 }
 
 sig Company extends User {
-	advertisement : set Advertisement,
+	advertisement: set Advertisement,
 }
 
 sig University extends User {
@@ -90,7 +83,7 @@ sig Advertisement {
     var assigned: one Bool,
     internship: set Internship,
 }{
-    spots >= 1 and spots <= 3 
+    spots >= 1 and spots <= 3
 }
 
 sig Internship {
@@ -106,15 +99,17 @@ sig Description{}
 
 sig Skill {}
 
------------------------------PREDICATES------------------------------
+
+---------------------------- PREDICATES -----------------------------
 
 -- This predicate handles the application of a student to an advertisement
 pred Apply[s: Student, a: Advertisement] {
+
     -- Precondition: all internships related to the advertisement must have a status of WAITING
     all i: a.internship |
         i.status = WAITING
 
-    -- No changes allowed 
+    -- No changes allowed
     a.assigned' = a.assigned
     all i: a.internship | {
         i.status' = i.status and
@@ -127,13 +122,14 @@ pred Apply[s: Student, a: Advertisement] {
 
 -- This predicate closes an advertisement and assigns internships to applicants
 pred CloseAdv[a: Advertisement] {
+
     -- Precondition: the number of applicants must be greater than or equal to the available spots, and the advertisement is not yet assigned
     #a.applicants >= a.spots
     a.assigned = false
     all i: a.internship |
         i.status = WAITING
 
-    -- No changes allowed 
+    -- No changes allowed
     a.applicants' = a.applicants
 
     -- Postcondition: the advertisement is marked as assigned, and internships are assigned
@@ -143,6 +139,7 @@ pred CloseAdv[a: Advertisement] {
 
 -- This predicate assigns internships to students in an advertisement
 pred AssignInternship[a: Advertisement] {
+
     -- Precondition: the number of applicants must be greater than or equal to the available spots, and the advertisement is not yet assigned
     #a.applicants >= a.spots
     a.assigned = false
@@ -168,6 +165,7 @@ pred AssignInternship[a: Advertisement] {
 
 -- This predicate closes an internship, marking it as finished
 pred CloseInternship[i: Internship] {
+
     -- Precondition: the internship must have a status of ONGOING
     i.status = ONGOING
 
@@ -179,12 +177,13 @@ pred CloseInternship[i: Internship] {
     some i.feedback'
 }
 
--- This predicate opens a complaint for an internship 
+-- This predicate opens a complaint for an internship
 pred OpenComplaint[i: Internship] {
+
     -- Precondition: the internship must have a status of ONGOING
     i.status = ONGOING
 
-    -- No changes allowed 
+    -- No changes allowed
     i.assignedTo' = i.assignedTo
     i.assignedTo.assignedInternship' = i.assignedTo.assignedInternship
 
@@ -194,10 +193,11 @@ pred OpenComplaint[i: Internship] {
 
 -- This predicate resolves a complaint for an internship
 pred ResolveComplaint[i: Internship] {
+
     -- Precondition: the internship must have a status of REVIEW
     i.status = REVIEW
 
-    -- No changes allowed 
+    -- No changes allowed
     i.assignedTo' = i.assignedTo
     i.assignedTo.assignedInternship' = i.assignedTo.assignedInternship
 
@@ -206,7 +206,7 @@ pred ResolveComplaint[i: Internship] {
 }
 
 
-------------------------INITIAL DYNAMIC CONDITIONS------------------------
+----------------------- INITIAL DYNAMIC CONDITIONS -----------------------
 
 -- Ensures that initially, no student is assigned to any internship
 fact InitialConditionStudent {
@@ -232,7 +232,7 @@ fact InitialConditionInternship {
 }
 
 
------------------------------STATIC FACTS------------------------------
+---------------------------- STATIC FACTS -----------------------------
 
 -- Ensures that the number of spots in an advertisement equals the number of internships associated with it
 fact SpotForInternship {
@@ -242,7 +242,7 @@ fact SpotForInternship {
 
 -- Ensures that each internship is associated with exactly one advertisement
 fact UniqueAdvertisementForEachInternship {
-    all i: Internship | 
+    all i: Internship |
         one a: Advertisement | i in a.internship
 }
 
@@ -294,12 +294,12 @@ fact NumOfInternshipMatchNumOfFeedback {
 }
 
 
---------------------------ALWAYS TRUE FACTS------------------------------
+------------------------- ALWAYS TRUE FACTS -----------------------------
 
 -- Ensures that once an internship is marked as FINISHED, it will always not change
 fact InternshipStayFinished {
-    all i: Internship | 
-        always (i.status = FINISHED => some i.feedback and 
+    all i: Internship |
+        always (i.status = FINISHED => some i.feedback and
             always (i.status = FINISHED and i.feedback' = i.feedback ))
 }
 
@@ -324,7 +324,7 @@ fact InternshipAssignedStudentConsistency {
 
 -- Ensures that a student cannot have an assigned internship before it starts or after it is finished
 fact ValidStudentAssignment {
-    all s: Student | 
+    all s: Student |
         always (some s.assignedInternship => s.assignedInternship.status in (ONGOING + REVIEW))
 }
 
@@ -366,17 +366,17 @@ fact NoFeedbackBeforeFinished {
 
 -- Ensures that feedback is unique for each internship
 fact UniqueFeedbackPerInternship {
-    always (all disj i1, i2: Internship | 
+    always (all disj i1, i2: Internship |
         i1.status = FINISHED and i2.status = FINISHED => i1.feedback != i2.feedback)
 }
 
 
-----------------------------DYNAMIC FACTS-------------------------------
+--------------------------- DYNAMIC FACTS ------------------------------
 
 -- Ensures that if an advertisement is not assigned, eventually a student will apply to it
 fact EventuallyApply {
     all a: Advertisement | {
-        a.assigned = false => eventually (some s: Student | 
+        a.assigned = false => eventually (some s: Student |
             no s.assignedInternship and s not in a.applicants and Apply[s, a])
     }
 }
@@ -395,7 +395,7 @@ fact EventuallyCloseInternship {
 
 -- Ensures that eventually, at least one internship will have a complaint opened
 fact EventuallyOpenComplaint {
-    some i: Internship | 
+    some i: Internship |
         eventually OpenComplaint[i]
 }
 
@@ -407,12 +407,12 @@ fact AlwaysResolveComplaint {
 }
 
 
------------------------------ASSERTIONS----------------------------------
+---------------------------- ASSERTIONS ---------------------------------
 
 -- Ensures that an internship can only be assigned to a student if the student has applied to the associated advertisement
 assert InternshipAssignmentRequiresApplication {
-    all i: Internship | 
-    some i.assignedTo => some a: Advertisement | 
+    all i: Internship |
+    some i.assignedTo => some a: Advertisement |
         i in a.internship and i.assignedTo in a.applicants
 }
 
@@ -435,18 +435,18 @@ assert ReviewEventuallyLeadsToFinished {
 
 -- Ensures that an advertisement can only be closed if all its internships are assigned
 assert NoClosedAdvertisementWithoutAssignedInternships {
-    all a: Advertisement | 
+    all a: Advertisement |
     a.assigned = true => all i: a.internship | some i.assignedTo
 }
 
 -- Ensures that each student is assigned to only one internship at a time
 assert UniqueAssignmentPerStudent {
-    always (all disj i1, i2: Internship | 
+    always (all disj i1, i2: Internship |
         (i1.status != WAITING and i2.status != WAITING) => i1.assignedTo != i2.assignedTo)
 }
 
 
--------------------------------RUN-----------------------------------
+------------------------------ RUN ----------------------------------
 
 check InternshipAssignmentRequiresApplication for 5
 check ExactStateSequence for 5
@@ -466,95 +466,87 @@ pred show {
 
 run show for 10
 
-
 \end{lstlisting}
-
 
 \section{Assertion Results}
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=350px]{../../assets/alloy-assertion/I_assertion.png}
-    \caption{An Internship can only be assigned to a student if the student has applied to the associated advertisement}
+    \includegraphics[width=350px]{../../assets/alloy-assertion/I-assertion.png}
+    \caption*{An Internship can only be assigned to a student if it has applied to the associated advertisement}
 \end{figure}
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=350px]{../../assets/alloy-assertion/II_assertion.png}
-    \caption{Internships follow the exact temporal sequence}
+    \includegraphics[width=350px]{../../assets/alloy-assertion/II-assertion.png}
+    \caption*{Internships follow the exact temporal sequence}
 \end{figure}
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=350px]{../../assets/alloy-assertion/III_assertion.png}
-    \caption{if an internship enters the REVIEW state, it will transition to the FINISHED state}
-\end{figure}
-
-
-\begin{figure}[H]
-    \centering
-    \includegraphics[width=350px]{../../assets/alloy-assertion/IV_assertion.png}
-    \caption{An advertisement can only be closed if all its internships are assigned}
+    \includegraphics[width=350px]{../../assets/alloy-assertion/III-assertion.png}
+    \caption*{if an internship enters the REVIEW state, it will transition to the FINISHED state}
 \end{figure}
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=350px]{../../assets/alloy-assertion/V_assertion.png}
-    \caption{Each student is assigned to only one internship at a time}
+    \includegraphics[width=350px]{../../assets/alloy-assertion/IV-assertion.png}
+    \caption*{An advertisement can only be closed if all its internships are assigned}
 \end{figure}
 
-
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=350px]{../../assets/alloy-assertion/V-assertion.png}
+    \caption*{Each student is assigned to only one internship at a time}
+\end{figure}
 
 \section{World Generated}
- 
- 
+
 \begin{figure}[H]
     \centering
-    \includegraphics[width=450px]{../../assets/alloy-world/world_steps.png}
-    \caption{show the total temporal steps}
+    \includegraphics[width=450px]{../../assets/alloy-world/world-steps.png}
+    \caption*{Temporal steps}
 \end{figure}
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=450px]{../../assets/alloy-world/I_step.png}
-    \caption{I - Temporal step}
+    \includegraphics[width=450px]{../../assets/alloy-world/I-step.png}
+    \caption*{I - Temporal step}
 \end{figure}
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=450px]{../../assets/alloy-world/II_step.png}
-     \caption{II - Temporal step}
-\end{figure}
-
-
-\begin{figure}[H]
-    \centering
-    \includegraphics[width=450px]{../../assets/alloy-world/III_step.png}
-    \caption{III - Temporal step}
+    \includegraphics[width=450px]{../../assets/alloy-world/II-step.png}
+     \caption*{II - Temporal step}
 \end{figure}
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=450px]{../../assets/alloy-world/IV_step.png}
-    \caption{IV - Temporal step}
+    \includegraphics[width=450px]{../../assets/alloy-world/III-step.png}
+    \caption*{III - Temporal step}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=450px]{../../assets/alloy-world/IV-step.png}
+    \caption*{IV - Temporal step}
 \end{figure}
 
 \begin{figure}[H]
      \centering
-     \includegraphics[width=450px]{../../assets/alloy-world/V_step.png}
-     \caption{V - Temporal step}
+     \includegraphics[width=450px]{../../assets/alloy-world/V-step.png}
+     \caption*{V - Temporal step}
 \end{figure}
 
 \begin{figure}[H]
      \centering
-     \includegraphics[width=450px]{../../assets/alloy-world/VI_step.png}
-     \caption{VI - Temporal step}
+     \includegraphics[width=450px]{../../assets/alloy-world/VI-step.png}
+     \caption*{VI - Temporal step}
 \end{figure}
 
 \begin{figure}[H]
      \centering
-     \includegraphics[width=450px]{../../assets/alloy-world/VII_step.png}
-     \caption{VII - Temporal step}
+     \includegraphics[width=450px]{../../assets/alloy-world/VII-step.png}
+     \caption*{VII - Temporal step}
 \end{figure}
-
 
