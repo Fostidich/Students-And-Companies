@@ -22,6 +22,7 @@ SC-->S:show(receivedQuestionnaire)
 S->SC:submit(questionnaire)
 SC->SC:store(questionnaire)
 SC->SC:notify(companyQuestionnaire)
+SC-->S:show(homePage)
 deactivate S
 deactivate SC
 

@@ -1,0 +1,21 @@
+title StudentRequestsApplication
+
+participant "Student" as S
+participant "Student&Companies" as SC
+participant "Company" as C
+
+activate S
+activate SC
+S->SC:request(advertisement)
+SC-->S:show(advertisement)
+S->SC:submit(application)
+SC->SC:store(application)
+SC->SC:notify(companyApplication)
+SC-->S:show(homePage)
+deactivate S
+deactivate SC
+
+C->SC:request(notificationsPage)
+activate C
+activate SC
+SC-->C:show(notificationsPage)

@@ -86,19 +86,14 @@ The applications source code can be found [here](apps).
     - [ ] Recommend an update & upgrade
     - [ ] Add installations commands in Makefile
 
-### RASD
-
-- [ ] Review all
-- [ ] Conclude Alloy if needed
-
 ### DD
 
 - [x] Introduction
 - [ ] Architectural design
 - [ ] User interface design
-- [ ] Requirements traceability
-- [ ] Implementation, integration and test plan
-- [ ] Effort spent
-- [ ] References
+- [x] Requirements traceability
+- [x] Implementation, integration and test plan
+- [x] Effort spent
+- [x] References
 
 ###### C# code written by Francesco Ostidich, Matteo Salari, Francesco Rivitti
