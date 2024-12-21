@@ -89,7 +89,7 @@ The applications source code can be found [here](apps).
 ### DD
 
 - [x] Introduction
-- [ ] Architectural design
+- [x] Architectural design
 - [ ] User interface design
 - [x] Requirements traceability
 - [x] Implementation, integration and test plan
