@@ -50,3 +50,4 @@ PM->NS:notify(user, notification)
 activate NS
 PM<--NS:
 deactivate NS
+deactivate PM

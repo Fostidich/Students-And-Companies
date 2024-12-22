@@ -123,7 +123,7 @@ Those are placed between the client and the web server, and between the web serv
 
 Lastly, to protect the application from external attacks, multiple firewalls are in use to filter the traffic.
 In particular, those are placed between the client and the web server, between the web servers and the application server, before the database, and between the application server and the provider's email server.
-This allows the application to execute in a more secure environment, since the firewall will filter the traffic before it reaches the designeted component.
+This allows the application to execute in a more secure environment, since the firewalls will filter the traffic before it reaches the designated component.
 
 \begin{figure}[H]
     \centering
@@ -139,6 +139,14 @@ The diagrams include the component described in the previous sections, and the e
 
 \item \subsubsection{UserSignsUp}
 
+To register into the system, the user fills in the registration form and submits it.
+The registration form fields vary based on whether signing up it is a student or a company.
+The whole process is mainly handled by the authentication service component, that interacts with the query service to validate the information and to insert the new user into the DB.
+The application server checks that information is valid, and that the user is not already registered.
+Then, the system will insert the user into the DB and send an email to the user.
+The email contains a link with the verification code.
+The user, by clicking on the link, confirms the registration.
+
 \begin{figure}[H]
     \centering
     \fcolorbox{black}{white}{
@@ -147,6 +155,12 @@ The diagrams include the component described in the previous sections, and the e
 \end{figure}
 
 \item \subsubsection{UserLogsIn}
+
+To log in into the system, the user has to fill in the credentials fields and submit it.
+This process is the same for both students and companies.
+The whole process is handled by the authentication service component, that interacts with the query service to validate the information.
+Once the user is logged in, the authentication service will generate a token, which is sent to the user.
+With the token, the user can access the other website pages reserved for logged users.
 
 \begin{figure}[H]
     \centering
@@ -157,6 +171,10 @@ The diagrams include the component described in the previous sections, and the e
 
 \item \subsubsection{StudentUploadsCV}
 
+To upload the CV, the student is before hand authenticated by means of the token found in the header of the request.
+Then, via the profile manager component, the CV is accepted, validated, and inserted into the file storage of the system.
+The suggestion service is called afterwards, and if valid suggestions are found for the CV, they are notified to the student.
+
 \begin{figure}[H]
     \centering
     \fcolorbox{black}{white}{
@@ -165,6 +183,10 @@ The diagrams include the component described in the previous sections, and the e
 \end{figure}
 
 \item \subsubsection{CompanyCreatesAdvertisement}
+
+To create an advertisement, the company is before hand authenticated by means of the token found in the header of the request.
+Then, via the profile manager component, the advertisement is accepted, validated, and inserted into the DB.
+The suggestion service is called afterwards, and if valid suggestions are found for the advertisement, they are notified to the company.
 
 \begin{figure}[H]
     \centering
@@ -175,6 +197,10 @@ The diagrams include the component described in the previous sections, and the e
 
 \item \subsubsection{StudentVisualizesAdvertisements}
 
+To visualize advertisements in the feed page, the student is before hand authenticated by means of the token found in the header of the request.
+Then, the recommendation service uses keywords found in the student profile to find matching advertisements in the DB.
+Those are returned to the student, which finds the feed page populated with the advertisements.
+
 \begin{figure}[H]
     \centering
     \fcolorbox{black}{white}{
@@ -183,6 +209,10 @@ The diagrams include the component described in the previous sections, and the e
 \end{figure}
 
 \item \subsubsection{CompanyVisualizesCandidates}
+
+To visualize eligible students in the feed page, the company is before hand authenticated by means of the token found in the header of the request.
+Then, the recommendation service uses keywords found in the company profile and in the selected advertisement to find matching student candidates in the DB.
+Those are returned to the company, which finds the feed page populated with the students information.
 
 \begin{figure}[H]
     \centering
@@ -193,6 +223,9 @@ The diagrams include the component described in the previous sections, and the e
 
 \item \subsubsection{CompanyCreatesQuestionnaire}
 
+To build a new questionnaire, the company is before hand authenticated by means of the token found in the header of the request.
+Then, via the enrollment manager component, the new questionnaire is accepted, validated, and inserted into the DB.
+
 \begin{figure}[H]
     \centering
     \fcolorbox{black}{white}{
@@ -201,6 +234,9 @@ The diagrams include the component described in the previous sections, and the e
 \end{figure}
 
 \item \subsubsection{StudentFillsQuestionnaire}
+
+To fill in a questionnaire, the student is before hand authenticated by means of the token found in the header of the request.
+Then, via the enrollment manager component, the filled in questionnaire is accepted, validated, and inserted into the DB.
 
 \begin{figure}[H]
     \centering
@@ -211,6 +247,9 @@ The diagrams include the component described in the previous sections, and the e
 
 \item \subsubsection{CompanyAcceptsStudentEnrollment}
 
+To accept the enrollment request made by a user, the company is before hand authenticated by means of the token found in the header of the request.
+Then, via the enrollment manager component, the internship application, relative to a specific advertisement, is accepted, validated, and inserted into the DB.
+
 \begin{figure}[H]
     \centering
     \fcolorbox{black}{white}{
@@ -219,6 +258,9 @@ The diagrams include the component described in the previous sections, and the e
 \end{figure}
 
 \item \subsubsection{StudentVisualizesInternshipInformation}
+
+To visualize information about its ongoing internship, the student is before hand authenticated by means of the token found in the header of the request.
+Then, via the internship manager component, the information about the internship is queried and returned to the student.
 
 \begin{figure}[H]
     \centering
@@ -229,6 +271,9 @@ The diagrams include the component described in the previous sections, and the e
 
 \item \subsubsection{CompanyVisualizesInternshipsInformation}
 
+To visualize information about its ongoing internships, the company is before hand authenticated by means of the token found in the header of the request.
+Then, via the internship manager component, the information about the internships is queried and returned to the company.
+
 \begin{figure}[H]
     \centering
     \fcolorbox{black}{white}{
@@ -237,6 +282,10 @@ The diagrams include the component described in the previous sections, and the e
 \end{figure}
 
 \item \subsubsection{UserSendsComplaint}
+
+To send a complaint relative to an ongoing internship, the participant is before hand authenticated by means of the token found in the header of the request.
+Then, via the internship manager and the complaint manager components, the complaint is accepted, validated and inserted into the DB.
+The university will then be notified.
 
 \begin{figure}[H]
     \centering
@@ -247,6 +296,10 @@ The diagrams include the component described in the previous sections, and the e
 
 \item \subsubsection{UniversityVisualizesComplaints}
 
+To visualize the complaints, the university is before hand authenticated by means of the token found in the header of the request.
+Then, via the internship manager and complaint manager components, the complaints relative to its students internships are queried from the DB.
+Those are returned to the university, which finds the complaints page populated with the complaints messages.
+
 \begin{figure}[H]
     \centering
     \fcolorbox{black}{white}{
@@ -256,6 +309,10 @@ The diagrams include the component described in the previous sections, and the e
 
 \item \subsubsection{UniversityEndsInternship}
 
+To end an internship, the university is before hand authenticated by means of the token found in the header of the request.
+Then, via the internship manager and complaint manager components, the internship of its student can be interrupted, if complaints have arose.
+If that is the case, the DB is updated accordingly.
+
 \begin{figure}[H]
     \centering
     \fcolorbox{black}{white}{
@@ -264,6 +321,9 @@ The diagrams include the component described in the previous sections, and the e
 \end{figure}
 
 \item \subsubsection{ParticipantFillsFeedbackForm}
+
+To provide a feedback about a finished internship, the participant is before hand authenticated by means of the token found in the header of the request.
+Then, via the internship manager and the feedback manager components, the feedback form is accepted, validated and inserted into the DB.
 
 \begin{figure}[H]
     \centering
