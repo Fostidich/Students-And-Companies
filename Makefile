@@ -1,4 +1,4 @@
-.PHONY: help clean client client-build client-run client-docker server server-build server-run server-docker rasd dd itd atd rasd-verbose dd-verbose itd-verbose atd-verbose layout-export
+.PHONY: help clean web-server web-server-docker application-server application-server-docker rasd dd itd atd rasd-verbose dd-verbose itd-verbose atd-verbose layout-export
 
 help:
 ifeq ($(OS),Windows_NT)
@@ -7,15 +7,11 @@ ifeq ($(OS),Windows_NT)
 	@cmd /c "echo."
 	@echo    make clean               Clean project tree from build files
 	@cmd /c "echo."
-	@echo    make client              Launch a clean client docker run
-	@echo    make client-build        Build client app
-	@echo    make client-run          Run client app
-	@echo    make client-docker       Dockerize client release app
+	@echo    make web-server          Launch a web server dev run
+	@echo    make web-server-docker   Dockerize web server release app
 	@cmd /c "echo."
-	@echo    make server              Launch a clean server docker run
-	@echo    make server-build        Build server app
-	@echo    make server-run          Run server app
-	@echo    make server-docker       Dockerize server release app
+	@echo    make application-server  Launch an application server dev run
+	@echo    make web-server-docker   Dockerize application server release app
 	@cmd /c "echo."
 	@echo    make rasd                Compile RASD.pdf from LaTeX
 	@echo    make dd                  Compile DD.pdf from LaTeX
@@ -35,15 +31,11 @@ else
 	@echo ""
 	@echo "    make clean               Clean project tree from build files"
 	@echo ""
-	@echo "    make client              Launch a clean client docker run"
-	@echo "    make client-build        Build client app"
-	@echo "    make client-run          Run client app"
-	@echo "    make client-docker       Dockerize client release app"
+	@echo "    make web-server          Launch a web server dev run"
+	@echo "    make web-server-docker   Dockerize web server release app"
 	@echo ""
-	@echo "    make server              Launch a clean server docker run"
-	@echo "    make server-build        Build server app"
-	@echo "    make server-run          Run server app"
-	@echo "    make server-docker       Dockerize server release app"
+	@echo "    make application-server  Launch an application server dev run"
+	@echo "    make web-server-docker   Dockerize application server release app"
 	@echo ""
 	@echo "    make rasd                Compile RASD.pdf from LaTeX"
 	@echo "    make dd                  Compile DD.pdf from LaTeX"
@@ -65,71 +57,39 @@ ifeq ($(OS),Windows_NT)
 	del /Q /F documents\DD\*.aux documents\DD\*.log documents\DD\*.out documents\DD\*.toc documents\DD\*.fls
 	del /Q /F documents\ITD\*.aux documents\ITD\*.log documents\ITD\*.out documents\ITD\*.toc documents\ITD\*.fls
 	del /Q /F documents\ATD\*.aux documents\ATD\*.log documents\ATD\*.out documents\ATD\*.toc documents\ATD\*.fls
-	rmdir /S /Q apps\client\bin || rem
-	rmdir /S /Q apps\client\obj || rem
-	rmdir /S /Q apps\server\bin || rem
-	rmdir /S /Q apps\server\obj || rem
+	rmdir /S /Q apps\application-server\bin || rem
+	rmdir /S /Q apps\application-server\obj || rem
 	docker container prune -f || rem
 	docker image prune -f || rem
-	docker rmi sc-client -f || rem
-	docker rmi sc-server -f || rem
+	docker rmi sc-web-server -f || rem
+	docker rmi sc-application-server -f || rem
 else
 	rm -f documents/RASD/*.aux documents/RASD/*.log documents/RASD/*.out documents/RASD/*.toc documents/RASD/*.fls
 	rm -f documents/DD/*.aux documents/DD/*.log documents/DD/*.out documents/DD/*.toc documents/DD/*.fls
 	rm -f documents/ITD/*.aux documents/ITD/*.log documents/ITD/*.out documents/ITD/*.toc documents/ITD/*.fls
 	rm -f documents/ATD/*.aux documents/ATD/*.log documents/ATD/*.out documents/ATD/*.toc documents/ATD/*.fls
-	rm -rf apps/client/bin
-	rm -rf apps/-f client/obj
-	rm -rf apps/server/bin
-	rm -rf apps/server/obj
+	rm -rf apps/application-server/bin
+	rm -rf apps/application-server/obj
 	docker container prune -f
 	docker image prune -f
-	docker rmi sc-client -f
-	docker rmi sc-server -f
+	docker rmi sc-web-server -f
+	docker rmi sc-application-server -f
 endif
 
-client:
-ifeq ($(OS),Windows_NT)
-	@docker build -t sc-client ./apps/client > NUL 2>&1
-	@docker run --rm -it -p 4674:80 sc-client
-	@docker image prune -f > NUL
-else
-	@docker build -t sc-client ./apps/client > /dev/null 2>&1
-	@docker run --rm -it -p 4674:80 sc-client
-	@docker image prune -f > /dev/null
-endif
+web-server:
+	npm --prefix apps/web-server start
 
-client-build:
-	dotnet build apps/client
-
-client-run:
-	@dotnet run --project apps/client
-
-client-docker:
-	docker build -t sc-client ./apps/client
-	docker run --rm -it -p 4674:80 sc-client
+web-server-docker:
+	docker build -t sc-web-server ./apps/web-server
+	docker run --rm -it -p 80:80 sc-web-server
 	docker image prune -f
 
-server:
-ifeq ($(OS),Windows_NT)
-	@docker build -t sc-server ./apps/server > NUL 2>&1
-	@docker run --rm -it -p 4673:80 sc-server
-	@docker image prune -f > NUL
-else
-	@docker build -t sc-server ./apps/server > /dev/null 2>&1
-	@docker run --rm -it -p 4673:80 sc-server
-	@docker image prune -f > /dev/null
-endif
+application-server:
+	dotnet run --project apps/application-server
 
-server-build:
-	dotnet build apps/server
-
-server-run:
-	@dotnet run --project apps/server
-
-server-docker:
-	docker build -t sc-server ./apps/server
-	docker run --rm -it -p 4673:80 sc-server
+application-server-docker:
+	docker build -t sc-application-server ./apps/application-server
+	docker run --rm -it -p 4673:4673 sc-application-server
 	docker image prune -f
 
 rasd: layout-export

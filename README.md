@@ -15,46 +15,29 @@ Additionally, it provides suggestions for improving CVs and project descriptions
 
 ## Usage
 
-To build and run the project apps, you will need to install [docker](#docker-run), or otherwise the [dotnet](#dotnet-run) SDK.
-
+To build and run the project apps, you will need to install Docker.
 All commands are meant to be run from the [project root folder](.).
-
-For ease of use, we recommend installing `make`, as it allows useful commands to be launched directly via the `Makefile`.
-To list all available commands, run `make help`.
-
-### Docker run
-
 On Windows, Docker Desktop must be turned on before launching the apps from the terminal line.
 
-If `make` is installed, a clean release `docker` build and run can be launched with
+Firstly, pull the docker images from Docker Hub.
 
 ```
-make client
-```
-```
-make server
+docker pull fostidich/sc-web-server:latest
+docker pull fostidich/sc-application-server:latest
 ```
 
-otherwise, if `make` does not suit you, the apps can be run directly with `docker` as follows.
+Then, run the images.
 
 ```
-docker build -t sc-client ./apps/client
-docker run --rm -it -p 4674:80 sc-client
-```
-```
-docker build -t sc-server ./apps/server
-docker run --rm -it -p 4673:80 sc-server
+docker run -d --rm --name sc-web-server -p 80:80 fostidich/sc-web-server
+docker run -d --rm --name sc-application-server -p 4673:4673 fostidich/sc-application-server
 ```
 
-### Dotnet run
-
-To build and run the apps with `dotnet`, use the following commands.
+Once concluded, stop the servers executions.
 
 ```
-dotnet run --project apps/client --configuration Release
-```
-```
-dotnet run --project apps/server --configuration Release
+docker stop sc-web-server
+docker stop sc-application-server
 ```
 
 - - -
@@ -63,37 +46,21 @@ dotnet run --project apps/server --configuration Release
 
 The latest version of the project documents can be found [here](delivery).
 
-- [RASD](delivery/RASDv0.1.pdf)
-- [DD](delivery/DDv0.1.pdf)
-- [ITD](delivery/ITDv0.1.pdf)
-- [ATD](delivery/ATDv0.1.pdf)
+- [RASD](delivery/RASDv1.0.pdf)
+- [DD](delivery/DDv1.0.pdf)
+- [ITD](delivery/ITDv1.0.pdf)
+- [ATD](delivery/ATDv1.0.pdf)
 
 The applications source code can be found [here](apps).
 
-- [Client](apps/client/src)
-- [Server](apps/server/src)
+- [Web server](apps/web-server)
+- [Application server](apps/application-server)
 
 - - -
 
 ## TODO
 
-### General
-
-- [x] Configure dotnet for both client and server
-- [x] Configure docker for both client and server
-- [x] Configure make for ease of use
-- [ ] Explain the installing process for Dotnet, Docker and Make
-    - [ ] Recommend an update & upgrade
-    - [ ] Add installations commands in Makefile
-
-### DD
-
-- [x] Introduction
-- [x] Architectural design
-- [ ] User interface design
-- [x] Requirements traceability
-- [x] Implementation, integration and test plan
-- [x] Effort spent
-- [x] References
+- [x] Set up code environment
+- [ ] Start coding
 
 ###### C# code written by Francesco Ostidich, Matteo Salari, Francesco Rivitti

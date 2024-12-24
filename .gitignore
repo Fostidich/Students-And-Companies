@@ -2,6 +2,8 @@
 .vscode/
 **/.DS_Store
 
+**/package-lock.json
+**/node_modules/
 **/build/
 **/target/
 **/obj/
@@ -14,6 +16,7 @@
 **/*.out
 **/*.toc
 **/*.fls
+
 documents/RASD/*.pdf
 documents/DD/*.pdf
 documents/ITD/*.pdf
