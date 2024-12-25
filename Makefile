@@ -57,8 +57,8 @@ ifeq ($(OS),Windows_NT)
 	del /Q /F documents\DD\*.aux documents\DD\*.log documents\DD\*.out documents\DD\*.toc documents\DD\*.fls
 	del /Q /F documents\ITD\*.aux documents\ITD\*.log documents\ITD\*.out documents\ITD\*.toc documents\ITD\*.fls
 	del /Q /F documents\ATD\*.aux documents\ATD\*.log documents\ATD\*.out documents\ATD\*.toc documents\ATD\*.fls
-	rmdir /S /Q apps\application-server\bin || rem
-	rmdir /S /Q apps\application-server\obj || rem
+	rmdir /S /Q application-server\bin || rem
+	rmdir /S /Q application-server\obj || rem
 	docker container prune -f || rem
 	docker image prune -f || rem
 	docker rmi sc-web-server -f || rem
@@ -68,8 +68,8 @@ else
 	rm -f documents/DD/*.aux documents/DD/*.log documents/DD/*.out documents/DD/*.toc documents/DD/*.fls
 	rm -f documents/ITD/*.aux documents/ITD/*.log documents/ITD/*.out documents/ITD/*.toc documents/ITD/*.fls
 	rm -f documents/ATD/*.aux documents/ATD/*.log documents/ATD/*.out documents/ATD/*.toc documents/ATD/*.fls
-	rm -rf apps/application-server/bin
-	rm -rf apps/application-server/obj
+	rm -rf application-server/bin
+	rm -rf application-server/obj
 	docker container prune -f
 	docker image prune -f
 	docker rmi sc-web-server -f
@@ -77,18 +77,18 @@ else
 endif
 
 web-server:
-	npm --prefix apps/web-server start
+	npm --prefix web-server start
 
 web-server-docker:
-	docker build -t sc-web-server ./apps/web-server
+	docker build -t sc-web-server ./web-server
 	docker run --rm -it -p 80:80 sc-web-server
 	docker image prune -f
 
 application-server:
-	dotnet run --project apps/application-server
+	dotnet run --project application-server
 
 application-server-docker:
-	docker build -t sc-application-server ./apps/application-server
+	docker build -t sc-application-server ./application-server
 	docker run --rm -it -p 4673:4673 sc-application-server
 	docker image prune -f
 

@@ -16,10 +16,8 @@ Additionally, it provides suggestions for improving CVs and project descriptions
 ## Usage
 
 To build and run the project apps, you will need to install Docker.
-All commands are meant to be run from the [project root folder](.).
-On Windows, Docker Desktop must be turned on before launching the apps from the terminal line.
 
-Firstly, pull the docker images from Docker Hub.
+Firstly, pull the images from Docker Hub.
 
 ```
 docker pull fostidich/sc-web-server:latest
@@ -42,25 +40,9 @@ docker stop sc-application-server
 
 - - -
 
-## Locations
-
-The latest version of the project documents can be found [here](delivery).
-
-- [RASD](delivery/RASDv1.0.pdf)
-- [DD](delivery/DDv1.0.pdf)
-- [ITD](delivery/ITDv1.0.pdf)
-- [ATD](delivery/ATDv1.0.pdf)
-
-The applications source code can be found [here](apps).
-
-- [Web server](apps/web-server)
-- [Application server](apps/application-server)
-
-- - -
-
 ## TODO
 
-- [x] Set up code environment
-- [ ] Start coding
+- [x] Set up code
+- [ ] Move assets in documents
 
 ###### C# code written by Francesco Ostidich, Matteo Salari, Francesco Rivitti

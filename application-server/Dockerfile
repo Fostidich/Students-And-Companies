@@ -1,17 +1,14 @@
-# Use the official .NET SDK image
 FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
-WORKDIR /app
 
-# Copy project files
-COPY server.csproj ./
-COPY src ./src
+WORKDIR /app
+COPY ApplicationServer.csproj ./
 RUN dotnet restore
 
-# Build the application
+COPY . .
 RUN dotnet build --configuration Release --output /app/build
 
-# Runtime image
 FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS runtime
-WORKDIR /app
+
 COPY --from=build /app/build .
-ENTRYPOINT ["dotnet", "server-release.dll"]
+ENTRYPOINT ["dotnet", "ApplicationServer.dll"]
+

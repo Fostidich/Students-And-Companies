@@ -5,7 +5,7 @@
         <TargetFramework>net8.0</TargetFramework>
         <Optimize>false</Optimize>
         <OutputPath>bin\Debug\</OutputPath>
-        <AssemblyName>server</AssemblyName>
+        <AssemblyName>ApplicationServer</AssemblyName>
     </PropertyGroup>
 
     <PropertyGroup Condition="'$(Configuration)' == 'Release'">
@@ -13,7 +13,7 @@
         <TargetFramework>net8.0</TargetFramework>
         <Optimize>true</Optimize>
         <OutputPath>bin\Release\</OutputPath>
-        <AssemblyName>server-release</AssemblyName>
+        <AssemblyName>ApplicationServer</AssemblyName>
     </PropertyGroup>
 
 </Project>
