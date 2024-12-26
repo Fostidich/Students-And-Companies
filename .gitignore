@@ -22,7 +22,7 @@ documents/**/*.pdf
 
 # Web server
 **/node_modules
-**/dist**
+**/dist*
 **/logs
 **/*.log*
 **/*.ntvs*
