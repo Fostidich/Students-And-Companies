@@ -1,14 +1,10 @@
-.idea/
-.vscode/
+# IDEs
+**/.idea
+**/.vscode
+**/.vim
 **/.DS_Store
 
-**/package-lock.json
-**/node_modules/
-**/build/
-**/target/
-**/obj/
-**/bin/
-
+# Latex documents
 **/_typos.toml
 **/*.drawio
 **/*.aux
@@ -16,30 +12,23 @@
 **/*.out
 **/*.toc
 **/*.fls
+documents/**/*.pdf
 
-documents/RASD/*.pdf
-documents/DD/*.pdf
-documents/ITD/*.pdf
-documents/ATD/*.pdf
+# Application server
+**/build
+**/target
+**/obj
+**/bin
 
 # Web server
-web-server/logs/
-web-server/*.log
-web-server/npm-debug.log*
-web-server/yarn-debug.log*
-web-server/yarn-error.log*
-web-server/pnpm-debug.log*
-web-server/lerna-debug.log*
-web-server/node_modules/
-web-server/dist/
-web-server/dist-ssr/
-web-server/*.local
-web-server/.vscode/
-web-server/.idea/
-web-server/.DS_Store
-web-server/*.suo
-web-server/*.ntvs*
-web-server/*.njsproj
-web-server/*.sln
-web-server/*.sw?
+**/node_modules
+**/dist**
+**/logs
+**/*.log*
+**/*.ntvs*
+**/*.local
+**/*.suo
+**/*.njsproj
+**/*.sln
+**/*.sw?
 

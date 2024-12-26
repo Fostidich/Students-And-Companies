@@ -59,6 +59,7 @@ ifeq ($(OS),Windows_NT)
 	del /Q /F documents\ATD\*.aux documents\ATD\*.log documents\ATD\*.out documents\ATD\*.toc documents\ATD\*.fls
 	rmdir /S /Q application-server\bin || rem
 	rmdir /S /Q application-server\obj || rem
+	rmdir /S /Q web-server\node_modules || rem
 	docker container prune -f || rem
 	docker image prune -f || rem
 	docker rmi sc-web-server -f || rem
@@ -70,6 +71,7 @@ else
 	rm -f documents/ATD/*.aux documents/ATD/*.log documents/ATD/*.out documents/ATD/*.toc documents/ATD/*.fls
 	rm -rf application-server/bin
 	rm -rf application-server/obj
+	rm -rf web-server/node_modules
 	docker container prune -f
 	docker image prune -f
 	docker rmi sc-web-server -f
@@ -77,7 +79,8 @@ else
 endif
 
 web-server:
-	npm --prefix web-server start
+	npm --prefix web-server install
+	npm --prefix web-server run dev
 
 web-server-docker:
 	docker build -t sc-web-server ./web-server
