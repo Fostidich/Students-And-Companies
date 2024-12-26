@@ -22,3 +22,24 @@ documents/DD/*.pdf
 documents/ITD/*.pdf
 documents/ATD/*.pdf
 
+# Web server
+web-server/logs/
+web-server/*.log
+web-server/npm-debug.log*
+web-server/yarn-debug.log*
+web-server/yarn-error.log*
+web-server/pnpm-debug.log*
+web-server/lerna-debug.log*
+web-server/node_modules/
+web-server/dist/
+web-server/dist-ssr/
+web-server/*.local
+web-server/.vscode/
+web-server/.idea/
+web-server/.DS_Store
+web-server/*.suo
+web-server/*.ntvs*
+web-server/*.njsproj
+web-server/*.sln
+web-server/*.sw?
+
