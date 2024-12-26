@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="assets/SC-logo.png" alt="S&C logo" width="250">
+  <img src="documents/assets/SC-logo.png" alt="S&C logo" width="250">
 </p>
 
 # Students & Companies
@@ -15,9 +15,9 @@ Additionally, it provides suggestions for improving CVs and project descriptions
 
 ## Usage
 
-To build and run the project apps, you will need to install Docker.
+To launch the project servers, [Docker](docker.com) must be installed.
 
-Firstly, pull the images from Docker Hub.
+To download the artifacts, pull the images from Docker Hub.
 
 ```
 docker pull fostidich/sc-web-server:latest
@@ -31,6 +31,7 @@ docker run -d --rm --name sc-web-server -p 80:80 fostidich/sc-web-server
 docker run -d --rm --name sc-application-server -p 4673:4673 fostidich/sc-application-server
 ```
 
+You should now find the website up on [localhost:80](localhost:80).
 Once concluded, stop the servers executions.
 
 ```
@@ -43,6 +44,7 @@ docker stop sc-application-server
 ## TODO
 
 - [x] Set up code
-- [ ] Move assets in documents
+- [ ] Assign components
+- [ ] Dispatch a request
 
-###### C# code written by Francesco Ostidich, Matteo Salari, Francesco Rivitti
+###### C#/Javascript code written by Francesco Ostidich, Matteo Salari, Francesco Rivitti
