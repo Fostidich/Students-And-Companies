@@ -6,14 +6,14 @@ using System.Text.Json;
 public class AuthenticationController : ControllerBase {
 
     [HttpPost("register")]
-    public IActionResult Register([FromBody] RegistrationForm registrationForm) {
+    public IActionResult Register([FromBody] DTO.RegistrationForm registrationForm) {
 
         // Check registration form validity
-        if (!AuthenticationService.isRegistrationFormValid(registrationForm))
+        if (!AuthenticationService.IsRegistrationFormValid(registrationForm))
             return BadRequest("Validation error.\n");
 
         // Add user data to DB
-        if (AuthenticationService.registerUser(registrationForm))
+        if (AuthenticationService.RegisterUser(registrationForm))
             return Ok();
         else
             return StatusCode(500, "Internal server error.\n");
@@ -25,7 +25,7 @@ public class AuthenticationController : ControllerBase {
     }
 
     [HttpPost("login")]
-    public IActionResult Login([FromBody] Credentials credentials) {
+    public IActionResult Login([FromBody] DTO.Credentials credentials) {
         return Ok($"Received credentials {JsonSerializer.Serialize(credentials)}\n");
     }
 

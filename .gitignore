@@ -1,8 +1,11 @@
+# Misc
+**/.env
+**/.DS_Store
+
 # IDEs
 **/.idea
 **/.vscode
 **/.vim
-**/.DS_Store
 
 # Latex documents
 **/_typos.toml
