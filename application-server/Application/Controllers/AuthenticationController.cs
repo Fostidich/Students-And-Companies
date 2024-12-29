@@ -1,5 +1,4 @@
 using Microsoft.AspNetCore.Mvc;
-using System.Text.Json;
 
 [ApiController]
 [Route("api/authentication")]
@@ -21,12 +20,18 @@ public class AuthenticationController : ControllerBase {
 
     [HttpPost("verification/{id}")]
     public IActionResult Verification(int id) {
-        return Ok($"received verification id {id}\n");
+        return Ok();
     }
 
     [HttpPost("login")]
     public IActionResult Login([FromBody] DTO.Credentials credentials) {
-        return Ok($"Received credentials {JsonSerializer.Serialize(credentials)}\n");
+        return Ok(credentials);
+    }
+
+    [HttpGet("users/{id}")]
+    public IActionResult GetUser(int id) {
+        // TODO check if user exists
+        return Ok(AuthenticationService.GetUser(id));
     }
 
 }

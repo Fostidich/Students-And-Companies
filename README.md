@@ -46,8 +46,10 @@ docker stop sc-application-server
 - [x] Set up code
 - [ ] Assign components
 - [x] Dispatch a request
-- [ ] Put up the DB
+- [x] Put DB on AWS
 - [ ] Fix APIs in DD
 - [ ] Fix components names in DD
+- [ ] Fill controllers with APIs
+- [ ] Utilize interfaces
 
 ###### C# and JavaScript code written by Francesco Ostidich, Matteo Salari, Francesco Rivitti
