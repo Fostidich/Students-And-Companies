@@ -7,6 +7,7 @@ Console.WriteLine("Starting application server....\n");
 
 // Retrieve .env values
 DotEnv.Load();
+// TODO if connection default to db is not found, use localhost
 
 // Find routes controllers and start application
 var builder = WebApplication.CreateBuilder(args);
