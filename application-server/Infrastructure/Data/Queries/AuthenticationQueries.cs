@@ -1,9 +1,11 @@
 using System;
 using MySql.Data.MySqlClient;
+using System.Data;
+using System.Collections.Generic;
 
-public static class AuthenticationQueries {
+public class AuthenticationQueries : IAuthenticationQueries {
 
-    public static bool RegisterUser(Entity.User user) {
+    public bool RegisterUser(Entity.User user) {
         try {
             string query = @"
                 INSERT INTO users (username, email, hashed_password, user_type)
@@ -24,7 +26,7 @@ public static class AuthenticationQueries {
         }
     }
 
-    public static Entity.User GetUser(int id) {
+    public Entity.User GetUser(int id) {
         var user = new Entity.User();
         try {
             string query = @"
@@ -37,12 +39,30 @@ public static class AuthenticationQueries {
             command.Parameters.AddWithValue("@id", id);
             using var reader = command.ExecuteReader();
 
-            user = DataService.MapToUsers(reader)[0];
+            user = MapToUsers(reader)[0];
         } catch (Exception ex) {
             Console.WriteLine(ex.Message);
         }
 
         return user;
+    }
+
+    private List<Entity.User> MapToUsers(IDataReader reader) {
+        var users = new List<Entity.User>();
+
+        while (reader.Read()) {
+            var user = new Entity.User {
+                Id = Convert.ToInt32(reader["id"]),
+                Username = reader["username"].ToString(),
+                Email = reader["email"].ToString(),
+                HashedPassword = reader["hashed_password"].ToString(),
+                UserType = reader["user_type"].ToString(),
+                CreatedAt = reader["created_at"].ToString()
+            };
+            users.Add(user);
+        }
+
+        return users;
     }
 
 }

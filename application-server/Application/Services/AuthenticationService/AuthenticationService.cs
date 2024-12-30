@@ -1,23 +1,29 @@
-public static class AuthenticationService {
+public class AuthenticationService : IAuthenticationService {
 
-    public static bool IsRegistrationFormValid(DTO.RegistrationForm registrationForm) {
+    private readonly IAuthenticationQueries queries;
+
+    public AuthenticationService(IAuthenticationQueries queries) {
+        this.queries = queries;
+    }
+
+    public bool IsRegistrationFormValid(DTO.RegistrationForm registrationForm) {
         // TODO check that username and email are unique
         return true;
     }
 
-    public static bool RegisterUser(DTO.RegistrationForm registrationForm) {
+    public bool RegisterUser(DTO.RegistrationForm registrationForm) {
         var user = new Entity.User {
             Username = registrationForm.Username,
             Email = registrationForm.Email,
             HashedPassword = registrationForm.Password, // TODO hash and salt the password
             UserType = registrationForm.UserType
         };
-        return AuthenticationQueries.RegisterUser(user);
+        return queries.RegisterUser(user);
     }
 
-    public static DTO.User GetUser(int id) {
+    public DTO.User GetUser(int id) {
         // TODO check if query goes well
-        var userEntity = AuthenticationQueries.GetUser(id);
+        var userEntity = queries.GetUser(id);
         var userDto = new DTO.User {
             Id = userEntity.Id,
             Username = userEntity.Username,

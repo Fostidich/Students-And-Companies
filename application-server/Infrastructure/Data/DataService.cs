@@ -1,33 +1,29 @@
 using System;
-using System.Data;
 using MySql.Data.MySqlClient;
-using System.Collections.Generic;
 
 public static class DataService {
 
-    public static MySqlConnection GetConnection() {
-        string default_connection = Environment.GetEnvironmentVariable("DB_DEFAULT_CONNECTION");
-        var connection = new MySqlConnection(default_connection);
-        connection.Open();
-        return connection;
+    private static string defaultConnection;
+
+    static DataService() {
+        defaultConnection = "Server=localhost;Database=students_and_companies;User ID=sc_admin;Password=;";
     }
 
-    public static List<Entity.User> MapToUsers(IDataReader reader) {
-        var users = new List<Entity.User>();
-
-        while (reader.Read()) {
-            var user = new Entity.User {
-                Id = Convert.ToInt32(reader["id"]),
-                Username = reader["username"].ToString(),
-                Email = reader["email"].ToString(),
-                HashedPassword = reader["hashed_password"].ToString(),
-                UserType = reader["user_type"].ToString(),
-                CreatedAt = reader["created_at"].ToString()
-            };
-            users.Add(user);
+    public static bool LoadDefaultConnection() {
+        string connectionString = Environment.GetEnvironmentVariable("DB_DEFAULT_CONNECTION");
+        if (string.IsNullOrEmpty(connectionString)) {
+            Console.WriteLine($"No connection string found in .env: using \"{defaultConnection}\".");
+            return false;
         }
+        else
+            defaultConnection = connectionString;
+            return true;
+    }
 
-        return users;
+    public static MySqlConnection GetConnection() {
+        var connection = new MySqlConnection(defaultConnection);
+        connection.Open();
+        return connection;
     }
 
 }

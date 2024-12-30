@@ -7,11 +7,31 @@ Console.WriteLine("Starting application server....\n");
 
 // Retrieve .env values
 DotEnv.Load();
-// TODO if connection default to db is not found, use localhost
 
-// Find routes controllers and start application
+// Load DB connection string
+DataService.LoadDefaultConnection();
+
+// Find routes controllers
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers();
+
+// Add interfaces to scope
+builder.Services.AddScoped<IAuthenticationService, AuthenticationService>();
+builder.Services.AddScoped<IAuthenticationQueries, AuthenticationQueries>();
+builder.Services.AddScoped<IEnrollmentService, EnrollmentService>();
+builder.Services.AddScoped<IEnrollmentQueries, EnrollmentQueries>();
+builder.Services.AddScoped<IFeedbackService, FeedbackService>();
+builder.Services.AddScoped<IFeedbackQueries, FeedbackQueries>();
+builder.Services.AddScoped<IInternshipService, InternshipService>();
+builder.Services.AddScoped<IInternshipQueries, InternshipQueries>();
+builder.Services.AddScoped<INotificationService, NotificationService>();
+builder.Services.AddScoped<INotificationQueries, NotificationQueries>();
+builder.Services.AddScoped<IProfileService, ProfileService>();
+builder.Services.AddScoped<IProfileQueries, ProfileQueries>();
+builder.Services.AddScoped<IRecommendationService, RecommendationService>();
+builder.Services.AddScoped<IRecommendationQueries, RecommendationQueries>();
+
+// Build and start application
 var app = builder.Build();
 app.MapControllers();
 app.UseAuthorization();
