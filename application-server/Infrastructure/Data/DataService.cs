@@ -1,12 +1,14 @@
 using System;
 using MySql.Data.MySqlClient;
+using Microsoft.Extensions.Configuration;
 
-public static class DataService {
+public class DataService {
 
     private static string defaultConnection;
 
-    static DataService() {
-        defaultConnection = "Server=localhost;Database=students_and_companies;User ID=sc_admin;Password=;";
+    public DataService(IConfiguration configuration) {
+        // FIXME no calls to dotenv here id say
+        defaultConnection = configuration["DbDefaultConnection"];
     }
 
     public static bool LoadDefaultConnection() {

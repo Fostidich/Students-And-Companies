@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Authorization;
 
 [ApiController]
 [Route("api/authentication")]
@@ -24,16 +25,20 @@ public class AuthenticationController : ControllerBase {
             return StatusCode(500, "Internal server error.\n");
     }
 
-    [HttpPost("verification/{id}")]
-    public IActionResult Verification(int id) {
-        return Ok();
-    }
-
     [HttpPost("login")]
     public IActionResult Login([FromBody] DTO.Credentials credentials) {
-        return Ok(credentials);
+
+        // Check that credentials are correct
+        User user = authentication.ValidateCredentials(credentials));
+        if (user == null)
+            return Unauthorized("Invalid credentials.\n");
+
+        // Generate token from user data
+        string token = authentication.GenerateToken(user);
+        return Ok(new { token });
     }
 
+    [Authorize]
     [HttpGet("users/{id}")]
     public IActionResult GetUser(int id) {
         // TODO check if user exists
