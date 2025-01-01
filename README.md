@@ -50,6 +50,6 @@ docker stop sc-application-server
 - [ ] Fix APIs in DD
 - [ ] Fix components names in DD
 - [ ] Fill controllers with APIs
-- [ ] Utilize interfaces
+- [x] Utilize interfaces
 
 ###### C# and JavaScript code written by Francesco Ostidich, Matteo Salari, Francesco Rivitti

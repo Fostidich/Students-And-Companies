@@ -2,32 +2,45 @@ using dotenv.net;
 using System;
 using System.IO;
 using System.Text;
-using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
+using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.DataProtection.AuthenticatedEncryption;
 using Microsoft.AspNetCore.DataProtection.AuthenticatedEncryption.ConfigurationModel;
-using Microsoft.Extensions.Logging;
 
 Console.WriteLine("Starting application server....\n");
 
 // Retrieve .env values
 DotEnv.Load();
-// TODO put .env values in builder configuration
 
-// Load DB connection string
-DataService.LoadDefaultConnection();
+// Manage app settings configuration with dotenv
+var builder = WebApplication.CreateBuilder(args);
+string jwtSecretEnv = Environment.GetEnvironmentVariable("JWT_SECRET");
+if (string.IsNullOrEmpty(jwtSecretEnv)) {
+    string jwtSecretStd = builder.Configuration["Jwt:Secret"];
+    Console.WriteLine($"No JWT secret found in .env: using \"{jwtSecretStd}\".");
+} else {
+    builder.Configuration["Jwt:Secret"] = jwtSecretEnv;
+}
+string dbDefaultConnectionEnv = Environment.GetEnvironmentVariable("DB_DEFAULT_CONNECTION");
+if (string.IsNullOrEmpty(dbDefaultConnectionEnv)) {
+    string dbDefaultConnectionStd = builder.Configuration["DbDefaultConnection"];
+    Console.WriteLine($"No DB default connection found in .env: using \"{dbDefaultConnectionStd}\".");
+} else {
+    builder.Configuration["DbDefaultConnection"] = dbDefaultConnectionEnv;
+}
 
 // Find routes controllers
-var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers();
 
 // Configure console logging
 builder.Logging.SetMinimumLevel(LogLevel.Warning);
 
-// Add interfaces to scope
+// Add interfaces for constructors
+builder.Services.AddScoped<IDataService, DataService>();
 builder.Services.AddScoped<IAuthenticationService, AuthenticationService>();
 builder.Services.AddScoped<IAuthenticationQueries, AuthenticationQueries>();
 builder.Services.AddScoped<IEnrollmentService, EnrollmentService>();
@@ -44,13 +57,9 @@ builder.Services.AddScoped<IRecommendationService, RecommendationService>();
 builder.Services.AddScoped<IRecommendationQueries, RecommendationQueries>();
 
 // Add JWT authentication
-string jwtIssuer = "students_and_companies_application_server";
-string jwtAudience = "students_and_companies_web_server";
-string jwtSecret = Environment.GetEnvironmentVariable("JWT_SECRET");
-if (string.IsNullOrEmpty(jwtSecret)) {
-    jwtSecret = "SeCEVerOSfig1R9MzN2eGuqJ4uRtDV1y";
-    Console.WriteLine($"No JWT secret found in .env: using \"{jwtSecret}\".");
-}
+string jwtIssuer = builder.Configuration["Jwt:Issuer"];
+string jwtAudience = builder.Configuration["Jwt:Audience"];
+string jwtSecret = builder.Configuration["Jwt:Secret"];
 builder.Services.AddAuthentication(options => {
     options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
     options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;

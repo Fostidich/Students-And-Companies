@@ -1,5 +1,4 @@
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Authorization;
 
 [ApiController]
 [Route("api/authentication")]
@@ -20,7 +19,7 @@ public class AuthenticationController : ControllerBase {
 
         // Add user data to DB
         if (authentication.RegisterUser(registrationForm))
-            return Ok();
+            return Ok("User registered.\n");
         else
             return StatusCode(500, "Internal server error.\n");
     }
@@ -29,20 +28,13 @@ public class AuthenticationController : ControllerBase {
     public IActionResult Login([FromBody] DTO.Credentials credentials) {
 
         // Check that credentials are correct
-        User user = authentication.ValidateCredentials(credentials));
+        DTO.User user = authentication.ValidateCredentials(credentials);
         if (user == null)
             return Unauthorized("Invalid credentials.\n");
 
         // Generate token from user data
         string token = authentication.GenerateToken(user);
         return Ok(new { token });
-    }
-
-    [Authorize]
-    [HttpGet("users/{id}")]
-    public IActionResult GetUser(int id) {
-        // TODO check if user exists
-        return Ok(authentication.GetUser(id));
     }
 
 }
