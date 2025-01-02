@@ -34,23 +34,45 @@ public class AuthenticationQueries : IAuthenticationQueries {
     }
 
     public Entity.User FindFromUsername(string username) {
-        var user = new Entity.User();
         try {
             string query = @"
                 SELECT *
                 FROM users
-                WHERE username = @username";
+                WHERE LOWER(username) = LOWER(@username)";
             using var db_connection = dataService.GetConnection();
             using var command = new MySqlCommand(query, db_connection);
 
             command.Parameters.AddWithValue("@username", username);
             using var reader = command.ExecuteReader();
 
-            user = MapToUsers(reader)[0];
+            var users = MapToUsers(reader);
+            if (users.Count == 0) return null;
+            return users[0];
         } catch (Exception ex) {
             Console.WriteLine(ex.Message);
+            return null;
         }
-        return user;
+    }
+
+    public Entity.User FindFromEmail(string email) {
+        try {
+            string query = @"
+                SELECT *
+                FROM users
+                WHERE email = @email";
+            using var db_connection = dataService.GetConnection();
+            using var command = new MySqlCommand(query, db_connection);
+
+            command.Parameters.AddWithValue("@email", email);
+            using var reader = command.ExecuteReader();
+
+            var users = MapToUsers(reader);
+            if (users.Count == 0) return null;
+            return users[0];
+        } catch (Exception ex) {
+            Console.WriteLine(ex.Message);
+            return null;
+        }
     }
 
     private List<Entity.User> MapToUsers(IDataReader reader) {

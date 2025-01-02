@@ -1,5 +1,6 @@
 using System;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Security.Claims;
 using System.Security.Cryptography;
 using System.IdentityModel.Tokens.Jwt;
@@ -23,9 +24,42 @@ public class AuthenticationService : IAuthenticationService {
     }
 
     public bool IsRegistrationFormValid(DTO.RegistrationForm registrationForm) {
-        // TODO check that username and email are unique
-        // TODO check parameters lenghts
-        // TODO check that user type is convertible
+        string username = registrationForm.Username;
+        string password = registrationForm.Password;
+        string userType = registrationForm.UserType;
+        string email = registrationForm.Email;
+
+        // Check that fields are not null
+        if (username.IsNullOrEmpty()) return false;
+        if (password.IsNullOrEmpty()) return false;
+        if (userType.IsNullOrEmpty()) return false;
+        if (email.IsNullOrEmpty()) return false;
+
+        // No white space allowed
+        if (username.Contains(' ')) return false;
+        if (email.Contains(' ')) return false;
+
+        // Check parameters lenghts
+        if (username.Length < 4 || username.Length > 32) return false;
+        if (password.Length < 4 || password.Length > 32) return false;
+        if (email.Length < 4 || email.Length > 32) return false;
+
+        // Check that email has right format
+        if (!IsValidEmail(email)) return false;
+        if (IsValidEmail(username)) return false;
+
+        // Check that user type is convertible
+        try {
+            User.UserTypeFromString(userType);
+        } catch {
+            return false;
+        }
+
+        // Check that username and email are unique
+        if (queries.FindFromEmail(email.ToLowerInvariant()) != null) return false;
+        if (queries.FindFromUsername(username) != null) return false;
+
+        // All checks have been passed
         return true;
     }
 
@@ -37,7 +71,7 @@ public class AuthenticationService : IAuthenticationService {
         // Convert DTO to entity
         var user = new Entity.User {
             Username = registrationForm.Username,
-            Email = registrationForm.Email,
+            Email = registrationForm.Email.ToLowerInvariant(),
             Salt = salt,
             HashedPassword = hash,
             UserType = registrationForm.UserType
@@ -46,8 +80,16 @@ public class AuthenticationService : IAuthenticationService {
     }
 
     public DTO.User ValidateCredentials(DTO.Credentials credentials) {
+        // Check that fields are not null
+        if (credentials.Username.IsNullOrEmpty()) return null;
+        if (credentials.Password.IsNullOrEmpty()) return null;
+
         // Search for credentials in the DB
-        Entity.User user = queries.FindFromUsername(credentials.Username);
+        Entity.User user;
+        if (!IsValidEmail(credentials.Username))
+            user = queries.FindFromUsername(credentials.Username);
+        else
+            user = queries.FindFromEmail(credentials.Username);
 
         // Return null if user not found
         if (user == null) return null;
@@ -97,6 +139,11 @@ public class AuthenticationService : IAuthenticationService {
         string saltedPassword = salt + password;
         byte[] hashBytes = sha256.ComputeHash(Encoding.UTF8.GetBytes(saltedPassword));
         return Convert.ToBase64String(hashBytes);
+    }
+
+    public bool IsValidEmail(string email) {
+        var emailRegex = @"^[^@\s]+@[^@\s]+\.[^@\s]+$";
+        return Regex.IsMatch(email, emailRegex, RegexOptions.IgnoreCase);
     }
 
 }
