@@ -12,25 +12,23 @@ public class AuthenticationController : ControllerBase {
 
     [HttpPost("register")]
     public IActionResult Register([FromBody] DTO.RegistrationForm registrationForm) {
-
         // Check registration form validity
         if (!authentication.IsRegistrationFormValid(registrationForm))
-            return BadRequest("Validation error.\n");
+            return BadRequest("Validation error\n");
 
         // Add user data to DB
         if (authentication.RegisterUser(registrationForm))
-            return Ok("User registered.\n");
+            return Ok("User registered\n");
         else
-            return StatusCode(500, "Internal server error.\n");
+            return StatusCode(500, "Internal server error\n");
     }
 
     [HttpPost("login")]
     public IActionResult Login([FromBody] DTO.Credentials credentials) {
-
         // Check that credentials are correct
         DTO.User user = authentication.ValidateCredentials(credentials);
         if (user == null)
-            return Unauthorized("Invalid credentials.\n");
+            return Unauthorized("Invalid credentials\n");
 
         // Generate token from user data
         string token = authentication.GenerateToken(user);

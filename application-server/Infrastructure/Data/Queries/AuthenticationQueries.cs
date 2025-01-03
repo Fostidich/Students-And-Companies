@@ -1,7 +1,5 @@
 using System;
 using MySql.Data.MySqlClient;
-using System.Data;
-using System.Collections.Generic;
 
 public class AuthenticationQueries : IAuthenticationQueries {
 
@@ -45,7 +43,7 @@ public class AuthenticationQueries : IAuthenticationQueries {
             command.Parameters.AddWithValue("@username", username);
             using var reader = command.ExecuteReader();
 
-            var users = MapToUsers(reader);
+            var users = dataService.MapToUsers(reader);
             if (users.Count == 0) return null;
             return users[0];
         } catch (Exception ex) {
@@ -66,32 +64,13 @@ public class AuthenticationQueries : IAuthenticationQueries {
             command.Parameters.AddWithValue("@email", email);
             using var reader = command.ExecuteReader();
 
-            var users = MapToUsers(reader);
+            var users = dataService.MapToUsers(reader);
             if (users.Count == 0) return null;
             return users[0];
         } catch (Exception ex) {
             Console.WriteLine(ex.Message);
             return null;
         }
-    }
-
-    private List<Entity.User> MapToUsers(IDataReader reader) {
-        var users = new List<Entity.User>();
-
-        while (reader.Read()) {
-            var user = new Entity.User {
-                Id = Convert.ToInt32(reader["id"]),
-                Username = reader["username"].ToString(),
-                Email = reader["email"].ToString(),
-                Salt = reader["salt"].ToString(),
-                HashedPassword = reader["hashed_password"].ToString(),
-                UserType = reader["user_type"].ToString(),
-                CreatedAt = reader["created_at"].ToString()
-            };
-            users.Add(user);
-        }
-
-        return users;
     }
 
 }

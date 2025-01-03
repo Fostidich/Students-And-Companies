@@ -2,40 +2,40 @@ using System;
 
 public class User {
 
-    private int id { get; }
-    private string username { get; }
-    private UserType userType { get; }
-    private string email { get; }
+    public int Id { get; }
+    public string Username { get; }
+    public UserType UserType { get; }
+    public string Email { get; }
 
     public User(Entity.User user) {
-        id = user.Id;
-        username = user.Username;
-        userType = UserTypeFromString(user.UserType);
-        email = user.Email;
+        Id = user.Id;
+        Username = user.Username;
+        UserType = UserTypeFromString(user.UserType);
+        Email = user.Email;
     }
 
     public User(DTO.User user) {
-        id = user.Id;
-        username = user.Username;
-        userType = UserTypeFromString(user.UserType);
-        email = user.Email;
+        Id = user.Id;
+        Username = user.Username;
+        UserType = UserTypeFromString(user.UserType);
+        Email = user.Email;
     }
 
     public Entity.User ToEntity() {
         return new Entity.User {
-            Id = id,
-            Username = username,
-            UserType = userType.ToString(),
-            Email = email
+            Id = Id,
+            Username = Username,
+            UserType = UserType.ToString(),
+            Email = Email
         };
     }
 
     public DTO.User ToDto() {
         return new DTO.User {
-            Id = id,
-            Username = username,
-            UserType = userType.ToString(),
-            Email = email
+            Id = Id,
+            Username = Username,
+            UserType = UserType.ToString(),
+            Email = Email
         };
     }
 

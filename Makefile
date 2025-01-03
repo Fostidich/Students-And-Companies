@@ -88,7 +88,7 @@ web-server-docker:
 	docker image prune -f
 
 application-server:
-	dotnet watch run --project application-server
+	dotnet watch run --project application-server --configuration Debug
 
 application-server-docker:
 	docker build -t sc-application-server ./application-server

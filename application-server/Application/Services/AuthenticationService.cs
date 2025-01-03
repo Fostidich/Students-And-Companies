@@ -30,10 +30,10 @@ public class AuthenticationService : IAuthenticationService {
         string email = registrationForm.Email;
 
         // Check that fields are not null
-        if (username.IsNullOrEmpty()) return false;
-        if (password.IsNullOrEmpty()) return false;
-        if (userType.IsNullOrEmpty()) return false;
-        if (email.IsNullOrEmpty()) return false;
+        if (string.IsNullOrWhiteSpace(username)) return false;
+        if (string.IsNullOrWhiteSpace(password)) return false;
+        if (string.IsNullOrWhiteSpace(userType)) return false;
+        if (string.IsNullOrWhiteSpace(email)) return false;
 
         // No white space allowed
         if (username.Contains(' ')) return false;
@@ -41,8 +41,8 @@ public class AuthenticationService : IAuthenticationService {
 
         // Check parameters lenghts
         if (username.Length < 4 || username.Length > 32) return false;
-        if (password.Length < 4 || password.Length > 32) return false;
-        if (email.Length < 4 || email.Length > 32) return false;
+        if (password.Length < 8 || password.Length > 32) return false;
+        if (email.Length < 5 || email.Length > 32) return false;
 
         // Check that email has right format
         if (!IsValidEmail(email)) return false;
@@ -81,8 +81,8 @@ public class AuthenticationService : IAuthenticationService {
 
     public DTO.User ValidateCredentials(DTO.Credentials credentials) {
         // Check that fields are not null
-        if (credentials.Username.IsNullOrEmpty()) return null;
-        if (credentials.Password.IsNullOrEmpty()) return null;
+        if (string.IsNullOrWhiteSpace(credentials.Username)) return null;
+        if (string.IsNullOrWhiteSpace(credentials.Password)) return null;
 
         // Search for credentials in the DB
         Entity.User user;
@@ -99,7 +99,7 @@ public class AuthenticationService : IAuthenticationService {
 
         // Return the user, or null if password doesn't match
         if (hash.Equals(user.HashedPassword))
-            return new User(user).ToDto();
+            return (new User(user)).ToDto();
         else
             return null;
    }
@@ -125,7 +125,7 @@ public class AuthenticationService : IAuthenticationService {
         return new JwtSecurityTokenHandler().WriteToken(token);
     }
 
-    private string GenerateSalt() {
+    public string GenerateSalt() {
         // Generate a cryptographic random salt
         byte[] saltBytes = new byte[16];
         using var rng = RandomNumberGenerator.Create();
@@ -133,7 +133,7 @@ public class AuthenticationService : IAuthenticationService {
         return Convert.ToBase64String(saltBytes);
     }
 
-    private string HashPassword(string salt, string password) {
+    public string HashPassword(string salt, string password) {
         // Combine the salt with the password and hash them
         using var sha256 = SHA256.Create();
         string saltedPassword = salt + password;

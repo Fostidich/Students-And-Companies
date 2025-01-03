@@ -51,5 +51,10 @@ docker stop sc-application-server
 - [ ] Fix components names in DD
 - [ ] Fill controllers with APIs
 - [x] Utilize interfaces
+- [ ] Set up docker for the DB
+- [ ] Decide for email component
+- [ ] Write tests
+- [ ] Switch some Ok routes with Created
+- [ ] Add on queries ON UPDATE CASCADE
 
 ###### C# and JavaScript code written by Francesco Ostidich, Matteo Salari, Francesco Rivitti
