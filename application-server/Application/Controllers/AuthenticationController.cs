@@ -26,7 +26,7 @@ public class AuthenticationController : ControllerBase {
     [HttpPost("login")]
     public IActionResult Login([FromBody] DTO.Credentials credentials) {
         // Check that credentials are correct
-        DTO.User user = authentication.ValidateCredentials(credentials);
+        User user = authentication.ValidateCredentials(credentials);
         if (user == null)
             return Unauthorized("Invalid credentials\n");
 

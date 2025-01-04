@@ -24,42 +24,11 @@ public class AuthenticationService : IAuthenticationService {
     }
 
     public bool IsRegistrationFormValid(DTO.RegistrationForm registrationForm) {
-        string username = registrationForm.Username;
-        string password = registrationForm.Password;
-        string userType = registrationForm.UserType;
-        string email = registrationForm.Email;
-
-        // Check that fields are not null
-        if (string.IsNullOrWhiteSpace(username)) return false;
-        if (string.IsNullOrWhiteSpace(password)) return false;
-        if (string.IsNullOrWhiteSpace(userType)) return false;
-        if (string.IsNullOrWhiteSpace(email)) return false;
-
-        // No white space allowed
-        if (username.Contains(' ')) return false;
-        if (email.Contains(' ')) return false;
-
-        // Check parameters lenghts
-        if (username.Length < 4 || username.Length > 32) return false;
-        if (password.Length < 8 || password.Length > 32) return false;
-        if (email.Length < 5 || email.Length > 32) return false;
-
-        // Check that email has right format
-        if (!IsValidEmail(email)) return false;
-        if (IsValidEmail(username)) return false;
-
-        // Check that user type is convertible
-        try {
-            User.UserTypeFromString(userType);
-        } catch {
-            return false;
-        }
-
         // Check that username and email are unique
-        if (queries.FindFromEmail(email.ToLowerInvariant()) != null) return false;
-        if (queries.FindFromUsername(username) != null) return false;
+        if (queries.FindFromEmail(registrationForm.Email.ToLowerInvariant()) != null) return false;
+        if (queries.FindFromUsername(registrationForm.Username) != null) return false;
 
-        // All checks have been passed
+        // Checks passed
         return true;
     }
 
@@ -79,11 +48,7 @@ public class AuthenticationService : IAuthenticationService {
         return queries.RegisterUser(user);
     }
 
-    public DTO.User ValidateCredentials(DTO.Credentials credentials) {
-        // Check that fields are not null
-        if (string.IsNullOrWhiteSpace(credentials.Username)) return null;
-        if (string.IsNullOrWhiteSpace(credentials.Password)) return null;
-
+    public User ValidateCredentials(DTO.Credentials credentials) {
         // Search for credentials in the DB
         Entity.User user;
         if (!IsValidEmail(credentials.Username))
@@ -99,12 +64,12 @@ public class AuthenticationService : IAuthenticationService {
 
         // Return the user, or null if password doesn't match
         if (hash.Equals(user.HashedPassword))
-            return (new User(user)).ToDto();
+            return new User(user);
         else
             return null;
    }
 
-    public string GenerateToken(DTO.User user) {
+    public string GenerateToken(User user) {
         // Define claim fields in the token
         var claims = new[] {
             new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),

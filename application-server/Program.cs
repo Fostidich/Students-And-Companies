@@ -5,13 +5,15 @@ using System.Text;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.DataProtection.AuthenticatedEncryption;
 using Microsoft.AspNetCore.DataProtection.AuthenticatedEncryption.ConfigurationModel;
 
-Console.WriteLine("Starting application server....\n");
+Console.WriteLine("Starting application server...");
 
 // Retrieve .env values
 DotEnv.Load();
@@ -33,11 +35,11 @@ if (string.IsNullOrEmpty(dbDefaultConnectionEnv)) {
     builder.Configuration["DbDefaultConnection"] = dbDefaultConnectionEnv;
 }
 
-// Find routes controllers
-builder.Services.AddControllers();
-
 // Configure console logging
 builder.Logging.SetMinimumLevel(LogLevel.Warning);
+
+// Find routes controllers
+builder.Services.AddControllers();
 
 // Add interfaces for constructors
 builder.Services.AddScoped<IDataService, DataService>();
@@ -85,12 +87,22 @@ builder.Services.AddDataProtection()
         ValidationAlgorithm = ValidationAlgorithm.HMACSHA256
     });
 
-// Build and start application
+// Add APIs summary web page
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSwaggerGen();
+
+// Build and link application services
 var app = builder.Build();
+if (app.Environment.IsDevelopment()) {
+    app.UseSwagger();
+    app.UseSwaggerUI();
+}
 app.MapControllers();
 app.UseAuthentication();
 app.UseAuthorization();
+
+// Start server
 app.Run();
 
-Console.WriteLine("\nStopping application server....");
+Console.WriteLine("Stopping application server...");
 

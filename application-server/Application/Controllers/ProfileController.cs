@@ -17,16 +17,11 @@ public class ProfileController : ControllerBase {
     [HttpGet]
     public IActionResult GetUserFromToken() {
         // Get user ID from authentication token
-        string userIdStr = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-        int userId;
-        try {
-            userId = Convert.ToInt32(userIdStr);
-        } catch {
-            return BadRequest("Validation error\n");
-        }
+        string userIdStr = User.FindFirst(ClaimTypes.NameIdentifier).Value;
+        int userId = Convert.ToInt32(userIdStr);
 
         // Find and return user data
-        DTO.User user = profile.GetUser(userId);
+        DTO.User user = profile.GetUser(userId).ToDto();
         if (user == null)
             return StatusCode(500, "Internal server error\n");
         else
@@ -38,12 +33,7 @@ public class ProfileController : ControllerBase {
     public IActionResult UpdateProfile([FromBody] DTO.ProfileUpdate updateForm) {
         // Get user ID from authentication token
         string userIdStr = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-        int userId;
-        try {
-            userId = Convert.ToInt32(userIdStr);
-        } catch {
-            return BadRequest("Validation error\n");
-        }
+        int userId = Convert.ToInt32(userIdStr);
 
         // Check update form validity
         if (!profile.IsUpdateFormValid(updateForm))
@@ -60,7 +50,7 @@ public class ProfileController : ControllerBase {
     [HttpGet("{id}")]
     public IActionResult GetUserFromId(int id) {
         // Find and return user data
-        DTO.User user = profile.GetUser(id);
+        DTO.User user = profile.GetUser(id).ToDto();
         if (user == null)
             return StatusCode(500, "Internal server error\n");
         else
