@@ -23,9 +23,6 @@ public class ProfileService : IProfileService {
     public bool UpdateProfile(int userId, DTO.ProfileUpdate updateForm) {
         bool errors = false;
 
-        // Check update form validity
-        if (!IsUpdateFormValid(updateForm)) return false;
-
         // Change password
         if (!string.IsNullOrWhiteSpace(updateForm.Password)) {
             // Retrieve salt and hashed password
@@ -53,26 +50,36 @@ public class ProfileService : IProfileService {
     }
 
     public bool IsUpdateFormValid(DTO.ProfileUpdate updateForm) {
-        string username = updateForm.Username;
-        string password = updateForm.Password;
-        string email = updateForm.Email;
+        var username = updateForm.Username;
+        var password = updateForm.Password;
+        var email = updateForm.Email;
 
-        // No white space allowed
-        if (username.Contains(' ')) return false;
-        if (email.Contains(' ')) return false;
+        if (!string.IsNullOrWhiteSpace(username)) {
+            // No white space allowed
+            if (username.Contains(' ')) return false;
+            // Check parameters lenghts
+            if (username.Length < 4 || username.Length > 32) return false;
+            // Check that username is no email format
+            if (authentication.IsValidEmail(username)) return false;
+            // Check that username is unique
+            if (authenticationQueries.FindFromUsername(username) != null) return false;
+        }
 
-        // Check parameters lenghts
-        if (username.Length < 4 || username.Length > 32) return false;
-        if (password.Length < 8 || password.Length > 32) return false;
-        if (email.Length < 5 || email.Length > 32) return false;
+        if (!string.IsNullOrWhiteSpace(password)) {
+            // Check parameters lenghts
+            if (password.Length < 8 || password.Length > 32) return false;
+        }
 
-        // Check that email has right format
-        if (!authentication.IsValidEmail(email)) return false;
-        if (authentication.IsValidEmail(username)) return false;
-
-        // Check that username and email are unique
-        if (authenticationQueries.FindFromEmail(email.ToLowerInvariant()) != null) return false;
-        if (authenticationQueries.FindFromUsername(username) != null) return false;
+        if (!string.IsNullOrWhiteSpace(username)) {
+            // No white space allowed
+            if (email.Contains(' ')) return false;
+            // Check parameters lenghts
+            if (email.Length < 5 || email.Length > 32) return false;
+            // Check that email has right format
+            if (!authentication.IsValidEmail(email)) return false;
+            // Check that email is unique
+            if (authenticationQueries.FindFromEmail(email.ToLowerInvariant()) != null) return false;
+        }
 
         // All checks have been passed
         return true;

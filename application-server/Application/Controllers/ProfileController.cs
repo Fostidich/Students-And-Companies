@@ -45,6 +45,10 @@ public class ProfileController : ControllerBase {
             return BadRequest("Validation error\n");
         }
 
+        // Check update form validity
+        if (!profile.IsUpdateFormValid(updateForm))
+            return BadRequest("Validation error\n");
+
         // Update profile
         if (profile.UpdateProfile(userId, updateForm))
             return Ok("Profile updated\n");
