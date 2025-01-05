@@ -1,4 +1,3 @@
-using dotenv.net;
 using System;
 using System.IO;
 using System.Text;
@@ -12,6 +11,8 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.DataProtection.AuthenticatedEncryption;
 using Microsoft.AspNetCore.DataProtection.AuthenticatedEncryption.ConfigurationModel;
+using Microsoft.OpenApi.Models;
+using dotenv.net;
 
 Console.WriteLine("Starting application server...");
 
@@ -47,8 +48,6 @@ builder.Services.AddScoped<IAuthenticationService, AuthenticationService>();
 builder.Services.AddScoped<IAuthenticationQueries, AuthenticationQueries>();
 builder.Services.AddScoped<IEnrollmentService, EnrollmentService>();
 builder.Services.AddScoped<IEnrollmentQueries, EnrollmentQueries>();
-builder.Services.AddScoped<IFeedbackService, FeedbackService>();
-builder.Services.AddScoped<IFeedbackQueries, FeedbackQueries>();
 builder.Services.AddScoped<IInternshipService, InternshipService>();
 builder.Services.AddScoped<IInternshipQueries, InternshipQueries>();
 builder.Services.AddScoped<INotificationService, NotificationService>();
@@ -89,7 +88,38 @@ builder.Services.AddDataProtection()
 
 // Add APIs summary web page
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+builder.Services.AddSwaggerGen(c => {
+    c.SwaggerDoc(
+        "v1",
+        new OpenApiInfo {
+            Title = "Students and Companies - Application server",
+            Version = "v1"
+        }
+    );
+    c.AddSecurityDefinition(
+        "Bearer",
+        new OpenApiSecurityScheme {
+            Name = "Authorization",
+            Type = SecuritySchemeType.ApiKey,
+            Scheme = "Bearer",
+            BearerFormat = "JWT",
+            In = ParameterLocation.Header,
+            Description = "Input: Bearer {token}",
+        }
+    );
+    c.AddSecurityRequirement(
+        new OpenApiSecurityRequirement {
+            {
+                new OpenApiSecurityScheme {
+                    Reference = new OpenApiReference {
+                        Type = ReferenceType.SecurityScheme,
+                        Id = "Bearer"
+                    }
+            },
+            new string[] {}
+        }
+    });
+});
 
 // Build and link application services
 var app = builder.Build();

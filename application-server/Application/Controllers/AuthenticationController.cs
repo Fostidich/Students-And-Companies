@@ -11,6 +11,9 @@ public class AuthenticationController : ControllerBase {
     }
 
     [HttpPost("register")]
+    [ProducesResponseType(200)]
+    [ProducesResponseType(400)]
+    [ProducesResponseType(500)]
     public IActionResult Register([FromBody] DTO.RegistrationForm registrationForm) {
         // Check registration form validity
         if (!authentication.IsRegistrationFormValid(registrationForm))
@@ -24,6 +27,8 @@ public class AuthenticationController : ControllerBase {
     }
 
     [HttpPost("login")]
+    [ProducesResponseType(200)]
+    [ProducesResponseType(401)]
     public IActionResult Login([FromBody] DTO.Credentials credentials) {
         // Check that credentials are correct
         User user = authentication.ValidateCredentials(credentials);

@@ -13,8 +13,10 @@ public class ProfileController : ControllerBase {
         this.profile = service;
     }
 
-    [Authorize]
     [HttpGet]
+    [Authorize]
+    [ProducesResponseType(200)]
+    [ProducesResponseType(500)]
     public IActionResult GetUserFromToken() {
         // Get user ID from authentication token
         string userIdStr = User.FindFirst(ClaimTypes.NameIdentifier).Value;
@@ -28,8 +30,11 @@ public class ProfileController : ControllerBase {
             return Ok(user);
     }
 
-    [Authorize]
     [HttpPost]
+    [Authorize]
+    [ProducesResponseType(200)]
+    [ProducesResponseType(400)]
+    [ProducesResponseType(500)]
     public IActionResult UpdateProfile([FromBody] DTO.ProfileUpdate updateForm) {
         // Get user ID from authentication token
         string userIdStr = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
@@ -46,8 +51,10 @@ public class ProfileController : ControllerBase {
             return StatusCode(500, "Internal server error\n");
     }
 
-    [Authorize]
     [HttpGet("{id}")]
+    [Authorize]
+    [ProducesResponseType(200)]
+    [ProducesResponseType(500)]
     public IActionResult GetUserFromId(int id) {
         // Find and return user data
         DTO.User user = profile.GetUser(id).ToDto();
@@ -55,6 +62,20 @@ public class ProfileController : ControllerBase {
             return StatusCode(500, "Internal server error\n");
         else
             return Ok(user);
+    }
+
+    [HttpGet("cv/{id}")]
+    [Authorize]
+    [ProducesResponseType(501)]
+    public IActionResult DownloadCv(int id) {
+        return StatusCode(501, "Feature not yet implemented\n");
+    }
+
+    [HttpPost("cv")]
+    [Authorize]
+    [ProducesResponseType(501)]
+    public IActionResult UploadCv() {
+        return StatusCode(501, "Feature not yet implemented\n");
     }
 
 }
