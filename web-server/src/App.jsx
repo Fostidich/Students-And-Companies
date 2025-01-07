@@ -1,6 +1,9 @@
-import Navbar from "./NavBar.jsx";
-import Card from "./Card.jsx";
-
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import Navbar from "./components/NavBar.jsx";
+import Home from "./pages/Home.jsx";
+import Profile from "./pages/Profile.jsx";
+import Notification from "./pages/Notification.jsx";
+import Help from "./pages/Help.jsx";
 function App() {
     const jobs = [
         {
@@ -42,26 +45,30 @@ function App() {
     ]
 
 
-  return (
-    <div className="gap-8">
-      <div className="gap-8">
-        <Navbar />
-      </div>
-        <div className="pt-8 px-4 flex justify-center ">
-            <div className="grid grid-cols-3 gap-8 max-w-6xl">
-                {jobs.map((job) =>
-                    <Card
-                        key = {job.id}
-                        title={job.title}
-                        imgURL={job.imgURL}
-                        jobPosition={job.jobPosition}
-                    />)}
+  // return (
+  //   <div className="gap-8">
+  //     <div className="fixed top-0 left-0 w-full bg-white shadow-md">
+  //       <Navbar />
+  //     </div>
+  //       <Home jobs={jobs} />
+  //
+  //   </div>
+  // )
+    return (
+        <Router>
+            <div className="gap-8">
+                <Navbar />
+                <div className="pt-24">
+                    <Routes>
+                        <Route path="/" element={<Home jobs={jobs} />} />
+                        <Route path="/profile" element={<Profile />} />
+                        <Route path="/notification" element={<Notification />} />
+                        <Route path="/help" element={<Help />} />
+                    </Routes>
+                </div>
             </div>
-
-        </div>
-
-    </div>
-  )
+        </Router>
+    );
 }
 
 export default App
