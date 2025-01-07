@@ -64,6 +64,13 @@ public class ProfileController : ControllerBase {
             return Ok(user);
     }
 
+    [HttpGet("cv")]
+    [Authorize]
+    [ProducesResponseType(501)]
+    public IActionResult DownloadCvFromToken() {
+        return StatusCode(501, "Feature not yet implemented\n");
+    }
+
     [HttpGet("cv/{id}")]
     [Authorize]
     [ProducesResponseType(501)]

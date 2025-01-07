@@ -338,22 +338,22 @@ Then, via the internship manager and the feedback manager components, the feedba
 
 \subsection{Application APIs}
 
-\subsubsection{POST api/register}
+\subsubsection{POST api/authentication/register}
 \begin{itemize}
     \item Description: user is registered from form information
     \item Request body - \verb|{user: RegistrationForm}|
-    \item Response 201 - Created
+    \item Response 200 - Ok
     \item Response 400 - Validation Error \verb|{error: Error}|
 \end{itemize}
 
-\subsubsection{POST api/register/verification/\{verificationID\}}
+\subsubsection{POST api/authentication/verification/\{verificationID\}}
 \begin{itemize}
     \item Description: user is verified through the verification code
-    \item Response 201 - Created
+    \item Response 200 - Ok
     \item Response 400 - Validation Error \verb|{error: Error}|
 \end{itemize}
 
-\subsubsection{POST api/login}
+\subsubsection{POST api/authentication/login}
 \begin{itemize}
     \item Description: authentication token is returned if credentials are correct
     \item Request body - \verb|{user: Credentials}|
@@ -366,7 +366,14 @@ Then, via the internship manager and the feedback manager components, the feedba
     \item Description: user profile information is returned
     \item Request header - \verb|{Authorization: Bearer <token>}|
     \item Response 200 - OK \verb|{profile: ProfileData}|
-    \item Response 400 - Invalid File \verb|{error: Error}|
+    \item Response 401 - Unauthorized \verb|{error: Error}|
+\end{itemize}
+
+\subsubsection{GET api/profile/\{profileID\}}
+\begin{itemize}
+    \item Description: user profile information is returned
+    \item Request header - \verb|{Authorization: Bearer <token>}|
+    \item Response 200 - OK \verb|{profile: ProfileData}|
     \item Response 401 - Unauthorized \verb|{error: Error}|
 \end{itemize}
 
@@ -376,13 +383,22 @@ Then, via the internship manager and the feedback manager components, the feedba
     \item Request header - \verb|{Authorization: Bearer <token>}|
     \item Request body - \verb|{profile: ProfileData}|
     \item Response 200 - OK
+    \item Response 400 - Validation Error \verb|{error: Error}|
+    \item Response 401 - Unauthorized \verb|{error: Error}|
+\end{itemize}
+
+\subsubsection{GET api/profile/cv/\{cvID\}}
+\begin{itemize}
+    \item Description: CV file is downloaded
+    \item Request header - \verb|{Authorization: Bearer <token>}|
+    \item Response 200 - OK \verb|{cv: File}|
     \item Response 400 - Invalid File \verb|{error: Error}|
     \item Response 401 - Unauthorized \verb|{error: Error}|
 \end{itemize}
 
 \subsubsection{GET api/profile/cv}
 \begin{itemize}
-    \item Description: CV file is downloaded
+    \item Description: user CV file is downloaded
     \item Request header - \verb|{Authorization: Bearer <token>}|
     \item Response 200 - OK \verb|{cv: File}|
     \item Response 400 - Invalid File \verb|{error: Error}|
@@ -399,7 +415,7 @@ Then, via the internship manager and the feedback manager components, the feedba
     \item Response 401 - Unauthorized \verb|{error: Error}|
 \end{itemize}
 
-\subsubsection{GET api/advertisements}
+\subsubsection{GET api/recommendation/advertisements}
 \begin{itemize}
     \item Description: a set of advertisements is returned
     \item Request header - \verb|{Authorization: Bearer <token>}|
@@ -408,9 +424,18 @@ Then, via the internship manager and the feedback manager components, the feedba
     \item Response 401 - Unauthorized \verb|{error: Error}|
 \end{itemize}
 
-\subsubsection{POST api/advertisements}
+\subsubsection{GET api/recommendation/advertisements/\{advertisementID\}}
 \begin{itemize}
-    \item Description: an advertisement is created
+    \item Description: a set of advertisements is returned
+    \item Request header - \verb|{Authorization: Bearer <token>}|
+    \item Response 200 - OK \verb|{advertisements: Advertisement}|
+    \item Response 400 - Validation Error \verb|{error: Error}|
+    \item Response 401 - Unauthorized \verb|{error: Error}|
+\end{itemize}
+
+\subsubsection{POST api/recommendation/advertisements}
+\begin{itemize}
+    \item Description: an advertisement is created or updated
     \item Request header - \verb|{Authorization: Bearer <token>}|
     \item Request body - \verb|{advertisement: Advertisement}|
     \item Response 201 - Created
@@ -418,7 +443,7 @@ Then, via the internship manager and the feedback manager components, the feedba
     \item Response 401 - Unauthorized \verb|{error: Error}|
 \end{itemize}
 
-\subsubsection{GET api/candidates}
+\subsubsection{GET api/recommendation/candidates}
 \begin{itemize}
     \item Description: a set of candidates is returned
     \item Request header - \verb|{Authorization: Bearer <token>}|
@@ -427,7 +452,16 @@ Then, via the internship manager and the feedback manager components, the feedba
     \item Response 401 - Unauthorized \verb|{error: Error}|
 \end{itemize}
 
-\subsubsection{GET api/applications}
+\subsubsection{GET api/recommendation/candidates/\{candidateID\}}
+\begin{itemize}
+    \item Description: a set of candidates is returned
+    \item Request header - \verb|{Authorization: Bearer <token>}|
+    \item Response 200 - OK \verb|{candidates: Candidate}|
+    \item Response 400 - Validation Error \verb|{error: Error}|
+    \item Response 401 - Unauthorized \verb|{error: Error}|
+\end{itemize}
+
+\subsubsection{GET api/enrollment/applications}
 \begin{itemize}
     \item Description: application requests are returned
     \item Request header - \verb|{Authorization: Bearer <token>}|
@@ -436,7 +470,7 @@ Then, via the internship manager and the feedback manager components, the feedba
     \item Response 401 - Unauthorized \verb|{error: Error}|
 \end{itemize}
 
-\subsubsection{POST api/applications}
+\subsubsection{POST api/enrollment/applications}
 \begin{itemize}
     \item Description: the application request is registered
     \item Request header - \verb|{Authorization: Bearer <token>}|
@@ -446,7 +480,17 @@ Then, via the internship manager and the feedback manager components, the feedba
     \item Response 401 - Unauthorized \verb|{error: Error}|
 \end{itemize}
 
-\subsubsection{POST api/application/\{applicationID\}}
+\subsubsection{GET api/enrollment/applications/\{applicationID\}}
+\begin{itemize}
+    \item Description: application request is returned
+    \item Request header - \verb|{Authorization: Bearer <token>}|
+    \item Response 200 - OK \verb|{applications: Application}|
+    \item Response 400 - Validation Error \verb|{error: Error}|
+    \item Response 401 - Unauthorized \verb|{error: Error}|
+\end{itemize}
+
+
+\subsubsection{POST api/enrollment/application/\{applicationID\}}
 \begin{itemize}
     \item Description: the application request is accepted
     \item Request header - \verb|{Authorization: Bearer <token>}|
@@ -455,7 +499,7 @@ Then, via the internship manager and the feedback manager components, the feedba
     \item Response 401 - Unauthorized \verb|{error: Error}|
 \end{itemize}
 
-\subsubsection{POST api/questionnaires}
+\subsubsection{POST api/enrollment/questionnaires}
 \begin{itemize}
     \item Description: a custom questionnaire is created
     \item Request header - \verb|{Authorization: Bearer <token>}|
@@ -465,7 +509,7 @@ Then, via the internship manager and the feedback manager components, the feedba
     \item Response 401 - Unauthorized \verb|{error: Error}|
 \end{itemize}
 
-\subsubsection{GET api/questionnaires/\{questionnaireID\}}
+\subsubsection{GET api/enrollment/questionnaires/\{questionnaireID\}}
 \begin{itemize}
     \item Description: the questionnaire is returned
     \item Request header - \verb|{Authorization: Bearer <token>}|
@@ -474,7 +518,7 @@ Then, via the internship manager and the feedback manager components, the feedba
     \item Response 401 - Unauthorized \verb|{error: Error}|
 \end{itemize}
 
-\subsubsection{POST api/questionnaires/\{questionnaireID\}}
+\subsubsection{POST api/enrollment/questionnaires/\{questionnaireID\}}
 \begin{itemize}
     \item Description: the filled in questionnaire is stored
     \item Request header - \verb|{Authorization: Bearer <token>}|
@@ -484,7 +528,7 @@ Then, via the internship manager and the feedback manager components, the feedba
     \item Response 401 - Unauthorized \verb|{error: Error}|
 \end{itemize}
 
-\subsubsection{GET api/proposals}
+\subsubsection{GET api/enrollment/proposals}
 \begin{itemize}
     \item Description: proposals are returned
     \item Request header - \verb|{Authorization: Bearer <token>}|
@@ -493,7 +537,7 @@ Then, via the internship manager and the feedback manager components, the feedba
     \item Response 401 - Unauthorized \verb|{error: Error}|
 \end{itemize}
 
-\subsubsection{POST api/proposals}
+\subsubsection{POST api/enrollment/proposals}
 \begin{itemize}
     \item Description: a proposal is registered
     \item Request header - \verb|{Authorization: Bearer <token>}|
@@ -503,7 +547,7 @@ Then, via the internship manager and the feedback manager components, the feedba
     \item Response 401 - Unauthorized \verb|{error: Error}|
 \end{itemize}
 
-\subsubsection{POST api/proposals/\{proposalID\}}
+\subsubsection{POST api/enrollment/proposals/\{proposalID\}}
 \begin{itemize}
     \item Description: the proposal is accepted
     \item Request header - \verb|{Authorization: Bearer <token>}|
@@ -514,9 +558,9 @@ Then, via the internship manager and the feedback manager components, the feedba
 
 \subsubsection{GET api/internships}
 \begin{itemize}
-    \item Description: internship information is returned
+    \item Description: internships information is returned
     \item Request header - \verb|{Authorization: Bearer <token>}|
-    \item Response 200 - OK \verb|{internship: Internship}|
+    \item Response 200 - OK \verb|{internships: Internship[]}|
     \item Response 400 - Validation Error \verb|{error: Error}|
     \item Response 401 - Unauthorized \verb|{error: Error}|
 \end{itemize}
@@ -564,6 +608,15 @@ Then, via the internship manager and the feedback manager components, the feedba
     \item Description: the notifications of the user are returned
     \item Request header - \verb|{Authorization: Bearer <token>}|
     \item Response 200 - OK \verb|{notifications: Notification[]}|
+    \item Response 400 - Validation Error \verb|{error: Error}|
+    \item Response 401 - Unauthorized \verb|{error: Error}|
+\end{itemize}
+
+\subsubsection{GET api/notifications/\{notificationID\}}
+\begin{itemize}
+    \item Description: the notification content is returned
+    \item Request header - \verb|{Authorization: Bearer <token>}|
+    \item Response 200 - OK \verb|{notifications: Notification}|
     \item Response 400 - Validation Error \verb|{error: Error}|
     \item Response 401 - Unauthorized \verb|{error: Error}|
 \end{itemize}

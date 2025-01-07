@@ -67,6 +67,13 @@ public class EnrollmentController : ControllerBase {
         return StatusCode(501, "Feature not yet implemented\n");
     }
 
+    [HttpPost("proposals")]
+    [Authorize]
+    [ProducesResponseType(501)]
+    public IActionResult CreateProposals() {
+        return StatusCode(501, "Feature not yet implemented\n");
+    }
+
     [HttpPost("proposals/{id}")]
     [Authorize]
     [ProducesResponseType(501)]

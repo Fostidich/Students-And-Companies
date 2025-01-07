@@ -68,89 +68,77 @@ Once the implementations of the backend and of the frontend are finished, final 
     \includegraphics[width=0.1\linewidth]{../assets/implementation-plan-diagrams/implementation-plan-6.png}
 \end{figure}
 
+\section{Development technologies}
 
+The selection of technologies for our project was the result of a careful analysis, with the goal of ensuring a system that is performant, scalable, and easily maintainable.
+In this section, we will describe in detail the choices made for the web and application servers and database, highlighting the reasons behind each decision.
 
-\section{Technologies Used for Development}
-The selection of technologies for our project was the result of a careful analysis, 
-with the goal of ensuring a system that is performant, scalable, and easily maintainable. 
-In this section, we will describe in detail the choices made for the server-side, 
-client-side, and database, highlighting the reasons behind each decision.
+\subsection{Web server}
 
-\subsection{Server-Side}
-The backend of the system, which acts as an application server, is developed in C\#, 
-with the support of the .NET framework. This allows us to build a solid, scalable, and reliable system.
-The choice of C\# and .NET was guided by their robustness, high performance, and the vast 
-range of tools and libraries available for the development of web applications and services.
-
-For the development of RESTful APIs, we use ASP.NET. This technology allows us to create 
-high-performance, efficient web services that comply with industry standards.
-ASP.NET provides a flexible development environment, with a high level of performance and the 
-ability to create well-documented APIs, which are essential for the interaction between client and server.
-
-\subsection{Client-Side}
-The frontend, hosted on the web server, is built using JavaScript and the React framework, 
-along with Vite and Tailwind. This approach allows us to create responsive and easily maintainable user interfaces.
-React, combined with Vite and Tailwind, offers us the possibility of developing complex and dynamic 
+The frontend, hosted on the web server, is built using JavaScript and the React framework, along with Vite and Tailwind.
+This approach allows to create responsive and easily maintainable user interfaces.
+React, combined with Vite and Tailwind, offers the possibility of developing complex and dynamic
 user interfaces, with excellent component management and a high-level user experience.
 
+\subsection{Application server}
+
+The backend of the system, deployed on the application server, is developed in C\#, with the support of the .NET runtime.
+This allows to build a solid, scalable, and reliable system.
+The choice of C\# and .NET was guided by their robustness, high performance, and the vast range of tools and libraries available for the development of web applications and services.
+
+For the development of the RESTful APIs, we use the ASP.NET web framework.
+This technology allows to create high-performance, efficient web services that comply with industry standards.
+ASP.NET provides a flexible development environment, with a high level of performance and the ability to create well-documented APIs, which are essential for the interaction between servers.
+
 \subsection{Database}
-Data persistence is entrusted to MySQL. This choice provides a robust database management 
-system that is well-suited to our needs.
-MySQL is a reliable and widely supported DBMS, ideal for managing relational data and its 
-capacity to handle complex queries and large volumes of data.
 
-The responses to database queries are provided by our MySQL system, hosted on a dedicated 
-AWS machine. Although the test environment shares the same database as production, 
-the architecture theoretically includes a dedicated database for tests.
-The MySQL database provides a stable environment for data storage, while the logical separation 
-between test and production ensures data integrity during development.
+Data persistence is entrusted to MySQL.
+This choice provides a robust database management system that is well-suited to our needs.
+MySQL is a reliable and widely supported DBMS, ideal for managing relational data and its capacity to handle complex queries and large volumes of data.
 
-\subsection{Architectures and Patterns}
-Our system is developed following the distributed MVC pattern, with the model/view/controller 
-distributed between the web server, application server, and database. We also adopt the clean 
-architecture, dividing the code into application, domain, infrastructure, and presentation, although the latter resides on the web server.
-The adoption of these patterns allows us to keep the code organized, modular, and easily 
-maintainable, promoting a clear separation of responsibilities and greater flexibility in development.
+The responses to database queries are provided by our MySQL system, hosted on a dedicated AWS machine.
+Initially, the DBMS holds a single DB used for tests, but the architecture theoretically includes a dedicated database for production when system is ready.
+The MySQL database provides a stable environment for data storage, while the logical separation between test and production ensures data integrity during development.
 
-\section{Technologies Used for Testing}
-To ensure the quality and reliability of our system, we have implemented a complete testing 
-strategy, using various tools and technologies. In this section, we will describe the choices 
-made for unit and integration tests, as well as tools for API testing and response simulation.
+\subsection{Architectures and patterns}
 
-\subsection{Unit Testing Server-Side}
-For unit testing of the backend, we use xUnit. This framework allows us to test the 
-components of the server-side in an isolated and precise manner.
-xUnit provides a flexible and complete testing environment, ideal for testing the various 
-functionalities and logic of our system.
+Our system is developed following the distributed MVC pattern, with the model, view and controller components distributed between the web server, application server, and database.
+We also adopt the clean architecture pattern, dividing the code into application, domain, infrastructure, and presentation modules.
+The first three are found in the application server, whereas the last is on the web server.
+The adoption of these patterns allows to keep the code organized, modular, and easily maintainable, promoting a clear separation of responsibilities and greater flexibility in development.
 
-\subsection{Unit Testing Client-Side}
-For testing the JavaScript code of the frontend, we rely on Jest. This framework is 
-essential to verify the correct implementation of the user interface.
-Jest provides an effective and complete testing environment for JavaScript code, 
-allowing us to test each individual component of the frontend in isolation.
+\section{Technologies used for testing}
 
-\subsection{REST requests fabrication}
-For creating REST requests, we use cURL (command-line app) and Swagger. These tools 
-allow us to simulate and test requests efficiently.
-cURL is a versatile tool for testing from the command line, while Swagger offers a 
-graphical interface for documenting and testing APIs.
+To ensure the quality and reliability of our system, we have implemented a complete testing strategy using various tools and technologies.
+In this section, we describe the choices made for unit and integration tests, as well as tools for API testing and response simulation.
+
+\subsection{Backend unit testing}
+
+For unit testing of the backend, we use xUnit.
+This framework allows to test the components of the application server in an isolated and precise manner.
+xUnit provides a flexible and complete testing environment, ideal for testing the various functionalities and logic of our system.
+
+\subsection{Frontend unit testing}
+
+For testing the JavaScript code of the frontend, we rely on Jest.
+This framework is essential to verify the correct implementation of the user interface.
+Jest provides an effective and complete testing environment for JavaScript code, allowing us to test each individual component of the frontend in isolation.
+
+\subsection{REST APIs requests fabrication}
+
+For creating REST requests, we use cURL and Swagger.
+These tools allow to simulate and test requests efficiently.
+cURL is a versatile tool for testing from the command line, while Swagger offers a graphical interface for documenting and testing APIs.
 
 \subsection{REST APIs responses simulation}
-To simulate REST API responses during frontend development, we use MSW (Mock Service Worker). 
-This tool allows us to work independently of the backend.
-MSW allows us to create mock APIs without having to depend on a functioning backend, 
-speeding up the frontend development and testing process.
+
+To simulate REST responses during the frontend development, we use MSW (Mock Service Worker).
+This tool allows to work independently from the backend.
+MSW allows to create mock APIs without having to depend on a functioning backend, speeding up the frontend development and testing process.
 
 \subsection{Web pages requests fabrication}
-For creating web page requests, we use a web browser. This tool allows us to verify 
-the interaction with the user interface.
-The direct use of the browser ensures a real user experience and allows us to test 
-the functionalities of the web interface.
 
-
-
-
-
-
-
+For creating web page requests, we use a web browser.
+This allows to verify the interaction with the user interface.
+The direct use of the browser ensures a real user experience and allows to test the functionalities of the web interface.
 

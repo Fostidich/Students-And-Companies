@@ -18,10 +18,10 @@ public class InternshipController : ControllerBase {
         return StatusCode(501, "Feature not yet implemented\n");
     }
 
-    [HttpPost("feedback")]
+    [HttpPost("{id}/feedback")]
     [Authorize]
     [ProducesResponseType(501)]
-    public IActionResult CreateFeedback() {
+    public IActionResult CreateFeedback(int id) {
         return StatusCode(501, "Feature not yet implemented\n");
     }
 

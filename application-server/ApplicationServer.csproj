@@ -17,11 +17,17 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <PackageReference Include="dotenv.net" Version="3.2.1" />
-      <PackageReference Include="MySql.Data" Version="9.1.0" />
-      <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="8.0.11" />
-      <PackageReference Include="Microsoft.AspNetCore.DataProtection.Extensions" Version="9.0.0" />
-      <PackageReference Include="Swashbuckle.AspNetCore" Version="7.2.0" />
+        <PackageReference Include="dotenv.net" Version="3.2.1" />
+        <PackageReference Include="MySql.Data" Version="9.1.0" />
+        <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="8.0.11" />
+        <PackageReference Include="Microsoft.AspNetCore.DataProtection.Extensions" Version="9.0.0" />
+        <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+        <PackageReference Include="NuGet.Frameworks" Version="6.12.1" />
+        <PackageReference Include="Swashbuckle.AspNetCore" Version="7.2.0" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <Compile Remove="Tests\**" />
     </ItemGroup>
 
 </Project>

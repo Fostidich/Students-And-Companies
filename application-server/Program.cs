@@ -22,14 +22,14 @@ DotEnv.Load();
 // Manage app settings configuration with dotenv
 var builder = WebApplication.CreateBuilder(args);
 string jwtSecretEnv = Environment.GetEnvironmentVariable("JWT_SECRET");
-if (string.IsNullOrEmpty(jwtSecretEnv)) {
+if (string.IsNullOrWhiteSpace(jwtSecretEnv)) {
     string jwtSecretStd = builder.Configuration["Jwt:Secret"];
     Console.WriteLine($"No JWT secret found in .env: using \"{jwtSecretStd}\".");
 } else {
     builder.Configuration["Jwt:Secret"] = jwtSecretEnv;
 }
 string dbDefaultConnectionEnv = Environment.GetEnvironmentVariable("DB_DEFAULT_CONNECTION");
-if (string.IsNullOrEmpty(dbDefaultConnectionEnv)) {
+if (string.IsNullOrWhiteSpace(dbDefaultConnectionEnv)) {
     string dbDefaultConnectionStd = builder.Configuration["DbDefaultConnection"];
     Console.WriteLine($"No DB default connection found in .env: using \"{dbDefaultConnectionStd}\".");
 } else {
