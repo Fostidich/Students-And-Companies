@@ -1,5 +1,6 @@
 import 'react';
 
+// eslint-disable-next-line react/prop-types
 const Card = ({title, imgURL, jobPosition}) => {
     return (
         <div className="w-80 h-96 bg-white rounded-md overflow-hidden border border-gray-300 flex flex-col items-start">

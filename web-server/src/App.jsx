@@ -44,16 +44,6 @@ function App() {
         }
     ]
 
-
-  // return (
-  //   <div className="gap-8">
-  //     <div className="fixed top-0 left-0 w-full bg-white shadow-md">
-  //       <Navbar />
-  //     </div>
-  //       <Home jobs={jobs} />
-  //
-  //   </div>
-  // )
     return (
         <Router>
             <div className="gap-8">

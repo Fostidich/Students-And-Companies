@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
 
 const Navbar = () => {
     return (
@@ -18,10 +18,30 @@ const Navbar = () => {
                 />
             </div>
             <div className="flex space-x-4">
-                <Link to="/" className="text-[#6C757D] hover:text-[#2C2C2C]">Home</Link>
-                <Link to="/profile" className="text-[#6C757D] hover:text-[#2C2C2C]">Profile</Link>
-                <Link to="/notification" className="text-[#6C757D] hover:text-[#2C2C2C]">Notification</Link>
-                <Link to="/help" className="text-[#6C757D] hover:text-[#2C2C2C]">Help</Link>
+                <NavLink
+                    to="/"
+                    className={({ isActive }) => isActive ? "font-bold text-[#2C2C2C]" : "text-[#6C757D] hover:text-[#2C2C2C]"}
+                >
+                    Home
+                </NavLink>
+                <NavLink
+                    to="/profile"
+                    className={({ isActive }) => isActive ? "font-bold text-[#2C2C2C]" : "text-[#6C757D] hover:text-[#2C2C2C]"}
+                >
+                    Profile
+                </NavLink>
+                <NavLink
+                    to="/notification"
+                    className={({ isActive }) => isActive ? "font-bold text-[#2C2C2C]" : "text-[#6C757D] hover:text-[#2C2C2C]"}
+                >
+                    Notification
+                </NavLink>
+                <NavLink
+                    to="/help"
+                    className={({ isActive }) => isActive ? "font-bold text-[#2C2C2C]" : "text-[#6C757D] hover:text-[#2C2C2C]"}
+                >
+                    Help
+                </NavLink>
             </div>
         </nav>
     );
