@@ -47,8 +47,7 @@ docker stop sc-application-server
 - [x] Dispatch a request
 - [ ] Assign components
 - [x] Put DB on AWS
-- [ ] Fix APIs in DD
-- [ ] Fix components names in DD
+- [x] Fix APIs in DD
 - [x] Fill controllers with APIs
 - [x] Dispatch interfaces
 - [ ] Set up docker for the DB

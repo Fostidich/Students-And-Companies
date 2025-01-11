@@ -1,4 +1,4 @@
-.PHONY: help clean web-server web-server-docker application-server application-server-docker rasd dd itd atd rasd-verbose dd-verbose itd-verbose atd-verbose layout-export
+.PHONY: help clean test web-server web-server-docker application-server application-server-docker rasd dd itd atd rasd-verbose dd-verbose itd-verbose atd-verbose layout-export
 
 help:
 ifeq ($(OS),Windows_NT)
@@ -59,6 +59,9 @@ ifeq ($(OS),Windows_NT)
 	del /Q /F documents\ATD\*.aux documents\ATD\*.log documents\ATD\*.out documents\ATD\*.toc documents\ATD\*.fls
 	rmdir /S /Q application-server\bin || rem
 	rmdir /S /Q application-server\obj || rem
+	rmdir /S /Q application-server\Tests\bin || rem
+	rmdir /S /Q application-server\Tests\obj || rem
+	rmdir /S /Q application-server\Tests\TestResults || rem
 	rmdir /S /Q web-server\node_modules || rem
 	docker container prune -f || rem
 	docker image prune -f || rem
@@ -71,12 +74,18 @@ else
 	rm -f documents/ATD/*.aux documents/ATD/*.log documents/ATD/*.out documents/ATD/*.toc documents/ATD/*.fls
 	rm -rf application-server/bin
 	rm -rf application-server/obj
+	rm -rf application-server/Tests/bin
+	rm -rf application-server/Tests/obj
+	rm -rf application-server/Tests/TestResults
 	rm -rf web-server/node_modules
 	docker container prune -f
 	docker image prune -f
 	docker rmi sc-web-server -f
 	docker rmi sc-application-server -f
 endif
+
+test:
+	dotnet test application-server/Tests
 
 web-server:
 	npm --prefix web-server install

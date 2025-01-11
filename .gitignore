@@ -22,6 +22,7 @@ documents/**/*.pdf
 **/target
 **/obj
 **/bin
+**/TestResults
 
 # Web server
 **/node_modules

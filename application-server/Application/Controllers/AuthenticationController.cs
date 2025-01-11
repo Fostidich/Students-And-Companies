@@ -28,6 +28,7 @@ public class AuthenticationController : ControllerBase {
 
     [HttpPost("login")]
     [ProducesResponseType(200)]
+    [ProducesResponseType(400)]
     [ProducesResponseType(401)]
     public IActionResult Login([FromBody] DTO.Credentials credentials) {
         // Check that credentials are correct

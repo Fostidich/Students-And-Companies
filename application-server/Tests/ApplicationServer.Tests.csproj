@@ -1,8 +1,10 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
-        <TargetFramework>net8.0</TargetFramework>
         <AssemblyName>ApplicationServer.Tests</AssemblyName>
+        <TargetFramework>net8.0</TargetFramework>
+        <OutputType>Library</OutputType>
+        <IsPackable>false</IsPackable>
     </PropertyGroup>
 
     <ItemGroup>
@@ -10,10 +12,11 @@
         <PackageReference Include="MSTest.TestAdapter" Version="3.1.1" />
         <PackageReference Include="MSTest.TestFramework" Version="3.1.1" />
         <PackageReference Include="xUnit" Version="2.9.2" />
+        <PackageReference Include="xunit.runner.visualstudio" Version="2.4.5" />
     </ItemGroup>
 
     <ItemGroup>
-        <ProjectReference Include="ApplicationServer.csproj" />
+        <ProjectReference Include="../ApplicationServer.csproj" />
     </ItemGroup>
 
 </Project>
