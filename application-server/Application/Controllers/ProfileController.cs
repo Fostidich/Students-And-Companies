@@ -23,7 +23,7 @@ public class ProfileController : ControllerBase {
         int userId = Convert.ToInt32(userIdStr);
 
         // Find and return user data
-        DTO.User user = profile.GetUser(userId).ToDto();
+        DTO.User user = profile.GetUser(userId)?.ToDto();
         if (user == null)
             return StatusCode(500, "Internal server error\n");
         else
@@ -57,7 +57,7 @@ public class ProfileController : ControllerBase {
     [ProducesResponseType(500)]
     public IActionResult GetUserFromId(int id) {
         // Find and return user data
-        DTO.User user = profile.GetUser(id).ToDto();
+        DTO.User user = profile.GetUser(id)?.ToDto();
         if (user == null)
             return StatusCode(500, "Internal server error\n");
         else

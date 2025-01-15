@@ -29,7 +29,7 @@ public class DataService : IDataService {
                 Salt = reader["salt"].ToString(),
                 HashedPassword = reader["hashed_password"].ToString(),
                 UserType = reader["user_type"].ToString(),
-                CreatedAt = reader["created_at"].ToString()
+                CreatedAt = DateTime.Parse(reader["created_at"].ToString())
             };
             users.Add(user);
         }

@@ -1,26 +1,15 @@
 using Xunit;
-using System;
-using System.IO;
 using System.Collections.Generic;
 using System.Net.Http;
 using System.Net.Http.Json;
 using System.Threading.Tasks;
-using MySql.Data.MySqlClient;
-using dotenv.net;
 
-public class AuthenticationTest {
+public class AuthenticationTest : IClassFixture<TestServerFixture> {
 
     private readonly HttpClient client;
-    private string defaultConnection;
 
-    public AuthenticationTest() {
-        string DllDir = AppDomain.CurrentDomain.BaseDirectory;
-        string envFilePath = Path.Combine(DllDir, "..", "..", "..", "..", ".env");
-        DotEnv.Load(options: new DotEnvOptions(envFilePaths: new[] { envFilePath } ));
-        defaultConnection = Environment.GetEnvironmentVariable("DB_DEFAULT_CONNECTION");
-        client = new HttpClient { BaseAddress = new System.Uri("http://localhost:5000") };
-        DeleteUser("registrationTest");
-        DeleteUser("loginTest");
+    public AuthenticationTest(TestServerFixture fixture) {
+        client = fixture.Client;
     }
 
     [Theory]
@@ -102,17 +91,6 @@ public class AuthenticationTest {
         // Assert
         Assert.Equal(200, (int)response.StatusCode);
         Assert.True(responseBody.ContainsKey("token"));
-    }
-
-    private void DeleteUser(string username) {
-        string query = @"
-            DELETE FROM users
-            WHERE username = @username";
-        var connection = new MySqlConnection(defaultConnection);
-        connection.Open();
-        using var command = new MySqlCommand(query, connection);
-        command.Parameters.AddWithValue("@username", username);
-        command.ExecuteNonQuery();
     }
 
 }

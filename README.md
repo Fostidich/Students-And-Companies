@@ -43,6 +43,8 @@ docker stop sc-application-server
 
 ## TODO
 
+### Application server
+
 - [x] Set up code
 - [x] Dispatch a request
 - [ ] Assign components
@@ -53,9 +55,11 @@ docker stop sc-application-server
 - [ ] Set up docker for the DB
 - [ ] Set up a single docker image for everything
 - [ ] Add email component for verification code
-- [ ] Write tests
+- [ ] Write unit tests
 - [ ] Switch some Ok routes with Created
 - [ ] Add ON UPDATE CASCADE where needed
-- [ ] Find a way to automatically test REST requests
+- [x] Find a way to automatically test REST requests
+- [ ] Fix that warning when testing
+- [ ] Test migrations scenarios
 
 ###### C# and JavaScript code written by Francesco Ostidich, Matteo Salari, Francesco Rivitti
