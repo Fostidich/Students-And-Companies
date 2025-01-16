@@ -4,6 +4,7 @@ import Home from "./pages/Home.jsx";
 import Profile from "./pages/Profile.jsx";
 import Notification from "./pages/Notification.jsx";
 import Help from "./pages/Help.jsx";
+import Welcome from "./pages/Welcome.jsx";
 function App() {
     const jobs = [
         {
