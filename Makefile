@@ -90,7 +90,7 @@ else
 	docker rmi sc-application-server -f
 endif
 
-test:
+test: clean
 	dotnet test application-server/Tests
 
 web-server:

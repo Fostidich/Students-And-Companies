@@ -7,10 +7,10 @@ public class TestServerFixture : IDisposable {
     public HttpClient Client { get; }
     public IServiceProvider Services { get; }
 
-    private readonly CustomWebApplicationFactory factory;
+    private readonly TestWebApplicationFactory factory;
 
     public TestServerFixture() {
-        factory = new CustomWebApplicationFactory();
+        factory = new TestWebApplicationFactory();
 
         // Create a client to use in tests
         Client = factory.CreateClient();

@@ -1,5 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 
+//TODO add check token validity endpoint
+//TODO add logout endpoint
 [ApiController]
 [Route("api/authentication")]
 public class AuthenticationController : ControllerBase {

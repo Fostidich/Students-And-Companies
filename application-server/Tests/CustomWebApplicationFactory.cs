@@ -4,7 +4,7 @@ using Microsoft.Extensions.Configuration;
 using System.Collections.Generic;
 using System;
 
-public class CustomWebApplicationFactory : WebApplicationFactory<Program>, IDisposable {
+public class TestWebApplicationFactory : WebApplicationFactory<Program>, IDisposable {
 
     protected override void ConfigureWebHost(IWebHostBuilder builder) {
         builder.ConfigureAppConfiguration((context, config) => {
