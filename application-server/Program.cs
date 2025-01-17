@@ -35,7 +35,7 @@ public class Program {
         return app;
     }
 
-    private static void ConfigureMiddleware(WebApplication app) {
+    public static void ConfigureMiddleware(WebApplication app) {
         if (app.Environment.IsDevelopment()) {
             // Apply pending migrations
             using var scope = app.Services.CreateScope();
@@ -47,19 +47,23 @@ public class Program {
             app.UseSwaggerUI();
         }
 
+        // CORS policy
+        app.UseCors("AllowAll");
+
         // Link application services
         app.MapControllers();
         app.UseAuthentication();
         app.UseAuthorization();
     }
 
-    private static void ConfigureServices(WebApplicationBuilder builder) {
+    public static void ConfigureServices(WebApplicationBuilder builder) {
         ConfigureBuilderConfiguration(builder);
         ConfigureBuilderInjections(builder);
         ConfigureBuilderJwtToken(builder);
         ConfigureBuilderDataProtection(builder);
         ConfigureBuilderApiExplorer(builder);
         ConfigureBuilderDbConnection(builder);
+        ConfigureBuilderCors(builder);
 
         // Configure console logging
         builder.Logging.SetMinimumLevel(LogLevel.Warning);
@@ -103,7 +107,7 @@ public class Program {
         builder.Services.AddScoped<IRecommendationQueries, RecommendationQueries>();
     }
 
-    public static void ConfigureBuilderJwtToken(WebApplicationBuilder builder) {
+    private static void ConfigureBuilderJwtToken(WebApplicationBuilder builder) {
         // Add JWT authentication
         string jwtIssuer = builder.Configuration["Jwt:Issuer"];
         string jwtAudience = builder.Configuration["Jwt:Audience"];
@@ -111,20 +115,21 @@ public class Program {
         builder.Services.AddAuthentication(options => {
             options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
             options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-        }).AddJwtBearer(options => {
-            options.TokenValidationParameters = new TokenValidationParameters {
-                ValidateIssuer = true,
-                ValidateAudience = true,
-                ValidateLifetime = true,
-                ValidateIssuerSigningKey = true,
-                ValidIssuer = jwtIssuer,
-                ValidAudience = jwtAudience,
-                IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtSecret))};
-        });
+        })
+            .AddJwtBearer(options => {
+                options.TokenValidationParameters = new TokenValidationParameters {
+                    ValidateIssuer = true,
+                    ValidateAudience = true,
+                    ValidateLifetime = true,
+                    ValidateIssuerSigningKey = true,
+                    ValidIssuer = jwtIssuer,
+                    ValidAudience = jwtAudience,
+                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtSecret))};
+            });
         builder.Services.AddAuthorization();
     }
 
-    public static void ConfigureBuilderDataProtection(WebApplicationBuilder builder) {
+    private static void ConfigureBuilderDataProtection(WebApplicationBuilder builder) {
         // Add keys data protection
         builder.Services.AddDataProtection()
             .PersistKeysToFileSystem(new DirectoryInfo(Path.Combine(
@@ -136,7 +141,7 @@ public class Program {
             });
     }
 
-    public static void ConfigureBuilderApiExplorer(WebApplicationBuilder builder) {
+    private static void ConfigureBuilderApiExplorer(WebApplicationBuilder builder) {
         // Add APIs summary web page
         builder.Services.AddEndpointsApiExplorer();
         builder.Services.AddSwaggerGen(c => {
@@ -173,7 +178,7 @@ public class Program {
         });
     }
 
-    public static void ConfigureBuilderDbConnection(WebApplicationBuilder builder) {
+    private static void ConfigureBuilderDbConnection(WebApplicationBuilder builder) {
         // Retrieve DB connection
         builder.Services.AddDbContext<AppDbContext>(options =>
             options.UseMySql(
@@ -181,6 +186,17 @@ public class Program {
                 ServerVersion.AutoDetect(builder.Configuration["DbDefaultConnection"])
             )
         );
+    }
+
+    private static void ConfigureBuilderCors(WebApplicationBuilder builder) {
+        // Add the CORS policy
+        builder.Services.AddCors(options => {
+            options.AddPolicy("AllowAll", builder => {
+                builder.AllowAnyOrigin()
+                   .AllowAnyMethod()
+                   .AllowAnyHeader();
+            });
+        });
     }
 
 }
