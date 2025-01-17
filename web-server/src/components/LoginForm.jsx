@@ -1,10 +1,20 @@
 import PropTypes from 'prop-types';
 import { useState } from 'react';
-const API_SERVER_URL = import.meta.env.API_SERVER_URL;
+import Cookies from 'js-cookie';
+const API_SERVER_URL = import.meta.env.VITE_API_SERVER_URL;
 
 function LoginForm({ onLogin }) {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
+
+    const saveTokenToCookie = (token) => {
+        // Salva il token in un cookie con un TTL di 24 ore
+        Cookies.set('token', token, {
+            expires: 1, // TTL: 1 giorno
+            secure: true, // Richiede HTTPS
+            sameSite: 'strict', // Previene attacchi CSRF
+        });
+    };
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -19,12 +29,11 @@ function LoginForm({ onLogin }) {
 
         if (response.ok) {
             const data = await response.json();
-            localStorage.setItem('token', data.token);
+            saveTokenToCookie(data.token);
             onLogin();
             console.log('Login successful');
         } else {
-            // Handle error
-            console.error('Login failed'+response.status);
+            console.error('Login failed: '+response.status);
         }
     };
 

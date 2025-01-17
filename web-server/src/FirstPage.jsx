@@ -1,6 +1,8 @@
 import { useState, useEffect } from 'react';
 import Welcome from './pages/Welcome.jsx';
 import App from './App.jsx';
+import Cookies from 'js-cookie';
+// const API_SERVER_URL = import.meta.env.VITE_API_SERVER_URL;
 
 function FirstPage() {
     const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -9,7 +11,7 @@ function FirstPage() {
     useEffect(() => {
         const checkAuthStatus = async () => {
             try {
-                const token = localStorage.getItem('token');
+                const token = Cookies.get('token');
 
                 if (!token) {
                     setIsLoggedIn(false);
@@ -32,12 +34,12 @@ function FirstPage() {
         checkAuthStatus();
     }, []);
 
-    const handleLogin = () => {
+    const handleLogin = async () => {
         setIsLoggedIn(true);
     };
 
     const handleLogout = () => {
-        localStorage.removeItem('token');
+        Cookies.remove('token');
         setIsLoggedIn(false);
     };
 
@@ -46,6 +48,7 @@ function FirstPage() {
     }
 
     return (
+
         isLoggedIn ? (
             <App onLogout={handleLogout} />
         ) : (

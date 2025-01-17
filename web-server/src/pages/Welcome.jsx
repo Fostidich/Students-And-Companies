@@ -6,6 +6,10 @@ import RegisterForm from '../components/RegisterForm.jsx';
 function Welcome({ onLogin }) {
     const [showLogin, setShowLogin] = useState(true);
 
+    const handleRegister = async () => {
+        setShowLogin(true);
+    }
+
     return (
         <div className="flex h-screen w-screen bg-white">
             {/* Left Column */}
@@ -18,7 +22,7 @@ function Welcome({ onLogin }) {
                 {showLogin ? (
                     <LoginForm onLogin={onLogin} />
                 ) : (
-                    <RegisterForm />
+                    <RegisterForm onRegister={handleRegister} />
                 )}
                 <div className="mt-4">
                     <button

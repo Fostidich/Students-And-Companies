@@ -4,19 +4,6 @@ function Profile({onLogout}) {
 
     const handleLogoutClick = async () => {
         try {
-            // Se hai bisogno di comunicare con il server per il logout
-            // const response = await fetch(`${API_SERVER_URL}/api/authentication/logout`, {
-            //     method: 'POST',
-            //     headers: {
-            //         'Authorization': `Bearer ${localStorage.getItem('token')}`
-            //     }
-            // });
-
-            // if (response.ok) {
-            //     onLogout();
-            // }
-
-            // Se non hai bisogno di comunicare con il server, chiama direttamente onLogout
             onLogout();
         } catch (error) {
             console.error('Errore durante il logout:', error);
@@ -24,10 +11,18 @@ function Profile({onLogout}) {
     };
 
     return (
-        <div className="p-8">
-            <h1 className="text-2xl font-bold mb-4">Profile Page</h1>
-            <p>Welcome to the Profile page.</p>
-            <button onClick={handleLogoutClick}>Logout</button>
+        <div className="flex flex-wrap p-8 ">
+
+            <div className="w-full md:w-1/2 bg-blue-100 p-4">
+                <h1 className="text-2xl font-bold mb-4">Profile Page</h1>
+                <p>Welcome to the Profile page.</p>
+                <button className="border" onClick={handleLogoutClick}>Logout</button>
+            </div>
+            <div className="w-full md:w-1/2 bg-green-100 p-4">
+                <h1 className="text-2xl font-bold mb-4">Your internship</h1>
+
+            </div>
+
         </div>
     );
 }
