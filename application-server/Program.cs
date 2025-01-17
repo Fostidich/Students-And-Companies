@@ -93,6 +93,7 @@ public class Program {
     private static void ConfigureBuilderInjections(WebApplicationBuilder builder) {
         // Add interfaces for constructors
         builder.Services.AddScoped<IDataService, DataService>();
+        builder.Services.AddScoped<IFileService, FileService>();
         builder.Services.AddScoped<IAuthenticationService, AuthenticationService>();
         builder.Services.AddScoped<IAuthenticationQueries, AuthenticationQueries>();
         builder.Services.AddScoped<IEnrollmentService, EnrollmentService>();
@@ -131,10 +132,12 @@ public class Program {
 
     private static void ConfigureBuilderDataProtection(WebApplicationBuilder builder) {
         // Add keys data protection
+        string directory = Path.Combine(
+                Environment.GetFolderPath(Environment.SpecialFolder.UserProfile),
+                ".students_and_companies", "keys");
+        Directory.CreateDirectory(directory);
         builder.Services.AddDataProtection()
-            .PersistKeysToFileSystem(new DirectoryInfo(Path.Combine(
-                Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
-                "students_and_companies", "keys")))
+            .PersistKeysToFileSystem(new DirectoryInfo(directory))
             .UseCryptographicAlgorithms(new AuthenticatedEncryptorConfiguration() {
                 EncryptionAlgorithm = EncryptionAlgorithm.AES_256_CBC,
                 ValidationAlgorithm = ValidationAlgorithm.HMACSHA256

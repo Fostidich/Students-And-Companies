@@ -6,5 +6,6 @@ public interface IDataService {
 
     MySqlConnection GetConnection();
     List<Entity.User> MapToUsers(IDataReader reader);
+    List<string> MapToStrings(IDataReader reader, string fieldName);
 
 }

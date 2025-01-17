@@ -91,4 +91,66 @@ public class ProfileQueries : IProfileQueries {
         }
     }
 
+    public bool SetCvFilePath(int id, string filePath) {
+        try {
+            string query = @"
+                INSERT INTO students (id, cv_file_path)
+                VALUES (@id, @cv_file_path)
+                ON DUPLICATE KEY UPDATE
+                cv_file_path = VALUES(cv_file_path)
+                ";
+            using var db_connection = dataService.GetConnection();
+            using var command = new MySqlCommand(query, db_connection);
+
+            command.Parameters.AddWithValue("@cv_file_path", filePath);
+            command.Parameters.AddWithValue("@id", id);
+            command.ExecuteNonQuery();
+
+            return true;
+        } catch (Exception ex) {
+            Console.WriteLine(ex.Message);
+            return false;
+        }
+    }
+
+    public string GetCvFilePath(int id) {
+        try {
+            string query = @"
+                SELECT cv_file_path
+                FROM students
+                WHERE id = @id";
+            using var db_connection = dataService.GetConnection();
+            using var command = new MySqlCommand(query, db_connection);
+
+            command.Parameters.AddWithValue("@id", id);
+            using var reader = command.ExecuteReader();
+
+            var paths = dataService.MapToStrings(reader, "cv_file_path");
+            if (paths.Count == 0) return null;
+            return paths[0];
+        } catch (Exception ex) {
+            Console.WriteLine(ex.Message);
+            return null;
+        }
+    }
+
+    public bool RemoveCvFilePath(int id) {
+        try {
+            string query = @"
+                UPDATE students
+                SET cv_file_path = NULL
+                WHERE id = @id";
+            using var db_connection = dataService.GetConnection();
+            using var command = new MySqlCommand(query, db_connection);
+
+            command.Parameters.AddWithValue("@id", id);
+            command.ExecuteNonQuery();
+
+            return true;
+        } catch (Exception ex) {
+            Console.WriteLine(ex.Message);
+            return false;
+        }
+    }
+
 }

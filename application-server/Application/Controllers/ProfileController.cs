@@ -1,6 +1,7 @@
 using System;
 using System.Security.Claims;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Authorization;
 
 [ApiController]
@@ -66,22 +67,79 @@ public class ProfileController : ControllerBase {
 
     [HttpGet("cv")]
     [Authorize]
-    [ProducesResponseType(501)]
+    [ProducesResponseType(200)]
+    [ProducesResponseType(404)]
     public IActionResult DownloadCvFromToken() {
-        return StatusCode(501, "Feature not yet implemented\n");
+        // Get user ID from authentication token
+        string userIdStr = User.FindFirst(ClaimTypes.NameIdentifier).Value;
+        int userId = Convert.ToInt32(userIdStr);
+
+        // Retrieve CV from user ID
+        IFormFile cv = profile.RetrieveCvFile(userId);
+
+        // File is null if not present
+        if (cv == null)
+            return NotFound("User has not uploaded the CV\n");
+        else
+            return File(cv.OpenReadStream(), cv.ContentType, cv.FileName);
     }
 
     [HttpGet("cv/{id}")]
     [Authorize]
-    [ProducesResponseType(501)]
+    [ProducesResponseType(200)]
+    [ProducesResponseType(404)]
     public IActionResult DownloadCv(int id) {
-        return StatusCode(501, "Feature not yet implemented\n");
+        // Retrieve CV from user ID
+        IFormFile cv = profile.RetrieveCvFile(id);
+
+        // File is null if not present
+        if (cv == null)
+            return NotFound("User has not uploaded the CV");
+        else
+            return File(cv.OpenReadStream(), cv.ContentType, cv.FileName);
     }
 
     [HttpPost("cv")]
     [Authorize]
+    [ProducesResponseType(200)]
+    [ProducesResponseType(400)]
+    [ProducesResponseType(500)]
+    public IActionResult UploadCv(IFormFile file) {
+        // Get user ID from authentication token
+        string userIdStr = User.FindFirst(ClaimTypes.NameIdentifier).Value;
+        int userId = Convert.ToInt32(userIdStr);
+
+       // Check PDF validity
+        if (!profile.CheckCvValidity(file))
+            return BadRequest("Invalid file\n");
+
+        // Store file
+        if (profile.StoreCvFile(userId, file))
+            return Ok("CV successfully stored\n");
+        else
+            return StatusCode(500, "Internal server error\n");
+    }
+
+    [HttpPost("cv/delete")]
+    [Authorize]
+    [ProducesResponseType(200)]
+    [ProducesResponseType(404)]
+    public IActionResult DeleteCv() {
+        // Get user ID from authentication token
+        string userIdStr = User.FindFirst(ClaimTypes.NameIdentifier).Value;
+        int userId = Convert.ToInt32(userIdStr);
+
+        // Delete CV
+        if (profile.DeleteCv(userId))
+            return Ok("CV deleted\n");
+        else
+            return NotFound("No CV found\n");
+    }
+
+    [HttpPost("delete")]
+    [Authorize]
     [ProducesResponseType(501)]
-    public IActionResult UploadCv() {
+    public IActionResult DeleteUser() {
         return StatusCode(501, "Feature not yet implemented\n");
     }
 

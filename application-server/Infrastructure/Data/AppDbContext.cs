@@ -4,6 +4,7 @@ using System.Linq;
 public class AppDbContext : DbContext {
 
     public DbSet<Entity.User> Users { get; set; }
+    public DbSet<Entity.Student> Students { get; set; }
 
     public AppDbContext(DbContextOptions<AppDbContext> options) : base(options) { }
 

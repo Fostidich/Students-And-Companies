@@ -37,5 +37,15 @@ public class DataService : IDataService {
         return users;
     }
 
+    public List<string> MapToStrings(IDataReader reader, string fieldName) {
+        var result = new List<string>();
+
+        while (reader.Read()) {
+            result.Add(reader[fieldName].ToString());
+        }
+
+        return result;
+    }
+
 }
 

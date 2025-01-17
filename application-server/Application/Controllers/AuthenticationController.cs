@@ -1,7 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Authorization;
 
-//TODO add check token validity endpoint
-//TODO add logout endpoint
 [ApiController]
 [Route("api/authentication")]
 public class AuthenticationController : ControllerBase {
@@ -28,6 +27,13 @@ public class AuthenticationController : ControllerBase {
             return StatusCode(500, "Internal server error\n");
     }
 
+    [HttpPost("validation/{id}")]
+    [Authorize]
+    [ProducesResponseType(501)]
+    public IActionResult ValidationCode(int id) {
+        return StatusCode(501, "Feature not yet implemented\n");
+    }
+
     [HttpPost("login")]
     [ProducesResponseType(200)]
     [ProducesResponseType(400)]
@@ -41,6 +47,21 @@ public class AuthenticationController : ControllerBase {
         // Generate token from user data
         string token = authentication.GenerateToken(user);
         return Ok(new { token });
+    }
+
+    [HttpPost("logout")]
+    [Authorize]
+    [ProducesResponseType(501)]
+    public IActionResult Logout() {
+        return StatusCode(501, "Feature not yet implemented\n");
+    }
+
+    [HttpGet]
+    [Authorize]
+    [ProducesResponseType(200)]
+    [ProducesResponseType(401)]
+    public IActionResult CheckToken() {
+        return Ok();
     }
 
 }

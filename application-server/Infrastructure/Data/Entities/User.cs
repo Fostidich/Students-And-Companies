@@ -36,6 +36,11 @@ namespace Entity {
         [DatabaseGenerated(DatabaseGeneratedOption.Computed)]
         public DateTime CreatedAt { get; set; }
 
+
+        // Navigation properties
+
+        public Student Student { get; set; }
+
     }
 
 }
