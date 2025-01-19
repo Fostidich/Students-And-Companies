@@ -58,7 +58,7 @@ public class ProfileQueries : IProfileQueries {
     
     public bool UpdateSaltAndPassword(UserType type, int id, string salt, string hash) {
         try {
-            string tableName = type == UserType.Company ? "Companies" : "Students";
+            string tableName = type == UserType.Company ? "Company" : "Student";
             string idColumn = type == UserType.Company ? "CompanyId" : "StudentId";
             string query = $@"
                 UPDATE {tableName}
@@ -83,7 +83,7 @@ public class ProfileQueries : IProfileQueries {
     
     public bool UpdateUsername(UserType type, int id, string username) {
         try {
-            string tableName = type == UserType.Company ? "Companies" : "Students";
+            string tableName = type == UserType.Company ? "Company" : "Student";
             string idColumn = type == UserType.Company ? "CompanyId" : "StudentId";
             string query = $@"
                 UPDATE {tableName}
@@ -106,7 +106,7 @@ public class ProfileQueries : IProfileQueries {
     }
     public bool UpdateEmail(UserType type, int id, string email) {
         try {
-            string tableName = type == UserType.Company ? "Companies" : "Students";
+            string tableName = type == UserType.Company ? "Company" : "Student";
             string idColumn = type == UserType.Company ? "CompanyId" : "StudentId";
             string query = $@"
                 UPDATE {tableName}
