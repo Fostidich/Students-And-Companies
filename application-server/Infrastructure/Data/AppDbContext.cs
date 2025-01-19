@@ -1,10 +1,19 @@
 using Microsoft.EntityFrameworkCore;
 using System.Linq;
+using Entity;
 
 public class AppDbContext : DbContext {
-
-    public DbSet<Entity.User> Users { get; set; }
-    public DbSet<Entity.Student> Students { get; set; }
+    
+    public DbSet<Entity.Student> Student { get; set; }
+    public DbSet<Entity.Company> Company { get; set; }
+    public DbSet<Entity.Advertisement> Advertisement { get; set; }
+    public DbSet<Entity.Application> Application { get; set; }
+    public DbSet<Entity.StudentSkills> StudentSkills { get; set; }
+    public DbSet<Entity.Skill> Skill { get; set; }
+    public DbSet<Entity.AdvertisementSkills> AdvertisementSkills { get; set; }
+    public DbSet<Entity.Internship> Internship { get; set; }
+    public DbSet<Entity.Feedback> Feedback { get; set; }
+    
 
     public AppDbContext(DbContextOptions<AppDbContext> options) : base(options) { }
 
@@ -18,7 +27,130 @@ public class AppDbContext : DbContext {
                 property.SetColumnName(ToSnakeCase(property.Name));
             }
         }
+        
+        // Unique constraints
+        
+        // Ensures that the UserName field in the Student table is unique
+        modelBuilder.Entity<Entity.Student>()
+            .HasIndex(s => s.UserName)
+            .IsUnique();
+
+        // Ensures that the Email field in the Student table is unique
+        modelBuilder.Entity<Entity.Student>()
+            .HasIndex(s => s.Email)
+            .IsUnique();
+        
+        // Ensures that the UserName field in the Company table is unique
+        modelBuilder.Entity<Entity.Company>()
+            .HasIndex(c => c.UserName)
+            .IsUnique();
+
+        // Ensures that the Email field in the Company table is unique
+        modelBuilder.Entity<Entity.Company>()
+            .HasIndex(c => c.Email)
+            .IsUnique();
+        
+        
+        // Composite key
+        
+        // Configure the composite key for the StudentSkills table
+        modelBuilder.Entity<StudentSkills>()
+            .HasKey(ss => new { ss.StudentId, ss.SkillId });
+        
+        // Configure the composite key for AdvertisementSkills
+        modelBuilder.Entity<AdvertisementSkills>()
+            .HasKey(ads => new { ads.AdvertisementId, ads.SkillId });
+
+        
+        // Foreign key
+        
+        // Configure the foreign key relationship with Company
+        modelBuilder.Entity<Advertisement>()
+            .HasOne(a => a.Company) 
+            .WithMany(c => c.Advertisements) 
+            .HasForeignKey(a => a.CompanyId)
+            .OnDelete(DeleteBehavior.Restrict); // Prevent cascading delete
+        
+        modelBuilder.Entity<Student>()
+            .HasOne(s => s.Internship) // A student can have one internship
+            .WithOne(i => i.Student) // An internship belongs to one student
+            .HasForeignKey<Internship>(i => i.StudentId) // Foreign key defined in Internship
+            .OnDelete(DeleteBehavior.Restrict); // Prevent cascading delete
+
+        
+        // Configure the foreign key relationship with the Student table
+        modelBuilder.Entity<StudentSkills>()
+            .HasOne(ss => ss.Student)
+            .WithMany(s => s.StudentSkills)
+            .HasForeignKey(ss => ss.StudentId)
+            .OnDelete(DeleteBehavior.Restrict); // Prevent cascading delete
+
+        // Configure the foreign key relationship with the Skill table
+        modelBuilder.Entity<StudentSkills>()
+            .HasOne(ss => ss.Skill)
+            .WithMany(s => s.StudentSkills)
+            .HasForeignKey(ss => ss.SkillId)
+            .OnDelete(DeleteBehavior.Cascade); // Delete StudentSkill when the skill is deleted
+        
+        // Configure the foreign key relationship with Advertisement
+        modelBuilder.Entity<AdvertisementSkills>()
+            .HasOne(ads => ads.Advertisement)
+            .WithMany(a => a.AdvertisementSkills)
+            .HasForeignKey(ads => ads.AdvertisementId)
+            .OnDelete(DeleteBehavior.Restrict); // Prevent cascading delete
+
+        // Configure the foreign key relationship with Skill
+        modelBuilder.Entity<AdvertisementSkills>()
+            .HasOne(ads => ads.Skill)
+            .WithMany(s => s.AdvertisementSkills)
+            .HasForeignKey(ads => ads.SkillId)
+            .OnDelete(DeleteBehavior.Cascade); // Delete AdvertisementSkill when the skill is deleted
+        
+        // Configure the foreign key relationship with Student
+        modelBuilder.Entity<Application>()
+            .HasOne(a => a.Student) // Each application belongs to one student
+            .WithMany(s => s.Applications) // A student can make many applications
+            .HasForeignKey(a => a.StudentId)
+            .OnDelete(DeleteBehavior.Restrict); // Prevent cascading delete
+            
+        // Configure the foreign key relationship with Advertisement
+        modelBuilder.Entity<Application>()
+            .HasOne(a => a.Advertisement) // Each application targets one advertisement
+            .WithMany(ad => ad.Applications) // An advertisement can have many applications
+            .HasForeignKey(a => a.AdvertisementId)
+            .OnDelete(DeleteBehavior.Restrict); // Prevent cascading delete
+            
+        // Configure the foreign key relationship with Student
+        modelBuilder.Entity<Internship>()
+            .HasOne(i => i.Student) // Each internship belongs to one student
+            .WithOne(s => s.Internship) // A student can have one internships
+            .HasForeignKey<Internship>(i => i.StudentId)
+            .OnDelete(DeleteBehavior.Restrict); // Prevent cascading delete
+
+        // Configure the foreign key relationship with Company
+        modelBuilder.Entity<Internship>()
+            .HasOne(i => i.Company) // Each internship is linked to one company
+            .WithMany(c => c.Internships) // A company can have many internships
+            .HasForeignKey(i => i.CompanyId)
+            .OnDelete(DeleteBehavior.Restrict); // Prevent cascading delete
+
+        // Configure the foreign key relationship with Advertisement
+        modelBuilder.Entity<Internship>()
+            .HasOne(i => i.Advertisement) // Each internship is linked to one advertisement
+            .WithMany(a => a.Internships) // An advertisement can have many internships
+            .HasForeignKey(i => i.AdvertisementId)
+            .OnDelete(DeleteBehavior.Restrict); // Prevent cascading delete
+        
+        // Configure the foreign key relationship with Internship
+        modelBuilder.Entity<Feedback>()
+            .HasOne(f => f.Internship) // Each feedback is linked to one internship
+            .WithOne(i => i.Feedback) // Each internship has one feedback
+            .HasForeignKey<Feedback>(f => f.InternshipId)
+            .OnDelete(DeleteBehavior.Cascade); // Delete feedback when the internship is deleted
+
     }
+    
+    
 
     private string ToSnakeCase(string name) {
         return string.Concat(
