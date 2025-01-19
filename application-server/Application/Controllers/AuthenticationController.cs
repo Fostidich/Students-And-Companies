@@ -11,21 +11,38 @@ public class AuthenticationController : ControllerBase {
         this.authentication = service;
     }
 
-    [HttpPost("register")]
+    [HttpPost("register/company")]
     [ProducesResponseType(200)]
     [ProducesResponseType(400)]
     [ProducesResponseType(500)]
-    public IActionResult Register([FromBody] DTO.RegistrationForm registrationForm) {
+    public IActionResult RegisterCompany([FromBody] DTO.RegistrationFormCompany registrationForm) {
         // Check registration form validity
-        if (!authentication.IsRegistrationFormValid(registrationForm))
+        if (!authentication.IsCompanyRegistrationValid(registrationForm))
             return BadRequest("Validation error\n");
 
         // Add user data to DB
-        if (authentication.RegisterUser(registrationForm))
+        if (authentication.RegisterCompany(registrationForm))
             return Ok("User registered\n");
         else
             return StatusCode(500, "Internal server error\n");
     }
+
+    [HttpPost("register/student")]
+    [ProducesResponseType(200)]
+    [ProducesResponseType(400)]
+    [ProducesResponseType(500)]
+    public IActionResult RegisterStudent([FromBody] DTO.RegistrationFormStudent registrationForm) {
+        // Check registration form validity
+        if (!authentication.IsStudentRegistrationValid(registrationForm))
+            return BadRequest("Validation error\n");
+
+        // Add user data to DB
+        if (authentication.RegisterStudent(registrationForm))
+            return Ok("User registered\n");
+        else
+            return StatusCode(500, "Internal server error\n");
+    }
+
 
     [HttpPost("validation/{id}")]
     [Authorize]

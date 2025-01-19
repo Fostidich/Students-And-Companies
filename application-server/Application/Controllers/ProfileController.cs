@@ -14,51 +14,124 @@ public class ProfileController : ControllerBase {
         this.profile = service;
     }
 
-    [HttpGet]
+    [HttpGet("company")]
     [Authorize]
     [ProducesResponseType(200)]
+    [ProducesResponseType(400)]
     [ProducesResponseType(500)]
-    public IActionResult GetUserFromToken() {
+    public IActionResult GetCompanyFromToken() {
+        // Check role
+        string role = User.FindFirst(ClaimTypes.Role).Value;
+        if (role != UserType.Company.ToString())
+            return BadRequest("Invalid role\n");
+
         // Get user ID from authentication token
         string userIdStr = User.FindFirst(ClaimTypes.NameIdentifier).Value;
         int userId = Convert.ToInt32(userIdStr);
 
         // Find and return user data
-        DTO.User user = profile.GetUser(userId)?.ToDto();
+        DTO.Company user = profile.GetCompany(userId)?.ToDto();
         if (user == null)
             return StatusCode(500, "Internal server error\n");
         else
             return Ok(user);
     }
 
-    [HttpPost]
+    [HttpGet("student")]
     [Authorize]
     [ProducesResponseType(200)]
     [ProducesResponseType(400)]
     [ProducesResponseType(500)]
-    public IActionResult UpdateProfile([FromBody] DTO.ProfileUpdate updateForm) {
+    public IActionResult GetStudentFromToken() {
+        // Check role
+        string role = User.FindFirst(ClaimTypes.Role).Value;
+        if (role != UserType.Student.ToString())
+            return BadRequest("Invalid role\n");
+
+        // Get user ID from authentication token
+        string userIdStr = User.FindFirst(ClaimTypes.NameIdentifier).Value;
+        int userId = Convert.ToInt32(userIdStr);
+
+        // Find and return user data
+        DTO.Student user = profile.GetStudent(userId)?.ToDto();
+        if (user == null)
+            return StatusCode(500, "Internal server error\n");
+        else
+            return Ok(user);
+    }
+
+    [HttpPost("company")]
+    [Authorize]
+    [ProducesResponseType(200)]
+    [ProducesResponseType(400)]
+    [ProducesResponseType(500)]
+    public IActionResult UpdateProfileCompany([FromBody] DTO.ProfileUpdateCompany updateForm) {
+        // Check role
+        string role = User.FindFirst(ClaimTypes.Role).Value;
+        if (role != UserType.Company.ToString())
+            return BadRequest("Invalid role\n");
+
         // Get user ID from authentication token
         string userIdStr = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
         int userId = Convert.ToInt32(userIdStr);
 
         // Check update form validity
-        if (!profile.IsUpdateFormValid(updateForm))
+        if (!profile.IsCompanyUpdateFormValid(updateForm))
             return BadRequest("Validation error\n");
 
         // Update profile
-        if (profile.UpdateProfile(userId, updateForm))
+        if (profile.UpdateProfileCompany(userId, updateForm))
             return Ok("Profile updated\n");
         else
             return StatusCode(500, "Internal server error\n");
     }
 
-    [HttpGet("{id}")]
+    [HttpPost("student")]
+    [Authorize]
+    [ProducesResponseType(200)]
+    [ProducesResponseType(400)]
+    [ProducesResponseType(500)]
+    public IActionResult UpdateProfileStudent([FromBody] DTO.ProfileUpdateStudent updateForm) {
+        // Check role
+        string role = User.FindFirst(ClaimTypes.Role).Value;
+        if (role != UserType.Student.ToString())
+            return BadRequest("Invalid role\n");
+
+        // Get user ID from authentication token
+        string userIdStr = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+        int userId = Convert.ToInt32(userIdStr);
+
+        // Check update form validity
+        if (!profile.IsStudentUpdateFormValid(updateForm))
+            return BadRequest("Validation error\n");
+
+        // Update profile
+        if (profile.UpdateProfileStudent(userId, updateForm))
+            return Ok("Profile updated\n");
+        else
+            return StatusCode(500, "Internal server error\n");
+    }
+
+    [HttpGet("company/{id}")]
     [Authorize]
     [ProducesResponseType(200)]
     [ProducesResponseType(500)]
-    public IActionResult GetUserFromId(int id) {
+    public IActionResult GetCompanyFromId(int id) {
         // Find and return user data
-        DTO.User user = profile.GetUser(id)?.ToDto();
+        DTO.Company user = profile.GetCompany(id)?.ToDto();
+        if (user == null)
+            return StatusCode(500, "Internal server error\n");
+        else
+            return Ok(user);
+    }
+
+    [HttpGet("student/{id}")]
+    [Authorize]
+    [ProducesResponseType(200)]
+    [ProducesResponseType(500)]
+    public IActionResult GetStudentFromId(int id) {
+        // Find and return user data
+        DTO.Student user = profile.GetStudent(id)?.ToDto();
         if (user == null)
             return StatusCode(500, "Internal server error\n");
         else
@@ -70,6 +143,11 @@ public class ProfileController : ControllerBase {
     [ProducesResponseType(200)]
     [ProducesResponseType(404)]
     public IActionResult DownloadCvFromToken() {
+        // Check role
+        string role = User.FindFirst(ClaimTypes.Role).Value;
+        if (role != UserType.Student.ToString())
+            return BadRequest("Invalid role\n");
+
         // Get user ID from authentication token
         string userIdStr = User.FindFirst(ClaimTypes.NameIdentifier).Value;
         int userId = Convert.ToInt32(userIdStr);
@@ -105,11 +183,16 @@ public class ProfileController : ControllerBase {
     [ProducesResponseType(400)]
     [ProducesResponseType(500)]
     public IActionResult UploadCv(IFormFile file) {
+        // Check role
+        string role = User.FindFirst(ClaimTypes.Role).Value;
+        if (role != UserType.Student.ToString())
+            return BadRequest("Invalid role\n");
+
         // Get user ID from authentication token
         string userIdStr = User.FindFirst(ClaimTypes.NameIdentifier).Value;
         int userId = Convert.ToInt32(userIdStr);
 
-       // Check PDF validity
+        // Check PDF validity
         if (!profile.CheckCvValidity(file))
             return BadRequest("Invalid file\n");
 
@@ -125,6 +208,11 @@ public class ProfileController : ControllerBase {
     [ProducesResponseType(200)]
     [ProducesResponseType(404)]
     public IActionResult DeleteCv() {
+        // Check role
+        string role = User.FindFirst(ClaimTypes.Role).Value;
+        if (role != UserType.Student.ToString())
+            return BadRequest("Invalid role\n");
+
         // Get user ID from authentication token
         string userIdStr = User.FindFirst(ClaimTypes.NameIdentifier).Value;
         int userId = Convert.ToInt32(userIdStr);
