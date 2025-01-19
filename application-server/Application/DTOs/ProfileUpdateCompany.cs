@@ -21,7 +21,7 @@ namespace DTO {
         public string Bio { get; set; }
 
         [MaxLength(64, ErrorMessage = "Text is too long")]
-        public string Headquarters { get; set; }
+        public string Headquarter { get; set; }
 
         [MaxLength(64, ErrorMessage = "Text is too long")]
         public string FiscalCode { get; set; }

@@ -62,6 +62,30 @@ public class ProfileService : IProfileService {
                 errors = true;
         }
 
+        // Update bio
+        if (!string.IsNullOrWhiteSpace(updateForm.Bio)) {
+            if (!queries.UpdateBio(UserType.Company, userId, updateForm.Bio))
+                errors = true;
+        }
+
+        // Update headquarter
+        if (!string.IsNullOrWhiteSpace(updateForm.Headquarter)) {
+            if (!queries.UpdateHeadquarter(userId, updateForm.Headquarter))
+                errors = true;
+        }
+
+        // Update fiscal code
+        if (!string.IsNullOrWhiteSpace(updateForm.FiscalCode)) {
+            if (!queries.UpdateFiscalCode(userId, updateForm.FiscalCode))
+                errors = true;
+        }
+
+        // Update VAT number
+        if (!string.IsNullOrWhiteSpace(updateForm.VatNumber)) {
+            if (!queries.UpdateVatNumber(userId, updateForm.VatNumber))
+                errors = true;
+        }
+
         return !errors;
     }
 
@@ -88,6 +112,48 @@ public class ProfileService : IProfileService {
         // Update email
         if (!string.IsNullOrWhiteSpace(updateForm.Email)) {
             if (!queries.UpdateEmail(UserType.Student, userId, updateForm.Email))
+                errors = true;
+        }
+
+        // Update bio
+        if (!string.IsNullOrWhiteSpace(updateForm.Bio)) {
+            if (!queries.UpdateBio(UserType.Student, userId, updateForm.Bio))
+                errors = true;
+        }
+
+        // Update name
+        if (!string.IsNullOrWhiteSpace(updateForm.Name)) {
+            if (!queries.UpdateName(userId, updateForm.Name))
+                errors = true;
+        }
+
+        // Update surname
+        if (!string.IsNullOrWhiteSpace(updateForm.Surname)) {
+            if (!queries.UpdateSurname(userId, updateForm.Surname))
+                errors = true;
+        }
+
+        // Update university
+        if (!string.IsNullOrWhiteSpace(updateForm.University)) {
+            if (!queries.UpdateUniversity(userId, updateForm.University))
+                errors = true;
+        }
+
+        // Update course of study
+        if (!string.IsNullOrWhiteSpace(updateForm.CourseOfStudy)) {
+            if (!queries.UpdateCourseOfStudy(userId, updateForm.CourseOfStudy))
+                errors = true;
+        }
+
+        // Update gender
+        if (updateForm.Gender != null) {
+            if (!queries.UpdateGender(userId, updateForm.Gender.Value))
+                errors = true;
+        }
+
+        // Update birth date
+        if (updateForm.BirthDate != null) {
+            if (!queries.UpdateBirthDate(userId, updateForm.BirthDate.Value))
                 errors = true;
         }
 

@@ -34,10 +34,10 @@ namespace DTO {
         public string CourseOfStudy { get; set; }
 
         [RegularExpression("^[mf]$", ErrorMessage = "Sex must be either 'm' or 'f'")]
-        public char Gender { get; set; }
+        public char? Gender { get; set; }
 
         [Range(typeof(DateTime), "01/01/1920", "01/01/2020", ErrorMessage = "Date outside the valid range")]
-        public DateTime BirthDate { get; set; }
+        public DateTime? BirthDate { get; set; }
 
     }
 

@@ -1,9 +1,19 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Data;
+using System;
 
 namespace Entity {
 
     public class AdvertisementSkills {
+
+        public AdvertisementSkills() { }
+
+        public AdvertisementSkills(IDataReader reader) {
+            AdvertisementId = Convert.ToInt32(reader["advertisement_id"]);
+            SkillId = Convert.ToInt32(reader["skill_id"]);
+        }
+
 
         [Key, Column(Order = 0)]
         [ForeignKey("Advertisement")]

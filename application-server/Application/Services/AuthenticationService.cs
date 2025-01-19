@@ -34,16 +34,6 @@ public class AuthenticationService : IAuthenticationService {
         return true;
     }
 
-    public bool RegisterCompany(DTO.RegistrationFormCompany registrationForm) {
-        // Retrieve salt and hashed password
-        var salt = GenerateSalt();
-        var hash = HashPassword(salt, registrationForm.Password);
-
-        // Convert DTO to entity
-        Entity.Company user = new Company(registrationForm).ToEntity();
-        return queries.RegisterCompany(user);
-    }
-
     public bool IsStudentRegistrationValid(DTO.RegistrationFormStudent registrationForm) {
         // Check that username and email are unique
         if (queries.FindStudentFromEmail(registrationForm.Email.ToLowerInvariant()) != null) return false;
@@ -55,6 +45,18 @@ public class AuthenticationService : IAuthenticationService {
         return true;
     }
 
+    public bool RegisterCompany(DTO.RegistrationFormCompany registrationForm) {
+        // Retrieve salt and hashed password
+        var salt = GenerateSalt();
+        var hash = HashPassword(salt, registrationForm.Password);
+
+        // Convert DTO to entity
+        Entity.Company user = new Company(registrationForm).ToEntity();
+        user.Salt = salt;
+        user.HashedPassword = hash;
+        return queries.RegisterCompany(user);
+    }
+
     public bool RegisterStudent(DTO.RegistrationFormStudent registrationForm) {
         // Retrieve salt and hashed password
         var salt = GenerateSalt();
@@ -62,6 +64,8 @@ public class AuthenticationService : IAuthenticationService {
 
         // Convert DTO to entity
         Entity.Student user = new Student(registrationForm).ToEntity();
+        user.Salt = salt;
+        user.HashedPassword = hash;
         return queries.RegisterStudent(user);
     }
 

@@ -1,10 +1,26 @@
 using System;
+using System.Data;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Entity {
 
     public class Application {
+
+        public Application() { }
+
+        public Application(IDataReader reader) {
+            ApplicationId = Convert.ToInt32(reader["application_id"]);
+            StudentId = Convert.ToInt32(reader["student_id"]);
+            AdvertisementId = Convert.ToInt32(reader["advertisement_id"]);
+            CreatedAt = DateTime.Parse(reader["created_at"].ToString());
+            Status = reader["status"].ToString();
+            Questionnaire = reader["questionnaire"].ToString();
+            ProposedStart = reader["proposed_start"] != DBNull.Value
+                ? DateTime.Parse(reader["proposed_start"].ToString())
+                : default;
+        }
+
 
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]

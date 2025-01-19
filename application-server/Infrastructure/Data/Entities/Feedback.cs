@@ -1,10 +1,22 @@
 using System;
+using System.Data;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Entity {
 
     public class Feedback {
+
+        public Feedback() { }
+
+        public Feedback(IDataReader reader) {
+            InternshipId = Convert.ToInt32(reader["internship_id"]);
+            StudentRating = Convert.ToInt32(reader["student_rating"]);
+            CompanyRating = Convert.ToInt32(reader["company_rating"]);
+            StudentComment = reader["student_comment"] != DBNull.Value ? reader["student_comment"].ToString() : null;
+            CompanyComment = reader["company_comment"] != DBNull.Value ? reader["company_comment"].ToString() : null;
+        }
+
 
         [Key]
         [ForeignKey("Internship")]

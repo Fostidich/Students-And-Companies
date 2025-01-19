@@ -1,4 +1,5 @@
 using System;
+using System.Data;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Collections.Generic;
@@ -6,6 +7,25 @@ using System.Collections.Generic;
 namespace Entity {
 
     public class Student {
+
+		public Student() { }
+
+        public Student(IDataReader reader) {
+			StudentId = Convert.ToInt32(reader["student_id"]);
+			CreatedAt = DateTime.Parse(reader["created_at"].ToString());
+			Email = reader["email"].ToString();
+			Username = reader["username"].ToString();
+			Salt = reader["salt"].ToString();
+			HashedPassword = reader["hashed_password"].ToString();
+			Bio = reader["bio"] != DBNull.Value ? reader["bio"].ToString() : null;
+			Name = reader["name"].ToString();
+			Surname = reader["surname"].ToString();
+			University = reader["university"].ToString();
+			CourseOfStudy = reader["course_of_study"].ToString();
+			Gender = reader["gender"].ToString()[0];
+			BirthDate = DateTime.Parse(reader["birth_date"].ToString());
+		}
+
 
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
