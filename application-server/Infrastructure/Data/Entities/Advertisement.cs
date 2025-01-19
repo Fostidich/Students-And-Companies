@@ -13,7 +13,7 @@ namespace Entity {
         public int AdvertisementId { get; set; }
 
         [Required(ErrorMessage = "Field is required")]
-        public DateTime CreatedAt { get; set; } 
+        public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
 
         [Required(ErrorMessage = "Field is required")]
         [ForeignKey("Company")]

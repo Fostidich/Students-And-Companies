@@ -12,7 +12,7 @@ namespace Entity {
         public int InternshipId { get; set; } // Primary key for the Internship table
 
         [Required(ErrorMessage = "Field is required")]
-        public DateTime CreatedAt { get; set; } // Timestamp for when the internship was created
+        public DateTime CreatedAt { get; set; } = DateTime.UtcNow; // Timestamp for when the internship was created
 
         [Required(ErrorMessage = "Field is required")]
         [ForeignKey("Student")]

@@ -20,7 +20,7 @@ namespace Entity {
         public int AdvertisementId { get; set; } // Foreign key to the Advertisement table
 
         [Required(ErrorMessage = "Field is required")]
-        public DateTime CreatedAt { get; set; } // Timestamp for when the application was created
+        public DateTime CreatedAt { get; set; } = DateTime.UtcNow; // Timestamp for when the application was created
 
         [Required(ErrorMessage = "Field is required")]
         [Column(TypeName = "enum('REQUESTED', 'ACCEPTED', 'STARTED')")]
