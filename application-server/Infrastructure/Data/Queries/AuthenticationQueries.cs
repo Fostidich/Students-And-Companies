@@ -1,6 +1,3 @@
-using System;
-using MySql.Data.MySqlClient;
-
 public class AuthenticationQueries : IAuthenticationQueries {
 
     private readonly IDataService dataService;
@@ -9,68 +6,13 @@ public class AuthenticationQueries : IAuthenticationQueries {
         this.dataService = dataService;
     }
 
-    public bool RegisterUser(Entity.User user) {
-        try {
-            string query = @"
-                INSERT INTO users (username, email, salt, hashed_password, user_type)
-                VALUES (@username, @email, @salt, @hashed_password, @user_type)";
-            using var db_connection = dataService.GetConnection();
-            using var command = new MySqlCommand(query, db_connection);
-
-            command.Parameters.AddWithValue("@username", user.Username);
-            command.Parameters.AddWithValue("@email", user.Email);
-            command.Parameters.AddWithValue("@salt", user.Salt);
-            command.Parameters.AddWithValue("@hashed_password", user.HashedPassword);
-            command.Parameters.AddWithValue("@user_type", user.UserType);
-            command.ExecuteNonQuery();
-
-            return true;
-        } catch (Exception ex) {
-            Console.WriteLine(ex.Message);
-            return false;
-        }
-    }
-
-    public Entity.User FindFromUsername(string username) {
-        try {
-            string query = @"
-                SELECT *
-                FROM users
-                WHERE LOWER(username) = LOWER(@username)";
-            using var db_connection = dataService.GetConnection();
-            using var command = new MySqlCommand(query, db_connection);
-
-            command.Parameters.AddWithValue("@username", username);
-            using var reader = command.ExecuteReader();
-
-            var users = dataService.MapToUsers(reader);
-            if (users.Count == 0) return null;
-            return users[0];
-        } catch (Exception ex) {
-            Console.WriteLine(ex.Message);
-            return null;
-        }
-    }
-
-    public Entity.User FindFromEmail(string email) {
-        try {
-            string query = @"
-                SELECT *
-                FROM users
-                WHERE email = @email";
-            using var db_connection = dataService.GetConnection();
-            using var command = new MySqlCommand(query, db_connection);
-
-            command.Parameters.AddWithValue("@email", email);
-            using var reader = command.ExecuteReader();
-
-            var users = dataService.MapToUsers(reader);
-            if (users.Count == 0) return null;
-            return users[0];
-        } catch (Exception ex) {
-            Console.WriteLine(ex.Message);
-            return null;
-        }
-    }
+    public bool RegisterCompany(Entity.Company user) {return false;}
+    public bool RegisterStudent(Entity.Student user) {return false;}
+    public Entity.Company FindCompanyFromUsername(string username) {return new Entity.Company {} ;}
+    public Entity.Student FindStudentFromUsername(string username) {return new Entity.Student {} ;}
+    public Entity.Company FindCompanyFromEmail(string email) {return new Entity.Company {} ;}
+    public Entity.Student FindStudentFromEmail(string email) {return new Entity.Student {} ;}
+    public User FindFromUsername(string username) {return new User {} ;}
+    public User FindFromEmail(string email) {return new User {} ;}
 
 }

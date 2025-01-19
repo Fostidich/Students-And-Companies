@@ -162,19 +162,12 @@ public class ProfileService : IProfileService {
         string filePath = files.GetCvFilePath(userId.ToString());
 
         // Store file in file system
-        bool outcome = files.SaveFile(filePath, fileBytes);
-
-        // Add filepath to students table in DB
-        if (outcome) {
-            outcome &= queries.SetCvFilePath(userId, filePath);
-        }
-
-        return outcome;
-    }
+        return files.SaveFile(filePath, fileBytes);
+   }
 
     public IFormFile RetrieveCvFile(int userId) {
         // Compute file path
-        string filePath = queries.GetCvFilePath(userId);
+        string filePath = files.GetCvFilePath(userId.ToString());
         if (string.IsNullOrWhiteSpace(filePath))
             return null;
 
@@ -196,18 +189,12 @@ public class ProfileService : IProfileService {
 
     public bool DeleteCv(int userId) {
         // Compute file path
-        string filePath = queries.GetCvFilePath(userId);
+        string filePath = files.GetCvFilePath(userId.ToString());
         if (string.IsNullOrWhiteSpace(filePath))
             return false;
 
         // Delete file
-        bool outcome = files.DeleteFile(filePath);
-
-        // Delete file path from students DB row
-        if (outcome)
-            outcome &= queries.RemoveCvFilePath(userId);
-
-        return outcome;
+        return files.DeleteFile(filePath);
     }
 
 }
