@@ -51,9 +51,6 @@ namespace Entity {
         [MaxLength(64, ErrorMessage = "Value cannot be more than 64 characters long")]
         public string CourseOfStudy { get; set; }
         
-		[ForeignKey("Internship")]
-        public int InternshipId { get; set; }
-        
 		[MaxLength(1024, ErrorMessage = "Bio cannot exceed 500 characters.")]
         public string Bio { get; set; }
         
@@ -63,8 +60,7 @@ namespace Entity {
 
 
 		// Navigation properties
-		public Internship Internship { get; set; }
-		
+		public Internship Internship { get; set; }		
 		public ICollection<Entity.StudentSkills> StudentSkills { get; set; }
 		public ICollection<Entity.Application> Applications { get; set; }
 		

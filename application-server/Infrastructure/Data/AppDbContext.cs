@@ -70,12 +70,6 @@ public class AppDbContext : DbContext {
             .WithMany(c => c.Advertisements) 
             .HasForeignKey(a => a.CompanyId)
             .OnDelete(DeleteBehavior.Restrict); // Prevent cascading delete
-        
-        modelBuilder.Entity<Student>()
-            .HasOne(s => s.Internship) // A student can have one internship
-            .WithOne(i => i.Student) // An internship belongs to one student
-            .HasForeignKey<Internship>(i => i.StudentId) // Foreign key defined in Internship
-            .OnDelete(DeleteBehavior.Restrict); // Prevent cascading delete
 
         
         // Configure the foreign key relationship with the Student table
