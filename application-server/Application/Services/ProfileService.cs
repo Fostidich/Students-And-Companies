@@ -102,11 +102,15 @@ public class ProfileService : IProfileService {
         if (!string.IsNullOrWhiteSpace(username)) {
             if (authenticationQueries.FindCompanyFromUsername(username) != null)
                 return false;
+            if (authenticationQueries.FindStudentFromUsername(username) != null)
+                return false;
         }
 
         // Check email uniqueness
         if (!string.IsNullOrWhiteSpace(email)) {
             if (authenticationQueries.FindCompanyFromEmail(email.ToLowerInvariant()) != null)
+                return false;
+            if (authenticationQueries.FindStudentFromEmail(email.ToLowerInvariant()) != null)
                 return false;
         }
 
@@ -122,11 +126,15 @@ public class ProfileService : IProfileService {
         if (!string.IsNullOrWhiteSpace(username)) {
             if (authenticationQueries.FindStudentFromUsername(username) != null)
                 return false;
+            if (authenticationQueries.FindCompanyFromUsername(username) != null)
+                return false;
         }
 
         // Check email uniqueness
         if (!string.IsNullOrWhiteSpace(email)) {
             if (authenticationQueries.FindStudentFromEmail(email.ToLowerInvariant()) != null)
+                return false;
+            if (authenticationQueries.FindCompanyFromEmail(email.ToLowerInvariant()) != null)
                 return false;
         }
 

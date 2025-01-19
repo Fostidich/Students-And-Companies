@@ -31,10 +31,10 @@ namespace DTO {
         public string University { get; set; }
 
         [MaxLength(64, ErrorMessage = "Text is too long")]
-        public string StudyCourse { get; set; }
+        public string CourseOfStudy { get; set; }
 
         [RegularExpression("^[mf]$", ErrorMessage = "Sex must be either 'm' or 'f'")]
-        public char Sex { get; set; }
+        public char Gender { get; set; }
 
         [Range(typeof(DateTime), "01/01/1920", "01/01/2020", ErrorMessage = "Date outside the valid range")]
         public DateTime BirthDate { get; set; }

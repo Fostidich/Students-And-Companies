@@ -13,7 +13,8 @@ public class AuthenticationTest : IClassFixture<TestServerFixture> {
     }
 
     [Theory]
-    [InlineData("registrationTest", "passwordTest", "Student", "registration@test.com", 200)]
+    [InlineData("registrationTest", "passwordTest", "registration@test.com", "Hi I'm the best!",
+            "Rome (RM), Lazio, Italy", "STDFNCbadab00m", "not a number but ok", 200)]
     [InlineData("no spaces", "passwordTest", "Student", "registration@test.com", 400)]
     [InlineData("no@email.com", "passwordTest", "Student", "registration@test.com", 400)]
     [InlineData("too", "passwordTest", "Student", "registration@test.com", 400)]
@@ -30,17 +31,29 @@ public class AuthenticationTest : IClassFixture<TestServerFixture> {
     [InlineData("registrationTest", "   ", "Company", "registration@test.com", 400)]
     [InlineData("registrationTest", "passwordTest", "   ", "registration@test.com", 400)]
     [InlineData("registrationTest", "passwordTest", "Company", "   ", 400)]
-    public async Task TestRegister(string username, string password, string userType, string email, int statusCode) {
+    public async Task TestRegisterCompany(
+            string username,
+            string password,
+            string email,
+            string bio,
+            string headquarter,
+            string fiscalCode,
+            string vatNumber,
+            int statusCode
+    ) {
         // Arrange
-        var registrationForm = new DTO.RegistrationForm {
+        var registrationForm = new DTO.RegistrationFormCompany {
             Username = username,
+            Email = email,
             Password = password,
-            UserType = userType,
-            Email = email
+            Bio = bio,
+            Headquarter = headquarter,
+            FiscalCode = fiscalCode,
+            VatNumber = vatNumber,
         };
 
         // Act
-        var response = await client.PostAsJsonAsync("/api/authentication/register", registrationForm);
+        var response = await client.PostAsJsonAsync("/api/authentication/register/company", registrationForm);
 
         // Assert
         Assert.Equal(statusCode, (int)response.StatusCode);

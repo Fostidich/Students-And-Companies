@@ -27,6 +27,8 @@ public class AuthenticationService : IAuthenticationService {
         // Check that username and email are unique
         if (queries.FindCompanyFromEmail(registrationForm.Email.ToLowerInvariant()) != null) return false;
         if (queries.FindCompanyFromUsername(registrationForm.Username) != null) return false;
+        if (queries.FindStudentFromEmail(registrationForm.Email.ToLowerInvariant()) != null) return false;
+        if (queries.FindStudentFromUsername(registrationForm.Username) != null) return false;
 
         // Checks passed
         return true;
@@ -46,6 +48,8 @@ public class AuthenticationService : IAuthenticationService {
         // Check that username and email are unique
         if (queries.FindStudentFromEmail(registrationForm.Email.ToLowerInvariant()) != null) return false;
         if (queries.FindStudentFromUsername(registrationForm.Username) != null) return false;
+        if (queries.FindCompanyFromEmail(registrationForm.Email.ToLowerInvariant()) != null) return false;
+        if (queries.FindCompanyFromUsername(registrationForm.Username) != null) return false;
 
         // Checks passed
         return true;
@@ -63,11 +67,26 @@ public class AuthenticationService : IAuthenticationService {
 
     public User ValidateCredentials(DTO.Credentials credentials) {
         // Search for credentials in the DB
-        User user;
-        if (!IsValidEmail(credentials.Username))
-            user = queries.FindFromUsername(credentials.Username);
-        else
-            user = queries.FindFromEmail(credentials.Username);
+        User user = null;
+        if (!IsValidEmail(credentials.Username)) {
+            var student = queries.FindStudentFromUsername(credentials.Username);
+            if (student != null)
+                user = new Student(student);
+            else {
+                var company = queries.FindCompanyFromUsername(credentials.Username);
+                if (company != null)
+                    user = new Company(company);
+            }
+        } else {
+            var student = queries.FindStudentFromEmail(credentials.Username);
+            if (student != null)
+                user = new Student(student);
+            else {
+                var company = queries.FindCompanyFromEmail(credentials.Username);
+                if (company != null)
+                    user = new Company(company);
+            }
+        }
 
         // Return null if user not found
         if (user == null) return null;

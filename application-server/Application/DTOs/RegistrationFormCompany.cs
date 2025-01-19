@@ -25,7 +25,7 @@ namespace DTO {
 
         [Required(ErrorMessage = "Field is required")]
         [MaxLength(64, ErrorMessage = "Text is too long")]
-        public string Headquarters { get; set; }
+        public string Headquarter { get; set; }
 
         [Required(ErrorMessage = "Field is required")]
         [MaxLength(64, ErrorMessage = "Text is too long")]

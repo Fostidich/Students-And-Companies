@@ -1,10 +1,13 @@
-public class User {
+using System;
 
-    public int Id { get; }
-    public string Username { get; }
-    public string Salt { get; }
-    public string HashedPassword { get; }
-    public UserType UserType { get; }
-    public string Email { get; }
+public abstract class User {
+
+    public int Id { get; set; }
+    public string Username { get; set; }
+    public string Salt { get; set; }
+    public string HashedPassword { get; set; }
+    public UserType UserType { get; set; }
+    public string Email { get; set; }
+    public DateTime CreatedAt { get; set; }
 
 }

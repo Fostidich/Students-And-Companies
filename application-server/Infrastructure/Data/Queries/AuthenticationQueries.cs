@@ -12,7 +12,5 @@ public class AuthenticationQueries : IAuthenticationQueries {
     public Entity.Student FindStudentFromUsername(string username) {return new Entity.Student {} ;}
     public Entity.Company FindCompanyFromEmail(string email) {return new Entity.Company {} ;}
     public Entity.Student FindStudentFromEmail(string email) {return new Entity.Student {} ;}
-    public User FindFromUsername(string username) {return new User {} ;}
-    public User FindFromEmail(string email) {return new User {} ;}
 
 }

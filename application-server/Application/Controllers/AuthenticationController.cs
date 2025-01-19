@@ -63,7 +63,10 @@ public class AuthenticationController : ControllerBase {
 
         // Generate token from user data
         string token = authentication.GenerateToken(user);
-        return Ok(new { token });
+        return Ok(new DTO.SuccessfulLogin {
+            Token = token,
+            UserType = user.UserType.ToString()
+        });
     }
 
     [HttpPost("logout")]
