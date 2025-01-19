@@ -4,6 +4,11 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace Entity {
 
     public class StudentSkills {
+        
+        public StudentSkills(IDataReader reader) {
+            StudentId = Convert.ToInt32(reader["student_id"]);
+            SkillId = Convert.ToInt32(reader["skill_id"]);
+        }
 
         [Key, Column(Order = 0)]
         [ForeignKey("Student")]

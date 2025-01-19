@@ -5,6 +5,11 @@ using System.Collections.Generic;
 namespace Entity {
 
     public class Skill {
+        
+        public Skill(IDataReader reader) {
+            SkillId = Convert.ToInt32(reader["skill_id"]);
+            Name = reader["name"].ToString();
+        }
 
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]

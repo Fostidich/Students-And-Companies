@@ -6,6 +6,18 @@ using System.Collections.Generic;
 namespace Entity {
 
     public class Advertisement {
+        
+        public Advertisement(IDataReader reader) { 
+            AdvertisementId = Convert.ToInt32(reader["advertisement_id"]);
+            CreatedAt = DateTime.Parse(reader["created_at"].ToString());
+            CompanyId = Convert.ToInt32(reader["company_id"]);
+            Description = reader["description"].ToString();
+            Duration = Convert.ToInt32(reader["duration"]);
+            Spots = Convert.ToInt32(reader["spots"]);
+            Available = Convert.ToInt32(reader["available"]);
+            Open = Convert.ToBoolean(reader["open"]);
+            Questionnaire = reader["questionnaire"].ToString();
+        }
 
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
