@@ -1,20 +1,24 @@
 import PropTypes from 'prop-types';
 import { useState } from 'react';
 const API_SERVER_URL = import.meta.env.VITE_API_SERVER_URL;
-function RegisterForm({ onRegister }) {
+function RegisterFormStudent({ onRegister }) {
     const [username, setUsername] = useState('');
-    const [password, setPassword] = useState('');
     const [email, setEmail] = useState('');
-    const [userType, setUserType] = useState('Student');
+    const [password, setPassword] = useState('');
+    const [bio, setBio] = useState('');
+    const [headquarter, setHeadquarter] = useState('');
+    const [fiscalCode, setFiscalCode] = useState('');
+    const [vatNumber, setVatNumber] = useState('');
     const [errorMessage, setErrorMessage] = useState('');
+
     const handleSubmit = async (e) => {
         e.preventDefault();
-        const response = await fetch(`${API_SERVER_URL}/api/authentication/register`, {
+        const response = await fetch(`${API_SERVER_URL}/api/authentication/register/company`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify({ username, password, userType, email }),
+            body: JSON.stringify({ username, email, password, bio, headquarter, fiscalCode, vatNumber}),
         });
 
 
@@ -29,6 +33,7 @@ function RegisterForm({ onRegister }) {
     return (
         <form onSubmit={handleSubmit} className="bg-white flex flex-col rounded-md p-6 border border-[#d9d9d9]">
             {errorMessage && <div className="text-red-500 mb-4">{errorMessage}</div>}
+            <p className="text-center font-medium pb-2">Register as company</p>
             <input
                 type="text"
                 placeholder="Username"
@@ -41,18 +46,35 @@ function RegisterForm({ onRegister }) {
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 className="mb-4 px-4 py-2 border rounded-md"/>
-            <select
-                value={userType}
-                onChange={(e) => setUserType(e.target.value)}
-                className="mb-4 px-4 py-2 border rounded-md">
-                <option value="Student" className="text-black">Student</option>
-                <option value="Company" className="text-black">Company</option>
-            </select>
             <input
                 type="password"
                 placeholder="Password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
+                className="mb-4 px-4 py-2 border rounded-md"/>
+            <input
+                type="text"
+                placeholder="Bio"
+                value={bio}
+                onChange={(e) => setBio(e.target.value)}
+                className="mb-4 px-4 py-2 border rounded-md"/>
+            <input
+                type="text"
+                placeholder="Headquarter"
+                value={headquarter}
+                onChange={(e) => setHeadquarter(e.target.value)}
+                className="mb-4 px-4 py-2 border rounded-md"/>
+            <input
+                type="text"
+                placeholder="FiscalCode"
+                value={fiscalCode}
+                onChange={(e) => setFiscalCode(e.target.value)}
+                className="mb-4 px-4 py-2 border rounded-md"/>
+            <input
+                type="text"
+                placeholder="University"
+                value={vatNumber}
+                onChange={(e) => setVatNumber(e.target.value)}
                 className="mb-4 px-4 py-2 border rounded-md"/>
             <button
                 type="submit"
@@ -65,8 +87,8 @@ function RegisterForm({ onRegister }) {
     );
 }
 
-RegisterForm.propTypes = {
+RegisterFormStudent.propTypes = {
     onRegister: PropTypes.func.isRequired,
 };
 
-export default RegisterForm;
+export default RegisterFormStudent;
