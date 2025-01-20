@@ -1,6 +1,7 @@
 import PropTypes from "prop-types";
-import CardProfile from "../components/CardProfile.jsx";
-
+import CardProfileStudent from "../components/CardProfileStudent.jsx";
+import Cookies from 'js-cookie';
+import CardProfileCompany from "../components/CardProfileCompany.jsx";
 function Profile({onLogout}) {
 
     const handleLogoutClick = async () => {
@@ -10,12 +11,16 @@ function Profile({onLogout}) {
             console.error('Errore durante il logout:', error);
         }
     };
+    const authData = JSON.parse(Cookies.get('authData'));
+    const userType = authData.userType;
+
 
     return (
         <div className="flex flex-wrap p-8">
 
             <div className="w-full md:w-1/2 bg-blue-100 p-4 items-center ">
-                <CardProfile/>
+                {userType.toLowerCase() === 'student' ? (<CardProfileStudent/>) : (<CardProfileCompany/>)}
+
 
             </div>
             <div className="w-full md:w-1/2 bg-green-100 p-4">

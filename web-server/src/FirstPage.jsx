@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import Welcome from './pages/Welcome.jsx';
 import App from './App.jsx';
 import Cookies from 'js-cookie';
-// const API_SERVER_URL = import.meta.env.VITE_API_SERVER_URL;
+const API_SERVER_URL = import.meta.env.VITE_API_SERVER_URL;
 
 function FirstPage() {
     const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -11,9 +11,17 @@ function FirstPage() {
     useEffect(() => {
         const checkAuthStatus = async () => {
             try {
-                const token = Cookies.get('token');
+                const data = Cookies.get('authData');
+                const authData = JSON.parse(data) ;
 
-                if (!token) {
+                const response = await fetch(`${API_SERVER_URL}/api/authentication`, {
+                    method: 'GET',
+                    headers: {
+                        'Authorization': `Bearer ${authData.token}`, // Invia il token nell'header Authorization
+                    },
+                });
+
+                if (!response.status === 200) {
                     setIsLoggedIn(false);
                     setIsLoading(false);
                     return;
@@ -39,8 +47,7 @@ function FirstPage() {
     };
 
     const handleLogout = () => {
-        Cookies.remove('token');
-
+        Cookies.remove('authData');
         setIsLoggedIn(false);
     };
 

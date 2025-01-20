@@ -7,9 +7,9 @@ function LoginForm({ onLogin }) {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [errorMessage, setErrorMessage] = useState('');
-    const saveTokenToCookie = (token) => {
-        // Salva il token in un cookie con un TTL di 24 ore
-        Cookies.set('token', token, {
+    const saveAuthDataToCookie = (token, userType) => {
+        const authData = JSON.stringify({ token, userType });
+        Cookies.set('authData', authData, {
             expires: 1, // TTL: 1 giorno
             secure: true, // Richiede HTTPS
             sameSite: 'strict', // Previene attacchi CSRF
@@ -29,7 +29,7 @@ function LoginForm({ onLogin }) {
 
         if (response.ok) {
             const data = await response.json();
-            saveTokenToCookie(data.token);
+            saveAuthDataToCookie(data.token, data.userType);
             onLogin();
             console.log('Login successful');
         } else {
