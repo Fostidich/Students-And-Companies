@@ -1,19 +1,24 @@
 import { useState, useEffect } from 'react';
 import Cookies from 'js-cookie';
 const API_SERVER_URL = import.meta.env.VITE_API_SERVER_URL;
-function CardProfile (){
+function CardProfileCompany (){
     const [username, setUsername] = useState('');
     const [email, setEmail] = useState('');
-    const [userType, setUserType] = useState('');
+    const [bio, setBio] = useState('');
+    const [headquarter, setHeadquarter] = useState('');
+    const [fiscalCode, setFiscalCode] = useState('');
+    const [vatNumber, setVatNumber] = useState('');
 
     useEffect(() => {
         const downloadInformations = async () => {
             try {
-                const token = Cookies.get('token');
-                const response = await fetch(`${API_SERVER_URL}/api/profile`, {
+                const authData = JSON.parse(Cookies.get('authData'));
+
+
+                const response = await fetch(`${API_SERVER_URL}/api/profile/company`, {
                     method: 'GET',
                     headers: {
-                        'Authorization': `Bearer ${token}`, // Invia il token nell'header Authorization
+                        'Authorization': `Bearer ${authData.token}`, // Invia il token nell'header Authorization
                     },
                 });
 
@@ -22,7 +27,12 @@ function CardProfile (){
 
                     setUsername(data.username);
                     setEmail(data.email);
-                    setUserType(data.userType);
+                    setBio(data.bio);
+                    setHeadquarter(data.headquarter);
+                    setFiscalCode(data.fiscalCode);
+                    setVatNumber(data.vatNumber);
+
+
                 }else
                     console.error('Error checking profile informations:', response.status);
 
@@ -41,10 +51,13 @@ function CardProfile (){
                 <img className="w-24 h-24 border rounded-full"
                      src={"https://static.vecteezy.com/system/resources/previews/020/911/733/non_2x/profile-icon-avatar-icon-user-icon-person-icon-free-png.png"}/>
             </div>
-            <div className="flex flex-col items-center gap-2">
+            <div className="flex flex-col items-center gap">
                 <p className="text-lg font-bold">{username}</p>
                 <p className="text-lg font-light">{email}</p>
-                <p className="text-lg font-light">{userType}</p>
+                <p className="text-lg font-light">{headquarter}</p>
+                <p className="text-lg font-light">{fiscalCode}</p>
+                <p className="text-lg font-light">{vatNumber}</p>
+                <p className="text-lg font-light">{bio}</p>
             </div>
             <button className=" text-white rounded-xl underline text-blue-500">Edit</button>
         </div>
@@ -54,4 +67,4 @@ function CardProfile (){
 
 
 }
-export default CardProfile;
+export default CardProfileCompany;

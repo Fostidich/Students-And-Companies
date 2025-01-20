@@ -72,7 +72,7 @@ function RegisterFormStudent({ onRegister }) {
                 className="mb-4 px-4 py-2 border rounded-md"/>
             <input
                 type="text"
-                placeholder="University"
+                placeholder="VatNumber"
                 value={vatNumber}
                 onChange={(e) => setVatNumber(e.target.value)}
                 className="mb-4 px-4 py-2 border rounded-md"/>
