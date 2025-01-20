@@ -87,7 +87,7 @@ namespace ApplicationServer.Migrations
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     course_of_study = table.Column<string>(type: "varchar(64)", maxLength: 64, nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    gender = table.Column<string>(type: "enum('M','W')", nullable: false)
+                    gender = table.Column<string>(type: "enum('m','f')", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     birth_date = table.Column<DateTime>(type: "datetime(6)", nullable: false)
                 },

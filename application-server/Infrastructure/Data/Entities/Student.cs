@@ -74,7 +74,7 @@ namespace Entity {
         public string CourseOfStudy { get; set; }
 
         [Required(ErrorMessage = "Field is required")]
-		[Column(TypeName = "enum('M','W')")]
+		[Column(TypeName = "enum('m','f')")]
         public char Gender { get; set; }
 
         [Required(ErrorMessage = "Field is required")]

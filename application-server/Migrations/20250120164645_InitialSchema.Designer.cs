@@ -11,7 +11,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ApplicationServer.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20250119170717_InitialSchema")]
+    [Migration("20250120164645_InitialSchema")]
     partial class InitialSchema
     {
         /// <inheritdoc />
@@ -354,7 +354,7 @@ namespace ApplicationServer.Migrations
 
                     b.Property<string>("Gender")
                         .IsRequired()
-                        .HasColumnType("enum('M','W')")
+                        .HasColumnType("enum('m','f')")
                         .HasColumnName("gender");
 
                     b.Property<string>("HashedPassword")

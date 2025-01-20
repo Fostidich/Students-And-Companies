@@ -351,7 +351,7 @@ namespace ApplicationServer.Migrations
 
                     b.Property<string>("Gender")
                         .IsRequired()
-                        .HasColumnType("enum('M','W')")
+                        .HasColumnType("enum('m','f')")
                         .HasColumnName("gender");
 
                     b.Property<string>("HashedPassword")
