@@ -40,11 +40,12 @@ function FirstPage() {
 
     const handleLogout = () => {
         Cookies.remove('token');
+
         setIsLoggedIn(false);
     };
 
     if (isLoading) {
-        return <div>Caricamento...</div>;
+        return <div className="animate-ping ">Caricamento...</div>;
     }
 
     return (

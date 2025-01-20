@@ -1,4 +1,4 @@
-import Card from "../components/Card.jsx";
+import CardJobHome from "../components/CardJobHome.jsx";
 
 // eslint-disable-next-line react/prop-types
 function Home({ jobs }) {
@@ -8,7 +8,7 @@ function Home({ jobs }) {
                 <div className="grid grid-cols-3 gap-8 max-w-6xl">
                     {/* eslint-disable-next-line react/prop-types */}
                     {jobs.map((job) =>
-                        <Card
+                        <CardJobHome
                             key={job.id}
                             title={job.title}
                             imgURL={job.imgURL}

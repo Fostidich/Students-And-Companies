@@ -6,6 +6,7 @@ function RegisterForm({ onRegister }) {
     const [password, setPassword] = useState('');
     const [email, setEmail] = useState('');
     const [userType, setUserType] = useState('Student');
+    const [errorMessage, setErrorMessage] = useState('');
     const handleSubmit = async (e) => {
         e.preventDefault();
         const response = await fetch(`${API_SERVER_URL}/api/authentication/register`, {
@@ -21,11 +22,13 @@ function RegisterForm({ onRegister }) {
             onRegister();
             console.log('Registration successful');
         } else {
+            setErrorMessage('Invalid username or password error: '+ response.status);
             console.error('Registration failed: ' + response.status);
         }
     }
     return (
         <form onSubmit={handleSubmit} className="bg-white flex flex-col rounded-md p-6 border border-[#d9d9d9]">
+            {errorMessage && <div className="text-red-500 mb-4">{errorMessage}</div>}
             <input
                 type="text"
                 placeholder="Username"
@@ -57,6 +60,7 @@ function RegisterForm({ onRegister }) {
             >
                 Submit
             </button>
+
         </form>
     );
 }

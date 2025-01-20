@@ -1,4 +1,5 @@
 import PropTypes from "prop-types";
+import CardProfile from "../components/CardProfile.jsx";
 
 function Profile({onLogout}) {
 
@@ -11,17 +12,17 @@ function Profile({onLogout}) {
     };
 
     return (
-        <div className="flex flex-wrap p-8 ">
+        <div className="flex flex-wrap p-8">
 
-            <div className="w-full md:w-1/2 bg-blue-100 p-4">
-                <h1 className="text-2xl font-bold mb-4">Profile Page</h1>
-                <p>Welcome to the Profile page.</p>
-                <button className="border" onClick={handleLogoutClick}>Logout</button>
+            <div className="w-full md:w-1/2 bg-blue-100 p-4 items-center ">
+                <CardProfile/>
+
             </div>
             <div className="w-full md:w-1/2 bg-green-100 p-4">
                 <h1 className="text-2xl font-bold mb-4">Your internship</h1>
 
             </div>
+            <button className="border p-4 bg-red-600 text-white rounded-xl" onClick={handleLogoutClick}>Logout</button>
 
         </div>
     );
