@@ -17,5 +17,9 @@ public interface IProfileQueries {
     bool UpdateCourseOfStudy(int id, string courseOfStudy);
     bool UpdateGender(int id, char gender);
     bool UpdateBirthDate(int id, DateTime birthDate);
+    bool DeleteUser(UserType type, int id);
+    int FindSkill(string name);
+    bool AddSkill(string name);
+    bool AddSkillToStudent(int studentId, int skillId);
 
 }

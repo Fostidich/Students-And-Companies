@@ -349,4 +349,89 @@ public class ProfileQueries : IProfileQueries {
         }
     }
 
+    public bool DeleteUser(UserType type, int id) {
+        try {
+            string tableName = type == UserType.Company ? "company" : "student";
+            string idColumn = type == UserType.Company ? "company_id" : "student_id";
+            string query = $@"
+                DELETE FROM {tableName}
+                WHERE {idColumn} = @Id";
+
+            using var db_connection = dataService.GetConnection();
+            using var command = new MySqlCommand(query, db_connection);
+
+            command.Parameters.AddWithValue("@Id", id);
+
+            int rowsAffected = command.ExecuteNonQuery();
+
+            return rowsAffected > 0;
+        } catch (Exception ex) {
+            Console.WriteLine(ex.Message);
+            return false;
+        }
+    }
+
+    public int FindSkill(string name) {
+        try {
+            string query = $@"
+                SELECT skill_id
+                FROM skill
+                WHERE name = @Name";
+
+            using var db_connection = dataService.GetConnection();
+            using var command = new MySqlCommand(query, db_connection);
+
+            command.Parameters.AddWithValue("@Name", name);
+
+            using var reader = command.ExecuteReader();
+
+            var ids = dataService.MapToInts(reader, "skill_id");
+            return ids.FirstOrDefault();
+        } catch (Exception ex) {
+            Console.WriteLine(ex.Message);
+            return 0;
+        }
+    }
+
+    public bool AddSkill(string name) {
+        try {
+            string query = $@"
+                INSERT INTO skill (name)
+                VALUES (@Name)";
+
+            using var db_connection = dataService.GetConnection();
+            using var command = new MySqlCommand(query, db_connection);
+
+            command.Parameters.AddWithValue("@Name", name);
+
+	        int rowsAffected = command.ExecuteNonQuery();
+
+	        return rowsAffected > 0;
+        } catch (Exception ex) {
+            Console.WriteLine(ex.Message);
+            return false;
+        }
+    }
+
+    public bool AddSkillToStudent(int studentId, int skillId) {
+        try {
+            string query = $@"
+                INSERT IGNORE INTO student_skills (student_id, skill_id)
+                VALUES (@StudentId, @SkillId)";
+
+            using var db_connection = dataService.GetConnection();
+            using var command = new MySqlCommand(query, db_connection);
+
+            command.Parameters.AddWithValue("@StudentId", studentId);
+            command.Parameters.AddWithValue("@SkillId", skillId);
+
+	        command.ExecuteNonQuery();
+
+	        return true;
+        } catch (Exception ex) {
+            Console.WriteLine(ex.Message);
+            return false;
+        }
+    }
+
 }

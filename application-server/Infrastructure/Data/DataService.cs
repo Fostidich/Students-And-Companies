@@ -1,3 +1,4 @@
+using System;
 using System.Data;
 using System.Collections.Generic;
 using MySql.Data.MySqlClient;
@@ -42,6 +43,16 @@ public class DataService : IDataService {
 
         while (reader.Read()) {
             result.Add(reader[fieldName].ToString());
+        }
+
+        return result;
+    }
+
+    public List<int> MapToInts(IDataReader reader, string fieldName) {
+        var result = new List<int>();
+
+        while (reader.Read()) {
+            result.Add(Convert.ToInt32(reader[fieldName].ToString()));
         }
 
         return result;

@@ -271,4 +271,30 @@ public class ProfileService : IProfileService {
         return files.DeleteFile(filePath);
     }
 
+    public bool DeleteUser(UserType userType, int userId) {
+        return queries.DeleteUser(userType, userId);
+    }
+
+    public bool AddSkill(int studentId, string name) {
+        // Find skill id
+        int skillId = queries.FindSkill(name);
+
+        // Add skill if not present
+        if (skillId == 0) {
+            // Add new skill
+            if (!queries.AddSkill(name))
+                return false;
+
+            // Find new skill id
+            skillId = queries.FindSkill(name);
+
+            // Error occurred
+            if (skillId == 0)
+                return false;
+        }
+
+        // Add skill id to students skills
+        return queries.AddSkillToStudent(studentId, skillId);
+    }
+
 }

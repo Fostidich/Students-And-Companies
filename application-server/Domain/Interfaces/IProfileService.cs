@@ -4,13 +4,15 @@ public interface IProfileService {
 
     Company GetCompany(int id);
     Student GetStudent(int id);
-    bool UpdateProfileCompany(int userId, DTO.ProfileUpdateCompany updateForm);
-    bool UpdateProfileStudent(int userId, DTO.ProfileUpdateStudent updateForm);
+    bool UpdateProfileCompany(int id, DTO.ProfileUpdateCompany updateForm);
+    bool UpdateProfileStudent(int id, DTO.ProfileUpdateStudent updateForm);
     bool IsCompanyUpdateFormValid(DTO.ProfileUpdateCompany updateForm);
     bool IsStudentUpdateFormValid(DTO.ProfileUpdateStudent updateForm);
     bool CheckCvValidity(IFormFile file);
-    bool StoreCvFile(int userId, IFormFile file);
-    IFormFile RetrieveCvFile(int userId);
-    bool DeleteCv(int userId);
+    bool StoreCvFile(int id, IFormFile file);
+    IFormFile RetrieveCvFile(int id);
+    bool DeleteCv(int id);
+    bool DeleteUser(UserType type, int id);
+    bool AddSkill(int id, string name);
 
 }

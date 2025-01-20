@@ -245,9 +245,71 @@ public class ProfileController : ControllerBase {
 
     [HttpPost("delete")]
     [Authorize]
+    [SwaggerOperation(Summary = "Delete the user", Description = "The logged in user is deleted from the system.")]
+    [ProducesResponseType(200)]
+    [ProducesResponseType(500)]
+    public IActionResult DeleteUser() {
+        // Get role from authentication token
+        string roleStr = User.FindFirst(ClaimTypes.Role).Value;
+        UserType userType = UserType.Company;
+        if (roleStr == UserType.Student.ToString())
+            userType = UserType.Student;
+
+        // Get user ID from authentication token
+        string userIdStr = User.FindFirst(ClaimTypes.NameIdentifier).Value;
+        int userId = Convert.ToInt32(userIdStr);
+
+        // Delete user
+        if (profile.DeleteUser(userType, userId))
+            return Ok("User deleted\n");
+        else
+            return StatusCode(500, "Internal server error\n");
+    }
+
+    [HttpPost("skills")]
+    [Authorize]
+    [SwaggerOperation(Summary = "Add a skill into the student profile", Description = "The skill is added among other student profile information.")]
+    [ProducesResponseType(200)]
+    [ProducesResponseType(400)]
+    [ProducesResponseType(500)]
+    public IActionResult AddSkill([FromBody] DTO.Skill skill) {
+        // Check role
+        string role = User.FindFirst(ClaimTypes.Role).Value;
+        if (role != UserType.Student.ToString())
+            return BadRequest("Invalid role\n");
+
+        // Get user ID from authentication token
+        string userIdStr = User.FindFirst(ClaimTypes.NameIdentifier).Value;
+        int userId = Convert.ToInt32(userIdStr);
+
+        // Add skill
+        if (profile.AddSkill(userId, skill.Name))
+            return Ok("Skill added\n");
+        else
+            return StatusCode(500, "Internal server error\n");
+    }
+
+    [HttpGet("skills")]
+    [Authorize]
     [SwaggerOperation(Summary = "", Description = "")]
     [ProducesResponseType(501)]
-    public IActionResult DeleteUser() {
+    public IActionResult GetSkills() {
+        return StatusCode(501, "Feature not yet implemented\n");
+    }
+
+    [HttpGet("skills/{id}")]
+    [Authorize]
+    [SwaggerOperation(Summary = "", Description = "")]
+    [ProducesResponseType(501)]
+    public IActionResult GetSkill(int id) {
+        return StatusCode(501, "Feature not yet implemented\n");
+    }
+
+    [HttpPost("skills/delete/{id}")]
+    [Authorize]
+    [SwaggerOperation(Summary = "", Description = "")]
+    [ProducesResponseType(501)]
+    public IActionResult DeleteSkill() {
         return StatusCode(501, "Feature not yet implemented\n");
     }
 
