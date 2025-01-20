@@ -8,7 +8,7 @@ public interface IProfileQueries {
     bool UpdateUsername(UserType type, int id, string username);
     bool UpdateEmail(UserType type, int id, string email);
     bool UpdateBio(UserType type, int id, string bio);
-    bool UpdateHeadquarter(int id, string headquaters);
+    bool UpdateHeadquarter(int id, string headquater);
     bool UpdateFiscalCode(int id, string fiscalCode);
     bool UpdateVatNumber(int id, string vatNumber);
     bool UpdateName(int id, string name);

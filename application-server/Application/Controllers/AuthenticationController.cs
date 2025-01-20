@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization;
+using Swashbuckle.AspNetCore.Annotations;
 
 [ApiController]
 [Route("api/authentication")]
@@ -12,6 +13,7 @@ public class AuthenticationController : ControllerBase {
     }
 
     [HttpPost("register/company")]
+    [SwaggerOperation(Summary = "Register a company", Description = "A new user is registered into the system from the information in the registration form found in the request body.")]
     [ProducesResponseType(200)]
     [ProducesResponseType(400)]
     [ProducesResponseType(500)]
@@ -28,6 +30,7 @@ public class AuthenticationController : ControllerBase {
     }
 
     [HttpPost("register/student")]
+    [SwaggerOperation(Summary = "Register a student", Description = "A new user is registered into the system from the information in the registration form found in the request body.")]
     [ProducesResponseType(200)]
     [ProducesResponseType(400)]
     [ProducesResponseType(500)]
@@ -43,7 +46,6 @@ public class AuthenticationController : ControllerBase {
             return StatusCode(500, "Internal server error\n");
     }
 
-
     [HttpPost("validation/{id}")]
     [Authorize]
     [ProducesResponseType(501)]
@@ -52,6 +54,7 @@ public class AuthenticationController : ControllerBase {
     }
 
     [HttpPost("login")]
+    [SwaggerOperation(Summary = "Log in a user from credentials", Description = "Upon validating credentials, the login token is returned along with the user type. If the username field of the credentials contains the email, the validation will still be processed correctly.")]
     [ProducesResponseType(200)]
     [ProducesResponseType(400)]
     [ProducesResponseType(401)]
@@ -78,6 +81,7 @@ public class AuthenticationController : ControllerBase {
 
     [HttpGet]
     [Authorize]
+    [SwaggerOperation(Summary = "Check log in token validity", Description = "The authorization token, generated at log in time, if found in the header is validated, generating either an Ok or Unauthorized response.")]
     [ProducesResponseType(200)]
     [ProducesResponseType(401)]
     public IActionResult CheckToken() {

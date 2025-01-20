@@ -127,16 +127,226 @@ public class ProfileQueries : IProfileQueries {
         }
     }
 
-    // TODO
-    public bool UpdateBio(UserType type, int id, string bio) {return false;}
-    public bool UpdateHeadquarter(int id, string headquaters) {return false;}
-    public bool UpdateFiscalCode(int id, string fiscalCode) {return false;}
-    public bool UpdateVatNumber(int id, string vatNumber) {return false;}
-    public bool UpdateName(int id, string name) {return false;}
-    public bool UpdateSurname(int id, string surname) {return false;}
-    public bool UpdateUniversity(int id, string university) {return false;}
-    public bool UpdateCourseOfStudy(int id, string courseOfStudy) {return false;}
-    public bool UpdateGender(int id, char gender) {return false;}
-    public bool UpdateBirthDate(int id, DateTime birthDate) {return false;}
+    public bool UpdateBio(UserType type, int id, string bio) {
+        try {
+            string tableName = type == UserType.Company ? "company" : "student";
+            string idColumn = type == UserType.Company ? "company_id" : "student_id";
+            string query = $@"
+                UPDATE {tableName}
+                SET bio = @Bio
+                WHERE {idColumn} = @Id";
+
+            using var db_connection = dataService.GetConnection();
+            using var command = new MySqlCommand(query, db_connection);
+
+            command.Parameters.AddWithValue("@Bio", bio);
+            command.Parameters.AddWithValue("@Id", id);
+
+            int rowsAffected = command.ExecuteNonQuery();
+
+            return rowsAffected > 0;
+        } catch (Exception ex) {
+            Console.WriteLine(ex.Message);
+            return false;
+        }
+    }
+
+    public bool UpdateHeadquarter(int id, string headquater) {
+        try {
+            string query = $@"
+                UPDATE company
+                SET headquater = @Headquater
+                WHERE company_id = @Id";
+
+            using var db_connection = dataService.GetConnection();
+            using var command = new MySqlCommand(query, db_connection);
+
+            command.Parameters.AddWithValue("@Headquater", headquater);
+            command.Parameters.AddWithValue("@Id", id);
+
+            int rowsAffected = command.ExecuteNonQuery();
+
+            return rowsAffected > 0;
+        } catch (Exception ex) {
+            Console.WriteLine(ex.Message);
+            return false;
+        }
+    }
+
+    public bool UpdateFiscalCode(int id, string fiscalCode) {
+        try {
+            string query = $@"
+                UPDATE company
+                SET fiscal_code = @FiscalCode
+                WHERE company_id = @Id";
+
+            using var db_connection = dataService.GetConnection();
+            using var command = new MySqlCommand(query, db_connection);
+
+            command.Parameters.AddWithValue("@fiscal_code", fiscalCode);
+            command.Parameters.AddWithValue("@Id", id);
+
+            int rowsAffected = command.ExecuteNonQuery();
+
+            return rowsAffected > 0;
+        } catch (Exception ex) {
+            Console.WriteLine(ex.Message);
+            return false;
+        }
+    }
+
+    public bool UpdateVatNumber(int id, string vatNumber) {
+        try {
+            string query = $@"
+                UPDATE company
+                SET vat_number = @VatNumber
+                WHERE company_id = @Id";
+
+            using var db_connection = dataService.GetConnection();
+            using var command = new MySqlCommand(query, db_connection);
+
+            command.Parameters.AddWithValue("@VatNumber", vatNumber);
+            command.Parameters.AddWithValue("@Id", id);
+
+            int rowsAffected = command.ExecuteNonQuery();
+
+            return rowsAffected > 0;
+        } catch (Exception ex) {
+            Console.WriteLine(ex.Message);
+            return false;
+        }
+    }
+
+    public bool UpdateName(int id, string name) {
+        try {
+            string query = $@"
+                UPDATE student
+                SET name = @Name
+                WHERE student_id = @Id";
+
+            using var db_connection = dataService.GetConnection();
+            using var command = new MySqlCommand(query, db_connection);
+
+            command.Parameters.AddWithValue("@Name", name);
+            command.Parameters.AddWithValue("@Id", id);
+
+            int rowsAffected = command.ExecuteNonQuery();
+
+            return rowsAffected > 0;
+        } catch (Exception ex) {
+            Console.WriteLine(ex.Message);
+            return false;
+        }
+    }
+
+    public bool UpdateSurname(int id, string surname) {
+        try {
+            string query = $@"
+                UPDATE student
+                SET surname = @Surname
+                WHERE student_id = @Id";
+
+            using var db_connection = dataService.GetConnection();
+            using var command = new MySqlCommand(query, db_connection);
+
+            command.Parameters.AddWithValue("@Surname", surname);
+            command.Parameters.AddWithValue("@Id", id);
+
+            int rowsAffected = command.ExecuteNonQuery();
+
+            return rowsAffected > 0;
+        } catch (Exception ex) {
+            Console.WriteLine(ex.Message);
+            return false;
+        }
+    }
+
+    public bool UpdateUniversity(int id, string university) {
+        try {
+            string query = $@"
+                UPDATE student
+                SET university = @University
+                WHERE student_id = @Id";
+
+            using var db_connection = dataService.GetConnection();
+            using var command = new MySqlCommand(query, db_connection);
+
+            command.Parameters.AddWithValue("@University", university);
+            command.Parameters.AddWithValue("@Id", id);
+
+            int rowsAffected = command.ExecuteNonQuery();
+
+            return rowsAffected > 0;
+        } catch (Exception ex) {
+            Console.WriteLine(ex.Message);
+            return false;
+        }
+    }
+
+    public bool UpdateCourseOfStudy(int id, string courseOfStudy) {
+        try {
+            string query = $@"
+                UPDATE student
+                SET course_of_study = @CourseOfStudy
+                WHERE student_id = @Id";
+
+            using var db_connection = dataService.GetConnection();
+            using var command = new MySqlCommand(query, db_connection);
+
+            command.Parameters.AddWithValue("@CourseOfStudy", courseOfStudy);
+            command.Parameters.AddWithValue("@Id", id);
+
+            int rowsAffected = command.ExecuteNonQuery();
+
+            return rowsAffected > 0;
+        } catch (Exception ex) {
+            Console.WriteLine(ex.Message);
+            return false;
+        }
+    }
+
+    public bool UpdateGender(int id, char gender) {
+        try {
+            string query = $@"
+                UPDATE student
+                SET gender = @Gender
+                WHERE student_id = @Id";
+
+            using var db_connection = dataService.GetConnection();
+            using var command = new MySqlCommand(query, db_connection);
+
+            command.Parameters.Add(new MySqlParameter("@Gender", MySqlDbType.VarChar) { Value = gender, Size = 1 });
+            command.Parameters.AddWithValue("@Id", id);
+
+            int rowsAffected = command.ExecuteNonQuery();
+
+            return rowsAffected > 0;
+        } catch (Exception ex) {
+            Console.WriteLine(ex.Message);
+            return false;
+        }
+    }
+
+    public bool UpdateBirthDate(int id, DateTime birthDate) {
+        try {
+            string query = $@"
+                UPDATE student
+                SET birth_date = @BirthDate
+                WHERE student_id = @Id";
+
+            using var db_connection = dataService.GetConnection();
+            using var command = new MySqlCommand(query, db_connection);
+
+            command.Parameters.AddWithValue("@BirthDate", birthDate);
+            command.Parameters.AddWithValue("@Id", id);
+
+            int rowsAffected = command.ExecuteNonQuery();
+
+            return rowsAffected > 0;
+        } catch (Exception ex) {
+            Console.WriteLine(ex.Message);
+            return false;
+        }
+    }
 
 }

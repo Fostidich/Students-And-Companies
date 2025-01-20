@@ -242,8 +242,6 @@ public class ProfileService : IProfileService {
     public IFormFile RetrieveCvFile(int userId) {
         // Compute file path
         string filePath = files.GetCvFilePath(userId.ToString());
-        if (string.IsNullOrWhiteSpace(filePath))
-            return null;
 
         // Retrieve file from file system
         byte[] fileBytes;
@@ -252,6 +250,10 @@ public class ProfileService : IProfileService {
         } catch {
             fileBytes = null;
         }
+
+        // Early not found return
+        if (fileBytes == null)
+            return null;
 
         // Convert file to form file
         var stream = new MemoryStream(fileBytes);
@@ -264,8 +266,6 @@ public class ProfileService : IProfileService {
     public bool DeleteCv(int userId) {
         // Compute file path
         string filePath = files.GetCvFilePath(userId.ToString());
-        if (string.IsNullOrWhiteSpace(filePath))
-            return false;
 
         // Delete file
         return files.DeleteFile(filePath);

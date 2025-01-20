@@ -29,6 +29,7 @@ public class Company : User {
 
     public DTO.Company ToDto() {
         return new DTO.Company {
+            CompanyId = Id,
             Username = Username,
             Email = Email,
             Bio = Bio,

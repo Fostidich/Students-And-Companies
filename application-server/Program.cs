@@ -148,7 +148,8 @@ public class Program {
         // Add APIs summary web page
         builder.Services.AddEndpointsApiExplorer();
         builder.Services.AddSwaggerGen(c => {
-            c.SwaggerDoc(
+                c.EnableAnnotations();
+                c.SwaggerDoc(
                 "v1",
                 new OpenApiInfo {
                     Title = "Students and Companies - Application server",

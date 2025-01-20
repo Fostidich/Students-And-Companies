@@ -3,6 +3,7 @@ using System.Security.Claims;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Authorization;
+using Swashbuckle.AspNetCore.Annotations;
 
 [ApiController]
 [Route("api/profile")]
@@ -16,6 +17,7 @@ public class ProfileController : ControllerBase {
 
     [HttpGet("company")]
     [Authorize]
+    [SwaggerOperation(Summary = "Get the company profile information", Description = "The profile information of the logged in user, if a company, is returned.")]
     [ProducesResponseType(200)]
     [ProducesResponseType(400)]
     [ProducesResponseType(500)]
@@ -39,6 +41,7 @@ public class ProfileController : ControllerBase {
 
     [HttpGet("student")]
     [Authorize]
+    [SwaggerOperation(Summary = "Get the student profile information", Description = "The profile information of the logged in user, if a student, is returned.")]
     [ProducesResponseType(200)]
     [ProducesResponseType(400)]
     [ProducesResponseType(500)]
@@ -62,6 +65,7 @@ public class ProfileController : ControllerBase {
 
     [HttpPost("company")]
     [Authorize]
+    [SwaggerOperation(Summary = "Update the profile information of the company", Description = "The profile information of the logged in user, if a company, is updated with the information in the update form found in the request body.")]
     [ProducesResponseType(200)]
     [ProducesResponseType(400)]
     [ProducesResponseType(500)]
@@ -88,6 +92,7 @@ public class ProfileController : ControllerBase {
 
     [HttpPost("student")]
     [Authorize]
+    [SwaggerOperation(Summary = "Update the profile information of the student", Description = "The profile information of the logged in user, if a student, is updated with the information in the update form found in the request body.")]
     [ProducesResponseType(200)]
     [ProducesResponseType(400)]
     [ProducesResponseType(500)]
@@ -114,32 +119,43 @@ public class ProfileController : ControllerBase {
 
     [HttpGet("company/{id}")]
     [Authorize]
+    [SwaggerOperation(Summary = "Get a company profile information", Description = "The profile information of the company with the provided ID is returned.")]
     [ProducesResponseType(200)]
-    [ProducesResponseType(500)]
+    [ProducesResponseType(400)]
+    [ProducesResponseType(404)]
     public IActionResult GetCompanyFromId(int id) {
+        // Check ID validity
+        if (id <= 0) return BadRequest("Invalid id\n");
+
         // Find and return user data
         DTO.Company user = profile.GetCompany(id)?.ToDto();
         if (user == null)
-            return StatusCode(500, "Internal server error\n");
+            return NotFound("Company not found\n");
         else
             return Ok(user);
     }
 
     [HttpGet("student/{id}")]
     [Authorize]
+    [SwaggerOperation(Summary = "Get a student profile information", Description = "The profile information of the company with the provided ID is returned.")]
     [ProducesResponseType(200)]
-    [ProducesResponseType(500)]
+    [ProducesResponseType(400)]
+    [ProducesResponseType(404)]
     public IActionResult GetStudentFromId(int id) {
+        // Check ID validity
+        if (id <= 0) return BadRequest("Invalid id\n");
+
         // Find and return user data
         DTO.Student user = profile.GetStudent(id)?.ToDto();
         if (user == null)
-            return StatusCode(500, "Internal server error\n");
+            return NotFound("Student not found\n");
         else
             return Ok(user);
     }
 
     [HttpGet("cv")]
     [Authorize]
+    [SwaggerOperation(Summary = "Download the CV of the student", Description = "The CV PDF file of the logged in user, if a student, is returned, if it was previously uploaded.")]
     [ProducesResponseType(200)]
     [ProducesResponseType(404)]
     public IActionResult DownloadCvFromToken() {
@@ -164,6 +180,7 @@ public class ProfileController : ControllerBase {
 
     [HttpGet("cv/{id}")]
     [Authorize]
+    [SwaggerOperation(Summary = "Download the CV of a student", Description = "The CV PDF file of the student with the provide ID is returned, if it was previously uploaded.")]
     [ProducesResponseType(200)]
     [ProducesResponseType(404)]
     public IActionResult DownloadCv(int id) {
@@ -179,6 +196,7 @@ public class ProfileController : ControllerBase {
 
     [HttpPost("cv")]
     [Authorize]
+    [SwaggerOperation(Summary = "Upload the CV of a student", Description = "The user, if a student, can upload a CV PDF file that is stored among other user profile information.")]
     [ProducesResponseType(200)]
     [ProducesResponseType(400)]
     [ProducesResponseType(500)]
@@ -205,6 +223,7 @@ public class ProfileController : ControllerBase {
 
     [HttpPost("cv/delete")]
     [Authorize]
+    [SwaggerOperation(Summary = "Delete the CV of a student", Description = "The user, if a student, can delete the CV PDF file that, if previously uploaded, is stored among other user profile information.")]
     [ProducesResponseType(200)]
     [ProducesResponseType(404)]
     public IActionResult DeleteCv() {
@@ -226,6 +245,7 @@ public class ProfileController : ControllerBase {
 
     [HttpPost("delete")]
     [Authorize]
+    [SwaggerOperation(Summary = "", Description = "")]
     [ProducesResponseType(501)]
     public IActionResult DeleteUser() {
         return StatusCode(501, "Feature not yet implemented\n");

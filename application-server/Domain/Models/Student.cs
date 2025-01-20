@@ -41,6 +41,7 @@ public class Student : User {
 
     public DTO.Student ToDto() {
         return new DTO.Student {
+            StudentId = Id,
             Username = Username,
             Email = Email,
             Bio = Bio,

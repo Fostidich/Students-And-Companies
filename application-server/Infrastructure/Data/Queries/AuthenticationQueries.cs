@@ -13,8 +13,8 @@ public class AuthenticationQueries : IAuthenticationQueries {
     public bool RegisterCompany(Entity.Company user) {
 	    try {
     	    string query = @"
-                INSERT INTO company (username, email, salt, hashed_password, bio, headquarters, fiscal_code, vat_number)
-                VALUES (@Username, @Email, @Salt, @HashedPassword, @Bio, @Headquarters, @FiscalCode, @VatNumber)";
+                INSERT INTO company (username, email, salt, hashed_password, bio, headquarter, fiscal_code, vat_number)
+                VALUES (@Username, @Email, @Salt, @HashedPassword, @Bio, @Headquarter, @FiscalCode, @VatNumber)";
 
     	    using var db_connection = dataService.GetConnection();
         	using var command = new MySqlCommand(query, db_connection);
@@ -24,7 +24,7 @@ public class AuthenticationQueries : IAuthenticationQueries {
         	command.Parameters.AddWithValue("@Salt", user.Salt);
         	command.Parameters.AddWithValue("@HashedPassword", user.HashedPassword);
         	command.Parameters.AddWithValue("@Bio", user.Bio ?? (object)DBNull.Value);
-        	command.Parameters.AddWithValue("@Headquarters", user.Headquarter);
+        	command.Parameters.AddWithValue("@Headquarter", user.Headquarter);
         	command.Parameters.AddWithValue("@FiscalCode", user.FiscalCode);
         	command.Parameters.AddWithValue("@VatNumber", user.VatNumber);
 
@@ -41,7 +41,7 @@ public class AuthenticationQueries : IAuthenticationQueries {
 	    try {
 	        string query = @"
                 INSERT INTO student (username, email, salt, hashed_password, bio, name, surname, university, course_of_study, gender, birth_date)
-                VALUES (@Username, @Email, @Salt, @HashedPassword, @Bio, @Name, @Surname, @University, @StudyCourse, @Sex, @BirthDate)";
+                VALUES (@Username, @Email, @Salt, @HashedPassword, @Bio, @Name, @Surname, @University, @CourseOfStudy, @Gender, @BirthDate)";
 
 	        using var db_connection = dataService.GetConnection();
 	        using var command = new MySqlCommand(query, db_connection);
@@ -54,8 +54,8 @@ public class AuthenticationQueries : IAuthenticationQueries {
 	        command.Parameters.AddWithValue("@Name", user.Name);
 	        command.Parameters.AddWithValue("@Surname", user.Surname);
 	        command.Parameters.AddWithValue("@University", user.University);
-	        command.Parameters.AddWithValue("@StudyCourse", user.CourseOfStudy);
-            command.Parameters.Add(new MySqlParameter("@Sex", MySqlDbType.VarChar) { Value = user.Gender, Size = 1 });
+	        command.Parameters.AddWithValue("@CourseOfStudy", user.CourseOfStudy);
+            command.Parameters.Add(new MySqlParameter("@Gender", MySqlDbType.VarChar) { Value = user.Gender, Size = 1 });
             command.Parameters.AddWithValue("@BirthDate", user.BirthDate);
 
 	        int rowsAffected = command.ExecuteNonQuery();
