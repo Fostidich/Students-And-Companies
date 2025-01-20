@@ -11,8 +11,8 @@ public class Student : User {
     public DateTime BirthDate { get; set; }
 
     public Student(DTO.RegistrationFormStudent registrationForm) {
-        Username = registrationForm.Username;
         UserType = UserType.Student;
+        Username = registrationForm.Username;
         Email = registrationForm.Email;
         Bio = registrationForm.Bio;
         Name = registrationForm.Name;
@@ -24,11 +24,11 @@ public class Student : User {
     }
 
     public Student(Entity.Student entity) {
+        UserType = UserType.Student;
         Id = entity.StudentId;
         Salt = entity.Salt;
         HashedPassword = entity.HashedPassword;
         Username = entity.Username;
-        UserType = UserType.Student;
         Email = entity.Email;
         Bio = entity.Bio;
         Name = entity.Name;

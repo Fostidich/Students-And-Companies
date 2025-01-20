@@ -6,6 +6,7 @@ public class Company : User {
     public string VatNumber { get; set; }
 
     public Company(DTO.RegistrationFormCompany registrationForm) {
+        UserType = UserType.Company;
         Username = registrationForm.Username;
         Email = registrationForm.Email;
         Bio = registrationForm.Bio;
@@ -15,6 +16,7 @@ public class Company : User {
     }
 
     public Company(Entity.Company entity) {
+        UserType = UserType.Company;
         Id = entity.CompanyId;
         Username = entity.Username;
         Salt = entity.Salt;
