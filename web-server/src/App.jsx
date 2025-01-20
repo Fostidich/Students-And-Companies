@@ -22,7 +22,10 @@ function App({ onLogout }) {
             // }
 
             // Se non hai bisogno di comunicare con il server, chiama direttamente onLogout
+            // redirect to home page
             onLogout();
+
+
         } catch (error) {
             console.error('Errore durante il logout:', error);
         }

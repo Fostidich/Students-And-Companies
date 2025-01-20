@@ -6,7 +6,7 @@ const API_SERVER_URL = import.meta.env.VITE_API_SERVER_URL;
 function LoginForm({ onLogin }) {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
-
+    const [errorMessage, setErrorMessage] = useState('');
     const saveTokenToCookie = (token) => {
         // Salva il token in un cookie con un TTL di 24 ore
         Cookies.set('token', token, {
@@ -33,12 +33,14 @@ function LoginForm({ onLogin }) {
             onLogin();
             console.log('Login successful');
         } else {
+            setErrorMessage('Invalid username or password');
             console.error('Login failed: '+response.status);
         }
     };
 
     return (
         <form onSubmit={handleSubmit} className="bg-white flex flex-col rounded-md p-6 border border-[#d9d9d9]">
+            {errorMessage && <div className="text-red-500 mb-4">{errorMessage}</div>}
             <input
                 type="text"
                 placeholder="Username"
@@ -59,6 +61,7 @@ function LoginForm({ onLogin }) {
             >
                 Submit
             </button>
+
         </form>
     );
 }
