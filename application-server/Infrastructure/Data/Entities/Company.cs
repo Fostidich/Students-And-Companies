@@ -1,35 +1,32 @@
-using System;
-using System.Data;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Collections.Generic;
+using System.Data;
+using System;
 
 namespace Entity {
 
-    public class Student {
+    public class Company {
 
-		public Student() { }
+        public Company() { }
 
-        public Student(IDataReader reader) {
-			StudentId = Convert.ToInt32(reader["student_id"]);
-			CreatedAt = DateTime.Parse(reader["created_at"].ToString());
-			Email = reader["email"].ToString();
-			Username = reader["username"].ToString();
-			Salt = reader["salt"].ToString();
-			HashedPassword = reader["hashed_password"].ToString();
-			Bio = reader["bio"] != DBNull.Value ? reader["bio"].ToString() : null;
-			Name = reader["name"].ToString();
-			Surname = reader["surname"].ToString();
-			University = reader["university"].ToString();
-			CourseOfStudy = reader["course_of_study"].ToString();
-			Gender = reader["gender"].ToString()[0];
-			BirthDate = DateTime.Parse(reader["birth_date"].ToString());
-		}
+        public Company(IDataReader reader) {
+            CompanyId = Convert.ToInt32(reader["company_id"]);
+            CreatedAt = DateTime.Parse(reader["created_at"].ToString());
+            Email = reader["email"].ToString();
+            Username = reader["username"].ToString();
+            Salt = reader["salt"].ToString();
+            HashedPassword = reader["hashed_password"].ToString();
+            Bio = reader["bio"] != DBNull.Value ? reader["bio"].ToString() : null;
+            Headquarter = reader["headquarter"].ToString();
+            FiscalCode = reader["fiscal_code"].ToString();
+            VatNumber = reader["vat_number"].ToString();
+        }
 
 
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public int StudentId { get; set; }
+        public int CompanyId { get; set; }
 
         [Required(ErrorMessage = "Field is required")]
         [DatabaseGenerated(DatabaseGeneratedOption.Computed)]
@@ -46,7 +43,7 @@ namespace Entity {
         [RegularExpression(@"^[a-zA-Z0-9._-]+$", ErrorMessage = "Invalid characters")]
         public string Username { get; set; }
 
-		[Required(ErrorMessage = "Field is required")]
+        [Required(ErrorMessage = "Field is required")]
         [StringLength(24, ErrorMessage = "Value cannot be more than 24 characters long")]
         public string Salt { get; set; }
 
@@ -59,35 +56,21 @@ namespace Entity {
 
         [Required(ErrorMessage = "Field is required")]
         [MaxLength(64, ErrorMessage = "Value cannot be more than 64 characters long")]
-        public string Name { get; set; }
+        public string Headquarter { get; set; }
 
         [Required(ErrorMessage = "Field is required")]
         [MaxLength(64, ErrorMessage = "Value cannot be more than 64 characters long")]
-        public string Surname { get; set; }
+        public string FiscalCode { get; set; }
 
         [Required(ErrorMessage = "Field is required")]
         [MaxLength(64, ErrorMessage = "Value cannot be more than 64 characters long")]
-        public string University { get; set; }
-
-        [Required(ErrorMessage = "Field is required")]
-        [MaxLength(64, ErrorMessage = "Value cannot be more than 64 characters long")]
-        public string CourseOfStudy { get; set; }
-
-        [Required(ErrorMessage = "Field is required")]
-		[Column(TypeName = "enum('M','W')")]
-        public char Gender { get; set; }
-
-        [Required(ErrorMessage = "Field is required")]
-        [Range(typeof(DateTime), "01/01/1920", "01/01/2020", ErrorMessage = "Date outside the valid range")]
-        public DateTime BirthDate { get; set; }
+        public string VatNumber { get; set; }
 
 
-		// Navigation properties
+        // Navigation properties
 
-		public Internship Internship { get; set; }
-
-        public ICollection<Entity.StudentSkills> StudentSkills { get; set; }
-		public ICollection<Entity.Application> Applications { get; set; }
+        public ICollection<Entity.Advertisement> Advertisements { get; set; }
+        public ICollection<Entity.Internship> Internships { get; set; }
 
     }
 

@@ -1,4 +1,3 @@
-using System;
 using System.Data;
 using System.Collections.Generic;
 using MySql.Data.MySqlClient;
@@ -18,23 +17,24 @@ public class DataService : IDataService {
         return connection;
     }
 
-    public List<Entity.User> MapToUsers(IDataReader reader) {
-        var users = new List<Entity.User>();
+    public List<Entity.Student> MapToStudents(IDataReader reader) {
+        var students = new List<Entity.Student>();
 
         while (reader.Read()) {
-            var user = new Entity.User {
-                Id = Convert.ToInt32(reader["id"]),
-                Username = reader["username"].ToString(),
-                Email = reader["email"].ToString(),
-                Salt = reader["salt"].ToString(),
-                HashedPassword = reader["hashed_password"].ToString(),
-                UserType = reader["user_type"].ToString(),
-                CreatedAt = DateTime.Parse(reader["created_at"].ToString())
-            };
-            users.Add(user);
+            students.Add(new Entity.Student(reader));
         }
 
-        return users;
+        return students;
+    }
+
+    public List<Entity.Company> MapToCompanies(IDataReader reader) {
+        var companies = new List<Entity.Company>();
+
+        while (reader.Read()) {
+            companies.Add(new Entity.Company(reader));
+        }
+
+        return companies;
     }
 
     public List<string> MapToStrings(IDataReader reader, string fieldName) {

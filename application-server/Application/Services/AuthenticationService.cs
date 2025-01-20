@@ -23,38 +23,74 @@ public class AuthenticationService : IAuthenticationService {
         this.expirationHours = Convert.ToInt32(configuration["Jwt:ExpirationHours"]);
     }
 
-    public bool IsRegistrationFormValid(DTO.RegistrationForm registrationForm) {
+    public bool IsCompanyRegistrationValid(DTO.RegistrationFormCompany registrationForm) {
         // Check that username and email are unique
-        if (queries.FindFromEmail(registrationForm.Email.ToLowerInvariant()) != null) return false;
-        if (queries.FindFromUsername(registrationForm.Username) != null) return false;
+        if (queries.FindCompanyFromEmail(registrationForm.Email.ToLowerInvariant()) != null) return false;
+        if (queries.FindCompanyFromUsername(registrationForm.Username) != null) return false;
+        if (queries.FindStudentFromEmail(registrationForm.Email.ToLowerInvariant()) != null) return false;
+        if (queries.FindStudentFromUsername(registrationForm.Username) != null) return false;
 
         // Checks passed
         return true;
     }
 
-    public bool RegisterUser(DTO.RegistrationForm registrationForm) {
+    public bool IsStudentRegistrationValid(DTO.RegistrationFormStudent registrationForm) {
+        // Check that username and email are unique
+        if (queries.FindStudentFromEmail(registrationForm.Email.ToLowerInvariant()) != null) return false;
+        if (queries.FindStudentFromUsername(registrationForm.Username) != null) return false;
+        if (queries.FindCompanyFromEmail(registrationForm.Email.ToLowerInvariant()) != null) return false;
+        if (queries.FindCompanyFromUsername(registrationForm.Username) != null) return false;
+
+        // Checks passed
+        return true;
+    }
+
+    public bool RegisterCompany(DTO.RegistrationFormCompany registrationForm) {
         // Retrieve salt and hashed password
         var salt = GenerateSalt();
         var hash = HashPassword(salt, registrationForm.Password);
 
         // Convert DTO to entity
-        var user = new Entity.User {
-            Username = registrationForm.Username,
-            Email = registrationForm.Email.ToLowerInvariant(),
-            Salt = salt,
-            HashedPassword = hash,
-            UserType = registrationForm.UserType
-        };
-        return queries.RegisterUser(user);
+        Entity.Company user = new Company(registrationForm).ToEntity();
+        user.Salt = salt;
+        user.HashedPassword = hash;
+        return queries.RegisterCompany(user);
+    }
+
+    public bool RegisterStudent(DTO.RegistrationFormStudent registrationForm) {
+        // Retrieve salt and hashed password
+        var salt = GenerateSalt();
+        var hash = HashPassword(salt, registrationForm.Password);
+
+        // Convert DTO to entity
+        Entity.Student user = new Student(registrationForm).ToEntity();
+        user.Salt = salt;
+        user.HashedPassword = hash;
+        return queries.RegisterStudent(user);
     }
 
     public User ValidateCredentials(DTO.Credentials credentials) {
         // Search for credentials in the DB
-        Entity.User user;
-        if (!IsValidEmail(credentials.Username))
-            user = queries.FindFromUsername(credentials.Username);
-        else
-            user = queries.FindFromEmail(credentials.Username);
+        User user = null;
+        if (!IsValidEmail(credentials.Username)) {
+            var student = queries.FindStudentFromUsername(credentials.Username);
+            if (student != null)
+                user = new Student(student);
+            else {
+                var company = queries.FindCompanyFromUsername(credentials.Username);
+                if (company != null)
+                    user = new Company(company);
+            }
+        } else {
+            var student = queries.FindStudentFromEmail(credentials.Username);
+            if (student != null)
+                user = new Student(student);
+            else {
+                var company = queries.FindCompanyFromEmail(credentials.Username);
+                if (company != null)
+                    user = new Company(company);
+            }
+        }
 
         // Return null if user not found
         if (user == null) return null;
@@ -64,7 +100,7 @@ public class AuthenticationService : IAuthenticationService {
 
         // Return the user, or null if password doesn't match
         if (hash.Equals(user.HashedPassword))
-            return new User(user);
+            return user;
         else
             return null;
    }
@@ -73,6 +109,7 @@ public class AuthenticationService : IAuthenticationService {
         // Define claim fields in the token
         var claims = new[] {
             new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
+            new Claim(ClaimTypes.Role, user.UserType.ToString()),
         };
 
         // Defince token encryption parameters

@@ -1,5 +1,4 @@
 using System.IO;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 
 public class ProfileService : IProfileService {
@@ -19,16 +18,25 @@ public class ProfileService : IProfileService {
         this.files = files;
     }
 
-    public User GetUser(int id) {
+    public Company GetCompany(int id) {
         // Search user in the DB
-        Entity.User user = queries.FindFromUserId(id);
+        Entity.Company user = queries.FindCompanyFromId(id);
 
         // Return user or null
         if (user == null) return null;
-        return new User(user);
+        return new Company(user);
     }
 
-    public bool UpdateProfile(int userId, DTO.ProfileUpdate updateForm) {
+    public Student GetStudent(int id) {
+        // Search user in the DB
+        Entity.Student user = queries.FindStudentFromId(id);
+
+        // Return user or null
+        if (user == null) return null;
+        return new Student(user);
+    }
+
+    public bool UpdateProfileCompany(int userId, DTO.ProfileUpdateCompany updateForm) {
         bool errors = false;
 
         // Change password
@@ -38,44 +46,168 @@ public class ProfileService : IProfileService {
             var hash = authentication.HashPassword(salt, updateForm.Password);
 
             // Update salt and password
-            if (!queries.UpdateSaltAndPassword(userId, salt, hash))
+            if (!queries.UpdateSaltAndPassword(UserType.Company, userId, salt, hash))
                 errors = true;;
         }
 
         // Update username
         if (!string.IsNullOrWhiteSpace(updateForm.Username)) {
-            if (!queries.UpdateUsername(userId, updateForm.Username))
+            if (!queries.UpdateUsername(UserType.Company, userId, updateForm.Username))
                 errors = true;
         }
 
         // Update email
         if (!string.IsNullOrWhiteSpace(updateForm.Email)) {
-            if (!queries.UpdateEmail(userId, updateForm.Email))
+            if (!queries.UpdateEmail(UserType.Company, userId, updateForm.Email))
+                errors = true;
+        }
+
+        // Update bio
+        if (!string.IsNullOrWhiteSpace(updateForm.Bio)) {
+            if (!queries.UpdateBio(UserType.Company, userId, updateForm.Bio))
+                errors = true;
+        }
+
+        // Update headquarter
+        if (!string.IsNullOrWhiteSpace(updateForm.Headquarter)) {
+            if (!queries.UpdateHeadquarter(userId, updateForm.Headquarter))
+                errors = true;
+        }
+
+        // Update fiscal code
+        if (!string.IsNullOrWhiteSpace(updateForm.FiscalCode)) {
+            if (!queries.UpdateFiscalCode(userId, updateForm.FiscalCode))
+                errors = true;
+        }
+
+        // Update VAT number
+        if (!string.IsNullOrWhiteSpace(updateForm.VatNumber)) {
+            if (!queries.UpdateVatNumber(userId, updateForm.VatNumber))
                 errors = true;
         }
 
         return !errors;
     }
 
-    public bool IsUpdateFormValid(DTO.ProfileUpdate updateForm) {
+    public bool UpdateProfileStudent(int userId, DTO.ProfileUpdateStudent updateForm) {
+        bool errors = false;
+
+        // Change password
+        if (!string.IsNullOrWhiteSpace(updateForm.Password)) {
+            // Retrieve salt and hashed password
+            var salt = authentication.GenerateSalt();
+            var hash = authentication.HashPassword(salt, updateForm.Password);
+
+            // Update salt and password
+            if (!queries.UpdateSaltAndPassword(UserType.Student, userId, salt, hash))
+                errors = true;;
+        }
+
+        // Update username
+        if (!string.IsNullOrWhiteSpace(updateForm.Username)) {
+            if (!queries.UpdateUsername(UserType.Student, userId, updateForm.Username))
+                errors = true;
+        }
+
+        // Update email
+        if (!string.IsNullOrWhiteSpace(updateForm.Email)) {
+            if (!queries.UpdateEmail(UserType.Student, userId, updateForm.Email))
+                errors = true;
+        }
+
+        // Update bio
+        if (!string.IsNullOrWhiteSpace(updateForm.Bio)) {
+            if (!queries.UpdateBio(UserType.Student, userId, updateForm.Bio))
+                errors = true;
+        }
+
+        // Update name
+        if (!string.IsNullOrWhiteSpace(updateForm.Name)) {
+            if (!queries.UpdateName(userId, updateForm.Name))
+                errors = true;
+        }
+
+        // Update surname
+        if (!string.IsNullOrWhiteSpace(updateForm.Surname)) {
+            if (!queries.UpdateSurname(userId, updateForm.Surname))
+                errors = true;
+        }
+
+        // Update university
+        if (!string.IsNullOrWhiteSpace(updateForm.University)) {
+            if (!queries.UpdateUniversity(userId, updateForm.University))
+                errors = true;
+        }
+
+        // Update course of study
+        if (!string.IsNullOrWhiteSpace(updateForm.CourseOfStudy)) {
+            if (!queries.UpdateCourseOfStudy(userId, updateForm.CourseOfStudy))
+                errors = true;
+        }
+
+        // Update gender
+        if (updateForm.Gender != null) {
+            if (!queries.UpdateGender(userId, updateForm.Gender.Value))
+                errors = true;
+        }
+
+        // Update birth date
+        if (updateForm.BirthDate != null) {
+            if (!queries.UpdateBirthDate(userId, updateForm.BirthDate.Value))
+                errors = true;
+        }
+
+        return !errors;
+    }
+
+    public bool IsCompanyUpdateFormValid(DTO.ProfileUpdateCompany updateForm) {
         var username = updateForm.Username;
         var email = updateForm.Email;
 
         // Check username uniqueness
         if (!string.IsNullOrWhiteSpace(username)) {
-            if (authenticationQueries.FindFromUsername(username) != null)
+            if (authenticationQueries.FindCompanyFromUsername(username) != null)
+                return false;
+            if (authenticationQueries.FindStudentFromUsername(username) != null)
                 return false;
         }
 
         // Check email uniqueness
         if (!string.IsNullOrWhiteSpace(email)) {
-            if (authenticationQueries.FindFromEmail(email.ToLowerInvariant()) != null)
+            if (authenticationQueries.FindCompanyFromEmail(email.ToLowerInvariant()) != null)
+                return false;
+            if (authenticationQueries.FindStudentFromEmail(email.ToLowerInvariant()) != null)
                 return false;
         }
 
         // Checks passed
         return true;
     }
+
+    public bool IsStudentUpdateFormValid(DTO.ProfileUpdateStudent updateForm) {
+        var username = updateForm.Username;
+        var email = updateForm.Email;
+
+        // Check username uniqueness
+        if (!string.IsNullOrWhiteSpace(username)) {
+            if (authenticationQueries.FindStudentFromUsername(username) != null)
+                return false;
+            if (authenticationQueries.FindCompanyFromUsername(username) != null)
+                return false;
+        }
+
+        // Check email uniqueness
+        if (!string.IsNullOrWhiteSpace(email)) {
+            if (authenticationQueries.FindStudentFromEmail(email.ToLowerInvariant()) != null)
+                return false;
+            if (authenticationQueries.FindCompanyFromEmail(email.ToLowerInvariant()) != null)
+                return false;
+        }
+
+        // Checks passed
+        return true;
+    }
+
 
     public bool CheckCvValidity(IFormFile file) {
         // Check actual file presence
@@ -104,21 +236,12 @@ public class ProfileService : IProfileService {
         string filePath = files.GetCvFilePath(userId.ToString());
 
         // Store file in file system
-        bool outcome = files.SaveFile(filePath, fileBytes);
-
-        // Add filepath to students table in DB
-        if (outcome) {
-            outcome &= queries.SetCvFilePath(userId, filePath);
-        }
-
-        return outcome;
-    }
+        return files.SaveFile(filePath, fileBytes);
+   }
 
     public IFormFile RetrieveCvFile(int userId) {
         // Compute file path
-        string filePath = queries.GetCvFilePath(userId);
-        if (string.IsNullOrWhiteSpace(filePath))
-            return null;
+        string filePath = files.GetCvFilePath(userId.ToString());
 
         // Retrieve file from file system
         byte[] fileBytes;
@@ -127,6 +250,10 @@ public class ProfileService : IProfileService {
         } catch {
             fileBytes = null;
         }
+
+        // Early not found return
+        if (fileBytes == null)
+            return null;
 
         // Convert file to form file
         var stream = new MemoryStream(fileBytes);
@@ -138,18 +265,10 @@ public class ProfileService : IProfileService {
 
     public bool DeleteCv(int userId) {
         // Compute file path
-        string filePath = queries.GetCvFilePath(userId);
-        if (string.IsNullOrWhiteSpace(filePath))
-            return false;
+        string filePath = files.GetCvFilePath(userId.ToString());
 
         // Delete file
-        bool outcome = files.DeleteFile(filePath);
-
-        // Delete file path from students DB row
-        if (outcome)
-            outcome &= queries.RemoveCvFilePath(userId);
-
-        return outcome;
+        return files.DeleteFile(filePath);
     }
 
 }
