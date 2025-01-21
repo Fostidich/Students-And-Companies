@@ -1,5 +1,4 @@
 using System;
-using System.Linq;
 using System.Collections.Generic;
 using MySql.Data.MySqlClient;
 
@@ -15,8 +14,8 @@ public class RecommendationQueries : IRecommendationQueries {
         try {
             string query = @"
                 SELECT *
-                FROM Advertisements a
-                WHERE a.CompanyId = @CompanyId;
+                FROM advertisements a
+                WHERE a.company_id = @CompanyId;
             ";
             
             using var db_connection = dataService.GetConnection();
@@ -39,21 +38,21 @@ public class RecommendationQueries : IRecommendationQueries {
         try {
             string query = @"
                 SELECT
-                    a.Id AS AdvertisementId,
-                    a.CreatedAt,
-                    a.CompanyId,
-                    a.Description,
-                    a.Duration,
-                    a.Spots,
-                    a.Available,                   
-                    a.Open,
-                    a.Questionnaire,
-                FROM AdvertisementSkills ads
-                INNER JOIN Advertisement a ON ads.AdvertisementId = a.Id
-                INNER JOIN StudentSkills ss ON ads.SkillId = ss.SkillId
-                WHERE ss.StudentId = @StudentId
-                  AND a.Open = TRUE -- Consider only open advertisements
-                GROUP BY a.Id, a.CreatedAt, a.CompanyId, a.Description, a.Duration, a.Spots, a.Available, a.Open, a.Questionnaire 
+                    a.id AS advertisement_id,
+                    a.created_at,
+                    a.company_id,
+                    a.description,
+                    a.duration,
+                    a.spots,
+                    a.available,                   
+                    a.open,
+                    a.questionnaire,
+                FROM advertisement_skills ads
+                INNER JOIN advertisement a ON ads.advertisemen_id = a.id
+                INNER JOIN student_skills ss ON ads.skill_id = ss.skill_id
+                WHERE ss.student_id = @StudentId
+                  AND a.open = TRUE -- Consider only open advertisements
+                GROUP BY a.id, a.created_at, a.company_id, a.description, a.duration, a.spots, a.available, a.open, a.questionnaire 
                 ORDER BY COUNT(*) DESC
                 LIMIT 100;
             ";
@@ -76,7 +75,7 @@ public class RecommendationQueries : IRecommendationQueries {
     public bool CreateAdvertisement(int companyId, Entity.Advertisement advertisement) {
         try {
             string query = @"
-                INSERT INTO Advertisement (company_id, description, duration, spots, available, open, questionnaire)
+                INSERT INTO advertisement (company_id, description, duration, spots, available, open, questionnaire)
                 VALUES (@CompanyId, @Description, @Duration, @Spots, @Avaible, @Open, @Questionnaire);
             ";
             

@@ -36,7 +36,6 @@ public class Advertisement {
     }
     
     public Advertisement(DTO.AdvertisementRegistration advertisement) {
-        CompanyId = advertisement.CompanyId;
         Description = advertisement.Description;
         Duration = advertisement.Duration;
         Spots = advertisement.Spots;
