@@ -37,7 +37,7 @@ function CardProfileStudent (){
                     setSurname(data.surname);
                     setUniversity(data.university);
                     setCourseOfStudy(data.courseOfStudy);
-                    setBirthDate(data.birthDate);
+                    setBirthDate(data.birthDate.split('T')[0]);
 
                 }else
                     console.error('Error checking profile informations:', response.status);
@@ -58,16 +58,16 @@ function CardProfileStudent (){
                      src={"https://static.vecteezy.com/system/resources/previews/020/911/733/non_2x/profile-icon-avatar-icon-user-icon-person-icon-free-png.png"}/>
             </div>
             <div className="flex flex-col items-center gap">
-                <p className="text-lg font-bold">{username}</p>
-                <p className="text-lg font-light">{email}</p>
-                <p className="text-lg font-light">{name}</p>
-                <p className="text-lg font-light">{surname}</p>
-                <p className="text-lg font-light">{university}</p>
-                <p className="text-lg font-light">{courseOfStudy}</p>
-                <p className="text-lg font-light">{birthDate}</p>
-                <p className="text-lg font-light">{bio}</p>
+                <p className="text-lg font-bold">Username: <span className="font-light">{username}</span></p>
+                <p className="text-lg font-bold">Email: <span className="font-light">{email}</span></p>
+                <p className="text-lg font-bold">Name: <span className="font-light">{name}</span></p>
+                <p className="text-lg font-bold">Surname: <span className="font-light">{surname}</span></p>
+                <p className="text-lg font-bold">University: <span className="font-light">{university}</span></p>
+                <p className="text-lg font-bold">Course of study: <span className="font-light">{courseOfStudy}</span></p>
+                <p className="text-lg font-bold">Birthdate: <span className="font-light">{birthDate}</span></p>
+                <p className="text-lg font-bold">Your bio: <span className="font-light">{bio}</span></p>
             </div>
-            <button className=" text-white rounded-xl underline text-blue-500">Edit</button>
+            <button className="  rounded-xl underline text-blue-500">Edit</button>
         </div>
 
     );
