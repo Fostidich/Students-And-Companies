@@ -65,7 +65,7 @@ public class AppDbContext : DbContext {
         // Foreign key
 
         // Configure the foreign key relationship with Company
-        modelBuilder.Entity<Advertisement>()
+        modelBuilder.Entity<Entity.Advertisement>()
             .HasOne(a => a.Company)
             .WithMany(c => c.Advertisements)
             .HasForeignKey(a => a.CompanyId)
