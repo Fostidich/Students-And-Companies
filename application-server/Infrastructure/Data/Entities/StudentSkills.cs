@@ -26,8 +26,8 @@ namespace Entity {
 
         // Navigation properties
 
-        public Student Student { get; set; }
-        public Skill Skill { get; set; }
+        public Entity.Student Student { get; set; }
+        public Entity.Skill Skill { get; set; }
 
     }
 

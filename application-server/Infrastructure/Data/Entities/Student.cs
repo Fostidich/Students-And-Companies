@@ -84,7 +84,7 @@ namespace Entity {
 
 		// Navigation properties
 
-		public Internship Internship { get; set; }
+		public Entity.Internship Internship { get; set; }
 
         public ICollection<Entity.StudentSkills> StudentSkills { get; set; }
 		public ICollection<Entity.Application> Applications { get; set; }

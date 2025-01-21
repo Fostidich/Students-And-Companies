@@ -39,7 +39,7 @@ namespace Entity {
 
         // Navigation property
 
-        public Internship Internship { get; set; }
+        public Entity.Internship Internship { get; set; }
 
     }
 

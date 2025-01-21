@@ -60,7 +60,7 @@ namespace Entity {
 
         // Navigation properties
 
-        public Company Company { get; set; }
+        public Entity.Company Company { get; set; }
 
         public ICollection<Entity.AdvertisementSkills> AdvertisementSkills { get; set; }
         public ICollection<Entity.Application> Applications { get; set; }

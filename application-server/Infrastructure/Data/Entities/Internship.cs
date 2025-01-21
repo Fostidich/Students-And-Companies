@@ -49,10 +49,10 @@ namespace Entity {
 
         // Navigation properties
 
-        public Student Student { get; set; }
-        public Company Company { get; set; }
-        public Advertisement Advertisement { get; set; }
-        public Feedback Feedback { get; set; }
+        public Entity.Student Student { get; set; }
+        public Entity.Company Company { get; set; }
+        public Entity.Advertisement Advertisement { get; set; }
+        public Entity.Feedback Feedback { get; set; }
 
     }
 

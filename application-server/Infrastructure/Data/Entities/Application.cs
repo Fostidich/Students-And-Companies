@@ -50,8 +50,8 @@ namespace Entity {
 
         // Navigation properties
 
-        public Student Student { get; set; }
-        public Advertisement Advertisement { get; set; }
+        public Entity.Student Student { get; set; }
+        public Entity.Advertisement Advertisement { get; set; }
 
     }
 

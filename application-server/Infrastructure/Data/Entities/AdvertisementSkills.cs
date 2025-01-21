@@ -26,8 +26,8 @@ namespace Entity {
 
         // Navigation properties
 
-        public Advertisement Advertisement { get; set; }
-        public Skill Skill { get; set; }
+        public Entity.Advertisement Advertisement { get; set; }
+        public Entity.Skill Skill { get; set; }
 
     }
 

@@ -84,10 +84,10 @@ else
 	rm -rf application-server/Tests/obj
 	rm -rf application-server/Tests/TestResults
 	rm -rf web-server/node_modules
-	docker container prune -f
-	docker image prune -f
-	docker rmi sc-web-server -f
-	docker rmi sc-application-server -f
+	docker container prune -f || true
+	docker image prune -f || true
+	docker rmi sc-web-server -f || true
+	docker rmi sc-application-server -f || true
 endif
 
 test: clean
