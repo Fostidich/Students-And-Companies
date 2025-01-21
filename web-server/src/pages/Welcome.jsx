@@ -1,8 +1,8 @@
 import PropTypes from 'prop-types';
 import { useState } from 'react';
 import LoginForm from '../components/LoginForm.jsx';
-import RegisterFormStudent from '../components/RegisterFormStudent.jsx';
-import RegisterFormCompany from "../components/RegisterFormCompany.jsx";
+import RegisterFormStudent from '../components/student/RegisterFormStudent.jsx';
+import RegisterFormCompany from "../components/company/RegisterFormCompany.jsx";
 
 function Welcome({ onLogin }) {
     const [showLogin, setShowLogin] = useState(true);

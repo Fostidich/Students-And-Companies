@@ -1,7 +1,9 @@
 import PropTypes from "prop-types";
-import CardProfileStudent from "../components/CardProfileStudent.jsx";
+import CardProfileStudent from "../components/student/CardProfileStudent.jsx";
 import Cookies from 'js-cookie';
-import CardProfileCompany from "../components/CardProfileCompany.jsx";
+import CardProfileCompany from "../components/company/CardProfileCompany.jsx";
+import CvBox from "../components/student/CvBox.jsx";
+import SkillsBox from "../components/student/SkillsBox.jsx";
 function Profile({onLogout}) {
 
     const handleLogoutClick = async () => {
@@ -18,8 +20,15 @@ function Profile({onLogout}) {
     return (
         <div className="flex flex-wrap p-8">
 
-            <div className="w-full md:w-1/2 bg-blue-100 p-4 items-center ">
+            <div className="w-full md:w-1/2 bg-blue-100 p-4 items-center">
                 {userType.toLowerCase() === 'student' ? (<CardProfileStudent/>) : (<CardProfileCompany/>)}
+                {userType.toLowerCase() === 'student' ?
+                    <div className="bg-white border items-center p-10 rounded-xl flex flex-wrap space-x-10">
+                        <CvBox/>
+                        <SkillsBox/>
+                    </div>: <div></div>
+                }
+
 
 
             </div>
