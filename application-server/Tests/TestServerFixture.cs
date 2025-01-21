@@ -30,7 +30,42 @@ public class TestServerFixture : IDisposable {
         context.Database.EnsureDeleted();
         context.Database.EnsureCreated();
 
-        // Optional test data
+        // Retrieve services
+        var authentication = scope.ServiceProvider.GetRequiredService<IAuthenticationService>();
+
+        // Add test data for testing
+        string salt = authentication.GenerateSalt();
+        string password = "SeedPassword";
+        string hashedPassword = authentication.HashPassword(salt, password);
+
+        var student1 = new Entity.Student {
+			Email = "Seed@Student.mail",
+			Username = "SeedStudent",
+			Salt = salt,
+			HashedPassword = hashedPassword,
+			Name = "SeedName",
+			Surname = "SeedSurname",
+			University = "SeedUniversity",
+			CourseOfStudy = "SeedCourseOfStudy",
+			Gender = 'f',
+			BirthDate = new DateTime(2001, 12, 2, 19, 55, 0),
+	    };
+
+        var company1 = new Entity.Company {
+            Email = "Seed@Company.mail",
+            Username = "SeedCompany",
+            Salt = salt,
+            HashedPassword = hashedPassword,
+            Headquarter = "SeedHeadquarter",
+            FiscalCode = "SeedFiscalCode",
+            VatNumber = "SeedVatNumber",
+        };
+
+        // Add entities to context
+        context.Student.AddRange(student1);
+        context.Company.AddRange(company1);
+
+        // Save changes to the database
         context.SaveChanges();
     }
 

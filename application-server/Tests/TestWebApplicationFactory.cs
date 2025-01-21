@@ -7,6 +7,7 @@ using System;
 public class TestWebApplicationFactory : WebApplicationFactory<Program>, IDisposable {
 
     protected override void ConfigureWebHost(IWebHostBuilder builder) {
+        builder.UseEnvironment("Testing");
         builder.ConfigureAppConfiguration((context, config) => {
         // Retrieve the original connection string
         var originalConnectionString = config.Build()["DbDefaultConnection"];
@@ -14,6 +15,7 @@ public class TestWebApplicationFactory : WebApplicationFactory<Program>, IDispos
         // Modify the connection string by prepending "test_" to the database name
         if (!string.IsNullOrEmpty(originalConnectionString)) {
             var newConnectionString = ModifyConnectionStringForTest(originalConnectionString);
+
             // Override the connection string in the configuration
             config.AddInMemoryCollection(new Dictionary<string, string> {
                 { "DbDefaultConnection", newConnectionString }

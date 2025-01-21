@@ -202,7 +202,7 @@ public class ProfileController : ControllerBase {
 
     [HttpPost("cv")]
     [Authorize]
-    [SwaggerOperation(Summary = "Upload the CV of a student", Description = "The user, if a student, can upload a CV PDF file that is stored among other user profile information.")]
+    [SwaggerOperation(Summary = "Upload the CV of a student", Description = "The user, if a student, can upload a CV PDF file that is stored among other user profile information. Form data name must be 'cv'.")]
     [ProducesResponseType(200)]
     [ProducesResponseType(400)]
     [ProducesResponseType(500)]

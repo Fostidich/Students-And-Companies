@@ -47,19 +47,19 @@ docker stop sc-application-server
 
 - [x] Set up code
 - [x] Dispatch a request
-- [ ] Assign components
+- [x] Assign components
 - [x] Put DB on AWS
 - [x] Fix APIs in DD
 - [x] Fill controllers with APIs
 - [x] Dispatch interfaces
+- [x] Find a way to automatically test REST requests
+- [x] Test migrations scenarios
 - [ ] Set up docker for the DB
 - [ ] Set up a single docker image for everything
 - [ ] Add email component for verification code
 - [ ] Write unit tests
 - [ ] Switch some Ok routes with Created
 - [ ] Add ON UPDATE CASCADE where needed
-- [x] Find a way to automatically test REST requests
 - [ ] Fix that warning when testing
-- [ ] Test migrations scenarios
 
 ###### C# and JavaScript code written by Francesco Ostidich, Matteo Salari, Francesco Rivitti
