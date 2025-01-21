@@ -206,7 +206,7 @@ public class ProfileController : ControllerBase {
     [ProducesResponseType(200)]
     [ProducesResponseType(400)]
     [ProducesResponseType(500)]
-    public IActionResult UploadCv(IFormFile file) {
+    public IActionResult UploadCv(IFormFile cv) {
         // Check role
         string role = User.FindFirst(ClaimTypes.Role).Value;
         if (role != UserType.Student.ToString())
@@ -217,11 +217,11 @@ public class ProfileController : ControllerBase {
         int userId = Convert.ToInt32(userIdStr);
 
         // Check PDF validity
-        if (!profile.CheckCvValidity(file))
+        if (!profile.CheckCvValidity(cv))
             return BadRequest("Invalid file\n");
 
         // Store file
-        if (profile.StoreCvFile(userId, file))
+        if (profile.StoreCvFile(userId, cv))
             return Ok("CV successfully stored\n");
         else
             return StatusCode(500, "Internal server error\n");
