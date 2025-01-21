@@ -1,6 +1,7 @@
 using System;
-using MySql.Data.MySqlClient;
 using System.Linq;
+using System.Collections.Generic;
+using MySql.Data.MySqlClient;
 
 public class ProfileQueries : IProfileQueries {
 
@@ -428,6 +429,52 @@ public class ProfileQueries : IProfileQueries {
 	        command.ExecuteNonQuery();
 
 	        return true;
+        } catch (Exception ex) {
+            Console.WriteLine(ex.Message);
+            return false;
+        }
+    }
+
+    public List<Entity.Skill> GetSkills(int id) {
+        try {
+            string query = $@"
+                SELECT s.skill_id, name
+                FROM skill AS s
+                JOIN student_skills AS ss
+                ON s.skill_id = ss.skill_id
+                WHERE student_id = @Id";
+
+            using var db_connection = dataService.GetConnection();
+            using var command = new MySqlCommand(query, db_connection);
+
+            command.Parameters.AddWithValue("@Id", id);
+
+            using var reader = command.ExecuteReader();
+
+            var skills = dataService.MapToSkills(reader);
+            return skills;
+        } catch (Exception ex) {
+            Console.WriteLine(ex.Message);
+            return null;
+        }
+    }
+
+    public bool DeleteSkill(int skillId, int studentId) {
+        try {
+            string query = $@"
+                DELETE FROM student_skills
+                WHERE skill_id = @SkillId
+                AND student_id = @StudentId";
+
+            using var db_connection = dataService.GetConnection();
+            using var command = new MySqlCommand(query, db_connection);
+
+            command.Parameters.AddWithValue("@SkillId", skillId);
+            command.Parameters.AddWithValue("@StudentId", studentId);
+
+            int rowsAffected = command.ExecuteNonQuery();
+
+            return rowsAffected > 0;
         } catch (Exception ex) {
             Console.WriteLine(ex.Message);
             return false;

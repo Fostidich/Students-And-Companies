@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Http;
+using System.Collections.Generic;
 
 public interface IProfileService {
 
@@ -14,5 +15,7 @@ public interface IProfileService {
     bool DeleteCv(int id);
     bool DeleteUser(UserType type, int id);
     bool AddSkill(int id, string name);
+    List<Skill> GetSkills(int id);
+    bool DeleteSkill(int skillId, int studentId);
 
 }

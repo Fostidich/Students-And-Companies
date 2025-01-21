@@ -1,4 +1,6 @@
 using System.IO;
+using System.Linq;
+using System.Collections.Generic;
 using Microsoft.AspNetCore.Http;
 
 public class ProfileService : IProfileService {
@@ -295,6 +297,23 @@ public class ProfileService : IProfileService {
 
         // Add skill id to students skills
         return queries.AddSkillToStudent(studentId, skillId);
+    }
+
+    public List<Skill> GetSkills(int id) {
+        // Retrieve skills
+        List<Entity.Skill> skillsEntity = queries.GetSkills(id);
+
+        // Error detection
+        if (skillsEntity == null)
+            return null;
+
+        // Return found list
+        List<Skill> skills = skillsEntity.Select(skill => new Skill(skill)).ToList();
+        return skills;
+    }
+
+    public bool DeleteSkill(int skillId, int studentId) {
+        return queries.DeleteSkill(skillId, studentId);
     }
 
 }

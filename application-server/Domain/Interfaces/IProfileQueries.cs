@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 
 public interface IProfileQueries {
 
@@ -21,5 +22,7 @@ public interface IProfileQueries {
     int FindSkill(string name);
     bool AddSkill(string name);
     bool AddSkillToStudent(int studentId, int skillId);
+    List<Entity.Skill> GetSkills(int id);
+    bool DeleteSkill(int skillId, int studentId);
 
 }

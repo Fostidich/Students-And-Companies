@@ -1,4 +1,6 @@
 using System;
+using System.Linq;
+using System.Collections.Generic;
 using System.Security.Claims;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Http;
@@ -182,8 +184,12 @@ public class ProfileController : ControllerBase {
     [Authorize]
     [SwaggerOperation(Summary = "Download the CV of a student", Description = "The CV PDF file of the student with the provide ID is returned, if it was previously uploaded.")]
     [ProducesResponseType(200)]
+    [ProducesResponseType(400)]
     [ProducesResponseType(404)]
     public IActionResult DownloadCv(int id) {
+        // Check ID validity
+        if (id <= 0) return BadRequest("Invalid id\n");
+
         // Retrieve CV from user ID
         IFormFile cv = profile.RetrieveCvFile(id);
 
@@ -272,7 +278,7 @@ public class ProfileController : ControllerBase {
     [ProducesResponseType(200)]
     [ProducesResponseType(400)]
     [ProducesResponseType(500)]
-    public IActionResult AddSkill([FromBody] DTO.Skill skill) {
+    public IActionResult AddSkill([FromBody] DTO.SkillRegistration skill) {
         // Check role
         string role = User.FindFirst(ClaimTypes.Role).Value;
         if (role != UserType.Student.ToString())
@@ -291,26 +297,88 @@ public class ProfileController : ControllerBase {
 
     [HttpGet("skills")]
     [Authorize]
-    [SwaggerOperation(Summary = "", Description = "")]
-    [ProducesResponseType(501)]
+    [SwaggerOperation(Summary = "Get the skills of the student", Description = "The skills of the logged in user, if a student, are returned in a list.")]
+    [ProducesResponseType(200)]
+    [ProducesResponseType(400)]
+    [ProducesResponseType(404)]
+    [ProducesResponseType(500)]
     public IActionResult GetSkills() {
-        return StatusCode(501, "Feature not yet implemented\n");
+        // Check role
+        string role = User.FindFirst(ClaimTypes.Role).Value;
+        if (role != UserType.Student.ToString())
+            return BadRequest("Invalid role\n");
+
+        // Get user ID from authentication token
+        string userIdStr = User.FindFirst(ClaimTypes.NameIdentifier).Value;
+        int userId = Convert.ToInt32(userIdStr);
+
+        // Retrieve skills
+        List<Skill> skills = profile.GetSkills(userId);
+
+        // Check errors
+        if (skills == null)
+            return StatusCode(500, "Internal server error\n");
+
+        // Check presence
+        if (skills.Count == 0)
+            return NotFound("No skills found\n");
+
+        // Return the list
+        List<DTO.Skill> skillsDto = skills.Select(skill => skill.ToDto()).ToList();
+        return Ok(skillsDto);
     }
 
     [HttpGet("skills/{id}")]
     [Authorize]
-    [SwaggerOperation(Summary = "", Description = "")]
-    [ProducesResponseType(501)]
+    [SwaggerOperation(Summary = "Get the skills of a student", Description = "The skills of the student with the provided ID are returned in a list.")]
+    [ProducesResponseType(200)]
+    [ProducesResponseType(400)]
+    [ProducesResponseType(404)]
+    [ProducesResponseType(500)]
     public IActionResult GetSkill(int id) {
-        return StatusCode(501, "Feature not yet implemented\n");
+        // Check ID validity
+        if (id <= 0) return BadRequest("Invalid id\n");
+
+        // Retrieve skills
+        List<Skill> skills = profile.GetSkills(id);
+
+        // Check errors
+        if (skills == null)
+            return StatusCode(500, "Internal server error\n");
+
+        // Check presence
+        if (skills.Count == 0)
+            return NotFound("No skills found\n");
+
+        // Return the list
+        List<DTO.Skill> skillsDto = skills.Select(skill => skill.ToDto()).ToList();
+        return Ok(skillsDto);
     }
 
     [HttpPost("skills/delete/{id}")]
     [Authorize]
-    [SwaggerOperation(Summary = "", Description = "")]
-    [ProducesResponseType(501)]
-    public IActionResult DeleteSkill() {
-        return StatusCode(501, "Feature not yet implemented\n");
+    [SwaggerOperation(Summary = "Delete a skill from profile", Description = "The skill with the provided ID is deleted from the logged in student profile information.")]
+    [ProducesResponseType(200)]
+    [ProducesResponseType(400)]
+    [ProducesResponseType(404)]
+    public IActionResult DeleteSkill(int id) {
+        // Check ID validity
+        if (id <= 0) return BadRequest("Invalid id\n");
+
+        // Check role
+        string role = User.FindFirst(ClaimTypes.Role).Value;
+        if (role != UserType.Student.ToString())
+            return BadRequest("Invalid role\n");
+
+        // Get user ID from authentication token
+        string userIdStr = User.FindFirst(ClaimTypes.NameIdentifier).Value;
+        int userId = Convert.ToInt32(userIdStr);
+
+        // Delete skill from student
+        if (profile.DeleteSkill(id, userId))
+            return Ok("Skill delete from student\n");
+        else
+            return NotFound("Skill not found\n");
     }
 
 }

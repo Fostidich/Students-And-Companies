@@ -38,6 +38,16 @@ public class DataService : IDataService {
         return companies;
     }
 
+    public List<Entity.Skill> MapToSkills(IDataReader reader) {
+        var skills = new List<Entity.Skill>();
+
+        while (reader.Read()) {
+            skills.Add(new Entity.Skill(reader));
+        }
+
+        return skills;
+    }
+
     public List<string> MapToStrings(IDataReader reader, string fieldName) {
         var result = new List<string>();
 
