@@ -60,7 +60,6 @@ public class RecommendationController : ControllerBase {
         
         // Add advertisement data to DB
         if (recommendation.CreateAdvertisement(userId, advertisement)){
-            //TODO: add notification for match
             return Ok("Advertisement registered\n");
         }
         

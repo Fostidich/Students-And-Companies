@@ -48,6 +48,11 @@ public class AppDbContext : DbContext {
         modelBuilder.Entity<Entity.Company>()
             .HasIndex(c => c.Email)
             .IsUnique();
+        
+        // Ensures that the Name field in the Skill table is unique
+        modelBuilder.Entity<Entity.Skill>()
+            .HasIndex(s => s.Name)
+            .IsUnique();
 
 
         // Composite key

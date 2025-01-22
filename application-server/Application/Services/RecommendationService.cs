@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
+using DTO;
 
 public class RecommendationService : IRecommendationService {
 
@@ -38,12 +39,39 @@ public class RecommendationService : IRecommendationService {
         
         return adv;
     }
-    
+
     public bool CreateAdvertisement(int companyId, DTO.AdvertisementRegistration advertisement) {
         Advertisement adv = new Advertisement(advertisement);
         
-        // Add advertisement data to DB
-        return queries.CreateAdvertisement(companyId, adv.ToEntity());
+        // Convert Skills to DTO.SkillRegistration
+        List<DTO.SkillRegistration> skillsDto = advertisement.Skills
+            .Select(skill => new DTO.SkillRegistration { Name = skill })
+            .ToList();
+        
+        // Convert DTO.SkillRegistration to Skill
+        List<Skill> skills = skillsDto
+            .Select(skill => new Skill(skill))
+            .ToList();
+        
+        // Convert Skill to Entity.Skill
+        List<Entity.Skill> skillsEntity = skills
+            .Select(skill => skill.ToEntity())
+            .ToList();
+
+        // Create advertisement
+        int? advId = queries.CreateAdvertisement(companyId, adv.ToEntity(), skillsEntity);
+        
+        if (advId != null) {
+            MatchAdvertisementToSkills(advId.Value); 
+            return true;
+        }
+
+        return false;
+    }
+    
+    private void MatchAdvertisementToSkills(int advertisementId) {
+        queries.MatchAdvertisementForStudent(advertisementId);
+        queries.MatchAdvertisementForCompany(advertisementId);
     }
 
 }
