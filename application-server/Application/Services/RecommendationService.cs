@@ -73,5 +73,37 @@ public class RecommendationService : IRecommendationService {
         queries.MatchAdvertisementForStudent(advertisementId);
         queries.MatchAdvertisementForCompany(advertisementId);
     }
+    
+    public Advertisement GetAdvertisement(int advertisementId) {
+        // Get advertisement by ID
+        Entity.Advertisement advertisement = queries.GetAdvertisement(advertisementId);
+        
+        // If no advertisement is found, return null
+        if(advertisement == null) {
+            return null;
+        }
+        
+        // Convert Entity.Advertisement to Advertisement
+        Advertisement adv = new Advertisement(advertisement);
+        
+        return adv;
+    }
+    
+    
+    public List<Student> GetRecommendedCandidates(int companyId, int advertisementId) {
+        // Get recommended candidates for a company
+        List<Entity.Student> studentsEntity = queries.GetRecommendedCandidates(companyId, advertisementId);
+        
+        // Convert Entity.Student to Student
+        List<Student> students = studentsEntity.Select(student => new Student(student)).ToList();
+        
+        return students;
+    }
+    
+    
+    public bool CreateSuggestionsForStudent(int notificationId) {
+        // Create suggestion for a student
+        return queries.CreateSuggestionsForStudent(notificationId);
+    }
 
 }

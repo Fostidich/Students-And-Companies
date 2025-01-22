@@ -14,7 +14,6 @@ namespace Entity {
             CompanyId = Convert.ToInt32(reader["company_id"]);
             StudentId = Convert.ToInt32(reader["student_id"]);
             AdvertisementId = Convert.ToInt32(reader["advertisement_id"]);
-            Type = Convert.ToChar(reader["type"]);
         }
 
         [Key]
@@ -32,10 +31,6 @@ namespace Entity {
         [Required(ErrorMessage = "Field is required")]
         [ForeignKey("Advertisement")]
         public int AdvertisementId { get; set; }
-        
-        [Required(ErrorMessage = "Field is required")]
-        [Column(TypeName = "enum('a','r')")]
-        public char Type { get; set; }
 
         
         // Navigation properties

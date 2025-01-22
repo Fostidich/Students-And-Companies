@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using MySql.Data.MySqlClient;
 
 public class RecommendationQueries : IRecommendationQueries {
@@ -10,7 +11,7 @@ public class RecommendationQueries : IRecommendationQueries {
         this.dataService = dataService;
     }
     
-    public List<Entity.Advertisement> GetAdvertisementsOfCompany(int studentId) {
+    public List<Entity.Advertisement> GetAdvertisementsOfCompany(int companyId) {
         try {
             string query = @"
                 SELECT *
@@ -21,7 +22,7 @@ public class RecommendationQueries : IRecommendationQueries {
             using var db_connection = dataService.GetConnection();
             using var command = new MySqlCommand(query, db_connection);
             
-            command.Parameters.AddWithValue("@StudentId", studentId);
+            command.Parameters.AddWithValue("@CompanyId", companyId);
             
             using var reader = command.ExecuteReader();
             
@@ -88,7 +89,7 @@ public class RecommendationQueries : IRecommendationQueries {
             command.Parameters.AddWithValue("@Duration", advertisement.Duration);
             command.Parameters.AddWithValue("@Spots", advertisement.Spots);
             command.Parameters.AddWithValue("@Available", advertisement.Spots);
-            command.Parameters.AddWithValue("@Open", "TRUE"); 
+            command.Parameters.AddWithValue("@Open", true); 
             command.Parameters.AddWithValue("@Questionnaire", advertisement.Questionnaire);
             
             using var reader = command.ExecuteReader();
@@ -293,7 +294,134 @@ public class RecommendationQueries : IRecommendationQueries {
             Console.WriteLine($"Error matching advertisement to company: {ex.Message}");
         }
     }
-
     
+    public Entity.Advertisement GetAdvertisement(int advertisementId) {
+        try {
+            string query = @"
+                SELECT *
+                FROM advertisements
+                WHERE advertisement_id = @AdvertisementId;
+            ";
+            
+            using var db_connection = dataService.GetConnection();
+            using var command = new MySqlCommand(query, db_connection);
+            
+            command.Parameters.AddWithValue("@AdvertisementId", advertisementId);
+            
+            using var reader = command.ExecuteReader();
+            
+            var advertisement = dataService.MapToAdvertisements(reader).FirstOrDefault();
+            return advertisement;
+        } catch (Exception ex) {
+            Console.WriteLine(ex.Message);
+            return null;
+        }
+    }
+
+    public List<Entity.Student> GetRecommendedCandidates(int companyId, int advertisementId) {
+        try {
+            // Query to retrieve student IDs from company_notifications
+            string getStudentIdsQuery = @"
+                SELECT student_id
+                FROM company_notifications
+                WHERE company_id = @CompanyId AND advertisement_id = @AdvertisementId;
+            ";
+
+            // Query to retrieve student details
+            string getStudentDetailsQuery = @"
+                SELECT *
+                FROM student
+                WHERE student_id = @StudentId;
+            ";
+
+            using var db_connection = dataService.GetConnection();
+
+            // Step 1: Retrieve student IDs
+            List<int> studentIds = new List<int>();
+            using (var getIdsCommand = new MySqlCommand(getStudentIdsQuery, db_connection)) {
+                getIdsCommand.Parameters.AddWithValue("@CompanyId", companyId);
+                getIdsCommand.Parameters.AddWithValue("@AdvertisementId", advertisementId);
+
+                using var reader = getIdsCommand.ExecuteReader();
+                while (reader.Read())
+                {
+                    studentIds.Add(Convert.ToInt32(reader["student_id"]));
+                }
+            }
+
+            // Step 2: Retrieve student details
+            List<Entity.Student> students = new List<Entity.Student>();
+            foreach (var studentId in studentIds) {
+                using (var getDetailsCommand = new MySqlCommand(getStudentDetailsQuery, db_connection)) {
+                    
+                    getDetailsCommand.Parameters.AddWithValue("@StudentId", studentId);
+
+                    using var reader = getDetailsCommand.ExecuteReader();
+                    
+                    var student = dataService.MapToStudents(reader).FirstOrDefault();
+                    
+                    students.Add(student);
+                }
+            }
+
+            return students;
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error retrieving recommended candidates: {ex.Message}");
+            return new List<Entity.Student>();
+        }
+    }
+
+    public bool CreateSuggestionsForStudent(int notificationId) {
+        try {
+            // Query to retrieve the notification details from company_notifications
+            string retrieveNotificationQuery = @"
+                SELECT student_id, advertisement_id, type
+                FROM company_notifications
+                WHERE company_notification_id = @NotificationId;
+            ";
+
+            // Query to insert the notification into student_notifications
+            string insertNotificationQuery = @"
+                INSERT INTO student_notifications (student_id, advertisement_id, type)
+                VALUES (@StudentId, @AdvertisementId, 'c');
+            ";
+
+            using var db_connection = dataService.GetConnection();
+
+            // Retrieve the notification details
+            int studentId, advertisementId;
+            using (var retrieveCommand = new MySqlCommand(retrieveNotificationQuery, db_connection)) {
+                retrieveCommand.Parameters.AddWithValue("@NotificationId", notificationId);
+                using var reader = retrieveCommand.ExecuteReader();
+                
+                if (!reader.Read()) {
+                    Console.WriteLine($"No company notification found with ID {notificationId}");
+                    return false;
+                }
+
+                // Extract values from the result
+                studentId = Convert.ToInt32(reader["student_id"]);
+                advertisementId = Convert.ToInt32(reader["advertisement_id"]);
+            }
+
+            // Insert the notification into student_notifications
+            using (var insertCommand = new MySqlCommand(insertNotificationQuery, db_connection)) {
+                
+                insertCommand.Parameters.AddWithValue("@StudentId", studentId);
+                insertCommand.Parameters.AddWithValue("@AdvertisementId", advertisementId);
+                
+                insertCommand.ExecuteNonQuery();
+            }
+
+            return true;
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error creating suggestion for student: {ex.Message}");
+            return false;
+        }
+    }
 
 }
