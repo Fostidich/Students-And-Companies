@@ -12,6 +12,11 @@ function FirstPage() {
         const checkAuthStatus = async () => {
             try {
                 const data = Cookies.get('authData');
+                if(data === undefined){
+                    setIsLoggedIn(false);
+                    setIsLoading(false);
+                    return;
+                }
                 const authData = JSON.parse(data) ;
 
                 const response = await fetch(`${API_SERVER_URL}/api/authentication`, {

@@ -59,10 +59,11 @@ public class RecommendationController : ControllerBase {
         int userId = Convert.ToInt32(userIdStr);
         
         // Add advertisement data to DB
-        if (recommendation.CreateAdvertisement(userId, advertisement))
+        if (recommendation.CreateAdvertisement(userId, advertisement)){
             return Ok("Advertisement registered\n");
-        else
-            return StatusCode(500, "Internal server error\n");
+        }
+        
+        return StatusCode(500, "Internal server error\n");
     }
 
     [HttpGet("advertisements/{id}")]

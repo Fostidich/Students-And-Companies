@@ -11,6 +11,7 @@ public class Advertisement {
     public bool Open { get; set; }
     public String Questionnaire { get; set; }
     
+    
     public Advertisement(Entity.Advertisement advertisement) {
         AdvertisementId = advertisement.AdvertisementId;
         CreatedAt = advertisement.CreatedAt;

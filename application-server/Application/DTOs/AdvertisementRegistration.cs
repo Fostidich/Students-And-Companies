@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 namespace DTO {
@@ -18,5 +19,8 @@ namespace DTO {
         
         [Required(ErrorMessage = "Field is required")]
         public string Questionnaire { get; set; }
+        
+        [Required(ErrorMessage = "Field is required")]
+        public List<string> Skills { get; set; } // List of skill
     }
 }

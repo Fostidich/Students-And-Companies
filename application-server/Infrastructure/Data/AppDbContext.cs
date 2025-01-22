@@ -48,6 +48,11 @@ public class AppDbContext : DbContext {
         modelBuilder.Entity<Entity.Company>()
             .HasIndex(c => c.Email)
             .IsUnique();
+        
+        // Ensures that the Name field in the Skill table is unique
+        modelBuilder.Entity<Entity.Skill>()
+            .HasIndex(s => s.Name)
+            .IsUnique();
 
 
         // Composite key
@@ -139,7 +144,37 @@ public class AppDbContext : DbContext {
             .WithOne(i => i.Feedback) // Each internship has one feedback
             .HasForeignKey<Entity.Feedback>(f => f.InternshipId)
             .OnDelete(DeleteBehavior.Cascade); // Delete feedback when the internship is deleted
+        
+        
+        modelBuilder.Entity<Entity.CompanyNotifications>()
+            .HasOne(e => e.Company)
+            .WithMany(c => c.CompanyNotifications)
+            .HasForeignKey(e => e.CompanyId)
+            .OnDelete(DeleteBehavior.Cascade);
+        
+        modelBuilder.Entity<Entity.CompanyNotifications>()
+            .HasOne(e => e.Student)
+            .WithMany(s => s.CompanyNotifications)
+            .HasForeignKey(e => e.StudentId)
+            .OnDelete(DeleteBehavior.Cascade);
+        
+        modelBuilder.Entity<Entity.CompanyNotifications>()
+            .HasOne(e => e.Advertisement)
+            .WithMany(a => a.CompanyNotifications)
+            .HasForeignKey(e => e.AdvertisementId)
+            .OnDelete(DeleteBehavior.Cascade);
 
+        modelBuilder.Entity<Entity.StudentNotifications>()
+            .HasOne(e => e.Advertisement)
+            .WithMany(a => a.StudentNotifications)
+            .HasForeignKey(e => e.AdvertisementId)
+            .OnDelete(DeleteBehavior.Cascade);
+        
+        modelBuilder.Entity<Entity.StudentNotifications>()
+            .HasOne(e => e.Student)
+            .WithMany(s => s.StudentNotifications)
+            .HasForeignKey(e => e.StudentId)
+            .OnDelete(DeleteBehavior.Cascade);
     }
 
     private string ToSnakeCase(string name) {
