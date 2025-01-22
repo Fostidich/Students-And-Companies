@@ -47,7 +47,7 @@ public class DataService : IDataService {
 
         return skills;
     }
-    
+
     public List<Entity.Advertisement> MapToAdvertisements(IDataReader reader) {
         var advertisements = new List<Entity.Advertisement>();
 
