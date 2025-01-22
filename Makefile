@@ -90,8 +90,14 @@ else
 	docker rmi sc-application-server -f || true
 endif
 
-test: clean
+test:
+ifeq ($(OS),Windows_NT)
+	dotnet clean application-server/Tests > NUL
 	dotnet test application-server/Tests
+else
+	dotnet clean application-server/Tests > /dev/null
+	dotnet test application-server/Tests
+endif
 
 web-server:
 	npm --prefix web-server install

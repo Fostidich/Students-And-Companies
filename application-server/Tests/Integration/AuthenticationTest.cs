@@ -3,12 +3,14 @@ using System.Net.Http;
 using System.Net.Http.Json;
 using System.Threading.Tasks;
 using Newtonsoft.Json.Linq;
+using System.Net.Http.Headers;
 
-public class AuthenticationTest : IClassFixture<TestServerFixture> {
+[Collection("Test collection")]
+public class AuthenticationTest {
 
     private readonly HttpClient client;
 
-    public AuthenticationTest(TestServerFixture fixture) {
+    public AuthenticationTest(TestFixture fixture) {
         client = fixture.Client;
     }
 
@@ -234,7 +236,7 @@ public class AuthenticationTest : IClassFixture<TestServerFixture> {
         Assert.Equal(userType, userTypeRes);
 
         // Arrange
-        client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
+        client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
 
         // Act
         response = await client.GetAsync("/api/authentication");

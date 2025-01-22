@@ -123,7 +123,7 @@ function CvBox() {
     }
 
     return (
-        <div className="rounded-md border p-4">
+        <div className="rounded-md">
             {!showCv ? (
                 <div className="flex flex-col gap-4">
                     {error && (
@@ -157,10 +157,11 @@ function CvBox() {
                 </div>
             ) : (
                 <div className="text-center p-4 flex flex-col gap-2">
-                    <button className="bg-green-100 border border-green-400 px-4 py-3 rounded">
-                        <a href={cvUrl} download className="text-green-600 font-medium">
-                            Download CV
-                        </a>
+                    <button
+                        onClick={() => window.location.href = cvUrl}
+                        className="bg-green-100 border border-green-400 px-4 py-3 rounded text-green-600 font-medium p-6"
+                    >
+                        Download CV
                     </button>
                     <button
                         onClick={deleteCv}

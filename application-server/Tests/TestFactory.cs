@@ -4,7 +4,7 @@ using Microsoft.Extensions.Configuration;
 using System.Collections.Generic;
 using System;
 
-public class TestWebApplicationFactory : WebApplicationFactory<Program>, IDisposable {
+public class TestFactory : WebApplicationFactory<Program>, IDisposable {
 
     protected override void ConfigureWebHost(IWebHostBuilder builder) {
         builder.UseEnvironment("Testing");
