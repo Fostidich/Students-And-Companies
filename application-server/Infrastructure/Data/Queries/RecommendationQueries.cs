@@ -77,7 +77,7 @@ public class RecommendationQueries : IRecommendationQueries {
         try {
             string query = @"
                 INSERT INTO advertisement (company_id, description, duration, spots, available, open, questionnaire)
-                VALUES (@CompanyId, @Description, @Duration, @Spots, @Avaible, @Open, @Questionnaire);
+                VALUES (@CompanyId, @Description, @Duration, @Spots, @Available, @Open, @Questionnaire);
                 SELECT LAST_INSERT_ID();
             ";
             
@@ -92,13 +92,19 @@ public class RecommendationQueries : IRecommendationQueries {
             command.Parameters.AddWithValue("@Open", true); 
             command.Parameters.AddWithValue("@Questionnaire", advertisement.Questionnaire);
             
-            using var reader = command.ExecuteReader();
+            // Execute the query and retrieve the advertisement ID
+            var result = command.ExecuteScalar();
+            
+            if (result != null) {
+                int advId = Convert.ToInt32(result);
 
-            if (reader.Read()) {
-                int advId = Convert.ToInt32(reader[0]);
-                List<int> skillId = AddSkillsIfNotAlreadyPresent(skills); // Add skills if they do not exist
-                AddSkillsToAdvertisement(advId, skillId); // Link skills to advertisement
-                return advId; // Return the ID of the newly created advertisement
+                // Add skills if they do not already exist
+                List<int> skillIds = AddSkillsIfNotAlreadyPresent(skills);
+
+                // Link skills to the advertisement
+                AddSkillsToAdvertisement(advId, skillIds);
+
+                return advId; // Return the advertisement ID
             }
 
             return null;
@@ -151,10 +157,8 @@ public class RecommendationQueries : IRecommendationQueries {
     }
 
     
-    private void AddSkillsToAdvertisement(int advertisementId, List<int> skillIds)
-    {
-        try
-        {
+    private void AddSkillsToAdvertisement(int advertisementId, List<int> skillIds) {
+        try {
             string query = @"
             INSERT INTO advertisement_skills (advertisement_id, skill_id)
             VALUES (@AdvertisementId, @SkillId);
@@ -162,8 +166,7 @@ public class RecommendationQueries : IRecommendationQueries {
 
             using var db_connection = dataService.GetConnection();
 
-            foreach (var skillId in skillIds)
-            {
+            foreach (var skillId in skillIds) {
                 using var command = new MySqlCommand(query, db_connection);
                 command.Parameters.AddWithValue("@AdvertisementId", advertisementId);
                 command.Parameters.AddWithValue("@SkillId", skillId);
