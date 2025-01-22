@@ -71,6 +71,7 @@ namespace Entity {
 
         public ICollection<Entity.Advertisement> Advertisements { get; set; }
         public ICollection<Entity.Internship> Internships { get; set; }
+        public ICollection<Entity.CompanyNotifications> CompanyNotifications { get; set; }
 
     }
 
