@@ -66,7 +66,13 @@ public class RecommendationQueries : IRecommendationQueries {
             using var reader = command.ExecuteReader();
             
             var advertisements = dataService.MapToAdvertisements(reader);
-            return advertisements;
+            
+            if (advertisements.Count > 0) {
+                return advertisements;
+            }
+
+            return null;
+            
         } catch (Exception ex) {
             Console.WriteLine(ex.Message);
             return null;

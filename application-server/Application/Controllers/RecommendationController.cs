@@ -21,6 +21,7 @@ public class RecommendationController : ControllerBase {
     [SwaggerOperation(Summary = "Get distinct advertisements for a student or for a company", Description = "Get advertisements for a student or for a company. The advertisements are distinct and are filtered based on the user role: if the user is a student, the advertisements are a recommendation based on the student's skills; if the user is a company, the advertisements are all company's advertisements.")]
     [ProducesResponseType(200)]
     [ProducesResponseType(400)]
+    [ProducesResponseType(404)]
     public IActionResult GetAdvertisements(){
         // Get user role from authentication token
         string role = User.FindFirst(ClaimTypes.Role)?.Value;
@@ -33,14 +34,29 @@ public class RecommendationController : ControllerBase {
             return BadRequest("User role is missing.");
 
         List<DTO.Advertisement> adv;
+        List<Advertisement> checkAdv;
 
-        if (role == UserType.Student.ToString())
-            adv = recommendation.GetAdvertisementsForStudent(userId).Select(ad => ad.ToDto()).ToList();
-        else if (role == UserType.Company.ToString())
-            adv = recommendation.GetAdvertisementsOfCompany(userId).Select(ad => ad.ToDto()).ToList();
+        if (role == UserType.Student.ToString()) {
+            checkAdv = recommendation.GetAdvertisementsForStudent(userId);
+            
+            if (checkAdv == null)
+                return NotFound("No advertisements match your skills, try to add other skills.");
+            
+            adv = checkAdv.Select(ad => ad.ToDto()).ToList();
+            
+        }
+        else if (role == UserType.Company.ToString()) {
+            checkAdv = recommendation.GetAdvertisementsOfCompany(userId);
+            
+            if (checkAdv == null)
+                return NotFound("You have no advertisements.");
+
+            adv = checkAdv.Select(ad => ad.ToDto()).ToList();
+        }
         else
             return BadRequest("Invalid user role.");
 
+        
         return Ok(adv);
     }
 
