@@ -15,7 +15,7 @@ public class RecommendationQueries : IRecommendationQueries {
         try {
             string query = @"
                 SELECT *
-                FROM advertisements a
+                FROM advertisement a
                 WHERE a.company_id = @CompanyId;
             ";
             
