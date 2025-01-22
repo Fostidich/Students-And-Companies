@@ -68,18 +68,18 @@ public class RecommendationController : ControllerBase {
         return StatusCode(500, "Internal server error\n");
     }
 
-    [HttpGet("advertisements/{id}")]
+    [HttpGet("advertisements/{advertisementId}")]
     [Authorize]
     [SwaggerOperation(Summary = "Get a specific advertisement", Description = "Get a specific advertisement by its ID.")]
     [ProducesResponseType(200)]
     [ProducesResponseType(400)]
     [ProducesResponseType(404)]
-    public IActionResult GetAdvertisement(int id) {
+    public IActionResult GetAdvertisement(int advertisementId) {
         // Check ID validity
-        if (id <= 0) 
+        if (advertisementId <= 0) 
             return BadRequest("Invalid id\n");
         
-        DTO.Advertisement adv = recommendation.GetAdvertisement(id)?.ToDto();
+        DTO.Advertisement adv = recommendation.GetAdvertisement(advertisementId)?.ToDto();
         
         if (adv == null) 
             return NotFound("Advertisement not found\n");
@@ -88,12 +88,16 @@ public class RecommendationController : ControllerBase {
     }
 
     
-    [HttpGet("candidates/advertisement/{id}")]
+    [HttpGet("candidates/advertisement/{advertisementId}")]
     [SwaggerOperation(Summary = "Get recommended students for specific advertisements", Description = "Get candidates for specific advertisements. The candidates are students that have been suggested by the recommendation system based on their skills and the advertisement requirements. This API return a list of notifications with the student id the advertisement id and the type of the notification.")]
     [Authorize]
     [ProducesResponseType(200)]
     [ProducesResponseType(400)]
     public IActionResult GetCandidates(int advertisementId) {
+        // Check ID validity
+        if (advertisementId <= 0) 
+            return BadRequest("Invalid id\n");
+        
         // Check role
         string role = User.FindFirst(ClaimTypes.Role).Value;
         if (role != UserType.Company.ToString())
@@ -109,13 +113,17 @@ public class RecommendationController : ControllerBase {
     }
     
     
-    [HttpPost("suggestion/notification/{id}")]
+    [HttpPost("suggestion/notification/{notificationId}")]
     [Authorize]
     [SwaggerOperation(Summary = "Create a new suggestion by a company for one student", Description = "Create a new suggestion for a student. The suggestion is added to the database and the student is notified. One company can decide to suggest a student for a specific advertisement.")]
     [ProducesResponseType(200)]
     [ProducesResponseType(400)]
     [ProducesResponseType(404)]
     public IActionResult CreateSuggestion(int notificationId) {
+        // Check ID validity
+        if (notificationId <= 0) 
+            return BadRequest("Invalid id\n");
+        
         // Check role
         string role = User.FindFirst(ClaimTypes.Role).Value;
         if (role != UserType.Company.ToString())

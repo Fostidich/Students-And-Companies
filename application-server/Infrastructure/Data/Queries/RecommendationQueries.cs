@@ -49,7 +49,7 @@ public class RecommendationQueries : IRecommendationQueries {
                     a.open,
                     a.questionnaire,
                 FROM advertisement_skills ads
-                INNER JOIN advertisement a ON ads.advertisemen_id = a.id
+                INNER JOIN advertisement a ON ads.advertisement_id = a.id
                 INNER JOIN student_skills ss ON ads.skill_id = ss.skill_id
                 WHERE ss.student_id = @StudentId
                   AND a.open = TRUE -- Consider only open advertisements
@@ -250,8 +250,8 @@ public class RecommendationQueries : IRecommendationQueries {
 
             // Query to insert notifications into the company_notifications table
             string insertNotificationQuery = @"
-                INSERT INTO company_notifications (company_id, student_id, advertisement_id, type)
-                VALUES (@company_id, @student_id, @advertisement_id, 'r');
+                INSERT INTO company_notifications (company_id, student_id, advertisement_id)
+                VALUES (@company_id, @student_id, @advertisement_id);
             ";
 
             using var db_connection = dataService.GetConnection();
@@ -380,7 +380,7 @@ public class RecommendationQueries : IRecommendationQueries {
         try {
             // Query to retrieve the notification details from company_notifications
             string retrieveNotificationQuery = @"
-                SELECT student_id, advertisement_id, type
+                SELECT student_id, advertisement_id
                 FROM company_notifications
                 WHERE company_notification_id = @NotificationId;
             ";
