@@ -47,7 +47,7 @@ public class RecommendationQueries : IRecommendationQueries {
                     a.spots,
                     a.available,                   
                     a.open,
-                    a.questionnaire,
+                    a.questionnaire
                 FROM advertisement_skills ads
                 INNER JOIN advertisement a ON ads.advertisement_id = a.id
                 INNER JOIN student_skills ss ON ads.skill_id = ss.skill_id
