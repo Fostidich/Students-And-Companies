@@ -9,21 +9,94 @@ using System.Net.Http.Headers;
 public class AuthenticationTest {
 
     private readonly HttpClient client;
+    private readonly TestSeed.SeedHelper seed;
 
     public AuthenticationTest(TestFixture fixture) {
         client = fixture.Client;
+        seed = fixture.Seed;
+    }
+
+    [Fact]
+    public async Task TestRegisterCompany_CompanyUsername() {
+        // Arrange
+        var registrationForm = new {
+            Username = seed.GetNewCompanyUsername(),
+            Email = "registration@test.com",
+            Password = "passwordTest",
+            Bio = "Hi I'm the best!",
+            Headquarter = "Rome (RM), Lazio, Italy",
+            FiscalCode = "STDFNCbadab00m",
+            VatNumber = "not a number but ok",
+        };
+
+        // Act
+        var response = await client.PostAsJsonAsync("/api/authentication/register/company", registrationForm);
+
+        // Assert
+        Assert.Equal(400, (int)response.StatusCode);
+    }
+
+    [Fact]
+    public async Task TestRegisterCompany_StudentUsername() {
+        // Arrange
+        var registrationForm = new {
+            Username = seed.GetNewStudentUsername(),
+            Email = "registration@test.com",
+            Password = "passwordTest",
+            Bio = "Hi I'm the best!",
+            Headquarter = "Rome (RM), Lazio, Italy",
+            FiscalCode = "STDFNCbadab00m",
+            VatNumber = "not a number but ok",
+        };
+
+        // Act
+        var response = await client.PostAsJsonAsync("/api/authentication/register/company", registrationForm);
+
+        // Assert
+        Assert.Equal(400, (int)response.StatusCode);
+    }
+
+    [Fact]
+    public async Task TestRegisterCompany_CompanyEmail() {
+        // Arrange
+        var registrationForm = new {
+            Username = "registrationTest",
+            Email = seed.GetNewCompanyEmail(),
+            Password = "passwordTest",
+            Bio = "Hi I'm the best!",
+            Headquarter = "Rome (RM), Lazio, Italy",
+            FiscalCode = "STDFNCbadab00m",
+            VatNumber = "not a number but ok",
+        };
+
+        // Act
+        var response = await client.PostAsJsonAsync("/api/authentication/register/company", registrationForm);
+
+        // Assert
+        Assert.Equal(400, (int)response.StatusCode);
+    }
+
+    [Fact]
+    public async Task TestRegisterCompany_StudentEmail() {
+        // Arrange
+        var registrationForm = new {
+            Username = "registrationTest",
+            Email = seed.GetNewStudentEmail(),
+            Password = "passwordTest",
+            Bio = "Hi I'm the best!",
+            Headquarter = "Rome (RM), Lazio, Italy",
+            FiscalCode = "STDFNCbadab00m",
+            VatNumber = "not a number but ok",
+        };
+
+        // Act
+        var response = await client.PostAsJsonAsync("/api/authentication/register/company", registrationForm);
+
+        // Assert
+        Assert.Equal(400, (int)response.StatusCode);
     }
 
     [Theory]
-    // Already existing users
-    [InlineData("SeedStudent", "passwordTest", "registration@test.com", "Hi I'm the best!",
-            "Rome (RM), Lazio, Italy", "STDFNCbadab00m", "not a number but ok", 400)]
-    [InlineData("SeedCompany", "passwordTest", "registration@test.com", "Hi I'm the best!",
-            "Rome (RM), Lazio, Italy", "STDFNCbadab00m", "not a number but ok", 400)]
-    [InlineData("registrationTest", "passwordTest", "Seed@Student.mail", "Hi I'm the best!",
-            "Rome (RM), Lazio, Italy", "STDFNCbadab00m", "not a number but ok", 400)]
-    [InlineData("registrationTest", "passwordTest", "Seed@Company.mail", "Hi I'm the best!",
-            "Rome (RM), Lazio, Italy", "STDFNCbadab00m", "not a number but ok", 400)]
     // Username tests
     [InlineData("registrationTest1C", "passwordTest", "registration1C@test.com", "Hi I'm the best!",
             "Rome (RM), Lazio, Italy", "STDFNCbadab00m", "not a number but ok", 200)]
@@ -83,16 +156,99 @@ public class AuthenticationTest {
         Assert.Equal(statusCode, (int)response.StatusCode);
     }
 
+    [Fact]
+    public async Task TestRegisterStudent_CompanyUsername() {
+        // Arrange
+        var registrationForm = new {
+            Username = seed.GetNewCompanyUsername(),
+            Email = "registration@test.mail",
+            Password = "passwordTest",
+            Bio = "Hi I'm the best!",
+            Name = "CoolName",
+            Surname = "CoolSurname",
+            University = "Polimi",
+            CourseOfStudy = "CS",
+            Gender = "f",
+			BirthDate = "2001-12-02T00:00:00.000Z",
+        };
+
+        // Act
+        var response = await client.PostAsJsonAsync("/api/authentication/register/student", registrationForm);
+
+        // Assert
+        Assert.Equal(400, (int)response.StatusCode);
+    }
+
+    [Fact]
+    public async Task TestRegisterStudent_StudentUsername() {
+        // Arrange
+        var registrationForm = new {
+            Username = seed.GetNewStudentUsername(),
+            Email = "registration@test.mail",
+            Password = "passwordTest",
+            Bio = "Hi I'm the best!",
+            Name = "CoolName",
+            Surname = "CoolSurname",
+            University = "Polimi",
+            CourseOfStudy = "CS",
+            Gender = "f",
+			BirthDate = "2001-12-02T00:00:00.000Z",
+        };
+
+        // Act
+        var response = await client.PostAsJsonAsync("/api/authentication/register/student", registrationForm);
+
+        // Assert
+        Assert.Equal(400, (int)response.StatusCode);
+    }
+
+    [Fact]
+    public async Task TestRegisterStudent_CompanyEmail() {
+        // Arrange
+        var registrationForm = new {
+            Username = "registrationTest",
+            Email = seed.GetNewCompanyEmail(),
+            Password = "passwordTest",
+            Bio = "Hi I'm the best!",
+            Name = "CoolName",
+            Surname = "CoolSurname",
+            University = "Polimi",
+            CourseOfStudy = "CS",
+            Gender = "f",
+			BirthDate = "2001-12-02T00:00:00.000Z",
+        };
+
+        // Act
+        var response = await client.PostAsJsonAsync("/api/authentication/register/student", registrationForm);
+
+        // Assert
+        Assert.Equal(400, (int)response.StatusCode);
+    }
+
+    [Fact]
+    public async Task TestRegisterStudent_StudentEmail() {
+        // Arrange
+        var registrationForm = new {
+            Username = "registrationTest",
+            Email = seed.GetNewStudentEmail(),
+            Password = "passwordTest",
+            Bio = "Hi I'm the best!",
+            Name = "CoolName",
+            Surname = "CoolSurname",
+            University = "Polimi",
+            CourseOfStudy = "CS",
+            Gender = "f",
+			BirthDate = "2001-12-02T00:00:00.000Z",
+        };
+
+        // Act
+        var response = await client.PostAsJsonAsync("/api/authentication/register/student", registrationForm);
+
+        // Assert
+        Assert.Equal(400, (int)response.StatusCode);
+    }
+
     [Theory]
-    // Already existing users
-    [InlineData("SeedStudent", "passwordTest", "registration@test.com", "Hi I'm the best!",
-            "CoolName", "CoolSurname", "Polimi", "CS", "f", "2001-12-02T00:00:00.000Z", 400)]
-    [InlineData("SeedCompany", "passwordTest", "registration@test.com", "Hi I'm the best!",
-            "CoolName", "CoolSurname", "Polimi", "CS", "f", "2001-12-02T00:00:00.000Z", 400)]
-    [InlineData("registrationTest", "passwordTest", "Seed@Student.mail", "Hi I'm the best!",
-            "CoolName", "CoolSurname", "Polimi", "CS", "f", "2001-12-02T00:00:00.000Z", 400)]
-    [InlineData("registrationTest", "passwordTest", "Seed@Company.mail", "Hi I'm the best!",
-            "CoolName", "CoolSurname", "Polimi", "CS", "f", "2001-12-02T00:00:00.000Z", 400)]
     // Username tests
     [InlineData("registrationTest1S", "passwordTest", "registration1S@test.com", "Hi I'm the best!",
             "CoolName", "CoolSurname", "Polimi", "CS", "f", "2001-12-02T00:00:00.000Z", 200)]
@@ -174,10 +330,6 @@ public class AuthenticationTest {
     }
 
     [Theory]
-    [InlineData("SeedStudent", "SeedPassword", 200)]
-    [InlineData("Seed@Student.mail", "SeedPassword", 200)]
-    [InlineData("SeedCompany", "SeedPassword", 200)]
-    [InlineData("Seed@Company.mail", "SeedPassword", 200)]
     [InlineData("loginTest", "noUserRight?", 401)]
     [InlineData("login@test.com", "noUserRight?", 401)]
     [InlineData("nopass", "", 400)]
@@ -201,27 +353,16 @@ public class AuthenticationTest {
 
         // Assert
         Assert.Equal(statusCode, (int)response.StatusCode);
-        if (statusCode == 200) {
-            Assert.Contains("\"token\"", responseBody);
-            Assert.Contains("\"userType\"", responseBody);
-        } else {
-            Assert.DoesNotContain("\"token\"", responseBody);
-            Assert.DoesNotContain("\"userType\"", responseBody);
-        }
+        Assert.DoesNotContain("\"token\"", responseBody);
+        Assert.DoesNotContain("\"userType\"", responseBody);
     }
 
-    [Theory]
-    [InlineData("SeedCompany", "SeedPassword", "Company")]
-    [InlineData("SeedStudent", "SeedPassword", "Student")]
-    public async Task TestCheckToken(
-            string username,
-            string password,
-            string userType
-    ) {
+    [Fact]
+    public async Task TestCheckTokenCompany() {
         // Arrange
         var credentials = new {
-            Username = username,
-            Password = password,
+            Username = seed.GetNewCompanyUsername(),
+            Password = seed.Password,
         };
 
         // Act
@@ -233,7 +374,45 @@ public class AuthenticationTest {
         string userTypeRes = jsonObject["userType"].ToString();
 
         // Assert
-        Assert.Equal(userType, userTypeRes);
+        Assert.Equal(UserType.Company.ToString(), userTypeRes);
+
+        // Arrange
+        client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+
+        // Act
+        response = await client.GetAsync("/api/authentication");
+
+        // Assert
+        Assert.Equal(200, (int)response.StatusCode);
+
+        // Arrange
+        client.DefaultRequestHeaders.Authorization = null;
+
+        // Act
+        response = await client.GetAsync("/api/authentication");
+
+        // Assert
+        Assert.Equal(401, (int)response.StatusCode);
+    }
+
+    [Fact]
+    public async Task TestCheckTokenStudent() {
+        // Arrange
+        var credentials = new {
+            Username = seed.GetNewStudentUsername(),
+            Password = seed.Password,
+        };
+
+        // Act
+        var response = await client.PostAsJsonAsync("/api/authentication/login", credentials);
+        var responseBody = await response.Content.ReadAsStringAsync();
+
+        var jsonObject = JObject.Parse(responseBody);
+        string token = jsonObject["token"].ToString();
+        string userTypeRes = jsonObject["userType"].ToString();
+
+        // Assert
+        Assert.Equal(UserType.Student.ToString(), userTypeRes);
 
         // Arrange
         client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);

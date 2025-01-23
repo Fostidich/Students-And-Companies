@@ -9,10 +9,10 @@ using Microsoft.AspNetCore.Mvc.Testing;
 public class TestFixture : IDisposable {
 
     public HttpClient Client { get; }
-    public LogInHelper LogIn { get; }
+    public LogInHelper LogIn { get; private set; }
+    public TestSeed.SeedHelper Seed { get; }
 
     private readonly TestFactory factory;
-    private readonly string password = "SeedPassword";
 
     public TestFixture() {
         factory = new TestFactory();
@@ -22,26 +22,26 @@ public class TestFixture : IDisposable {
             BaseAddress = new Uri("https://localhost:5001")
         });
 
-        // Setup database
-        SetupDatabase();
-
-        // Prepare logins
-        LogIn = new LogInHelper(Client, password);
-    }
-
-    private void SetupDatabase() {
+        // Retrieve services
         using var scope = factory.Services.CreateScope();
         var context = scope.ServiceProvider.GetRequiredService<AppDbContext>();
+        var authentication = scope.ServiceProvider.GetRequiredService<IAuthenticationService>();
 
+        // Prepare logins
+        var seeder = new TestSeed(authentication);
+        Seed = seeder.Seed;
+        LogIn = new LogInHelper(Client, seeder.Password, Seed);
+
+        // Setup database
+        SetupDatabase(context, seeder);
+    }
+
+    private void SetupDatabase(AppDbContext context, TestSeed seed) {
         // Delete and recreate the database
         context.Database.EnsureDeleted();
         context.Database.EnsureCreated();
 
-        // Retrieve services
-        var authentication = scope.ServiceProvider.GetRequiredService<IAuthenticationService>();
-
-        // Add test data for testing
-        var seed = new TestSeed(authentication, password);
+        // Seed database
         seed.SeedDatabase(context);
 
         // Save changes to the database
@@ -60,15 +60,13 @@ public class TestFixture : IDisposable {
     public class LogInHelper {
 
         private readonly HttpClient client;
-        private readonly string tokenCompany;
-        private readonly string tokenStudent;
         private readonly string password;
+        private readonly TestSeed.SeedHelper seed;
 
-        protected internal LogInHelper(HttpClient client, string password) {
+        protected internal LogInHelper(HttpClient client, string password, TestSeed.SeedHelper seed) {
             this.client = client;
             this.password = password;
-            tokenCompany = GetLoginToken("SeedCompany", password);
-            tokenStudent = GetLoginToken("SeedStudent", password);
+            this.seed = seed;
         }
 
         private string GetLoginToken(string username, string password) {
@@ -89,12 +87,24 @@ public class TestFixture : IDisposable {
             client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
         }
 
-        public void LogInCompany() {
-            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", tokenCompany);
+        public void LogInCompany(int id) {
+            var token = GetLoginToken(seed.GetCompanyUsername(id), password);
+            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
         }
 
-        public void LogInStudent() {
-            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", tokenStudent);
+        public void LogInStudent(int id) {
+            var token = GetLoginToken(seed.GetStudentUsername(id), password);
+            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+        }
+
+        public void LogInNewCompany() {
+            var token = GetLoginToken(seed.GetNewCompanyUsername(), password);
+            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+        }
+
+        public void LogInNewStudent() {
+            var token = GetLoginToken(seed.GetNewStudentUsername(), password);
+            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
         }
 
         public void LogOut() {

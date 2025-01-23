@@ -22,7 +22,7 @@ public class ProfileController : ControllerBase {
     [SwaggerOperation(Summary = "Get the company profile information", Description = "The profile information of the logged in user, if a company, is returned.")]
     [ProducesResponseType(200)]
     [ProducesResponseType(400)]
-    [ProducesResponseType(500)]
+    [ProducesResponseType(404)]
     public IActionResult GetCompanyFromToken() {
         // Check role
         string role = User.FindFirst(ClaimTypes.Role).Value;
@@ -36,7 +36,7 @@ public class ProfileController : ControllerBase {
         // Find and return user data
         DTO.Company user = profile.GetCompany(userId)?.ToDto();
         if (user == null)
-            return StatusCode(500, "Internal server error\n");
+            return NotFound("Company not found\n");
         else
             return Ok(user);
     }
@@ -60,7 +60,7 @@ public class ProfileController : ControllerBase {
         // Find and return user data
         DTO.Student user = profile.GetStudent(userId)?.ToDto();
         if (user == null)
-            return StatusCode(500, "Internal server error\n");
+            return NotFound("Student not found\n");
         else
             return Ok(user);
     }
@@ -253,7 +253,7 @@ public class ProfileController : ControllerBase {
     [Authorize]
     [SwaggerOperation(Summary = "Delete the user", Description = "The logged in user is deleted from the system.")]
     [ProducesResponseType(200)]
-    [ProducesResponseType(500)]
+    [ProducesResponseType(404)]
     public IActionResult DeleteUser() {
         // Get role from authentication token
         string roleStr = User.FindFirst(ClaimTypes.Role).Value;
@@ -269,7 +269,7 @@ public class ProfileController : ControllerBase {
         if (profile.DeleteUser(userType, userId))
             return Ok("User deleted\n");
         else
-            return StatusCode(500, "Internal server error\n");
+            return NotFound("User not found\n");
     }
 
     [HttpPost("skills")]
@@ -302,7 +302,7 @@ public class ProfileController : ControllerBase {
     [ProducesResponseType(400)]
     [ProducesResponseType(404)]
     [ProducesResponseType(500)]
-    public IActionResult GetSkills() {
+    public IActionResult GetSkillsFromToken() {
         // Check role
         string role = User.FindFirst(ClaimTypes.Role).Value;
         if (role != UserType.Student.ToString())
@@ -335,7 +335,7 @@ public class ProfileController : ControllerBase {
     [ProducesResponseType(400)]
     [ProducesResponseType(404)]
     [ProducesResponseType(500)]
-    public IActionResult GetSkill(int id) {
+    public IActionResult GetSkillsFromId(int id) {
         // Check ID validity
         if (id <= 0) return BadRequest("Invalid id\n");
 
@@ -348,7 +348,7 @@ public class ProfileController : ControllerBase {
 
         // Check presence
         if (skills.Count == 0)
-            return NotFound("No skills found\n");
+            return NotFound("No skill found\n");
 
         // Return the list
         List<DTO.Skill> skillsDto = skills.Select(skill => skill.ToDto()).ToList();
