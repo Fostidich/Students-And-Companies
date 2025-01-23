@@ -387,6 +387,12 @@ public class RecommendationQueries : IRecommendationQueries {
                 FROM student
                 WHERE student_id = @StudentId;
             ";
+            
+            // Check if company is the owner of the advertisement
+            var advertisement = GetAdvertisement(advertisementId);
+            if (advertisement == null || advertisement.CompanyId != companyId) {
+                return null;
+            }
 
             using var db_connection = dataService.GetConnection();
 

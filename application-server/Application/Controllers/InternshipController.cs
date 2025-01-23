@@ -70,7 +70,10 @@ public class InternshipController : ControllerBase {
         if (created)
             return Ok("Feedback created\n");
         
-        return BadRequest("You can't create this feedback\n");
+        return BadRequest("You can't create this feedback, and there are 3 possible reasons: " +
+                          "1. The internship isn't finished yet; " +
+                          "2. You don't have the permission to create this feedback; " +
+                          "3. The feedback already exists\n");
         
     }
     
@@ -98,7 +101,10 @@ public class InternshipController : ControllerBase {
         if (created)
             return Ok("Feedback created\n");
         
-        return BadRequest("You can't create this feedback\n");
+        return BadRequest("You can't create this feedback, and there are 3 possible reasons: " +
+                          "1. The internship isn't finished yet; " +
+                          "2. You don't have the permission to create this feedback; " +
+                          "3. The feedback already exists\n");
         
     }
     
@@ -124,7 +130,7 @@ public class InternshipController : ControllerBase {
         if(feedback != null)
             return Ok(feedback);
         
-        return BadRequest("You can't get this feedback\n");
+        return BadRequest("You don't have the permission to see this feedback or the feedback doesn't exist yet\n");
         
     }
     
@@ -150,7 +156,7 @@ public class InternshipController : ControllerBase {
         if(feedback != null)
             return Ok(feedback);
         
-        return BadRequest("You can't get this feedback\n");
+        return BadRequest("You don't have the permission to see this feedback or the feedback doesn't exist yet\n");
         
     }
     
@@ -167,14 +173,18 @@ public class InternshipController : ControllerBase {
         if (role != UserType.Company.ToString())
             return BadRequest("Invalid role\n");
         
+        // Get user ID from authentication token
+        string userIdStr = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+        int userId = Convert.ToInt32(userIdStr);
+        
         
         List<DTO.Internship> internships;
         List<Internship> checkInternships;
         
-        checkInternships = internship.GetInternshipFromAdvertisement(advertisementId);
+        checkInternships = internship.GetInternshipFromAdvertisement(advertisementId, userId);
         
         if (checkInternships == null)
-            return StatusCode(500, "Internal server error\n");
+            return BadRequest("You don't have the permission to see this internship\n");
         
         internships = checkInternships.Select(internship => internship.ToDto()).ToList();
         

@@ -24,9 +24,9 @@ public class InternshipService : IInternshipService {
         return intern;
     }
     
-    public List<Internship> GetInternshipFromAdvertisement(int advertisementId) {
+    public List<Internship> GetInternshipFromAdvertisement(int advertisementId, int companyId) {
         // Get internships from an advertisement
-        List<Entity.Internship> internships = queries.GetInternshipFromAdvertisement(advertisementId);
+        List<Entity.Internship> internships = queries.GetInternshipFromAdvertisement(advertisementId, companyId);
         
         // If exceptions occur, return null
         if(internships == null) {

@@ -6,9 +6,11 @@ using MySql.Data.MySqlClient;
 public class InternshipQueries : IInternshipQueries {
     
     private readonly IDataService dataService;
+    private readonly IRecommendationQueries recommendation;
     
-    public InternshipQueries(IDataService dataService) {
+    public InternshipQueries(IDataService dataService, IRecommendationQueries recommendation) {
         this.dataService = dataService;
+        this.recommendation = recommendation;
     }
     
     public Entity.Internship GetInternshipForStudent(int studentId) {
@@ -34,13 +36,19 @@ public class InternshipQueries : IInternshipQueries {
         }
     }
     
-    public List<Entity.Internship> GetInternshipFromAdvertisement(int advertisementId) {
+    public List<Entity.Internship> GetInternshipFromAdvertisement(int advertisementId, int companyId) {
         try {
             string query = @"
                 SELECT *
                 FROM internship
                 WHERE advertisement_id = @AdvertisementId;
             ";
+            
+            // Check if company is the owner of the advertisement
+            var advertisement = recommendation.GetAdvertisement(advertisementId);
+            if (advertisement == null || advertisement.CompanyId != companyId) {
+                return null;
+            }
             
             using var db_connection = dataService.GetConnection();
             using var command = new MySqlCommand(query, db_connection);
