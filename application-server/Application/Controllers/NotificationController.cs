@@ -4,7 +4,6 @@ using System.Linq;
 using System.Security.Claims;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.IdentityModel.Tokens;
 using Swashbuckle.AspNetCore.Annotations;
 
 [ApiController]
@@ -41,14 +40,6 @@ public class NotificationController : ControllerBase {
         List<DTO.StudentNotifications> notifications = checkNotifications.Select(not => not.ToDto()).ToList();
         
         return Ok(notifications);
-    }
-
-    [HttpGet("{id}")]
-    [Authorize]
-    [SwaggerOperation(Summary = "Secondo me inutile, per ora non implemento")]
-    [ProducesResponseType(501)]
-    public IActionResult GetNotification(int id) {
-        return StatusCode(501, "Feature not yet implemented\n");
     }
 
 }

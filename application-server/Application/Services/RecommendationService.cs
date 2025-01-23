@@ -102,9 +102,9 @@ public class RecommendationService : IRecommendationService {
     }
     
     
-    public bool CreateSuggestionsForStudent(int notificationId) {
+    public bool CreateSuggestionsForStudent(int notificationId, int companyId) {
         // Create suggestion for a student
-        return queries.CreateSuggestionsForStudent(notificationId);
+        return queries.CreateSuggestionsForStudent(notificationId, companyId);
     }
 
 }

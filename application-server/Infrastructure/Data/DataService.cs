@@ -67,6 +67,37 @@ public class DataService : IDataService {
 
         return studentNotifications;
     }
+    
+    public List<Entity.Internship> MapToInternships(IDataReader reader) {
+        var internships = new List<Entity.Internship>();
+
+        while (reader.Read()) {
+            internships.Add(new Entity.Internship(reader));
+        }
+
+        return internships;
+    }
+    
+    public List<Entity.StudentFeedback> MapToStudentFeedback(IDataReader reader) {
+        var studentFeedback = new List<Entity.StudentFeedback>();
+
+        while (reader.Read()) {
+            studentFeedback.Add(new Entity.StudentFeedback(reader));
+        }
+
+        return studentFeedback;
+    }
+    
+    public List<Entity.CompanyFeedback> MapToCompanyFeedback(IDataReader reader) {
+        var companyFeedback = new List<Entity.CompanyFeedback>();
+
+        while (reader.Read()) {
+            companyFeedback.Add(new Entity.CompanyFeedback(reader));
+        }
+
+        return companyFeedback;
+    }
+
 
     public List<string> MapToStrings(IDataReader reader, string fieldName) {
         var result = new List<string>();

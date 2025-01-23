@@ -11,7 +11,8 @@ public class AppDbContext : DbContext {
     public DbSet<Entity.Skill> Skill { get; set; }
     public DbSet<Entity.AdvertisementSkills> AdvertisementSkills { get; set; }
     public DbSet<Entity.Internship> Internship { get; set; }
-    public DbSet<Entity.Feedback> Feedback { get; set; }
+    public DbSet<Entity.StudentFeedback> StudentFeedbacks { get; set; }
+    public DbSet<Entity.CompanyFeedback> CompanyFeedbacks { get; set; }
 
     public AppDbContext(DbContextOptions<AppDbContext> options) : base(options) { }
 
@@ -139,10 +140,16 @@ public class AppDbContext : DbContext {
             .OnDelete(DeleteBehavior.Restrict); // Prevent cascading delete
 
         // Configure the foreign key relationship with Internship
-        modelBuilder.Entity<Entity.Feedback>()
+        modelBuilder.Entity<Entity.StudentFeedback>()
             .HasOne(f => f.Internship) // Each feedback is linked to one internship
-            .WithOne(i => i.Feedback) // Each internship has one feedback
-            .HasForeignKey<Entity.Feedback>(f => f.InternshipId)
+            .WithOne(i => i.StudentFeedback) // Each internship has one feedback
+            .HasForeignKey<Entity.StudentFeedback>(f => f.InternshipId)
+            .OnDelete(DeleteBehavior.Cascade); // Delete feedback when the internship is deleted
+        
+        modelBuilder.Entity<Entity.CompanyFeedback>()
+            .HasOne(f => f.Internship) // Each feedback is linked to one internship
+            .WithOne(i => i.CompanyFeedback) // Each internship has one feedback
+            .HasForeignKey<Entity.CompanyFeedback>(f => f.InternshipId)
             .OnDelete(DeleteBehavior.Cascade); // Delete feedback when the internship is deleted
         
         

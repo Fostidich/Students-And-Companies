@@ -52,7 +52,8 @@ namespace Entity {
         public Entity.Student Student { get; set; }
         public Entity.Company Company { get; set; }
         public Entity.Advertisement Advertisement { get; set; }
-        public Entity.Feedback Feedback { get; set; }
+        public Entity.StudentFeedback StudentFeedback { get; set; }
+        public Entity.CompanyFeedback CompanyFeedback { get; set; }
 
     }
 

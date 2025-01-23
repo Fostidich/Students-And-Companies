@@ -120,7 +120,12 @@ public class RecommendationController : ControllerBase {
         string userIdStr = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
         int userId = Convert.ToInt32(userIdStr);
         
-        List<DTO.Student> students = recommendation.GetRecommendedCandidates(userId, advertisementId).Select(student => student.ToDto()).ToList();
+        List<Student> checkstudents = recommendation.GetRecommendedCandidates(userId, advertisementId);
+        
+        if (checkstudents == null)
+            return BadRequest("You don't have the permission to get the candidates for this advertisement because you are not the owner of the advertisement\n");
+        
+        List<DTO.Student> students = checkstudents.Select(student => student.ToDto()).ToList();
         
         return Ok(students);
     }
@@ -142,7 +147,10 @@ public class RecommendationController : ControllerBase {
         if (role != UserType.Company.ToString())
             return BadRequest("Invalid role\n");
         
-        bool suggestionCreated = recommendation.CreateSuggestionsForStudent(notificationId);
+        string userIdStr = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+        int userId = Convert.ToInt32(userIdStr);
+        
+        bool suggestionCreated = recommendation.CreateSuggestionsForStudent(notificationId, userId);
         
         if(suggestionCreated)
             return Ok("Suggestion created\n");

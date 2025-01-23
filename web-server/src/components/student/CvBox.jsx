@@ -123,7 +123,7 @@ function CvBox() {
     }
 
     return (
-        <div className="rounded-md">
+        <div className="rounded-md flex flex-wrap items-center justify-center">
             {!showCv ? (
                 <div className="flex flex-col gap-4">
                     {error && (

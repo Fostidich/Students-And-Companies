@@ -5,6 +5,7 @@ import Cookies from 'js-cookie';
 import CardProfileCompany from "../components/company/CardProfileCompany.jsx";
 import CvBox from "../components/student/CvBox.jsx";
 import SkillsBox from "../components/student/SkillsBox.jsx";
+import CreateAdv from "../components/company/CreateAdv.jsx";
 
 function Profile({onLogout}) {
     const navigate = useNavigate();
@@ -22,19 +23,36 @@ function Profile({onLogout}) {
 
     return (
         <div className="flex flex-wrap p-8">
-            <div className="w-full md:w-1/2 bg-blue-100 p-4 items-center">
+            <div className="w-full md:w-1/2 p-4 items-center">
                 {userType.toLowerCase() === 'student' ? (<CardProfileStudent/>) : (<CardProfileCompany/>)}
                 {userType.toLowerCase() === 'student' ?
-                    <div className="bg-white border items-center p-10 rounded-xl flex flex-wrap space-x-10">
-                        <CvBox/>
-                        <SkillsBox/>
-                    </div>: <div></div>
+                    <div>
+                        <div className="bg-white border items-center p-10 rounded-xl flex flex-wrap justify-center">
+                            <SkillsBox/>
+                        </div>
+                        <div className="bg-white border items-center p-10 rounded-xl flex flex-wrap justify-center">
+                            <CvBox/>
+                        </div>
+                    </div>
+
+                    : <div> </div>
                 }
             </div>
-            <div className="w-full md:w-1/2 bg-green-100 p-4">
-                <h1 className="text-2xl font-bold mb-4">Your internship</h1>
+            <div className="w-full md:w-1/2 p-4">
+                {userType.toLowerCase() === 'student' ?
+                    <div>
+                        My internship
+                    </div>
+                    :
+                    <div className="bg-white border items-center p-10 rounded-xl flex flex-wrap justify-center">
+                        <CreateAdv/>
+                    </div>
+                }
             </div>
-            <button className="border p-4 bg-red-600 text-white rounded-xl" onClick={handleLogoutClick}>Logout</button>
+            <div className="w-full md:w-1/2 p-4 items-center">
+                <button className="border p-4 bg-red-600 text-white rounded-xl" onClick={handleLogoutClick}>Logout</button>
+            </div>
+
         </div>
     );
 }
