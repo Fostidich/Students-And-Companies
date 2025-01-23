@@ -21,7 +21,7 @@ public class RecommendationController : ControllerBase {
     [SwaggerOperation(Summary = "Get distinct advertisements for a student or for a company", Description = "Get advertisements for a student or for a company. The advertisements are distinct and are filtered based on the user role: if the user is a student, the advertisements are a recommendation based on the student's skills; if the user is a company, the advertisements are all company's advertisements.")]
     [ProducesResponseType(200)]
     [ProducesResponseType(400)]
-    [ProducesResponseType(404)]
+    [ProducesResponseType(500)]
     public IActionResult GetAdvertisements(){
         // Get user role from authentication token
         string role = User.FindFirst(ClaimTypes.Role)?.Value;
@@ -30,9 +30,6 @@ public class RecommendationController : ControllerBase {
         string userIdStr = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
         int userId = Convert.ToInt32(userIdStr);
 
-        if (string.IsNullOrEmpty(role)) 
-            return BadRequest("User role is missing.");
-
         List<DTO.Advertisement> adv;
         List<Advertisement> checkAdv;
 
@@ -40,7 +37,7 @@ public class RecommendationController : ControllerBase {
             checkAdv = recommendation.GetAdvertisementsForStudent(userId);
             
             if (checkAdv == null)
-                return NotFound("No advertisements match your skills, try to add other skills.");
+                return StatusCode(500, "Internal server error\n");
             
             adv = checkAdv.Select(ad => ad.ToDto()).ToList();
             
@@ -49,7 +46,7 @@ public class RecommendationController : ControllerBase {
             checkAdv = recommendation.GetAdvertisementsOfCompany(userId);
             
             if (checkAdv == null)
-                return NotFound("You have no advertisements.");
+                return StatusCode(500, "Internal server error\n");
 
             adv = checkAdv.Select(ad => ad.ToDto()).ToList();
         }

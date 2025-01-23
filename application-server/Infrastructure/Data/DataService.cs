@@ -57,6 +57,16 @@ public class DataService : IDataService {
 
         return advertisements;
     }
+    
+    public List<Entity.StudentNotifications> MapToStudentNotifications(IDataReader reader) {
+        var studentNotifications = new List<Entity.StudentNotifications>();
+
+        while (reader.Read()) {
+            studentNotifications.Add(new Entity.StudentNotifications(reader));
+        }
+
+        return studentNotifications;
+    }
 
     public List<string> MapToStrings(IDataReader reader, string fieldName) {
         var result = new List<string>();

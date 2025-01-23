@@ -9,6 +9,7 @@ public interface IDataService {
     List<Entity.Company> MapToCompanies(IDataReader reader);
     List<Entity.Skill> MapToSkills(IDataReader reader);
     List<Entity.Advertisement> MapToAdvertisements(IDataReader reader);
+    List<Entity.StudentNotifications> MapToStudentNotifications(IDataReader reader);
     List<string> MapToStrings(IDataReader reader, string fieldName);
     List<int> MapToInts(IDataReader reader, string fieldName);
 

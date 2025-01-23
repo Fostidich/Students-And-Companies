@@ -39,7 +39,7 @@ public class RecommendationQueries : IRecommendationQueries {
         try {
             string query = @"
                 SELECT
-                    a.id AS advertisement_id,
+                    a.advertisement_id,
                     a.created_at,
                     a.company_id,
                     a.description,
@@ -49,11 +49,11 @@ public class RecommendationQueries : IRecommendationQueries {
                     a.open,
                     a.questionnaire
                 FROM advertisement_skills ads
-                INNER JOIN advertisement a ON ads.advertisement_id = a.id
+                INNER JOIN advertisement a ON ads.advertisement_id = a.advertisement_id
                 INNER JOIN student_skills ss ON ads.skill_id = ss.skill_id
                 WHERE ss.student_id = @StudentId
-                  AND a.open = TRUE -- Consider only open advertisements
-                GROUP BY a.id, a.created_at, a.company_id, a.description, a.duration, a.spots, a.available, a.open, a.questionnaire 
+                  AND a.open = true
+                GROUP BY a.advertisement_id, a.created_at, a.company_id, a.description, a.duration, a.spots, a.available, a.open, a.questionnaire 
                 ORDER BY COUNT(*) DESC
                 LIMIT 100;
             ";
@@ -66,12 +66,7 @@ public class RecommendationQueries : IRecommendationQueries {
             using var reader = command.ExecuteReader();
             
             var advertisements = dataService.MapToAdvertisements(reader);
-            
-            if (advertisements.Count > 0) {
-                return advertisements;
-            }
-
-            return null;
+            return advertisements;
             
         } catch (Exception ex) {
             Console.WriteLine(ex.Message);

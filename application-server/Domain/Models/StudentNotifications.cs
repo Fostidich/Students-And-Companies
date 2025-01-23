@@ -1,5 +1,3 @@
-namespace ApplicationServer.Domain.Models;
-
 public class StudentNotifications {
         
         public int StudentNotificationId { get; set; }

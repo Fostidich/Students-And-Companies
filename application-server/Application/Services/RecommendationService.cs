@@ -1,6 +1,5 @@
 using System.Collections.Generic;
 using System.Linq;
-using DTO;
 
 public class RecommendationService : IRecommendationService {
 
@@ -14,13 +13,15 @@ public class RecommendationService : IRecommendationService {
         // Get recommendation advertisements for a student
         List<Entity.Advertisement> advertisements = queries.GetAdvertisementsForStudent(studentId);
         
-        // If no advertisements are found, return null
+        // If exceptions occur, return null
         if(advertisements == null) {
             return null;
         }
         
         // Convert Entity.Advertisement to Advertisement
-        List<Advertisement> adv = advertisements.Select(adv => new Advertisement(adv)).ToList();
+        List<Advertisement> adv = advertisements
+            .Select(adv => new Advertisement(adv))
+            .ToList();
         
         return adv;
     }
@@ -29,7 +30,7 @@ public class RecommendationService : IRecommendationService {
         // Get advertisements of a company
         List<Entity.Advertisement> advertisements = queries.GetAdvertisementsOfCompany(companyId);
         
-        // If no advertisements are found, return null
+        // If exceptions occur, return null
         if(advertisements == null) {
             return null;
         }

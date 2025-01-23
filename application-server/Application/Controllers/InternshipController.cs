@@ -1,3 +1,5 @@
+using System;
+using System.Security.Claims;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization;
 
@@ -15,6 +17,15 @@ public class InternshipController : ControllerBase {
     [Authorize]
     [ProducesResponseType(501)]
     public IActionResult GetInternships() {
+        // Check role
+        string role = User.FindFirst(ClaimTypes.Role).Value;
+        if (role != UserType.Student.ToString())
+            return BadRequest("Invalid role\n");
+        
+        // Get user ID from authentication token
+        string userIdStr = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+        int userId = Convert.ToInt32(userIdStr);
+        
         return StatusCode(501, "Feature not yet implemented\n");
     }
 
@@ -24,5 +35,20 @@ public class InternshipController : ControllerBase {
     public IActionResult CreateFeedback(int id) {
         return StatusCode(501, "Feature not yet implemented\n");
     }
-
+    
+    [HttpGet("Advertisement/{advertisementId}")]
+    [Authorize]
+    [ProducesResponseType(501)]
+    public IActionResult GetInternshipFromAdvertisement(int advertisementId) {
+        // Check role
+        string role = User.FindFirst(ClaimTypes.Role).Value;
+        if (role != UserType.Student.ToString())
+            return BadRequest("Invalid role\n");
+        
+        // Get user ID from authentication token
+        string userIdStr = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+        int userId = Convert.ToInt32(userIdStr);
+        
+        return StatusCode(501, "Feature not yet implemented\n");
+    }
 }
