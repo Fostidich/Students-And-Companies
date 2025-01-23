@@ -55,7 +55,7 @@ public class RecommendationQueries : IRecommendationQueries {
                   AND a.open = true
                 GROUP BY a.advertisement_id, a.created_at, a.company_id, a.description, a.duration, a.spots, a.available, a.open, a.questionnaire 
                 ORDER BY COUNT(*) DESC
-                LIMIT 100;
+                LIMIT 40;
             ";
             
             using var db_connection = dataService.GetConnection();
@@ -66,6 +66,16 @@ public class RecommendationQueries : IRecommendationQueries {
             using var reader = command.ExecuteReader();
             
             var advertisements = dataService.MapToAdvertisements(reader);
+            
+            
+            // If there are less than 40 advertisements, add default advertisements
+            List<Entity.Advertisement> defaultAdvertisements = new List<Entity.Advertisement>();
+            if (advertisements.Count < 40) {
+                defaultAdvertisements = GetDefaultAdvertisements(advertisements);
+            }
+
+            advertisements.Concat(defaultAdvertisements);
+            
             return advertisements;
             
         } catch (Exception ex) {
@@ -73,6 +83,31 @@ public class RecommendationQueries : IRecommendationQueries {
             return null;
         }
     }
+    
+    private List<Entity.Advertisement> GetDefaultAdvertisements(List<Entity.Advertisement> advertisements) {
+        try {
+            string query = @"
+                SELECT *
+                FROM advertisement
+                WHERE open = true
+                LIMIT 40;
+            ";
+            
+            using var db_connection = dataService.GetConnection();
+            using var command = new MySqlCommand(query, db_connection);
+            
+            using var reader = command.ExecuteReader();
+            
+            var defaultAdvertisements = dataService.MapToAdvertisements(reader);
+            
+            return defaultAdvertisements.Except(advertisements).ToList();
+        } catch (Exception ex) {
+            Console.WriteLine(ex.Message);
+            return null;
+        }
+    }
+    
+    
     
     public int? CreateAdvertisement(int companyId, Entity.Advertisement advertisement, List<Entity.Skill> skills) {
         try {

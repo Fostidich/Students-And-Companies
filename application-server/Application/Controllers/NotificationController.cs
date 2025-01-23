@@ -43,12 +43,4 @@ public class NotificationController : ControllerBase {
         return Ok(notifications);
     }
 
-    [HttpGet("{id}")]
-    [Authorize]
-    [SwaggerOperation(Summary = "Secondo me inutile, per ora non implemento")]
-    [ProducesResponseType(501)]
-    public IActionResult GetNotification(int id) {
-        return StatusCode(501, "Feature not yet implemented\n");
-    }
-
 }
