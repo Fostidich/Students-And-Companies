@@ -76,23 +76,38 @@ public class RecommendationQueries : IRecommendationQueries {
     
     public int? CreateAdvertisement(int companyId, Entity.Advertisement advertisement, List<Entity.Skill> skills) {
         try {
-            string query = @"
+            string insertquery = @"
                 INSERT INTO advertisement (company_id, description, duration, spots, available, open, questionnaire)
                 VALUES (@CompanyId, @Description, @Duration, @Spots, @Available, @Open, @Questionnaire);
-                SELECT LAST_INSERT_ID();
             ";
             
+            string selectquery = @"
+                SELECT MAX(advertisement_id) FROM advertisement;
+            ";
+            
+            
+            
             using var db_connection = dataService.GetConnection();
-            using var command = new MySqlCommand(query, db_connection);
             
-            command.Parameters.AddWithValue("@CompanyId", companyId);
-            command.Parameters.AddWithValue("@Description", advertisement.Description);
-            command.Parameters.AddWithValue("@Duration", advertisement.Duration);
-            command.Parameters.AddWithValue("@Spots", advertisement.Spots);
-            command.Parameters.AddWithValue("@Available", advertisement.Spots);
-            command.Parameters.AddWithValue("@Open", true); 
-            command.Parameters.AddWithValue("@Questionnaire", advertisement.Questionnaire);
+            // Insert the advertisement
+            using (var insertcommand = new MySqlCommand(insertquery, db_connection)) {
+
+                insertcommand.Parameters.AddWithValue("@CompanyId", companyId);
+                insertcommand.Parameters.AddWithValue("@Description", advertisement.Description);
+                insertcommand.Parameters.AddWithValue("@Duration", advertisement.Duration);
+                insertcommand.Parameters.AddWithValue("@Spots", advertisement.Spots);
+                insertcommand.Parameters.AddWithValue("@Available", advertisement.Spots);
+                insertcommand.Parameters.AddWithValue("@Open", true);
+                insertcommand.Parameters.AddWithValue("@Questionnaire", advertisement.Questionnaire);
+                
+                insertcommand.ExecuteNonQuery();
+
+            }
             
+            // Retrieve the advertisement ID
+            using var command = new MySqlCommand(selectquery, db_connection);
+            
+
             // Execute the query and retrieve the advertisement ID
             var result = command.ExecuteScalar();
             
@@ -121,11 +136,11 @@ public class RecommendationQueries : IRecommendationQueries {
 
         try {
             string insertQuery = @"
-            INSERT IGNORE INTO skills (name)
+            INSERT IGNORE INTO skill (name)
             VALUES (@Name);
         ";
             string selectQuery = @"
-            SELECT skill_id FROM skills WHERE name = @Name;
+            SELECT skill_id FROM skill WHERE name = @Name;
         ";
 
             using var db_connection = dataService.GetConnection();
