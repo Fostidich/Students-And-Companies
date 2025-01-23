@@ -49,7 +49,7 @@ public class ProfileService : IProfileService {
 
             // Update salt and password
             if (!queries.UpdateSaltAndPassword(UserType.Company, userId, salt, hash))
-                errors = true;;
+                errors = true;
         }
 
         // Update username

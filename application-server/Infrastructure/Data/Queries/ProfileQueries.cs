@@ -152,17 +152,17 @@ public class ProfileQueries : IProfileQueries {
         }
     }
 
-    public bool UpdateHeadquarter(int id, string headquater) {
+    public bool UpdateHeadquarter(int id, string headquarter) {
         try {
             string query = $@"
                 UPDATE company
-                SET headquater = @Headquater
+                SET headquarter = @Headquarter
                 WHERE company_id = @Id";
 
             using var db_connection = dataService.GetConnection();
             using var command = new MySqlCommand(query, db_connection);
 
-            command.Parameters.AddWithValue("@Headquater", headquater);
+            command.Parameters.AddWithValue("@Headquarter", headquarter);
             command.Parameters.AddWithValue("@Id", id);
 
             int rowsAffected = command.ExecuteNonQuery();
@@ -184,7 +184,7 @@ public class ProfileQueries : IProfileQueries {
             using var db_connection = dataService.GetConnection();
             using var command = new MySqlCommand(query, db_connection);
 
-            command.Parameters.AddWithValue("@fiscal_code", fiscalCode);
+            command.Parameters.AddWithValue("@FiscalCode", fiscalCode);
             command.Parameters.AddWithValue("@Id", id);
 
             int rowsAffected = command.ExecuteNonQuery();

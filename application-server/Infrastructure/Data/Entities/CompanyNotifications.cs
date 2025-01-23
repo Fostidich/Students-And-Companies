@@ -19,25 +19,26 @@ namespace Entity {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int CompanyNotificationId { get; set; }
-        
+
         [Required(ErrorMessage = "Field is required")]
         [ForeignKey("Company")]
         public int CompanyId { get; set; }
-        
+
         [Required(ErrorMessage = "Field is required")]
         [ForeignKey("Student")]
         public int StudentId { get; set; }
-        
+
         [Required(ErrorMessage = "Field is required")]
         [ForeignKey("Advertisement")]
         public int AdvertisementId { get; set; }
 
-        
+
         // Navigation properties
-        
+
         public Entity.Company Company { get; set; }
         public Entity.Student Student { get; set; }
         public Entity.Advertisement Advertisement { get; set; }
-        
+
     }
+
 }

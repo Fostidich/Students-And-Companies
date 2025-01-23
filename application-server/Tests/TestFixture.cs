@@ -4,25 +4,29 @@ using Microsoft.Extensions.DependencyInjection;
 using System.Net.Http.Json;
 using Newtonsoft.Json.Linq;
 using System.Net.Http.Headers;
+using Microsoft.AspNetCore.Mvc.Testing;
 
 public class TestFixture : IDisposable {
 
     public HttpClient Client { get; }
     public LogInHelper LogIn { get; }
 
-    private TestFactory factory;
+    private readonly TestFactory factory;
+    private readonly string password = "SeedPassword";
 
     public TestFixture() {
         factory = new TestFactory();
 
         // Create a client to use in tests
-        Client = factory.CreateClient();
+        Client = factory.CreateClient(new WebApplicationFactoryClientOptions {
+            BaseAddress = new Uri("https://localhost:5001")
+        });
 
         // Setup database
         SetupDatabase();
 
         // Prepare logins
-        LogIn = new LogInHelper(Client);
+        LogIn = new LogInHelper(Client, password);
     }
 
     private void SetupDatabase() {
@@ -37,36 +41,8 @@ public class TestFixture : IDisposable {
         var authentication = scope.ServiceProvider.GetRequiredService<IAuthenticationService>();
 
         // Add test data for testing
-        string salt = authentication.GenerateSalt();
-        string password = "SeedPassword";
-        string hashedPassword = authentication.HashPassword(salt, password);
-
-        var student1 = new Entity.Student {
-			Email = "Seed@Student.mail",
-			Username = "SeedStudent",
-			Salt = salt,
-			HashedPassword = hashedPassword,
-			Name = "SeedName",
-			Surname = "SeedSurname",
-			University = "SeedUniversity",
-			CourseOfStudy = "SeedCourseOfStudy",
-			Gender = 'f',
-			BirthDate = new DateTime(2001, 12, 2, 19, 55, 0),
-	    };
-
-        var company1 = new Entity.Company {
-            Email = "Seed@Company.mail",
-            Username = "SeedCompany",
-            Salt = salt,
-            HashedPassword = hashedPassword,
-            Headquarter = "SeedHeadquarter",
-            FiscalCode = "SeedFiscalCode",
-            VatNumber = "SeedVatNumber",
-        };
-
-        // Add entities to context
-        context.Student.AddRange(student1);
-        context.Company.AddRange(company1);
+        var seed = new TestSeed(authentication, password);
+        seed.SeedDatabase(context);
 
         // Save changes to the database
         context.SaveChanges();
@@ -86,11 +62,13 @@ public class TestFixture : IDisposable {
         private readonly HttpClient client;
         private readonly string tokenCompany;
         private readonly string tokenStudent;
+        private readonly string password;
 
-        protected internal LogInHelper(HttpClient client) {
+        protected internal LogInHelper(HttpClient client, string password) {
             this.client = client;
-            tokenCompany = GetLoginToken("SeedCompany", "SeedPassword");
-            tokenStudent = GetLoginToken("SeedStudent", "SeedPassword");
+            this.password = password;
+            tokenCompany = GetLoginToken("SeedCompany", password);
+            tokenStudent = GetLoginToken("SeedStudent", password);
         }
 
         private string GetLoginToken(string username, string password) {
@@ -99,6 +77,16 @@ public class TestFixture : IDisposable {
             var responseBody = response.Content.ReadAsStringAsync().GetAwaiter().GetResult();
             var jsonObject = JObject.Parse(responseBody);
             return jsonObject["token"].ToString();
+        }
+
+        public void LogIn(string username, string password) {
+            var token = GetLoginToken(username, password);
+            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+        }
+
+        public void LogIn(string username) {
+            var token = GetLoginToken(username, password);
+            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
         }
 
         public void LogInCompany() {
