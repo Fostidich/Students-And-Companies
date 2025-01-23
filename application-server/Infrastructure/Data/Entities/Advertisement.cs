@@ -55,7 +55,7 @@ namespace Entity {
         public bool Open { get; set; }
 
         [Required(ErrorMessage = "Field is required")]
-        public String Questionnaire { get; set; }
+        public string Questionnaire { get; set; }
 
 
         // Navigation properties
