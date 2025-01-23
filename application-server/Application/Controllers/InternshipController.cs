@@ -61,7 +61,11 @@ public class InternshipController : ControllerBase {
         if (role != UserType.Student.ToString())
             return BadRequest("Invalid role\n");
         
-        bool created = internship.CreateStudentFeedback(internshipId, feedback);
+        // Get user ID from authentication token
+        string userIdStr = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+        int userId = Convert.ToInt32(userIdStr);
+        
+        bool created = internship.CreateStudentFeedback(internshipId, feedback, userId);
         
         if (created)
             return Ok("Feedback created\n");
@@ -85,7 +89,11 @@ public class InternshipController : ControllerBase {
         if (role != UserType.Company.ToString())
             return BadRequest("Invalid role\n");
         
-        bool created = internship.CreateCompanyFeedback(internshipId, feedback);
+        // Get user ID from authentication token
+        string userIdStr = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+        int userId = Convert.ToInt32(userIdStr);
+        
+        bool created = internship.CreateCompanyFeedback(internshipId, feedback, userId);
         
         if (created)
             return Ok("Feedback created\n");
@@ -104,7 +112,14 @@ public class InternshipController : ControllerBase {
         
         if (internshipId <= 0) return BadRequest("Invalid id\n");
         
-        DTO.Feedback feedback= internship.GetStudentFeedback(internshipId);
+        // Get role
+        string role = User.FindFirst(ClaimTypes.Role).Value;
+        
+        // Get user ID from authentication token
+        string userIdStr = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+        int userId = Convert.ToInt32(userIdStr);
+        
+        DTO.Feedback feedback= internship.GetStudentFeedback(internshipId, userId, role);
         
         if(feedback != null)
             return Ok(feedback);
@@ -123,7 +138,14 @@ public class InternshipController : ControllerBase {
         
         if (internshipId <= 0) return BadRequest("Invalid id\n");
         
-        DTO.Feedback feedback= internship.GetCompanyFeedback(internshipId);
+        // Get role
+        string role = User.FindFirst(ClaimTypes.Role).Value;
+        
+        // Get user ID from authentication token
+        string userIdStr = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+        int userId = Convert.ToInt32(userIdStr);
+        
+        DTO.Feedback feedback= internship.GetCompanyFeedback(internshipId, userId, role);
         
         if(feedback != null)
             return Ok(feedback);
@@ -145,9 +167,6 @@ public class InternshipController : ControllerBase {
         if (role != UserType.Company.ToString())
             return BadRequest("Invalid role\n");
         
-        // Get user ID from authentication token
-        string userIdStr = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-        int userId = Convert.ToInt32(userIdStr);
         
         List<DTO.Internship> internships;
         List<Internship> checkInternships;

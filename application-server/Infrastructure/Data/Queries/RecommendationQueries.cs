@@ -427,13 +427,13 @@ public class RecommendationQueries : IRecommendationQueries {
         }
     }
 
-    public bool CreateSuggestionsForStudent(int notificationId) {
+    public bool CreateSuggestionsForStudent(int notificationId, int companyId) {
         try {
             // Query to retrieve the notification details from company_notifications
             string retrieveNotificationQuery = @"
                 SELECT student_id, advertisement_id
                 FROM company_notifications
-                WHERE company_notification_id = @NotificationId;
+                WHERE company_notification_id = @NotificationId AND company_id = @CompanyId;
             ";
 
             // Query to insert the notification into student_notifications
@@ -451,7 +451,7 @@ public class RecommendationQueries : IRecommendationQueries {
                 using var reader = retrieveCommand.ExecuteReader();
                 
                 if (!reader.Read()) {
-                    Console.WriteLine($"No company notification found with ID {notificationId}");
+                    Console.WriteLine($"No company notification found with ID {notificationId} for your company.");
                     return false;
                 }
 

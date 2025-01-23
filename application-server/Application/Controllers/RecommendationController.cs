@@ -142,7 +142,10 @@ public class RecommendationController : ControllerBase {
         if (role != UserType.Company.ToString())
             return BadRequest("Invalid role\n");
         
-        bool suggestionCreated = recommendation.CreateSuggestionsForStudent(notificationId);
+        string userIdStr = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+        int userId = Convert.ToInt32(userIdStr);
+        
+        bool suggestionCreated = recommendation.CreateSuggestionsForStudent(notificationId, userId);
         
         if(suggestionCreated)
             return Ok("Suggestion created\n");

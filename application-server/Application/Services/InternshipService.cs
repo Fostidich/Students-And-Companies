@@ -41,33 +41,33 @@ public class InternshipService : IInternshipService {
         return intern;
     }
     
-    public bool CreateStudentFeedback(int internshipId, DTO.Feedback feedback) {
+    public bool CreateStudentFeedback(int internshipId, DTO.Feedback feedback, int studentId) {
         Feedback feed = new Feedback(feedback);
         
         // Convert DTO.FeedbackRegistration to Entity.Feedback
         Entity.StudentFeedback feedEntity = feed.ToStudentFeedbackEntity();
         
         // Create feedback
-        bool result = queries.CreateStudentFeedback(internshipId, feedEntity);
+        bool result = queries.CreateStudentFeedback(internshipId, feedEntity, studentId);
         
         return result;
     }
     
-    public bool CreateCompanyFeedback(int internshipId, DTO.Feedback feedback) {
+    public bool CreateCompanyFeedback(int internshipId, DTO.Feedback feedback, int companyId) {
         Feedback feed = new Feedback(feedback);
         
         // Convert DTO.FeedbackRegistration to Entity.Feedback
         Entity.CompanyFeedback feedEntity = feed.ToCompanyFeedbackEntity();
         
         // Create feedback
-        bool result = queries.CreateCompanyFeedback(internshipId, feedEntity);
+        bool result = queries.CreateCompanyFeedback(internshipId, feedEntity, companyId);
         
         return result;
     }
     
-    public DTO.Feedback GetStudentFeedback(int internshipId) {
+    public DTO.Feedback GetStudentFeedback(int internshipId, int userId, string role) {
         // Get student feedback
-        Entity.StudentFeedback feedback = queries.GetStudentFeedback(internshipId);
+        Entity.StudentFeedback feedback = queries.GetStudentFeedback(internshipId, userId, role);
         
         // null propagation
         if(feedback == null) {
@@ -81,9 +81,9 @@ public class InternshipService : IInternshipService {
         return feedbackDto;
     }
     
-    public DTO.Feedback GetCompanyFeedback(int internshipId) {
+    public DTO.Feedback GetCompanyFeedback(int internshipId, int userId, string role) {
         // Get company feedback
-        Entity.CompanyFeedback feedback = queries.GetCompanyFeedback(internshipId);
+        Entity.CompanyFeedback feedback = queries.GetCompanyFeedback(internshipId, userId, role);
         
         // null propagation
         if(feedback == null) {
