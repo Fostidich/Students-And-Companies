@@ -353,7 +353,7 @@ public class RecommendationQueries : IRecommendationQueries {
         try {
             string query = @"
                 SELECT *
-                FROM advertisements
+                FROM advertisement
                 WHERE advertisement_id = @AdvertisementId;
             ";
             
