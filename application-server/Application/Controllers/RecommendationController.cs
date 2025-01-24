@@ -25,7 +25,7 @@ public class RecommendationController : ControllerBase {
     public IActionResult GetAdvertisements(){
         // Get user role from authentication token
         string role = User.FindFirst(ClaimTypes.Role)?.Value;
-        
+
         // Get user ID from authentication token
         string userIdStr = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
         int userId = Convert.ToInt32(userIdStr);
@@ -35,16 +35,16 @@ public class RecommendationController : ControllerBase {
 
         if (role == UserType.Student.ToString()) {
             checkAdv = recommendation.GetAdvertisementsForStudent(userId);
-            
+
             if (checkAdv == null)
                 return StatusCode(500, "Internal server error\n");
-            
+
             adv = checkAdv.Select(ad => ad.ToDto()).ToList();
-            
+
         }
         else if (role == UserType.Company.ToString()) {
             checkAdv = recommendation.GetAdvertisementsOfCompany(userId);
-            
+
             if (checkAdv == null)
                 return StatusCode(500, "Internal server error\n");
 
@@ -53,7 +53,7 @@ public class RecommendationController : ControllerBase {
         else
             return BadRequest("Invalid user role.");
 
-        
+
         return Ok(adv);
     }
 
@@ -68,16 +68,16 @@ public class RecommendationController : ControllerBase {
         string role = User.FindFirst(ClaimTypes.Role).Value;
         if (role != UserType.Company.ToString())
             return BadRequest("Invalid role\n");
-        
+
         // Get user ID from authentication token
         string userIdStr = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
         int userId = Convert.ToInt32(userIdStr);
-        
+
         // Add advertisement data to DB
         if (recommendation.CreateAdvertisement(userId, advertisement)){
             return Ok("Advertisement registered\n");
         }
-        
+
         return StatusCode(500, "Internal server error\n");
     }
 
@@ -89,49 +89,49 @@ public class RecommendationController : ControllerBase {
     [ProducesResponseType(404)]
     public IActionResult GetAdvertisement(int advertisementId) {
         // Check ID validity
-        if (advertisementId <= 0) 
+        if (advertisementId <= 0)
             return BadRequest("Invalid id\n");
-        
+
         DTO.Advertisement adv = recommendation.GetAdvertisement(advertisementId)?.ToDto();
-        
-        if (adv == null) 
+
+        if (adv == null)
             return NotFound("Advertisement not found\n");
-        
+
         return Ok(adv);
     }
 
-    
-    [HttpGet("candidates/advertisement/{advertisementId}")]
+
+    [HttpGet("candidates/advertisements/{advertisementId}")]
     [SwaggerOperation(Summary = "Get recommended students for specific advertisements", Description = "Get candidates for specific advertisements. The candidates are students that have been suggested by the recommendation system based on their skills and the advertisement requirements. This API return a list of notifications with the student id the advertisement id and the type of the notification.")]
     [Authorize]
     [ProducesResponseType(200)]
     [ProducesResponseType(400)]
     public IActionResult GetCandidates(int advertisementId) {
         // Check ID validity
-        if (advertisementId <= 0) 
+        if (advertisementId <= 0)
             return BadRequest("Invalid id\n");
-        
+
         // Check role
         string role = User.FindFirst(ClaimTypes.Role).Value;
         if (role != UserType.Company.ToString())
             return BadRequest("Invalid role\n");
-        
+
         // Get user ID from authentication token
         string userIdStr = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
         int userId = Convert.ToInt32(userIdStr);
-        
+
         List<Student> checkstudents = recommendation.GetRecommendedCandidates(userId, advertisementId);
-        
+
         if (checkstudents == null)
             return BadRequest("You don't have the permission to get the candidates for this advertisement because you are not the owner of the advertisement\n");
-        
+
         List<DTO.Student> students = checkstudents.Select(student => student.ToDto()).ToList();
-        
+
         return Ok(students);
     }
-    
-    
-    [HttpPost("suggestion/notification/{notificationId}")]
+
+
+    [HttpPost("suggestions/notification/{notificationId}")]
     [Authorize]
     [SwaggerOperation(Summary = "Create a new suggestion by a company for one student", Description = "Create a new suggestion for a student. The suggestion is added to the database and the student is notified. One company can decide to suggest a student for a specific advertisement.")]
     [ProducesResponseType(200)]
@@ -139,22 +139,22 @@ public class RecommendationController : ControllerBase {
     [ProducesResponseType(404)]
     public IActionResult CreateSuggestion(int notificationId) {
         // Check ID validity
-        if (notificationId <= 0) 
+        if (notificationId <= 0)
             return BadRequest("Invalid id\n");
-        
+
         // Check role
         string role = User.FindFirst(ClaimTypes.Role).Value;
         if (role != UserType.Company.ToString())
             return BadRequest("Invalid role\n");
-        
+
         string userIdStr = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
         int userId = Convert.ToInt32(userIdStr);
-        
+
         bool suggestionCreated = recommendation.CreateSuggestionsForStudent(notificationId, userId);
-        
+
         if(suggestionCreated)
             return Ok("Suggestion created\n");
-        
+
         return NotFound("Notification not found\n");
     }
 

@@ -173,7 +173,11 @@ public class ProfileTest {
 
         // Act
         var response = await client.PostAsync("/api/profile/delete", null);
+
+        // Assert
         Assert.Equal(200, (int)response.StatusCode);
+
+        // Act
         response = await client.GetAsync("/api/profile/student");
         var responseBody = await response.Content.ReadAsStringAsync();
 
@@ -698,10 +702,11 @@ public class ProfileTest {
     [Fact]
     public async Task TestGetSkillFromToken404() {
         // Arrange
-        logIn.LogInNewStudent();
+        int id = seed.GetNewStudentId();
+        logIn.LogInStudent(id);
 
         // Act
-        await client.GetAsync("/api/profile/skills/delete/13");
+        await client.PostAsync($"/api/profile/skills/delete/{id}", null);
         var response = await client.GetAsync("/api/profile/skills");
         var responseBody = await response.Content.ReadAsStringAsync();
 
