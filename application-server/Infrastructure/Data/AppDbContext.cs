@@ -4,6 +4,8 @@ using System.Linq;
 public class AppDbContext : DbContext {
 
     public DbSet<Entity.Student> Student { get; set; }
+    public DbSet<Entity.StudentNotifications> StudentNotifications { get; set; }
+    public DbSet<Entity.CompanyNotifications> CompanyNotifications { get; set; }
     public DbSet<Entity.Company> Company { get; set; }
     public DbSet<Entity.Advertisement> Advertisement { get; set; }
     public DbSet<Entity.Application> Application { get; set; }
@@ -81,7 +83,7 @@ public class AppDbContext : DbContext {
             .HasOne(ss => ss.Student)
             .WithMany(s => s.StudentSkills)
             .HasForeignKey(ss => ss.StudentId)
-            .OnDelete(DeleteBehavior.Restrict); // Prevent cascading delete
+            .OnDelete(DeleteBehavior.Cascade); // Prevent cascading delete
 
         // Configure the foreign key relationship with the Skill table
         modelBuilder.Entity<Entity.StudentSkills>()
@@ -95,7 +97,7 @@ public class AppDbContext : DbContext {
             .HasOne(ads => ads.Advertisement)
             .WithMany(a => a.AdvertisementSkills)
             .HasForeignKey(ads => ads.AdvertisementId)
-            .OnDelete(DeleteBehavior.Restrict); // Prevent cascading delete
+            .OnDelete(DeleteBehavior.Cascade); // Prevent cascading delete
 
         // Configure the foreign key relationship with Skill
         modelBuilder.Entity<Entity.AdvertisementSkills>()
@@ -109,7 +111,7 @@ public class AppDbContext : DbContext {
             .HasOne(a => a.Student) // Each application belongs to one student
             .WithMany(s => s.Applications) // A student can make many applications
             .HasForeignKey(a => a.StudentId)
-            .OnDelete(DeleteBehavior.Restrict); // Prevent cascading delete
+            .OnDelete(DeleteBehavior.Cascade); // Prevent cascading delete
 
         // Configure the foreign key relationship with Advertisement
         modelBuilder.Entity<Entity.Application>()

@@ -16,9 +16,6 @@ namespace Entity {
             CreatedAt = DateTime.Parse(reader["created_at"].ToString());
             Status = reader["status"].ToString();
             Questionnaire = reader["questionnaire"].ToString();
-            ProposedStart = reader["proposed_start"] != DBNull.Value
-                ? DateTime.Parse(reader["proposed_start"].ToString())
-                : default;
         }
 
 
@@ -39,13 +36,11 @@ namespace Entity {
         public DateTime CreatedAt { get; set; }
 
         [Required(ErrorMessage = "Field is required")]
-        [Column(TypeName = "enum('REQUESTED', 'ACCEPTED', 'STARTED')")]
+        [Column(TypeName = "enum('PENDING', 'ACCEPTED', 'REJECTED')")]
         public string Status { get; set; }
 
         [Required(ErrorMessage = "Field is required")]
         public String Questionnaire { get; set; }
-
-        public DateTime ProposedStart { get; set; }
 
 
         // Navigation properties

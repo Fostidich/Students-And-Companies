@@ -40,6 +40,7 @@ public class RecommendationQueries : IRecommendationQueries {
             string query = @"
                 SELECT
                     a.advertisement_id,
+                    a.name,
                     a.created_at,
                     a.company_id,
                     a.description,
@@ -53,7 +54,7 @@ public class RecommendationQueries : IRecommendationQueries {
                 INNER JOIN student_skills ss ON ads.skill_id = ss.skill_id
                 WHERE ss.student_id = @StudentId
                   AND a.open = true
-                GROUP BY a.advertisement_id, a.created_at, a.company_id, a.description, a.duration, a.spots, a.available, a.open, a.questionnaire 
+                GROUP BY a.advertisement_id, a.name, a.created_at, a.company_id, a.description, a.duration, a.spots, a.available, a.open, a.questionnaire 
                 ORDER BY COUNT(*) DESC
                 LIMIT 40;
             ";
@@ -112,8 +113,8 @@ public class RecommendationQueries : IRecommendationQueries {
     public int? CreateAdvertisement(int companyId, Entity.Advertisement advertisement, List<Entity.Skill> skills) {
         try {
             string insertquery = @"
-                INSERT INTO advertisement (company_id, description, duration, spots, available, open, questionnaire)
-                VALUES (@CompanyId, @Description, @Duration, @Spots, @Available, @Open, @Questionnaire);
+                INSERT INTO advertisement (company_id, description, name, duration, spots, available, open, questionnaire)
+                VALUES (@CompanyId, @Description, @Name, @Duration, @Spots, @Available, @Open, @Questionnaire);
             ";
             
             string selectquery = @"
@@ -129,6 +130,7 @@ public class RecommendationQueries : IRecommendationQueries {
 
                 insertcommand.Parameters.AddWithValue("@CompanyId", companyId);
                 insertcommand.Parameters.AddWithValue("@Description", advertisement.Description);
+                insertcommand.Parameters.AddWithValue("@Name", advertisement.Name);
                 insertcommand.Parameters.AddWithValue("@Duration", advertisement.Duration);
                 insertcommand.Parameters.AddWithValue("@Spots", advertisement.Spots);
                 insertcommand.Parameters.AddWithValue("@Available", advertisement.Spots);

@@ -5,6 +5,7 @@ namespace DTO {
     public class Advertisement {
         
         public int AdvertisementId { get; set; }
+        public string Name { get; set; }
         public DateTime CreatedAt { get; set; }
         public int CompanyId { get; set; }
         public string Description { get; set; }

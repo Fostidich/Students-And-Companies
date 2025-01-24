@@ -4,6 +4,10 @@ using System.ComponentModel.DataAnnotations;
 namespace DTO {
 
     public class AdvertisementRegistration {
+        
+        [Required(ErrorMessage = "Field is required")]
+        [MaxLength(64, ErrorMessage = "Value cannot be more than 64 characters long")]
+        public string Name { get; set; }
 
         [Required(ErrorMessage = "Field is required")]
         [MaxLength(1024, ErrorMessage = "Value cannot be more than 1024 characters long")]

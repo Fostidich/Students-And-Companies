@@ -2,6 +2,7 @@ using System;
 
 public class Advertisement {
     public int AdvertisementId { get; set; }
+    public string Name { get; set; }
     public DateTime CreatedAt { get; set; }
     public int CompanyId { get; set; }
     public string Description { get; set; }
@@ -14,6 +15,7 @@ public class Advertisement {
     
     public Advertisement(Entity.Advertisement advertisement) {
         AdvertisementId = advertisement.AdvertisementId;
+        Name = advertisement.Name;
         CreatedAt = advertisement.CreatedAt;
         CompanyId = advertisement.CompanyId;
         Description = advertisement.Description;
@@ -26,6 +28,7 @@ public class Advertisement {
     
     public Advertisement(DTO.Advertisement advertisement) {
         AdvertisementId = advertisement.AdvertisementId;
+        Name = advertisement.Name;
         CreatedAt = advertisement.CreatedAt;
         CompanyId = advertisement.CompanyId;
         Description = advertisement.Description;
@@ -37,6 +40,7 @@ public class Advertisement {
     }
     
     public Advertisement(DTO.AdvertisementRegistration advertisement) {
+        Name = advertisement.Name;
         Description = advertisement.Description;
         Duration = advertisement.Duration;
         Spots = advertisement.Spots;
@@ -46,6 +50,7 @@ public class Advertisement {
     public DTO.Advertisement ToDto() {
         return new DTO.Advertisement {
             AdvertisementId = AdvertisementId,
+            Name = Name,
             CreatedAt = CreatedAt,
             CompanyId = CompanyId,
             Description = Description,
@@ -60,6 +65,7 @@ public class Advertisement {
     public Entity.Advertisement ToEntity() {
         return new Entity.Advertisement {
             AdvertisementId = AdvertisementId,
+            Name = Name,
             CreatedAt = CreatedAt,
             CompanyId = CompanyId,
             Description = Description,

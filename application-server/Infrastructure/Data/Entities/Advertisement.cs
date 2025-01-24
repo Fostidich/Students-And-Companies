@@ -12,6 +12,7 @@ namespace Entity {
 
         public Advertisement(IDataReader reader) {
             AdvertisementId = Convert.ToInt32(reader["advertisement_id"]);
+            Name = reader["name"].ToString();
             CreatedAt = DateTime.Parse(reader["created_at"].ToString());
             CompanyId = Convert.ToInt32(reader["company_id"]);
             Description = reader["description"].ToString();
@@ -26,6 +27,10 @@ namespace Entity {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int AdvertisementId { get; set; }
+        
+        [Required(ErrorMessage = "Field is required")]
+        [MaxLength(64, ErrorMessage = "Value cannot be more than 64 characters long")]
+        public string Name { get; set; }
 
         [Required(ErrorMessage = "Field is required")]
         [DatabaseGenerated(DatabaseGeneratedOption.Computed)]
