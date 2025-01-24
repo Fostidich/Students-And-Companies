@@ -378,7 +378,7 @@ public class RecommendationQueries : IRecommendationQueries {
             string getStudentIdsQuery = @"
                 SELECT student_id
                 FROM company_notifications
-                WHERE company_id = @CompanyId AND advertisement_id = @AdvertisementId;
+                WHERE advertisement_id = @AdvertisementId;
             ";
 
             // Query to retrieve student details
@@ -399,7 +399,6 @@ public class RecommendationQueries : IRecommendationQueries {
             // Step 1: Retrieve student IDs
             List<int> studentIds = new List<int>();
             using (var getIdsCommand = new MySqlCommand(getStudentIdsQuery, db_connection)) {
-                getIdsCommand.Parameters.AddWithValue("@CompanyId", companyId);
                 getIdsCommand.Parameters.AddWithValue("@AdvertisementId", advertisementId);
 
                 using var reader = getIdsCommand.ExecuteReader();

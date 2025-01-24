@@ -95,6 +95,11 @@ public class RecommendationService : IRecommendationService {
         // Get recommended candidates for a company
         List<Entity.Student> studentsEntity = queries.GetRecommendedCandidates(companyId, advertisementId);
         
+        // if you don't have the permission to get the candidates for this advertisement because you are not the owner of the advertisement
+        if(studentsEntity == null) {
+            return null;
+        }
+        
         // Convert Entity.Student to Student
         List<Student> students = studentsEntity.Select(student => new Student(student)).ToList();
         

@@ -72,7 +72,7 @@ public class RecommendationController : ControllerBase {
         // Get user ID from authentication token
         string userIdStr = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
         int userId = Convert.ToInt32(userIdStr);
-
+        
         // Add advertisement data to DB
         if (recommendation.CreateAdvertisement(userId, advertisement)){
             return Ok("Advertisement registered\n");
@@ -106,7 +106,7 @@ public class RecommendationController : ControllerBase {
     [Authorize]
     [ProducesResponseType(200)]
     [ProducesResponseType(400)]
-    public IActionResult GetCandidates(int advertisementId) {
+    public IActionResult GetRecommendedCandidates(int advertisementId) {
         // Check ID validity
         if (advertisementId <= 0)
             return BadRequest("Invalid id\n");
