@@ -23,7 +23,6 @@ function Home() {
             if (response.status === 200) {
                 const data = await response.json();
                 setAdv(data);
-                console.log(data);
             }
         } catch (error) {
             console.error('Error checking profile informations:', error);

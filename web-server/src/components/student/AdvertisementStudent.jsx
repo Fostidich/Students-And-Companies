@@ -12,6 +12,7 @@ function AdvertisementStudent({ advertisement }) {
         fiscalCode: '',
         vatNumber: ''
     });
+    const [response, setResponse] = useState('');
 
     const formatDate = (dateString) => {
         return new Date(dateString).toLocaleDateString();
@@ -38,9 +39,13 @@ function AdvertisementStudent({ advertisement }) {
             console.error('Error checking advertisement details:', error);
         }
     }
-    // const apply() = async () => {
-    //
-    // }
+
+
+    const handleSubmit = async (e) => {
+        e.preventDefault()
+        console.log('Applied');
+        setShowDetails(false);
+    }
 
     return (
         <div className="bg-white rounded-lg border p-4 mb-4">
@@ -81,11 +86,20 @@ function AdvertisementStudent({ advertisement }) {
                             <p><strong>Total Spots:</strong> {advertisement.spots}</p>
                             <p><strong>Available Spots:</strong> {advertisement.available}</p>
                             <p><strong>Status:</strong> {advertisement.open ? 'Open' : 'Closed'}</p>
-                            <p><strong>Questionnaire:</strong> {advertisement.questionnaire}</p>
                         </div>
-                        <button
-
-                            className="bg-green-500 hover:bg-green-600 p-4 rounded-md]:">Apply</button>
+                        <div className=" items-center justify-center">
+                            <form onSubmit={handleSubmit}>
+                                <p><strong>Questionnaire: </strong> {advertisement.questionnaire}</p>
+                                <input
+                                    type="text"
+                                    value={response}
+                                    onChange={(e) => setResponse(e.target.value)}
+                                    className="border rounded p-2 w-full"
+                                    required
+                                />
+                                <button className=" gap-2  p-2 border rounded-md text-white bg-green-500 hover:bg-green-600" type="submit">Apply</button>
+                            </form>
+                        </div>
                     </div>
                 </div>
             )}
