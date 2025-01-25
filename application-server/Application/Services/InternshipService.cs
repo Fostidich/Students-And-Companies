@@ -96,5 +96,35 @@ public class InternshipService : IInternshipService {
         
         return feedbackDto;
     }
+    
+    public bool DeleteInternship(int internshipId, int userId, string role) {
+        // Delete internship
+        bool result = queries.DeleteInternship(internshipId, userId, role);
+        
+        return result;
+    }
+    
+    public bool DeleteFeedback(int internshipId, int userId, string role) {
+        
+        if(role == UserType.Student.ToString()) {
+            return DeleteStudentFeedback(internshipId, userId);
+        }
+        
+        return DeleteCompanyFeedback(internshipId, userId);
+    }
+    
+    private bool DeleteCompanyFeedback(int internshipId, int userId) {
+        // Delete company feedback
+        bool result = queries.DeleteCompanyFeedback(internshipId, userId);
+        
+        return result;
+    }
+    
+    private bool DeleteStudentFeedback(int internshipId, int userId) {
+        // Delete student feedback
+        bool result = queries.DeleteStudentFeedback(internshipId, userId);
+        
+        return result;
+    }
 
 }

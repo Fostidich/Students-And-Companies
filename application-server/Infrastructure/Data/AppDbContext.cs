@@ -76,7 +76,7 @@ public class AppDbContext : DbContext {
             .HasOne(a => a.Company)
             .WithMany(c => c.Advertisements)
             .HasForeignKey(a => a.CompanyId)
-            .OnDelete(DeleteBehavior.Restrict); // Prevent cascading delete
+            .OnDelete(DeleteBehavior.Cascade); // Prevent cascading delete
 
         // Configure the foreign key relationship with the Student table
         modelBuilder.Entity<Entity.StudentSkills>()
@@ -118,28 +118,28 @@ public class AppDbContext : DbContext {
             .HasOne(a => a.Advertisement) // Each application targets one advertisement
             .WithMany(ad => ad.Applications) // An advertisement can have many applications
             .HasForeignKey(a => a.AdvertisementId)
-            .OnDelete(DeleteBehavior.Restrict); // Prevent cascading delete
+            .OnDelete(DeleteBehavior.Cascade); // Prevent cascading delete
 
         // Configure the foreign key relationship with Student
         modelBuilder.Entity<Entity.Internship>()
             .HasOne(i => i.Student) // Each internship belongs to one student
             .WithOne(s => s.Internship) // A student can have one internships
             .HasForeignKey<Entity.Internship>(i => i.StudentId)
-            .OnDelete(DeleteBehavior.Restrict); // Prevent cascading delete
+            .OnDelete(DeleteBehavior.Cascade); // Prevent cascading delete
 
         // Configure the foreign key relationship with Company
         modelBuilder.Entity<Entity.Internship>()
             .HasOne(i => i.Company) // Each internship is linked to one company
             .WithMany(c => c.Internships) // A company can have many internships
             .HasForeignKey(i => i.CompanyId)
-            .OnDelete(DeleteBehavior.Restrict); // Prevent cascading delete
+            .OnDelete(DeleteBehavior.Cascade); // Prevent cascading delete
 
         // Configure the foreign key relationship with Advertisement
         modelBuilder.Entity<Entity.Internship>()
             .HasOne(i => i.Advertisement) // Each internship is linked to one advertisement
             .WithMany(a => a.Internships) // An advertisement can have many internships
             .HasForeignKey(i => i.AdvertisementId)
-            .OnDelete(DeleteBehavior.Restrict); // Prevent cascading delete
+            .OnDelete(DeleteBehavior.Cascade); // Prevent cascading delete
 
         // Configure the foreign key relationship with Internship
         modelBuilder.Entity<Entity.StudentFeedback>()
@@ -153,7 +153,6 @@ public class AppDbContext : DbContext {
             .WithOne(i => i.CompanyFeedback) // Each internship has one feedback
             .HasForeignKey<Entity.CompanyFeedback>(f => f.InternshipId)
             .OnDelete(DeleteBehavior.Cascade); // Delete feedback when the internship is deleted
-        
         
         modelBuilder.Entity<Entity.CompanyNotifications>()
             .HasOne(e => e.Company)

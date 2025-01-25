@@ -7,5 +7,7 @@ public interface IInternshipService {
     bool CreateCompanyFeedback(int internshipId, DTO.Feedback feedback, int companyId);
     DTO.Feedback GetStudentFeedback(int internshipId, int userId, string role);
     DTO.Feedback GetCompanyFeedback(int internshipId, int userId, string role);
+    bool DeleteInternship(int internshipId, int userId, string role);
+    bool DeleteFeedback(int internshipId, int userId, string role);
 
 }

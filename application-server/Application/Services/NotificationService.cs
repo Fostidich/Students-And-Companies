@@ -25,5 +25,12 @@ public class NotificationService : INotificationService {
         
         return notifications;
     }
+    
+    public bool DeleteNotification(int notificationId, int studentId) {
+        // Delete notification
+        bool result = queries.DeleteNotification(notificationId, studentId);
+        
+        return result;
+    }
 
 }

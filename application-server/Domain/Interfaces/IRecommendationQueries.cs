@@ -10,5 +10,6 @@ public interface IRecommendationQueries {
      Entity.Advertisement GetAdvertisement(int advertisementId);
      List<Entity.Student> GetRecommendedCandidates(int companyId, int advertisementId);
      bool CreateSuggestionsForStudent(int notificationId, int companyId);
+     bool DeleteAdvertisement(int advertisementId, int companyId);
 
 }

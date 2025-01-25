@@ -284,6 +284,81 @@ public class InternshipQueries : IInternshipQueries {
 
         return false;
     }
+    
+    public bool DeleteInternship(int internshipId, int userId, string role) {
+        try {
+            string query = @"
+                DELETE FROM internship
+                WHERE internship_id = @InternshipId;
+            ";
+            
+            // check that the user is a owner of the internship
+            if (!IsUserAuthorizedForNotification(internshipId, userId, role)) {
+                return false;
+            }
+            
+            using var db_connection = dataService.GetConnection();
+            using var command = new MySqlCommand(query, db_connection);
+            
+            command.Parameters.AddWithValue("@InternshipId", internshipId);
+            
+            command.ExecuteNonQuery();
+            return true;
+        } catch (Exception ex) {
+            Console.WriteLine(ex.Message);
+            return false;
+        }
+    }
+    
+    public bool DeleteStudentFeedback(int internshipId, int userId) {
+        try {
+            string query = @"
+                DELETE FROM student_feedback
+                WHERE internship_id = @InternshipId;
+            ";
+            
+            // check that the user is a owner of the internship
+            if (!IsUserAuthorizedForNotification(internshipId, userId, "Student")) {
+                return false;
+            }
+            
+            using var db_connection = dataService.GetConnection();
+            using var command = new MySqlCommand(query, db_connection);
+            
+            command.Parameters.AddWithValue("@InternshipId", internshipId);
+            
+            command.ExecuteNonQuery();
+            return true;
+        } catch (Exception ex) {
+            Console.WriteLine(ex.Message);
+            return false;
+        }
+    }
+    
+    public bool DeleteCompanyFeedback(int internshipId, int userId) {
+        try {
+            string query = @"
+                DELETE FROM company_feedback
+                WHERE internship_id = @InternshipId;
+            ";
+            
+            // check that the user is a owner of the internship
+            if (!IsUserAuthorizedForNotification(internshipId, userId, "Company")) {
+                return false;
+            }
+            
+            using var db_connection = dataService.GetConnection();
+            using var command = new MySqlCommand(query, db_connection);
+            
+            command.Parameters.AddWithValue("@InternshipId", internshipId);
+            
+            command.ExecuteNonQuery();
+            return true;
+        } catch (Exception ex) {
+            Console.WriteLine(ex.Message);
+            return false;
+        }
+    }
 
 
 }

@@ -157,5 +157,29 @@ public class RecommendationController : ControllerBase {
 
         return NotFound("Notification not found\n");
     }
+    
+    [HttpPost("delete/{advertisementId}")]
+    [Authorize]
+    [SwaggerOperation(Summary = "Delete an advertisement", Description = "Delete an advertisement. The advertisement is deleted based on the advertisement ID.")]
+    [ProducesResponseType(200)]
+    [ProducesResponseType(400)]
+    [ProducesResponseType(404)]
+    public IActionResult DeleteAdvertisement(int advertisementId) {
+        // Check role
+        string role = User.FindFirst(ClaimTypes.Role).Value;
+        if (role != UserType.Company.ToString())
+            return BadRequest("Invalid role\n");
+
+        // Get user ID from authentication token
+        string userIdStr = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+        int userId = Convert.ToInt32(userIdStr);
+
+        bool deleted = recommendation.DeleteAdvertisement(advertisementId, userId);
+
+        if (deleted)
+            return Ok("Advertisement deleted\n");
+
+        return NotFound("You don't have this advertisement\n");
+    }
 
 }

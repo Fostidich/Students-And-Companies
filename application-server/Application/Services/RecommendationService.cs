@@ -111,5 +111,10 @@ public class RecommendationService : IRecommendationService {
         // Create suggestion for a student
         return queries.CreateSuggestionsForStudent(notificationId, companyId);
     }
+    
+    public bool DeleteAdvertisement(int advertisementId, int companyId) {
+        // Delete advertisement
+        return queries.DeleteAdvertisement(advertisementId, companyId);
+    }
 
 }

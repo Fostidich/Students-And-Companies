@@ -190,4 +190,55 @@ public class InternshipController : ControllerBase {
 
         return Ok(internships);
     }
+    
+    
+    [HttpPost("delete/{internshipId}")]
+    [Authorize]
+    [SwaggerOperation(Summary = "Only for test, don't use", Description = "Delete an internship. The internship is deleted based on the internship ID.")]
+    [ProducesResponseType(200)]
+    [ProducesResponseType(400)]
+    [ProducesResponseType(404)]
+    public IActionResult DeleteInternship(int internshipId) {
+        // Check role
+        string role = User.FindFirst(ClaimTypes.Role).Value;
+        if (role != UserType.Company.ToString())
+            return BadRequest("Invalid role\n");
+
+        // Get user ID from authentication token
+        string userIdStr = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+        int userId = Convert.ToInt32(userIdStr);
+
+        bool deleted = internship.DeleteInternship(internshipId, userId, role);
+
+        if (deleted)
+            return Ok("Internship deleted\n");
+
+        return NotFound("You don't have the permission to delete this internship\n");
+    }
+    
+    
+    [HttpPost("delete/feedback/{internshipId}")]
+    [Authorize]
+    [SwaggerOperation(Summary = "Delete your feedback for the internship", Description = "Delete an internship. The internship is deleted based on the internship ID.")]
+    [ProducesResponseType(200)]
+    [ProducesResponseType(400)]
+    [ProducesResponseType(404)]
+    public IActionResult DeleteFeedback(int internshipId) {
+        // Check role
+        string role = User.FindFirst(ClaimTypes.Role).Value;
+
+        // Get user ID from authentication token
+        string userIdStr = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+        int userId = Convert.ToInt32(userIdStr);
+
+        bool deleted = internship.DeleteFeedback(internshipId, userId, role);
+
+        if (deleted)
+            return Ok("Feedback deleted\n");
+
+        return NotFound("You don't have this feedback\n");
+    }
+    
+    
+    
 }
