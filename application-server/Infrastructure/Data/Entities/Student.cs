@@ -89,7 +89,6 @@ namespace Entity {
         public ICollection<Entity.StudentSkills> StudentSkills { get; set; }
 		public ICollection<Entity.Application> Applications { get; set; }
 		public ICollection<Entity.StudentNotifications> StudentNotifications { get; set; }
-		public ICollection<Entity.CompanyNotifications> CompanyNotifications { get; set; }
 		
     }
 

@@ -5,7 +5,6 @@ public class AppDbContext : DbContext {
 
     public DbSet<Entity.Student> Student { get; set; }
     public DbSet<Entity.StudentNotifications> StudentNotifications { get; set; }
-    public DbSet<Entity.CompanyNotifications> CompanyNotifications { get; set; }
     public DbSet<Entity.Company> Company { get; set; }
     public DbSet<Entity.Advertisement> Advertisement { get; set; }
     public DbSet<Entity.Application> Application { get; set; }
@@ -153,24 +152,6 @@ public class AppDbContext : DbContext {
             .WithOne(i => i.CompanyFeedback) // Each internship has one feedback
             .HasForeignKey<Entity.CompanyFeedback>(f => f.InternshipId)
             .OnDelete(DeleteBehavior.Cascade); // Delete feedback when the internship is deleted
-        
-        modelBuilder.Entity<Entity.CompanyNotifications>()
-            .HasOne(e => e.Company)
-            .WithMany(c => c.CompanyNotifications)
-            .HasForeignKey(e => e.CompanyId)
-            .OnDelete(DeleteBehavior.Cascade);
-        
-        modelBuilder.Entity<Entity.CompanyNotifications>()
-            .HasOne(e => e.Student)
-            .WithMany(s => s.CompanyNotifications)
-            .HasForeignKey(e => e.StudentId)
-            .OnDelete(DeleteBehavior.Cascade);
-        
-        modelBuilder.Entity<Entity.CompanyNotifications>()
-            .HasOne(e => e.Advertisement)
-            .WithMany(a => a.CompanyNotifications)
-            .HasForeignKey(e => e.AdvertisementId)
-            .OnDelete(DeleteBehavior.Cascade);
 
         modelBuilder.Entity<Entity.StudentNotifications>()
             .HasOne(e => e.Advertisement)

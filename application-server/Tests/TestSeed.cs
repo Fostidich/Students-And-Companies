@@ -126,15 +126,6 @@ public class TestSeed {
             }
             
 
-            for (int j = 0; j < 3; j++) {
-                context.CompanyNotifications.AddRange(new Entity.CompanyNotifications {
-                    CompanyId = i,
-                    AdvertisementId = i + j,
-                    StudentId = i
-                });
-
-            }
-
             context.StudentFeedbacks.AddRange(new Entity.StudentFeedback {
                 InternshipId = i,
                 Rating = 10,
@@ -148,7 +139,6 @@ public class TestSeed {
                 Rating = 10,
                 Comment = "SeedComment"
             });
-
         }
     }
 

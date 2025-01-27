@@ -313,84 +313,6 @@ public class RecommendationQueries : IRecommendationQueries
         }
     }
 
-    public void MatchAdvertisementForCompany(int advertisementId)
-    {
-        try
-        {
-            // Query to find students with at least 3 matching skills for the given advertisement
-            string findStudentsQuery = @"
-                SELECT
-                    ss.student_id
-                FROM student_skills ss
-                INNER JOIN advertisement_skills ads ON ss.skill_id = ads.skill_id
-                WHERE ads.advertisement_id = @advertisement_id
-                GROUP BY ss.student_id
-                HAVING COUNT(*) >= 3;
-            ";
-
-            // Query to find the company associated with the advertisement
-            string findCompanyQuery = @"
-                SELECT company_id
-                FROM advertisements
-                WHERE id = @advertisement_id;
-            ";
-
-            // Query to insert notifications into the company_notifications table
-            string insertNotificationQuery = @"
-                INSERT INTO company_notifications (company_id, student_id, advertisement_id)
-                VALUES (@company_id, @student_id, @advertisement_id);
-            ";
-
-            using var db_connection = dataService.GetConnection();
-
-            // Retrieve the company ID associated with the given advertisement
-            int companyId;
-            using (var companyCommand = new MySqlCommand(findCompanyQuery, db_connection))
-            {
-
-                companyCommand.Parameters.AddWithValue("@advertisement_id", advertisementId);
-                var result = companyCommand.ExecuteScalar();
-
-                if (result == null)
-                {
-                    Console.WriteLine("No company found for the advertisement.");
-                    return;
-                }
-
-                companyId = Convert.ToInt32(result); // Convert the result to an integer
-            }
-
-            // Find students with at least 3 matching skills for the advertisement
-            List<int> matchingStudentIds = new List<int>();
-            using (var findCommand = new MySqlCommand(findStudentsQuery, db_connection))
-            {
-
-                findCommand.Parameters.AddWithValue("@advertisement_id", advertisementId);
-                using var reader = findCommand.ExecuteReader();
-
-                while (reader.Read())
-                {
-                    matchingStudentIds.Add(Convert.ToInt32(reader["student_id"])); // Add student IDs to the list
-                }
-            }
-
-            // Insert notifications into the company_notifications table for matching students
-            foreach (var studentId in matchingStudentIds)
-            {
-                using var insertCommand = new MySqlCommand(insertNotificationQuery, db_connection);
-                insertCommand.Parameters.AddWithValue("@company_id", companyId); // Associate with the company
-                insertCommand.Parameters.AddWithValue("@student_id", studentId); // Associate with the student
-                insertCommand.Parameters.AddWithValue("@advertisement_id",
-                    advertisementId); // Associate with the advertisement
-                insertCommand.ExecuteNonQuery(); // Execute the insertion
-            }
-        }
-        catch (Exception ex)
-        {
-            Console.WriteLine($"Error matching advertisement to company: {ex.Message}");
-        }
-    }
-
     public Entity.Advertisement GetAdvertisement(int advertisementId)
     {
         try
@@ -417,16 +339,23 @@ public class RecommendationQueries : IRecommendationQueries
             return null;
         }
     }
-
+    
     public List<Entity.Student> GetRecommendedCandidates(int companyId, int advertisementId)
     {
         try
         {
             // Query to retrieve student IDs from company_notifications
             string getStudentIdsQuery = @"
-                SELECT student_id
-                FROM company_notifications
-                WHERE advertisement_id = @AdvertisementId;
+                SELECT
+                    ss.student_id
+                FROM advertisement_skills ads
+                INNER JOIN advertisement a ON ads.advertisement_id = a.advertisement_id
+                INNER JOIN student_skills ss ON ads.skill_id = ss.skill_id
+                WHERE a.advertisement_id = @AdvertisementId
+                  AND a.open = true
+                GROUP BY a.advertisement_id, ss.student_id
+                ORDER BY COUNT(*) DESC
+                LIMIT 40;
             ";
 
             // Query to retrieve student details

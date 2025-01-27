@@ -63,16 +63,11 @@ public class RecommendationService : IRecommendationService {
         int? advId = queries.CreateAdvertisement(companyId, adv.ToEntity(), skillsEntity);
         
         if (advId != null) {
-            MatchAdvertisementToSkills(advId.Value); 
+            queries.MatchAdvertisementForStudent(advId.Value); 
             return true;
         }
 
         return false;
-    }
-    
-    private void MatchAdvertisementToSkills(int advertisementId) {
-        queries.MatchAdvertisementForStudent(advertisementId);
-        queries.MatchAdvertisementForCompany(advertisementId);
     }
     
     public Advertisement GetAdvertisement(int advertisementId) {
