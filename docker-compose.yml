@@ -1,0 +1,38 @@
+services:
+
+  db:
+    image: mysql:latest
+    container_name: sc-mysql-database
+    environment:
+      MYSQL_ROOT_PASSWORD: "IHjw-9940"
+      MYSQL_DATABASE: "students_and_companies"
+      MYSQL_USER: "sc_admin"
+      MYSQL_PASSWORD: "YVxm-3861"
+    ports:
+      - "3380:3306"
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "db"]
+      interval: 1s
+      retries: 60
+
+  sc-web-server:
+    image: sc_web_server:latest
+    container_name: sc-web-server
+    environment:
+        VITE_API_SERVER_URL: "http://localhost:5522"
+    ports:
+      - "8080:80"
+
+  sc-application-server:
+    image: sc_application_server:latest
+    container_name: sc-application-server
+    environment:
+      JWT_SECRET: "8xzTCUwj0a1CaRttQBtZ5Dc2g78gLfiP"
+      DB_DEFAULT_CONNECTION: "Server=db;Database=students_and_companies;User ID=sc_admin;Password=YVxm-3861;"
+    ports:
+      - "5522:5000"
+    depends_on:
+      db:
+        condition: service_healthy
+
+

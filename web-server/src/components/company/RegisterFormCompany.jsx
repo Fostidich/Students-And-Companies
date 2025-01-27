@@ -1,6 +1,7 @@
 import PropTypes from 'prop-types';
 import { useState } from 'react';
-const API_SERVER_URL = import.meta.env.VITE_API_SERVER_URL;
+const API_SERVER_URL = window.env?.VITE_API_SERVER_URL || 'http://localhost:5000';
+
 function RegisterFormStudent({ onRegister }) {
     const [username, setUsername] = useState('');
     const [email, setEmail] = useState('');

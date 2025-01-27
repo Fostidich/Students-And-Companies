@@ -36,12 +36,12 @@ public class Program {
     }
 
     public static void ConfigureMiddleware(WebApplication app) {
-        if (app.Environment.IsDevelopment()) {
-            // Apply pending migrations
-            using var scope = app.Services.CreateScope();
-            var dbContext = scope.ServiceProvider.GetRequiredService<AppDbContext>();
-            dbContext.Database.Migrate();
+        // Apply pending migrations
+        using var scope = app.Services.CreateScope();
+        var dbContext = scope.ServiceProvider.GetRequiredService<AppDbContext>();
+        dbContext.Database.Migrate();
 
+        if (app.Environment.IsDevelopment()) {
             // Open Swagger web page
             app.UseSwagger();
             app.UseSwaggerUI();
@@ -70,6 +70,9 @@ public class Program {
 
         // Find routes controllers
         builder.Services.AddControllers();
+
+        // Set up URL on which to listen
+        builder.WebHost.UseUrls("http://0.0.0.0:5000");
     }
 
     private static void ConfigureBuilderConfiguration(WebApplicationBuilder builder) {

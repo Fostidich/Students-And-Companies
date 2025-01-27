@@ -6,10 +6,13 @@ public class EnrollmentService : IEnrollmentService {
 
     private readonly IEnrollmentQueries queries;
     private readonly IRecommendationQueries recommendationQueries;
+    private readonly IInternshipService internshipService;
 
-    public EnrollmentService(IEnrollmentQueries queries, IRecommendationQueries recommendationQueries) {
+    public EnrollmentService(IEnrollmentQueries queries,
+            IRecommendationQueries recommendationQueries, IInternshipService internshipService) {
         this.queries = queries;
         this.recommendationQueries = recommendationQueries;
+        this.internshipService = internshipService;
     }
 
     public Application GetApplication(int userId, int advertisementId) {
@@ -70,6 +73,10 @@ public class EnrollmentService : IEnrollmentService {
         return queries.AcceptApplication(id);
     }
 
+    public bool RejectApplication(int id) {
+        return queries.RejectApplication(id);
+    }
+
     public bool CreateInternship(int studentId, int companyId, int advertisementId, DateTime start) {
         // Find advertisement
         var advertisement = recommendationQueries.GetAdvertisement(advertisementId);
@@ -84,8 +91,16 @@ public class EnrollmentService : IEnrollmentService {
         return queries.CreateInternship(studentId, companyId, advertisementId, start, end);
     }
 
-    public bool NotifyStudent(int studentId, int advertisementId, char outcome) {
-        return queries.NotifyStudent(studentId, advertisementId, outcome);
+    public bool NotifyStudent(int studentId, int advertisementId, bool accepted) {
+        return queries.NotifyStudent(studentId, advertisementId, accepted);
+    }
+
+    public bool RejectAllApplications(int id) {
+        return queries.RejectAllApplications(id);
+    }
+
+    public Internship GetInternship(int id) {
+        return internshipService.GetInternshipForStudent(id);
     }
 
 }

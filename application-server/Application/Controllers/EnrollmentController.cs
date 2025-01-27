@@ -40,6 +40,10 @@ public class EnrollmentController : ControllerBase {
         if (enrollment.GetAdvertisement(advertisementId) == null)
             return BadRequest("Advertisement not found\n");
 
+        // Check that student is not already in an internship
+        if (enrollment.GetInternship(userId) != null)
+            return BadRequest("Student already in an internship\n");
+
         // Check application uniqueness
         if (enrollment.GetApplication(userId, advertisementId) != null)
             return BadRequest("Application already submitted\n");
@@ -132,6 +136,10 @@ public class EnrollmentController : ControllerBase {
         if (application.Status != "PENDING")
             return BadRequest("Application already accepted or rejected\n");
 
+        // Check that student is not already in an internship
+        if (enrollment.GetInternship(application.StudentId) != null)
+            return BadRequest("Student already in an internship\n");
+
         // Change application status
         if (!enrollment.AcceptApplication(applicationId))
             return StatusCode(500, "Internal server error\n");
@@ -141,8 +149,12 @@ public class EnrollmentController : ControllerBase {
                     application.AdvertisementId, date.DateTime))
             return StatusCode(500, "Internal server error\n");
 
+        // Reject all other student application
+        if (!enrollment.RejectAllApplications(application.StudentId))
+            return StatusCode(500, "Internal server error\n");
+
         // Notify student
-        if (!enrollment.NotifyStudent(application.StudentId, application.AdvertisementId, 'a'))
+        if (!enrollment.NotifyStudent(application.StudentId, application.AdvertisementId, true))
             return StatusCode(500, "Internal server error\n");
 
         return Ok("Internship instantiated\n");
@@ -152,10 +164,39 @@ public class EnrollmentController : ControllerBase {
     [Authorize]
     [ProducesResponseType(501)]
     public IActionResult RejectApplication(int applicationId) {
-        // 4. Company: POST /reject/{applicationID}
-        //     - APPLICATION GOES REJECTED
-        //     - NOTIFY STUDENT
-        return StatusCode(501, "Feature not yet implemented\n");
+        // Check id validity
+        if (applicationId <= 0)
+            return BadRequest("Invalid application ID\n");
+
+        // Check role
+        string role = User.FindFirst(ClaimTypes.Role).Value;
+        if (role != UserType.Company.ToString())
+            return BadRequest("Invalid role\n");
+
+        // Get user ID from authentication token
+        string userIdStr = User.FindFirst(ClaimTypes.NameIdentifier).Value;
+        int userId = Convert.ToInt32(userIdStr);
+
+        // Retrieve application
+        Application application = enrollment.GetApplication(applicationId);
+
+        // Check for errors
+        if (application == null)
+            return NotFound("Application not found\n");
+
+        // Check if application is pending
+        if (application.Status != "PENDING")
+            return BadRequest("Application already accepted or rejected\n");
+
+        // Change application status
+        if (!enrollment.RejectApplication(applicationId))
+            return StatusCode(500, "Internal server error\n");
+
+        // Notify student
+        if (!enrollment.NotifyStudent(application.StudentId, application.AdvertisementId, false))
+            return StatusCode(500, "Internal server error\n");
+
+        return Ok("Application rejected\n");
     }
 
 }

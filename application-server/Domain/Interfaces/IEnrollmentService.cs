@@ -10,8 +10,11 @@ public interface IEnrollmentService {
     List<Application> GetPendingApplications(int id);
     bool CheckStartDateValidity(DateTime date);
     bool AcceptApplication(int id);
+    bool RejectApplication(int id);
     bool CreateInternship(int studentId, int companyId, int advertisementId, DateTime start);
-    bool NotifyStudent(int studentId, int advertisementId, char outcome);
+    bool NotifyStudent(int studentId, int advertisementId, bool accepted);
+    Internship GetInternship(int id);
+    bool RejectAllApplications(int id);
 
 }
 

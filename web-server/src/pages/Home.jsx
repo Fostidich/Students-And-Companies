@@ -2,7 +2,8 @@ import { useState, useEffect } from 'react';
 import Cookies from 'js-cookie';
 import AdvertisementCompany from "../components/company/AdvertisementCompany.jsx";
 import AdvertisementStudent from "../components/student/AdvertisementStudent.jsx";
-const API_SERVER_URL = import.meta.env.VITE_API_SERVER_URL;
+const API_SERVER_URL = window.env?.VITE_API_SERVER_URL || 'http://localhost:5000';
+
 function Home() {
     const authData = JSON.parse(Cookies.get('authData'));
     const userType = authData.userType;

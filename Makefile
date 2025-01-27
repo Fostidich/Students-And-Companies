@@ -105,7 +105,7 @@ web-server:
 
 web-server-docker:
 	docker build -t sc-web-server ./web-server
-	docker run --rm -it -p 80:80 sc-web-server
+	docker run --rm -it -p 8080:80 sc-web-server
 	docker image prune -f
 
 application-server:
@@ -113,7 +113,7 @@ application-server:
 
 application-server-docker:
 	docker build -t sc-application-server ./application-server
-	docker run --rm -it -p 4673:4673 sc-application-server
+	docker run --rm -it -p 4673:5000 sc-application-server
 	docker image prune -f
 
 db-migration:

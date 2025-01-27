@@ -123,6 +123,28 @@ public class EnrollmentQueries : IEnrollmentQueries {
         }
     }
 
+    public bool RejectApplication(int id) {
+        try {
+            string query = $@"
+                UPDATE application
+                SET status = 'REJECTED'
+                WHERE application_id = @Id";
+
+            using var db_connection = dataService.GetConnection();
+            using var command = new MySqlCommand(query, db_connection);
+
+            command.Parameters.AddWithValue("@Id", id);
+
+            int rowsAffected = command.ExecuteNonQuery();
+
+            return rowsAffected > 0;
+        } catch (Exception ex) {
+            Console.WriteLine(ex.Message);
+            return false;
+        }
+    }
+
+
     public bool CreateInternship(int studentId, int companyId, int advertisementId, DateTime start, DateTime end) {
         try {
             string query = $@"
@@ -147,11 +169,12 @@ public class EnrollmentQueries : IEnrollmentQueries {
         }
     }
 
-    public bool NotifyStudent(int studentId, int advertisementId, char outcome) {
+    public bool NotifyStudent(int studentId, int advertisementId, bool accepted) {
         try {
+            string outcome = accepted ? "ACCEPTED" : "REJECTED";
             string query = $@"
                 INSERT INTO student_notifications (student_id, advertisement_id, type)
-                VALUES (@StudentId, @AdvertisementId, 'ACCEPTED')";
+                VALUES (@StudentId, @AdvertisementId, {outcome})";
 
             using var db_connection = dataService.GetConnection();
             using var command = new MySqlCommand(query, db_connection);
@@ -162,6 +185,27 @@ public class EnrollmentQueries : IEnrollmentQueries {
 	        int rowsAffected = command.ExecuteNonQuery();
 
 	        return rowsAffected > 0;
+        } catch (Exception ex) {
+            Console.WriteLine(ex.Message);
+            return false;
+        }
+    }
+
+    public bool RejectAllApplications(int id) {
+        try {
+            string query = $@"
+                UPDATE application
+                SET status = 'REJECTED'
+                WHERE student_id = @Id";
+
+            using var db_connection = dataService.GetConnection();
+            using var command = new MySqlCommand(query, db_connection);
+
+            command.Parameters.AddWithValue("@Id", id);
+
+            int rowsAffected = command.ExecuteNonQuery();
+
+            return rowsAffected > 0;
         } catch (Exception ex) {
             Console.WriteLine(ex.Message);
             return false;

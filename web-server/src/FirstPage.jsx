@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import Welcome from './pages/Welcome.jsx';
 import App from './App.jsx';
 import Cookies from 'js-cookie';
-const API_SERVER_URL = import.meta.env.VITE_API_SERVER_URL;
+const API_SERVER_URL = window.env?.VITE_API_SERVER_URL || 'http://localhost:5000';
 
 function FirstPage() {
     const [isLoggedIn, setIsLoggedIn] = useState(false);

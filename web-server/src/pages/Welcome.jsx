@@ -16,7 +16,7 @@ function Welcome({ onLogin }) {
         <div className="flex h-screen w-screen bg-white">
             {/* Left Column */}
             <div className="flex flex-col items-center justify-center bg-white text-black w-3/4">
-                <img src="/src/assets/SC-logo-welcome.png" alt="Site Logo" className="w-full" />
+                <img src="/SC-logo-welcome.png" alt="Site Logo" className="w-full" />
             </div>
 
             {/* Right Column */}
