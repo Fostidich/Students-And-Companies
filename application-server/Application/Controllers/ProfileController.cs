@@ -119,36 +119,36 @@ public class ProfileController : ControllerBase {
             return StatusCode(500, "Internal server error\n");
     }
 
-    [HttpGet("company/{id}")]
+    [HttpGet("company/{companyId}")]
     [Authorize]
     [SwaggerOperation(Summary = "Get a company profile information", Description = "The profile information of the company with the provided ID is returned.")]
     [ProducesResponseType(200)]
     [ProducesResponseType(400)]
     [ProducesResponseType(404)]
-    public IActionResult GetCompanyFromId(int id) {
+    public IActionResult GetCompanyFromId(int companyId) {
         // Check ID validity
-        if (id <= 0) return BadRequest("Invalid id\n");
+        if (companyId <= 0) return BadRequest("Invalid id\n");
 
         // Find and return user data
-        DTO.Company user = profile.GetCompany(id)?.ToDto();
+        DTO.Company user = profile.GetCompany(companyId)?.ToDto();
         if (user == null)
             return NotFound("Company not found\n");
         else
             return Ok(user);
     }
 
-    [HttpGet("student/{id}")]
+    [HttpGet("student/{studentId}")]
     [Authorize]
     [SwaggerOperation(Summary = "Get a student profile information", Description = "The profile information of the company with the provided ID is returned.")]
     [ProducesResponseType(200)]
     [ProducesResponseType(400)]
     [ProducesResponseType(404)]
-    public IActionResult GetStudentFromId(int id) {
+    public IActionResult GetStudentFromId(int studentId) {
         // Check ID validity
-        if (id <= 0) return BadRequest("Invalid id\n");
+        if (studentId <= 0) return BadRequest("Invalid id\n");
 
         // Find and return user data
-        DTO.Student user = profile.GetStudent(id)?.ToDto();
+        DTO.Student user = profile.GetStudent(studentId)?.ToDto();
         if (user == null)
             return NotFound("Student not found\n");
         else
@@ -180,18 +180,18 @@ public class ProfileController : ControllerBase {
             return File(cv.OpenReadStream(), cv.ContentType, cv.FileName);
     }
 
-    [HttpGet("cv/{id}")]
+    [HttpGet("cv/{studentId}")]
     [Authorize]
     [SwaggerOperation(Summary = "Download the CV of a student", Description = "The CV PDF file of the student with the provide ID is returned, if it was previously uploaded.")]
     [ProducesResponseType(200)]
     [ProducesResponseType(400)]
     [ProducesResponseType(404)]
-    public IActionResult DownloadCv(int id) {
+    public IActionResult DownloadCv(int studentId) {
         // Check ID validity
-        if (id <= 0) return BadRequest("Invalid id\n");
+        if (studentId <= 0) return BadRequest("Invalid id\n");
 
         // Retrieve CV from user ID
-        IFormFile cv = profile.RetrieveCvFile(id);
+        IFormFile cv = profile.RetrieveCvFile(studentId);
 
         // File is null if not present
         if (cv == null)
@@ -328,19 +328,19 @@ public class ProfileController : ControllerBase {
         return Ok(skillsDto);
     }
 
-    [HttpGet("skills/{id}")]
+    [HttpGet("skills/{studentId}")]
     [Authorize]
     [SwaggerOperation(Summary = "Get the skills of a student", Description = "The skills of the student with the provided ID are returned in a list.")]
     [ProducesResponseType(200)]
     [ProducesResponseType(400)]
     [ProducesResponseType(404)]
     [ProducesResponseType(500)]
-    public IActionResult GetSkillsFromId(int id) {
+    public IActionResult GetSkillsFromId(int studentId) {
         // Check ID validity
-        if (id <= 0) return BadRequest("Invalid id\n");
+        if (studentId <= 0) return BadRequest("Invalid id\n");
 
         // Retrieve skills
-        List<Skill> skills = profile.GetSkills(id);
+        List<Skill> skills = profile.GetSkills(studentId);
 
         // Check errors
         if (skills == null)
@@ -355,15 +355,15 @@ public class ProfileController : ControllerBase {
         return Ok(skillsDto);
     }
 
-    [HttpPost("skills/delete/{id}")]
+    [HttpPost("skills/delete/{skillId}")]
     [Authorize]
     [SwaggerOperation(Summary = "Delete a skill from profile", Description = "The skill with the provided ID is deleted from the logged in student profile information.")]
     [ProducesResponseType(200)]
     [ProducesResponseType(400)]
     [ProducesResponseType(404)]
-    public IActionResult DeleteSkill(int id) {
+    public IActionResult DeleteSkill(int skillId) {
         // Check ID validity
-        if (id <= 0) return BadRequest("Invalid id\n");
+        if (skillId <= 0) return BadRequest("Invalid id\n");
 
         // Check role
         string role = User.FindFirst(ClaimTypes.Role).Value;
@@ -375,7 +375,7 @@ public class ProfileController : ControllerBase {
         int userId = Convert.ToInt32(userIdStr);
 
         // Delete skill from student
-        if (profile.DeleteSkill(id, userId))
+        if (profile.DeleteSkill(skillId, userId))
             return Ok("Skill delete from student\n");
         else
             return NotFound("Skill not found\n");

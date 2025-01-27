@@ -57,10 +57,10 @@ public class TestSeed {
                 StudentId = i,
                 SkillId = i
             });
-            
-            
+
+
         }
-        
+
         context.SaveChanges();
 
         for (int i = 1; i <= 205; i++) {
@@ -108,12 +108,12 @@ public class TestSeed {
                 StartDate = new DateTime(2021, 12, 2, 19, 55, 0),
                 EndDate = new DateTime(2022, 12, 2, 19, 55, 0)
             });
-            
+
 
         }
-        
+
         context.SaveChanges();
-        
+
         for (int i = 1; i <= 203; i++) {
 
 
@@ -121,10 +121,10 @@ public class TestSeed {
                     context.StudentNotifications.AddRange(new Entity.StudentNotifications {
                         StudentId = i,
                         AdvertisementId = i + j,
-                        Type = 'r'
+                        Type = "RECOMMENDED"
                     });
             }
-            
+
 
             context.StudentFeedbacks.AddRange(new Entity.StudentFeedback {
                 InternshipId = i,
@@ -142,7 +142,7 @@ public class TestSeed {
         }
     }
 
-    
+
     public class SeedHelper {
 
         private int companyId;

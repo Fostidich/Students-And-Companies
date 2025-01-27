@@ -1,9 +1,91 @@
+using System.Collections.Generic;
+using System.Linq;
+using System;
+
 public class EnrollmentService : IEnrollmentService {
 
     private readonly IEnrollmentQueries queries;
+    private readonly IRecommendationQueries recommendationQueries;
 
-    public EnrollmentService(IEnrollmentQueries queries) {
+    public EnrollmentService(IEnrollmentQueries queries, IRecommendationQueries recommendationQueries) {
         this.queries = queries;
+        this.recommendationQueries = recommendationQueries;
+    }
+
+    public Application GetApplication(int userId, int advertisementId) {
+        // Get application
+        var found = queries.GetApplication(userId, advertisementId);
+
+        // Return application if found
+        if (found != null)
+            return new Application(found);
+        else
+            return null;
+    }
+
+    public Application GetApplication(int applicationId) {
+        // Get application
+        var found = queries.GetApplication(applicationId);
+
+        // Return application if found
+        if (found != null)
+            return new Application(found);
+        else
+            return null;
+    }
+
+    public bool CreateApplication(int userId, int advertisementId, string questionnaireAnswer) {
+        return queries.CreateApplication(userId, advertisementId, questionnaireAnswer);
+    }
+
+    public Advertisement GetAdvertisement(int advertisementId) {
+        // Get advertisement
+        var found = recommendationQueries.GetAdvertisement(advertisementId);
+
+        // Return advertisement if found
+        if (found != null)
+            return new Advertisement(found);
+        else
+            return null;
+    }
+
+    public List<Application> GetPendingApplications(int id) {
+        // Get application
+        var found = queries.GetPendingApplications(id);
+
+        // Return applications found
+        if (found != null)
+            return found.Select(a => new Application(a)).ToList();
+        else
+            return null;
+    }
+
+    public bool CheckStartDateValidity(DateTime date) {
+        var today = DateTime.Today;
+        var maxDate = today.AddYears(5);
+        return date > today && date < maxDate;
+    }
+
+    public bool AcceptApplication(int id) {
+        return queries.AcceptApplication(id);
+    }
+
+    public bool CreateInternship(int studentId, int companyId, int advertisementId, DateTime start) {
+        // Find advertisement
+        var advertisement = recommendationQueries.GetAdvertisement(advertisementId);
+
+        // Check error
+        if (advertisement == null)
+            return false;
+
+        // Compute end date
+        var end = start.AddMonths(advertisement.Duration);
+
+        return queries.CreateInternship(studentId, companyId, advertisementId, start, end);
+    }
+
+    public bool NotifyStudent(int studentId, int advertisementId, char outcome) {
+        return queries.NotifyStudent(studentId, advertisementId, outcome);
     }
 
 }

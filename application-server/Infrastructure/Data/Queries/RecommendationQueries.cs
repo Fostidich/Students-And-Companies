@@ -54,7 +54,7 @@ public class RecommendationQueries : IRecommendationQueries
                     a.description,
                     a.duration,
                     a.spots,
-                    a.available,                   
+                    a.available,
                     a.open,
                     a.questionnaire
                 FROM advertisement_skills ads
@@ -62,7 +62,7 @@ public class RecommendationQueries : IRecommendationQueries
                 INNER JOIN student_skills ss ON ads.skill_id = ss.skill_id
                 WHERE ss.student_id = @StudentId
                   AND a.open = true
-                GROUP BY a.advertisement_id, a.name, a.created_at, a.company_id, a.description, a.duration, a.spots, a.available, a.open, a.questionnaire 
+                GROUP BY a.advertisement_id, a.name, a.created_at, a.company_id, a.description, a.duration, a.spots, a.available, a.open, a.questionnaire
                 ORDER BY COUNT(*) DESC
                 LIMIT 40;
             ";
@@ -278,8 +278,8 @@ public class RecommendationQueries : IRecommendationQueries
 
             // Query to insert notifications
             string insertNotificationQuery = @"
-            INSERT INTO StudentNotifications (student_id, advertisement_id, type)
-            VALUES (@StudentId, @AdvertisementId, 'r');
+            INSERT INTO student_notifications (student_id, advertisement_id, type)
+            VALUES (@StudentId, @AdvertisementId, 'RECOMMENDED');
         ";
 
             using var db_connection = dataService.GetConnection();
@@ -339,7 +339,7 @@ public class RecommendationQueries : IRecommendationQueries
             return null;
         }
     }
-    
+
     public List<Entity.Student> GetRecommendedCandidates(int companyId, int advertisementId)
     {
         try
@@ -427,7 +427,7 @@ public class RecommendationQueries : IRecommendationQueries
             // Query to insert the notification into student_notifications
             string insertNotificationQuery = @"
                 INSERT INTO student_notifications (student_id, advertisement_id, type)
-                VALUES (@StudentId, @AdvertisementId, 'c');
+                VALUES (@StudentId, @AdvertisementId, 'INVITED');
             ";
 
             using var db_connection = dataService.GetConnection();

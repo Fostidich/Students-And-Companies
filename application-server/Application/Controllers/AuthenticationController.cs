@@ -46,10 +46,10 @@ public class AuthenticationController : ControllerBase {
             return StatusCode(500, "Internal server error\n");
     }
 
-    [HttpPost("validation/{id}")]
+    [HttpPost("validation/{verificationCode}")]
     [Authorize]
     [ProducesResponseType(501)]
-    public IActionResult ValidationCode(int id) {
+    public IActionResult ValidationCode(int verificationCode) {
         return StatusCode(501, "Feature not yet implemented\n");
     }
 

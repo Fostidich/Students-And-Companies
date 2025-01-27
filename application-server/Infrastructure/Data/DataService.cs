@@ -57,7 +57,7 @@ public class DataService : IDataService {
 
         return advertisements;
     }
-    
+
     public List<Entity.StudentNotifications> MapToStudentNotifications(IDataReader reader) {
         var studentNotifications = new List<Entity.StudentNotifications>();
 
@@ -67,7 +67,17 @@ public class DataService : IDataService {
 
         return studentNotifications;
     }
-    
+
+    public List<Entity.Application> MapToApplications(IDataReader reader) {
+        var applications = new List<Entity.Application>();
+
+        while (reader.Read()) {
+            applications.Add(new Entity.Application(reader));
+        }
+
+        return applications;
+    }
+
     public List<Entity.Internship> MapToInternships(IDataReader reader) {
         var internships = new List<Entity.Internship>();
 
@@ -77,7 +87,7 @@ public class DataService : IDataService {
 
         return internships;
     }
-    
+
     public List<Entity.StudentFeedback> MapToStudentFeedback(IDataReader reader) {
         var studentFeedback = new List<Entity.StudentFeedback>();
 
@@ -87,7 +97,7 @@ public class DataService : IDataService {
 
         return studentFeedback;
     }
-    
+
     public List<Entity.CompanyFeedback> MapToCompanyFeedback(IDataReader reader) {
         var companyFeedback = new List<Entity.CompanyFeedback>();
 

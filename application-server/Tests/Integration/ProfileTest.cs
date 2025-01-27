@@ -706,7 +706,8 @@ public class ProfileTest {
         logIn.LogInStudent(id);
 
         // Act
-        await client.PostAsync($"/api/profile/skills/delete/{id}", null);
+        for (int i = 0; i < 5; i++)
+            await client.PostAsync($"/api/profile/skills/delete/{id + i}", null);
         var response = await client.GetAsync("/api/profile/skills");
         var responseBody = await response.Content.ReadAsStringAsync();
 

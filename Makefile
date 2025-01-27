@@ -93,10 +93,10 @@ endif
 test:
 ifeq ($(OS),Windows_NT)
 	dotnet clean application-server/Tests > NUL
-	dotnet test application-server/Tests
+	dotnet test application-server/Tests --nologo
 else
 	dotnet clean application-server/Tests > /dev/null
-	dotnet test application-server/Tests
+	dotnet test application-server/Tests --nologo
 endif
 
 web-server:

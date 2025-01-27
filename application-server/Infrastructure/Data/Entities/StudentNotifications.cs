@@ -13,31 +13,31 @@ namespace Entity {
             StudentNotificationId = Convert.ToInt32(reader["student_notification_id"]);
             StudentId = Convert.ToInt32(reader["student_id"]);
             AdvertisementId = Convert.ToInt32(reader["advertisement_id"]);
-            Type = Convert.ToChar(reader["type"]);
+            Type = reader["type"].ToString();
         }
+
 
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int StudentNotificationId { get; set; }
-        
+
         [Required(ErrorMessage = "Field is required")]
         [ForeignKey("Student")]
         public int StudentId { get; set; }
-    
+
         [Required(ErrorMessage = "Field is required")]
         [ForeignKey("Advertisement")]
         public int AdvertisementId { get; set; }
-    
+
         [Required(ErrorMessage = "Field is required")]
-        [Column(TypeName = "enum('c','r')")]
-        public char Type { get; set; }
-        
-        
+        [Column(TypeName = "enum('INVITED', 'RECOMMENDED', 'ACCEPTED', 'REJECTED')")]
+        public string Type { get; set; }
+
+
         // Navigation properties
-        
+
         public Entity.Student Student { get; set; }
         public Entity.Advertisement Advertisement { get; set; }
-        
-    
+
     }
 }
