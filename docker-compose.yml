@@ -13,10 +13,10 @@ services:
     healthcheck:
       test: ["CMD", "mysqladmin", "ping", "-h", "db"]
       interval: 1s
-      retries: 60
+      retries: 300
 
   sc-web-server:
-    image: sc_web_server:latest
+    image: fostidich/sc_web_server:latest
     container_name: sc-web-server
     environment:
         VITE_API_SERVER_URL: "http://localhost:5522"
@@ -24,7 +24,7 @@ services:
       - "8080:80"
 
   sc-application-server:
-    image: sc_application_server:latest
+    image: fostidich/sc_application_server:latest
     container_name: sc-application-server
     environment:
       JWT_SECRET: "8xzTCUwj0a1CaRttQBtZ5Dc2g78gLfiP"
