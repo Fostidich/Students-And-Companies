@@ -33,14 +33,16 @@ function LoginForm({ onLogin }) {
             onLogin();
             console.log('Login successful');
         } else {
-            setErrorMessage('Invalid username or password');
+            setErrorMessage('Invalid username or password '+await response.text());
             console.error('Login failed: '+response.status);
         }
     };
 
     return (
+
         <form onSubmit={handleSubmit} className="bg-white flex flex-col rounded-md p-6 border border-[#d9d9d9]">
             {errorMessage && <div className="text-red-500 mb-4">{errorMessage}</div>}
+
             <input
                 type="text"
                 placeholder="Username"

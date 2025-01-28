@@ -8,6 +8,8 @@ function AdvertisementCompany({ advertisement }) {
         return new Date(dateString).toLocaleDateString();
     };
 
+
+
     return (
         <div className="bg-white rounded-lg border p-4 mb-4">
             <div className="flex justify-between items-start">
@@ -48,6 +50,10 @@ function AdvertisementCompany({ advertisement }) {
                             <p><strong>Status:</strong> {advertisement.open ? 'Open' : 'Closed'}</p>
                             <p><strong>Questionnaire:</strong> {advertisement.questionnaire}</p>
                         </div>
+                        <div>
+                            candidato uno
+                        </div>
+
                     </div>
                 </div>
             )}
