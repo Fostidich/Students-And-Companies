@@ -51,9 +51,9 @@ public class Program {
         app.UseCors("AllowAll");
 
         // Link application services
-        app.MapControllers();
         app.UseAuthentication();
         app.UseAuthorization();
+        app.MapControllers();
     }
 
     public static void ConfigureServices(WebApplicationBuilder builder) {
@@ -63,6 +63,7 @@ public class Program {
         ConfigureBuilderDataProtection(builder);
         ConfigureBuilderApiExplorer(builder);
         ConfigureBuilderDbConnection(builder);
+        ConfigureBuilderUrls(builder);
         ConfigureBuilderCors(builder);
 
         // Configure console logging
@@ -70,9 +71,6 @@ public class Program {
 
         // Find routes controllers
         builder.Services.AddControllers();
-
-        // Set up URL on which to listen
-        builder.WebHost.UseUrls("http://0.0.0.0:5000");
     }
 
     private static void ConfigureBuilderConfiguration(WebApplicationBuilder builder) {
@@ -195,13 +193,27 @@ public class Program {
         );
     }
 
+    private static void ConfigureBuilderUrls(WebApplicationBuilder builder) {
+        // Set up URL on which to listen
+        string deafultUrlEnv = Environment.GetEnvironmentVariable("CONNECTION_URL");
+        if (string.IsNullOrWhiteSpace(deafultUrlEnv)) {
+            string defaultUrlStd = builder.Configuration["ConnectionUrl"];
+            Console.WriteLine($"No connection url found in .env: using \"{defaultUrlStd}\".");
+        } else {
+            builder.Configuration["ConnectionUrl"] = deafultUrlEnv;
+        }
+
+        builder.WebHost.UseUrls(builder.Configuration["ConnectionUrl"]);
+    }
+
     private static void ConfigureBuilderCors(WebApplicationBuilder builder) {
         // Add the CORS policy
         builder.Services.AddCors(options => {
             options.AddPolicy("AllowAll", builder => {
                 builder.AllowAnyOrigin()
                    .AllowAnyMethod()
-                   .AllowAnyHeader();
+                   .AllowAnyHeader()
+                   .SetIsOriginAllowed(_ => true);
             });
         });
     }
