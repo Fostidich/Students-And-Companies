@@ -71,6 +71,22 @@ namespace Entity {
         public ICollection<Entity.Application> Applications { get; set; }
         public ICollection<Entity.Internship> Internships { get; set; }
         public ICollection<Entity.StudentNotifications> StudentNotifications { get; set; }
+        
+        
+        
+        public override bool Equals(object obj)
+        {
+            if (obj is Advertisement other)
+            {
+                return AdvertisementId == other.AdvertisementId;
+            }
+            return false;
+        }
+
+        public override int GetHashCode()
+        {
+            return AdvertisementId.GetHashCode();
+        }
 
     }
 

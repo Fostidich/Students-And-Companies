@@ -58,8 +58,8 @@ public class RecommendationQueries : IRecommendationQueries
                     a.open,
                     a.questionnaire
                 FROM advertisement_skills ads
-                INNER JOIN advertisement a ON ads.advertisement_id = a.advertisement_id
-                INNER JOIN student_skills ss ON ads.skill_id = ss.skill_id
+                JOIN advertisement a ON ads.advertisement_id = a.advertisement_id
+                JOIN student_skills ss ON ads.skill_id = ss.skill_id
                 WHERE ss.student_id = @StudentId
                   AND a.open = true
                 GROUP BY a.advertisement_id, a.name, a.created_at, a.company_id, a.description, a.duration, a.spots, a.available, a.open, a.questionnaire
@@ -84,9 +84,9 @@ public class RecommendationQueries : IRecommendationQueries
                 defaultAdvertisements = GetDefaultAdvertisements(advertisements);
             }
 
-            advertisements.Concat(defaultAdvertisements);
+            var advs = advertisements.Concat(defaultAdvertisements).ToList();
 
-            return advertisements;
+            return advs;
 
         }
         catch (Exception ex)
@@ -114,7 +114,9 @@ public class RecommendationQueries : IRecommendationQueries
 
             var defaultAdvertisements = dataService.MapToAdvertisements(reader);
 
-            return defaultAdvertisements.Except(advertisements).ToList();
+            var advs = defaultAdvertisements.Except(advertisements).ToList();
+            
+            return advs;
         }
         catch (Exception ex)
         {

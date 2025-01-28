@@ -36,7 +36,9 @@ public class RecommendationService : IRecommendationService {
         }
         
         // Convert Entity.Advertisement to Advertisement
-        List<Advertisement> adv = advertisements.Select(adv => new Advertisement(adv)).ToList();
+        List<Advertisement> adv = advertisements
+            .Select(adv => new Advertisement(adv))
+            .ToList();
         
         return adv;
     }
