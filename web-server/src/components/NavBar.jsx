@@ -5,7 +5,7 @@ const Navbar = () => {
         <nav className="bg-white p-4 flex items-center justify-between w-full shadow-md px-9 fixed top-0 left-0 z-50">
             <div className="flex items-center">
                 <img onClick={() => window.location.href = "/"}
-                    src="/src/assets/logo.svg"
+                    src="/logo.svg"
                     alt="Site Logo"
                     className="w-20 h-20 rounded-full mr-4"
                 />
@@ -35,12 +35,6 @@ const Navbar = () => {
                     className={({ isActive }) => isActive ? "font-bold text-[#2C2C2C]" : "text-[#6C757D] hover:text-[#2C2C2C]"}
                 >
                     Notification
-                </NavLink>
-                <NavLink
-                    to="/help"
-                    className={({ isActive }) => isActive ? "font-bold text-[#2C2C2C]" : "text-[#6C757D] hover:text-[#2C2C2C]"}
-                >
-                    Help
                 </NavLink>
             </div>
         </nav>

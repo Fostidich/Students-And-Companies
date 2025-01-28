@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import Cookies from "js-cookie";
+import { getErrorMessage } from '../../utils/errorUtils';
 const API_SERVER_URL = window.env?.VITE_API_SERVER_URL || 'http://localhost:5000';
 
 function AdvertisementStudent({ advertisement }) {
@@ -11,9 +12,12 @@ function AdvertisementStudent({ advertisement }) {
         bio: '',
         headquarter: '',
         fiscalCode: '',
-        vatNumber: ''
+        vatNumber: '',
+        advertisementId: ''
     });
-    const [response, setResponse] = useState('');
+    const [questionnaireAnswer, setQuestionnaireAnswer] = useState('');
+    const [errorMessage, setErrorMessage] = useState('');
+    const authData = JSON.parse(Cookies.get('authData'));
 
     const formatDate = (dateString) => {
         return new Date(dateString).toLocaleDateString();
@@ -44,8 +48,25 @@ function AdvertisementStudent({ advertisement }) {
 
     const handleSubmit = async (e) => {
         e.preventDefault()
-        console.log('Applied');
-        setShowDetails(false);
+
+        const response = await fetch(`${API_SERVER_URL}/api/enrollment/applications/${advertisement.advertisementId}`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${authData.token}`,
+            },
+            body: JSON.stringify({questionnaireAnswer}),
+        });
+        console.log('Response:', response);
+
+        if (response.status === 200) {
+            console.log('Applied');
+            setShowDetails(false);
+        } else {
+            setErrorMessage('');
+            setErrorMessage(await getErrorMessage(response));
+        }
+
     }
 
     return (
@@ -90,11 +111,12 @@ function AdvertisementStudent({ advertisement }) {
                         </div>
                         <div className=" items-center justify-center">
                             <form onSubmit={handleSubmit}>
+                                {errorMessage && <div className="text-red-500 mb-4">{errorMessage}</div>}
                                 <p><strong>Questionnaire: </strong> {advertisement.questionnaire}</p>
                                 <input
                                     type="text"
-                                    value={response}
-                                    onChange={(e) => setResponse(e.target.value)}
+                                    value={questionnaireAnswer}
+                                    onChange={(e) => setQuestionnaireAnswer(e.target.value)}
                                     className="border rounded p-2 w-full"
                                     required
                                 />

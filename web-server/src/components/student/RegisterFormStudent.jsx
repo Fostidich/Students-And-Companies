@@ -1,5 +1,6 @@
 import PropTypes from 'prop-types';
 import { useState } from 'react';
+import { getErrorMessage } from '../../utils/errorUtils';
 const API_SERVER_URL = window.env?.VITE_API_SERVER_URL || 'http://localhost:5000';
 
 function RegisterFormStudent({ onRegister }) {
@@ -30,9 +31,8 @@ function RegisterFormStudent({ onRegister }) {
             onRegister();
             console.log('Registration successful');
         } else {
-            setErrorMessage('Invalid username or password error: '+ response.status);
-            console.log(JSON.stringify({ username, email, password, bio, name, surname, university, courseOfStudy, gender, birthDate }))
-            console.error('Registration failed: ' + response.status);
+            setErrorMessage('')
+            setErrorMessage(await getErrorMessage(response));
         }
     }
     return (

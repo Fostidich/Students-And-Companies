@@ -4,7 +4,7 @@ import Navbar from "./components/NavBar.jsx";
 import Home from "./pages/Home.jsx";
 import Profile from "./pages/Profile.jsx";
 import Notification from "./pages/Notification.jsx";
-import Help from "./pages/Help.jsx";
+
 function App({ onLogout }) {
 
     const handleLogoutClick = async () => {
@@ -24,7 +24,6 @@ function App({ onLogout }) {
                         <Route path="/" element={<Home />} />
                         <Route path="/profile" element={<Profile onLogout={handleLogoutClick} />} />
                         <Route path="/notification" element={<Notification />} />
-                        <Route path="/help" element={<Help />} />
                     </Routes>
                 </div>
             </div>
