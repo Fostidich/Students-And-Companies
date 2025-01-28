@@ -55,7 +55,7 @@ public class EnrollmentController : ControllerBase {
             return StatusCode(500, "Internal server error\n");
     }
 
-    [HttpGet("applications")]
+    [HttpGet("applications/{advertisementId}")]
     [SwaggerOperation(Summary = "Get pending applications", Description = "The requested applications, in the pending status, relative to the advertisement with the provided ID are returned.")]
     [Authorize]
     [ProducesResponseType(200)]
@@ -161,8 +161,12 @@ public class EnrollmentController : ControllerBase {
     }
 
     [HttpPost("reject/{applicationId}")]
+    [SwaggerOperation(Summary = "Reject an application", Description = "The applications with the provided ID is rejected, and the student is thus notified.")]
     [Authorize]
-    [ProducesResponseType(501)]
+    [ProducesResponseType(200)]
+    [ProducesResponseType(400)]
+    [ProducesResponseType(404)]
+    [ProducesResponseType(500)]
     public IActionResult RejectApplication(int applicationId) {
         // Check id validity
         if (applicationId <= 0)

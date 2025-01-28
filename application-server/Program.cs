@@ -47,13 +47,12 @@ public class Program {
             app.UseSwaggerUI();
         }
 
-        // CORS policy
-        app.UseCors("AllowAll");
-
         // Link application services
+        app.UseRouting();
+        app.UseCors();
         app.UseAuthentication();
         app.UseAuthorization();
-        app.MapControllers();
+        app.MapControllers().RequireCors();
     }
 
     public static void ConfigureServices(WebApplicationBuilder builder) {
@@ -198,22 +197,21 @@ public class Program {
         string deafultUrlEnv = Environment.GetEnvironmentVariable("CONNECTION_URL");
         if (string.IsNullOrWhiteSpace(deafultUrlEnv)) {
             string defaultUrlStd = builder.Configuration["ConnectionUrl"];
-            Console.WriteLine($"No connection url found in .env: using \"{defaultUrlStd}\".");
+            Console.WriteLine($"No connection URL found in .env: using \"{defaultUrlStd}\".");
         } else {
             builder.Configuration["ConnectionUrl"] = deafultUrlEnv;
         }
-
         builder.WebHost.UseUrls(builder.Configuration["ConnectionUrl"]);
-    }
+   }
 
     private static void ConfigureBuilderCors(WebApplicationBuilder builder) {
         // Add the CORS policy
         builder.Services.AddCors(options => {
-            options.AddPolicy("AllowAll", builder => {
-                builder.AllowAnyOrigin()
-                   .AllowAnyMethod()
-                   .AllowAnyHeader()
-                   .SetIsOriginAllowed(_ => true);
+            options.AddDefaultPolicy(builder => {
+                builder
+                    .AllowAnyOrigin()
+                    .AllowAnyHeader()
+                    .AllowAnyMethod();
             });
         });
     }
