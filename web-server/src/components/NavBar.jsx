@@ -1,6 +1,9 @@
 import { NavLink } from 'react-router-dom';
+import Cookies from "js-cookie";
 
 const Navbar = () => {
+    const authData = JSON.parse(Cookies.get('authData'));
+    const userType = authData.userType
     return (
         <nav className="bg-white p-4 flex items-center justify-between w-full shadow-md px-9 fixed top-0 left-0 z-50">
             <div className="flex items-center">
@@ -30,12 +33,23 @@ const Navbar = () => {
                 >
                     Profile
                 </NavLink>
-                <NavLink
-                    to="/notification"
-                    className={({ isActive }) => isActive ? "font-bold text-[#2C2C2C]" : "text-[#6C757D] hover:text-[#2C2C2C]"}
-                >
-                    Notification
-                </NavLink>
+                {userType.toLowerCase() === 'student' ? (
+                    <NavLink
+                        to="/notification"
+                        className={({ isActive }) => isActive ? "font-bold text-[#2C2C2C]" : "text-[#6C757D] hover:text-[#2C2C2C]"}
+                    >
+                        Notification
+                    </NavLink>
+
+                ):(
+                    <NavLink
+                        to="/applications"
+                        className={({ isActive }) => isActive ? "font-bold text-[#2C2C2C]" : "text-[#6C757D] hover:text-[#2C2C2C]"}
+                    >
+                        Applications
+                    </NavLink>
+                )}
+
             </div>
         </nav>
     );
