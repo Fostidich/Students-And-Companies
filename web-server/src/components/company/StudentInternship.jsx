@@ -49,7 +49,6 @@ function StudentInternship({internship}) {
     return (
         <div>
            <div className="bg-white rounded-lg border p-4 mb-4">
-               <h2 className="text-xl font-bold mb-4">Internship and Student Profile Details</h2>
                <div className="space-y-2">
                    <p><strong>Student Name:</strong> {profileStudent.name} {profileStudent.surname}</p>
                    <p><strong>University:</strong> {profileStudent.university}</p>

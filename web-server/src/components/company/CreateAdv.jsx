@@ -1,8 +1,10 @@
 import { useState } from 'react';
 import Cookies from 'js-cookie';
+import {getErrorMessage} from "../../utils/errorUtils.js";
 const API_SERVER_URL = window.env?.VITE_API_SERVER_URL || 'http://localhost:5000';
 
 function CreateAdv() {
+    const [name, setName] = useState('');
     const [description, setDescription] = useState('');
     const [duration, setDuration] = useState(0);
     const [spots, setSpots] = useState(0);
@@ -37,6 +39,7 @@ function CreateAdv() {
                     'Authorization': `Bearer ${authData.token}`,
                 },
                 body: JSON.stringify({
+                    name,
                     description,
                     duration: parseInt(duration, 10),
                     spots: parseInt(spots, 10),
@@ -46,12 +49,12 @@ function CreateAdv() {
             });
 
             if (!response.ok) {
+                setError(getErrorMessage(response));
                 throw new Error(`HTTP error! Status: ${response.status}`);
             }
             console.log('Advertisement created successfully');
         } catch (err) {
             console.error('Error creating advertisement:', err);
-            setError('Failed to create advertisement');
         } finally {
             setLoading(false);
         }
@@ -62,6 +65,16 @@ function CreateAdv() {
             <form onSubmit={handleSubmit} className="flex flex-col gap-4">
                 <div>
                     <p className="block font-bold text-2xl p-3">Create a new internship</p>
+                    <label className="block font-medium">Name</label>
+                    <input
+                        type="text"
+                        value={name}
+                        onChange={(e) => setName(e.target.value)}
+                        className="border rounded p-2 w-full"
+                        required
+                    />
+                </div>
+                <div>
                     <label className="block font-medium">Description</label>
                     <input
                         type="text"

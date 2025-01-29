@@ -6,6 +6,7 @@ import CardProfileCompany from "../components/company/CardProfileCompany.jsx";
 import CvBox from "../components/student/CvBox.jsx";
 import SkillsBox from "../components/student/SkillsBox.jsx";
 import CreateAdv from "../components/company/CreateAdv.jsx";
+import MyInternship from "../components/student/MyInternship.jsx";
 
 function Profile({onLogout}) {
     const navigate = useNavigate();
@@ -40,8 +41,8 @@ function Profile({onLogout}) {
             </div>
             <div className="w-full md:w-1/2 p-4">
                 {userType.toLowerCase() === 'student' ?
-                    <div>
-                        My internship
+                    <div className="bg-white border items-center p-10 rounded-xl flex flex-wrap justify-center">
+                        <MyInternship/>
                     </div>
                     :
                     <div className="bg-white border items-center p-10 rounded-xl flex flex-wrap justify-center">

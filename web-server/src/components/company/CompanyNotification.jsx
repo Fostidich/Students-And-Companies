@@ -7,6 +7,7 @@ function CompanyNotification({pendingApplication}){
     const [errorMessage, setErrorMessage] = useState('');
     const authData = JSON.parse(Cookies.get('authData'));
     const [showDetails, setShowDetails] = useState(false);
+    const [studentCV, setStudentCV] = useState('');
     const [profileStudent, setProfileStudent] = useState({
         studentId: '',
         username: '',
@@ -73,6 +74,40 @@ function CompanyNotification({pendingApplication}){
         }
 
     }
+    const getStudentCV = async () => {
+        const response = await fetch(`${API_SERVER_URL}/api/profile/cv/${profileStudent.studentId}`, {
+            headers: {
+                'Authorization': `Bearer ${authData.token}`,
+            },
+        });
+        if (response.status === 200) {
+
+            // Converti la risposta in blob
+            const blob = await response.blob();
+
+            // Crea un URL temporaneo per il download
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+
+            // Estrai il filename dall'header o usa un default
+            const contentDisposition = response.headers.get('content-disposition');
+            const filename = contentDisposition
+                ? contentDisposition.split('filename=')[1].replace(/"/g, '')
+                : `CV_${profileStudent.studentId}.pdf`;
+
+            a.download = filename;
+            document.body.appendChild(a);
+            a.click();
+
+            // Pulizia
+            window.URL.revokeObjectURL(url);
+            document.body.removeChild(a);
+
+        }
+
+    }
+
     const acceptApplication = async () => {
         const dateTime = new Date().toISOString();
         console.log(dateTime);
@@ -134,7 +169,7 @@ function CompanyNotification({pendingApplication}){
 
             {showDetails && (
                 <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
-                    <div className="bg-white p-6 rounded-lg w-2/3 h-auto relative">
+                    <div className="bg-white p-6 rounded-lg w-2/3 h-auto relative gap-4">
                         <button
                             onClick={() => setShowDetails(false) || setErrorMessage('')}
                             className="absolute top-2 right-2 text-gray-600 hover:text-gray-800"
@@ -142,13 +177,15 @@ function CompanyNotification({pendingApplication}){
                             ✕
                         </button>
                         <h2 className="text-xl font-bold mb-4">Student profile details</h2>
-                        <div className="space-y-2">
+                        <div className=" justify-center space-y-2">
                             <p><strong>Name:</strong> {profileStudent.name}</p>
                             <p><strong>Surname:</strong> {profileStudent.surname}</p>
                             <p><strong>University:</strong> {profileStudent.university +' '+ profileStudent.courseOfStudy}</p>
                             <p><strong>Questionnaire response:</strong> {pendingApplication.questionnaire}</p>
                             <p><strong>Created:</strong> {formatDate(pendingApplication.createdAt)}</p>
                             <p><strong>Status:</strong> {pendingApplication.status}</p>
+                            <button className="bg-blue-500 text-white hover:bg-blue-600 p-2 rounded-md " onClick={getStudentCV}>Download cv</button>
+                            <div></div>
                         </div>
                         <div className="flex justify-between grid grid-cols-2 gap-4">
                             <button

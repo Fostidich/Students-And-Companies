@@ -73,7 +73,7 @@ function AdvertisementCompany({ advertisement }) {
                             ✕
                         </button>
                         <h2 className="text-xl font-bold mb-4">Advertisement Details</h2>
-                        <div className="space-y-2">
+                        <div className=" border p-2 rounded-md space-y-2">
                             <p><strong>ADV ID:</strong> {advertisement.advertisementId}</p>
                             <p><strong>Created:</strong> {formatDate(advertisement.createdAt)}</p>
                             <p><strong>Company ID:</strong> {advertisement.companyId}</p>
@@ -84,13 +84,18 @@ function AdvertisementCompany({ advertisement }) {
                             <p><strong>Status:</strong> {advertisement.open ? 'Open' : 'Closed'}</p>
                             <p><strong>Questionnaire:</strong> {advertisement.questionnaire}</p>
                         </div>
-                        <div>
-                            {internshipList.map((internship) =>
-                                <StudentInternship
-                                    key={internship.internshipId}
-                                    internship={internship}
+                        <div className=" p-2">
+                            <h2 className="text-xl font-bold mb-4">Internship and Student Profile Details</h2>
+                            <div>
+                                {internshipList.map((internship) =>
+                                    <StudentInternship
+                                        key={internship.internshipId}
+                                        internship={internship}
                                     />)}
+                            </div>
+
                         </div>
+
 
                     </div>
                 </div>

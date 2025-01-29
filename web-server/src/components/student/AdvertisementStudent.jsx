@@ -57,7 +57,6 @@ function AdvertisementStudent({ advertisement }) {
             },
             body: JSON.stringify({questionnaireAnswer}),
         });
-        console.log('Response:', response);
 
         if (response.status === 200) {
             console.log('Applied');
