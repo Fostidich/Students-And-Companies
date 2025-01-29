@@ -1,12 +1,46 @@
 import { useState } from 'react';
 import PropTypes from 'prop-types';
+import Cookies from 'js-cookie';
+import {getErrorMessage} from "../../utils/errorUtils.js";
+import StudentInternship from "./StudentInternship.jsx";
+const API_SERVER_URL = window.env?.VITE_API_SERVER_URL || 'http://localhost:5000';
 
 function AdvertisementCompany({ advertisement }) {
     const [showDetails, setShowDetails] = useState(false);
+    const authData = JSON.parse(Cookies.get('authData'));
+    const [errorMessage, setErrorMessage] = useState('');
+    const [internship] = useState(
+        {
+            internshipId: 0,
+            createdAt: '',
+            studentId: 0,
+            companyId: 0,
+            advertisementId: 0,
+            startDate: '',
+            endDate: '',
+        }
+    );
+    const [internshipList, setInternshipList] = useState([internship]);
+
 
     const formatDate = (dateString) => {
         return new Date(dateString).toLocaleDateString();
     };
+    const getInternshipList = async () => {
+        const response = await fetch(`${API_SERVER_URL}/api/internship/advertisements/${advertisement.advertisementId}`, {
+            headers: {
+                'Authorization': `Bearer ${authData.token}`,
+            },
+        });
+        if (response.status === 200) {
+            const data = await response.json();
+            setInternshipList(data);
+        }else {
+            const message = await getErrorMessage(response);
+            setErrorMessage(message);
+            console.error('Error checking advertisement details:', errorMessage);
+        }
+    }
 
 
 
@@ -22,7 +56,7 @@ function AdvertisementCompany({ advertisement }) {
                     </div>
                 </div>
                 <button
-                    onClick={() => setShowDetails(true)}
+                    onClick={() => setShowDetails(true) || getInternshipList()}
                     className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
                 >
                     View Details
@@ -39,7 +73,7 @@ function AdvertisementCompany({ advertisement }) {
                             ✕
                         </button>
                         <h2 className="text-xl font-bold mb-4">Advertisement Details</h2>
-                        <div className="space-y-2">
+                        <div className=" border p-2 rounded-md space-y-2">
                             <p><strong>ADV ID:</strong> {advertisement.advertisementId}</p>
                             <p><strong>Created:</strong> {formatDate(advertisement.createdAt)}</p>
                             <p><strong>Company ID:</strong> {advertisement.companyId}</p>
@@ -50,9 +84,18 @@ function AdvertisementCompany({ advertisement }) {
                             <p><strong>Status:</strong> {advertisement.open ? 'Open' : 'Closed'}</p>
                             <p><strong>Questionnaire:</strong> {advertisement.questionnaire}</p>
                         </div>
-                        <div>
-                            candidato uno
+                        <div className=" p-2">
+                            <h2 className="text-xl font-bold mb-4">Internship and Student Profile Details</h2>
+                            <div>
+                                {internshipList.map((internship) =>
+                                    <StudentInternship
+                                        key={internship.internshipId}
+                                        internship={internship}
+                                    />)}
+                            </div>
+
                         </div>
+
 
                     </div>
                 </div>
