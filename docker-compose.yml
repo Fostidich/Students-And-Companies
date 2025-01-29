@@ -29,6 +29,7 @@ services:
     environment:
       JWT_SECRET: "8xzTCUwj0a1CaRttQBtZ5Dc2g78gLfiP"
       DB_DEFAULT_CONNECTION: "Server=db;Database=students_and_companies;User ID=sc_admin;Password=YVxm-3861;"
+      CONNECTION_URL: "http://0.0.0.0:5000"
     ports:
       - "5522:5000"
     depends_on:
