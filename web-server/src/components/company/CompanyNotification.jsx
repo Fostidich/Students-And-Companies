@@ -7,7 +7,8 @@ function CompanyNotification({pendingApplication}){
     const [errorMessage, setErrorMessage] = useState('');
     const authData = JSON.parse(Cookies.get('authData'));
     const [showDetails, setShowDetails] = useState(false);
-    const [studentCV, setStudentCV] = useState('');
+    const [isLoadingStudent, setIsLoadingStudent] = useState(true);
+    const [isLoadingAd, setIsLoadingAd] = useState(true);
     const [profileStudent, setProfileStudent] = useState({
         studentId: '',
         username: '',
@@ -42,37 +43,55 @@ function CompanyNotification({pendingApplication}){
     }, []);
 
     const getStudentDetails = async () => {
-        const response = await fetch(`${API_SERVER_URL}/api/profile/student/${pendingApplication.studentId}`, {
-            headers: {
-                'Authorization': `Bearer ${authData.token}`,
-            },
-        });
-        if (response.status === 200) {
+        setIsLoadingStudent(true);
+        try {
+            const response = await fetch(`${API_SERVER_URL}/api/profile/student/${pendingApplication.studentId}`, {
+                headers: {
+                    'Authorization': `Bearer ${authData.token}`,
+                },
+            });
+
+            if (!response.ok) {
+                if(response.status === 404) {
+                    setErrorMessage('Student profile not found');
+                    return;
+                }
+                const message = await getErrorMessage(response);
+                throw new Error(message);
+            }
+
             const data = await response.json();
             setProfileStudent(data);
-
-
-        }else {
-            const message = await getErrorMessage(response);
-            setErrorMessage(message);
-            console.error('Error checking advertisement details:', errorMessage);
+        } catch (error) {
+            console.error('Error fetching student details:', error);
+            setErrorMessage(error.message);
+        }finally {
+            setIsLoadingStudent(false);
         }
     }
     const getAdvertisementDetails = async () => {
-        const response = await fetch(`${API_SERVER_URL}/api/recommendation/advertisements/${pendingApplication.advertisementId}`, {
-            headers: {
-                'Authorization': `Bearer ${authData.token}`,
-            },
-        });
-        if (response.status === 200) {
+        try {
+            const response = await fetch(`${API_SERVER_URL}/api/recommendation/advertisements/${pendingApplication.advertisementId}`, {
+                headers: {
+                    'Authorization': `Bearer ${authData.token}`,
+                },
+            });
+
+            if (!response.ok) {
+                if(response.status === 404) {
+                    setErrorMessage('Advertisement not found');
+                    return;
+                }
+                const message = await getErrorMessage(response);
+                throw new Error(message);
+            }
+
             const data = await response.json();
             setAdvertisement(data);
-        }else {
-            const message = await getErrorMessage(response);
-            setErrorMessage(message);
-            console.error('Error checking advertisement details:', errorMessage);
+        } catch (error) {
+            console.error('Error fetching advertisement details:', error);
+            setErrorMessage(error.message);
         }
-
     }
     const getStudentCV = async () => {
         const response = await fetch(`${API_SERVER_URL}/api/profile/cv/${profileStudent.studentId}`, {
@@ -94,7 +113,7 @@ function CompanyNotification({pendingApplication}){
             const contentDisposition = response.headers.get('content-disposition');
             const filename = contentDisposition
                 ? contentDisposition.split('filename=')[1].replace(/"/g, '')
-                : `CV_${profileStudent.studentId}.pdf`;
+                : `CV_studentId${profileStudent.studentId}.pdf`;
 
             a.download = filename;
             document.body.appendChild(a);
@@ -152,6 +171,7 @@ function CompanyNotification({pendingApplication}){
 
     return (
         <div className="bg-white rounded-lg border p-4 mb-4">
+            {isLoadingStudent || isLoadingAd && <div className="text-center">Loading...</div>}
             <div className="flex justify-between items-start">
                 <div>
                     <h1 className="text-xl font-semibold mb-2">{advertisement.name}</h1>
@@ -168,6 +188,7 @@ function CompanyNotification({pendingApplication}){
             </div>
 
             {showDetails && (
+                (isLoadingStudent || isLoadingAd && <div className="text-center">Loading...</div>) ||
                 <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
                     <div className="bg-white p-6 rounded-lg w-2/3 h-auto relative gap-4">
                         <button

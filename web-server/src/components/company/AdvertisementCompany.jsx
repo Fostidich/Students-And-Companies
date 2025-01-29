@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import Cookies from 'js-cookie';
 import {getErrorMessage} from "../../utils/errorUtils.js";
 import StudentInternship from "./StudentInternship.jsx";
+import RecommendedStudent from "./RecommendedStudent.jsx";
 const API_SERVER_URL = window.env?.VITE_API_SERVER_URL || 'http://localhost:5000';
 
 function AdvertisementCompany({ advertisement }) {
@@ -21,6 +22,20 @@ function AdvertisementCompany({ advertisement }) {
         }
     );
     const [internshipList, setInternshipList] = useState([internship]);
+    const [profileStudent] = useState({
+        studentId: 0,
+        username: '',
+        email: '',
+        bio: '',
+        name: '',
+        surname: '',
+        university: '',
+        courseOfStudy: '',
+        gender: '',
+        birthDate: '',
+    });
+    const [recommendedStudents, setRecommendedStudents] = useState([profileStudent]);
+
 
 
     const formatDate = (dateString) => {
@@ -42,6 +57,34 @@ function AdvertisementCompany({ advertisement }) {
         }
     }
 
+    const getRecommendedStudents = async () => {
+        try {
+            const response = await fetch(`${API_SERVER_URL}/api/recommendation/candidates/advertisements/${advertisement.advertisementId}`, {
+                headers: {
+                    'Authorization': `Bearer ${authData.token}`,
+                },
+            });
+
+            if (!response.ok) {
+                const message = await getErrorMessage(response);
+                setErrorMessage(message);
+                throw new Error(message);
+            }
+
+            const data = await response.json();
+            // Modifica qui: estrai l'array effettivo dalla risposta
+            const students = data.students || data; // Adatta in base alla struttura reale della risposta
+            setRecommendedStudents(students);
+
+        } catch (error) {
+            console.error('Error fetching recommended students:', error);
+            setErrorMessage(error.message);
+            // Resetta la lista in caso di errore
+            setRecommendedStudents([]);
+        }
+    }
+
+
 
 
     return (
@@ -56,7 +99,11 @@ function AdvertisementCompany({ advertisement }) {
                     </div>
                 </div>
                 <button
-                    onClick={() => setShowDetails(true) || getInternshipList()}
+                    onClick={() => {
+                        setShowDetails(true);
+                        getInternshipList();
+                        getRecommendedStudents();
+                    }}
                     className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
                 >
                     View Details
@@ -73,27 +120,51 @@ function AdvertisementCompany({ advertisement }) {
                             ✕
                         </button>
                         <h2 className="text-xl font-bold mb-4">Advertisement Details</h2>
-                        <div className=" border p-2 rounded-md space-y-2">
-                            <p><strong>ADV ID:</strong> {advertisement.advertisementId}</p>
-                            <p><strong>Created:</strong> {formatDate(advertisement.createdAt)}</p>
-                            <p><strong>Company ID:</strong> {advertisement.companyId}</p>
-                            <p><strong>Description:</strong> {advertisement.description}</p>
-                            <p><strong>Duration:</strong> {advertisement.duration} months</p>
-                            <p><strong>Total Spots:</strong> {advertisement.spots}</p>
-                            <p><strong>Available Spots:</strong> {advertisement.available}</p>
-                            <p><strong>Status:</strong> {advertisement.open ? 'Open' : 'Closed'}</p>
-                            <p><strong>Questionnaire:</strong> {advertisement.questionnaire}</p>
-                        </div>
-                        <div className=" p-2">
-                            <h2 className="text-xl font-bold mb-4">Internship and Student Profile Details</h2>
-                            <div>
-                                {internshipList.map((internship) =>
-                                    <StudentInternship
-                                        key={internship.internshipId}
-                                        internship={internship}
-                                    />)}
+                        <div className=" border p-4 rounded-md space-y-2">
+                            <h3 className="text-lg font-semibold">
+                                {advertisement.name}
+                            </h3>
+                            <p className="text-sm"><strong>Description:</strong> {advertisement.description}</p>
+                            <p className="text-sm"><strong>Questionnaire:</strong> {advertisement.questionnaire}</p>
+                            <div className="mt-2 border-t pt-2">
+                                <p className="text-xs text-gray-600"><strong>ADV ID:</strong> {advertisement.advertisementId}</p>
+                                <p className="text-xs text-gray-600"><strong>Company ID:</strong> {advertisement.companyId}</p>
+                                <p className="text-xs text-gray-600"><strong>Duration:</strong> {advertisement.duration}</p>
+                                <p className="text-xs text-gray-600"><strong>Total spots:</strong> {advertisement.spots}</p>
+                                <p className="text-xs text-gray-600"><strong>Available spots:</strong> {advertisement.available}</p>
+                                <p className="text-xs text-gray-600"><strong>Stutus:</strong> {advertisement.open ? 'Open' : 'Closed'}</p>
+                                <p className="text-xs text-gray-600"><strong>Created:</strong> {formatDate(advertisement.createdAt)}</p>
                             </div>
-
+                        </div>
+                        <div className=" p-2 rounded-md mt-4 border">
+                            <h2 className="text-xl font-bold mb-4">Ongoing internships</h2>
+                            <div className="shadow-md ">
+                                {
+                                    internshipList.length > 0 ? (
+                                        internshipList.map((internship) =>
+                                            <StudentInternship
+                                                key={internship.internshipId}
+                                                internship={internship}
+                                            />)
+                                    ):(
+                                        <p>No student applied yet</p>
+                                    )
+                                }
+                            </div>
+                        </div>
+                        <div className=" p-2 rounded-md mt-4 border">
+                            <h2 className="text-xl font-bold mb-4">Let me suggest some students</h2>
+                            <div className="shadow-md ">
+                                {recommendedStudents.length > 0 ? (
+                                    recommendedStudents.map((student) =>
+                                        <RecommendedStudent
+                                            key={student.studentId}
+                                            student={student}
+                                        />)
+                                ):(
+                                    <h1>No student recommended yet</h1>
+                                )}
+                            </div>
                         </div>
 
 
@@ -107,6 +178,7 @@ function AdvertisementCompany({ advertisement }) {
 AdvertisementCompany.propTypes = {
     advertisement: PropTypes.shape({
         advertisementId: PropTypes.number.isRequired,
+        name: PropTypes.string.isRequired,
         createdAt: PropTypes.string.isRequired,
         companyId: PropTypes.number.isRequired,
         description: PropTypes.string.isRequired,

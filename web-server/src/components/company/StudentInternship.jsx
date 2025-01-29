@@ -42,21 +42,29 @@ function StudentInternship({internship}) {
             console.error('Error checking advertisement details:', errorMessage);
         }
     }
+    const formatDate = (dateString) => {
+        return new Date(dateString).toLocaleDateString();
+    };
 
 
 
 
     return (
         <div>
-           <div className="bg-white rounded-lg border p-4 mb-4">
+           <div className="bg-white p-4 rounded-lg shadow-md mb-4">
                <div className="space-y-2">
-                   <p><strong>Student Name:</strong> {profileStudent.name} {profileStudent.surname}</p>
-                   <p><strong>University:</strong> {profileStudent.university}</p>
-                   <p><strong>Course of Study:</strong> {profileStudent.courseOfStudy}</p>
-                   <p><strong>Email:</strong> {profileStudent.email}</p>
-                   <p><strong>Internship Start Date:</strong> {internship.startDate}</p>
-                   <p><strong>Internship End Date:</strong> {internship.endDate}</p>
-                   <p><strong>Internship Created At:</strong> {internship.createdAt}</p>
+                   <h3 className="text-lg font-semibold">
+                       {profileStudent.name} {profileStudent.surname}
+                   </h3>
+                   <p className="text-sm"><strong>University:</strong> {profileStudent.university}</p>
+                   <p className="text-sm"><strong>Course of Study:</strong> {profileStudent.courseOfStudy}</p>
+                   <p className="text-sm"><strong>Bio:</strong> {profileStudent.bio}</p>
+                   <div className="mt-2 border-t pt-2">
+                       <p className="text-xs text-gray-600"><strong>Email:</strong> {profileStudent.email}</p>
+                       <p className="text-xs text-gray-600"><strong>Internship start date:</strong> {formatDate(internship.startDate)}</p>
+                       <p className="text-xs text-gray-600"><strong>Internship end date:</strong> {formatDate(internship.endDate)}</p>
+                       <p className="text-xs text-gray-600"><strong>Internship created at:</strong> {formatDate(internship.createdAt)}</p>
+                   </div>
                </div>
                {errorMessage && <div className="text-red-500 mt-4">{errorMessage}</div>}
            </div>

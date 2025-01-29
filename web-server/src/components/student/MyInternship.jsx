@@ -91,20 +91,23 @@ function MyInternship() {
             throw error;
         }
     }
+    const formatDate = (dateString) => {
+        return new Date(dateString).toLocaleDateString();
+    };
 
     const ongoingInternship = internship.advertisementId !== 0;
 
     return (
         <div>
             {ongoingInternship ? (
-                <div className="bg-white rounded-lg border p-4 mb-4">
+                <div className="bg-white rounded-lg  p-4 mb-4">
                     <div className="space-y-2">
                         <h1 className="text-xl font-semibold">Your ongoing internship </h1>
                         <p><strong>Advertisement Name:</strong> {advertisement.name}</p>
                         <p><strong>Advertisement Description:</strong> {advertisement.description}</p>
                         <p><strong>Advertisement Duration:</strong> {advertisement.duration} months</p>
-                        <p><strong>Internship Start Date:</strong> {internship.startDate}</p>
-                        <p><strong>Internship End Date:</strong> {internship.endDate}</p>
+                        <p><strong>Internship Start Date:</strong> {formatDate(internship.startDate)}</p>
+                        <p><strong>Internship End Date:</strong> {formatDate(internship.endDate)}</p>
                     </div>
                 </div>
             ) : (
