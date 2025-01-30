@@ -6,6 +6,7 @@ public class TestSeed {
     private readonly IAuthenticationService authentication;
     private readonly string salt;
     private readonly string hashedPassword;
+    private readonly int numberOfSeeds = 500;
 
     public string Password { get; }
     public SeedHelper Seed { get; }
@@ -20,7 +21,7 @@ public class TestSeed {
 
     public void SeedDatabase(AppDbContext context) {
 
-        for (int i = 1; i <= 210; i++) {
+        for (int i = 1; i <= numberOfSeeds + 10; i++) {
 
             context.Company.AddRange(new Entity.Company
             {
@@ -63,7 +64,7 @@ public class TestSeed {
 
         context.SaveChanges();
 
-        for (int i = 1; i <= 205; i++) {
+        for (int i = 1; i <= numberOfSeeds + 5; i++) {
 
             for (int j = 1; j < 5; j++)
             {
@@ -114,7 +115,7 @@ public class TestSeed {
 
         context.SaveChanges();
 
-        for (int i = 1; i <= 203; i++) {
+        for (int i = 1; i <= numberOfSeeds +3 ; i++) {
 
 
             for (int j = 0; j < 3; j++) {

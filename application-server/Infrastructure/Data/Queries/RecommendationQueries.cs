@@ -7,12 +7,10 @@ public class RecommendationQueries : IRecommendationQueries
 {
 
     private readonly IDataService dataService;
-    private readonly IInternshipQueries internship;
 
-    public RecommendationQueries(IDataService dataService, IInternshipQueries internship)
+    public RecommendationQueries(IDataService dataService)
     {
         this.dataService = dataService;
-        this.internship = internship;
     }
 
     public List<Entity.Advertisement> GetAdvertisementsOfCompany(int companyId)
@@ -277,12 +275,11 @@ public class RecommendationQueries : IRecommendationQueries
         {
             // Query to find students with at least 3 skill matches
             string findStudentsQuery = @"
-            SELECT
-                ss.student_id
+            SELECT ss.student_id
             FROM student_skills ss
-            INNER JOIN advertisement_skills ads ON ss.skill_id = ads.skill_id
+            JOIN advertisement_skills ads ON ss.skill_id = ads.skill_id
             WHERE ads.advertisement_id = @AdvertisementId
-            GROUP BY ss.student_id
+            GROUP BY ss.student_id, ads.advertisement_id
             HAVING COUNT(*) >= 3;
         ";
 
@@ -302,8 +299,7 @@ public class RecommendationQueries : IRecommendationQueries
                 findCommand.Parameters.AddWithValue("@AdvertisementId", advertisementId);
                 using var reader = findCommand.ExecuteReader();
 
-                while (reader.Read())
-                {
+                while (reader.Read()) {
                     matchingStudentIds.Add(Convert.ToInt32(reader["StudentId"]));
                 }
             }
@@ -427,12 +423,36 @@ public class RecommendationQueries : IRecommendationQueries
         
         List<Entity.Student> studentsWithoutInternships = new List<Entity.Student>();
         foreach (var student in students) {
-            var internships = internship.GetInternshipForStudent(student.StudentId);
+            var internships = GetInternshipForStudent(student.StudentId);
             if (internships == null) {
                 studentsWithoutInternships.Add(student);
             }
         }
         return studentsWithoutInternships;
+    }
+    
+    private Entity.Internship GetInternshipForStudent(int studentId) {
+        try {
+            string query = @"
+                SELECT *
+                FROM internship
+                WHERE student_id = @StudentId;
+            ";
+            
+            using var db_connection = dataService.GetConnection();
+            using var command = new MySqlCommand(query, db_connection);
+            
+            command.Parameters.AddWithValue("@StudentId", studentId);
+            
+            using var reader = command.ExecuteReader();
+            
+            var internship = dataService.MapToInternships(reader).FirstOrDefault();
+            
+            return internship;
+        } catch (Exception ex) {
+            Console.WriteLine(ex.Message);
+            return null;
+        }
     }
 
     public bool CreateSuggestionsForStudent(int advertisementId, int studentId, int companyId)

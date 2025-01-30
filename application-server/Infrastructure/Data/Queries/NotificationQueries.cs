@@ -40,7 +40,7 @@ public class NotificationQueries : INotificationQueries {
         try {
             string query = @"
                 DELETE FROM student_notifications
-                WHERE notification_id = @NotificationId
+                WHERE student_notification_id = @NotificationId
                 AND student_id = @StudentId;
             ";
             
