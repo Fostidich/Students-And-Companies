@@ -8,7 +8,7 @@ public interface IRecommendationQueries {
      void MatchAdvertisementForStudent(int advertisementId);
      Entity.Advertisement GetAdvertisement(int advertisementId);
      List<Entity.Student> GetRecommendedCandidates(int companyId, int advertisementId);
-     bool CreateSuggestionsForStudent(int notificationId, int companyId);
+     bool CreateSuggestionsForStudent(int advertisementId, int studentId, int companyId);
      bool DeleteAdvertisement(int advertisementId, int companyId);
 
 }

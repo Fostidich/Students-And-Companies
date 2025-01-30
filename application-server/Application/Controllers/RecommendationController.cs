@@ -78,7 +78,7 @@ public class RecommendationController : ControllerBase {
             return Ok("Advertisement registered\n");
         }
 
-        return StatusCode(500, "Internal server error\n");
+        return BadRequest("advertisement with same name already present\n");
     }
 
     [HttpGet("advertisements/{advertisementId}")]
@@ -131,15 +131,15 @@ public class RecommendationController : ControllerBase {
     }
 
 
-    [HttpPost("suggestions/notification/{notificationId}")]
+    [HttpPost("suggestions/advertisement/{advertisementId}/student/{studentId}")]
     [Authorize]
     [SwaggerOperation(Summary = "Create a new suggestion by a company for one student", Description = "Create a new suggestion for a student. The suggestion is added to the database and the student is notified. One company can decide to suggest a student for a specific advertisement.")]
     [ProducesResponseType(200)]
     [ProducesResponseType(400)]
     [ProducesResponseType(404)]
-    public IActionResult CreateSuggestion(int notificationId) {
+    public IActionResult CreateSuggestion(int advertisementId, int studentId) {
         // Check ID validity
-        if (notificationId <= 0)
+        if (advertisementId <= 0 || studentId <= 0)
             return BadRequest("Invalid id\n");
 
         // Check role
@@ -150,12 +150,12 @@ public class RecommendationController : ControllerBase {
         string userIdStr = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
         int userId = Convert.ToInt32(userIdStr);
 
-        bool suggestionCreated = recommendation.CreateSuggestionsForStudent(notificationId, userId);
+        bool suggestionCreated = recommendation.CreateSuggestionsForStudent(advertisementId, studentId, userId);
 
         if(suggestionCreated)
             return Ok("Suggestion created\n");
 
-        return NotFound("Notification not found\n");
+        return NotFound("Student or advertisement not found\n");
     }
     
     [HttpPost("delete/{advertisementId}")]

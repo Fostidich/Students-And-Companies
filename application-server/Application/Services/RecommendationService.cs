@@ -64,6 +64,10 @@ public class RecommendationService : IRecommendationService {
         // Create advertisement
         int? advId = queries.CreateAdvertisement(companyId, adv.ToEntity(), skillsEntity);
         
+        if (advId == -1) {
+            return false;
+        }
+        
         if (advId != null) {
             queries.MatchAdvertisementForStudent(advId.Value); 
             return true;
@@ -104,9 +108,9 @@ public class RecommendationService : IRecommendationService {
     }
     
     
-    public bool CreateSuggestionsForStudent(int notificationId, int companyId) {
+    public bool CreateSuggestionsForStudent(int advertisementId, int studentId, int companyId) {
         // Create suggestion for a student
-        return queries.CreateSuggestionsForStudent(notificationId, companyId);
+        return queries.CreateSuggestionsForStudent(advertisementId, studentId, companyId);
     }
     
     public bool DeleteAdvertisement(int advertisementId, int companyId) {

@@ -29,6 +29,7 @@ public class InternshipQueries : IInternshipQueries {
             using var reader = command.ExecuteReader();
             
             var internship = dataService.MapToInternships(reader).FirstOrDefault();
+            
             return internship;
         } catch (Exception ex) {
             Console.WriteLine(ex.Message);

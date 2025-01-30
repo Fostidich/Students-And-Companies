@@ -7,10 +7,12 @@ public class RecommendationQueries : IRecommendationQueries
 {
 
     private readonly IDataService dataService;
+    private readonly IInternshipQueries internship;
 
-    public RecommendationQueries(IDataService dataService)
+    public RecommendationQueries(IDataService dataService, IInternshipQueries internship)
     {
         this.dataService = dataService;
+        this.internship = internship;
     }
 
     public List<Entity.Advertisement> GetAdvertisementsOfCompany(int companyId)
@@ -46,17 +48,7 @@ public class RecommendationQueries : IRecommendationQueries
         try
         {
             string query = @"
-                SELECT
-                    a.advertisement_id,
-                    a.name,
-                    a.created_at,
-                    a.company_id,
-                    a.description,
-                    a.duration,
-                    a.spots,
-                    a.available,
-                    a.open,
-                    a.questionnaire
+                SELECT a.advertisement_id, a.name, a.created_at, a.company_id, a.description, a.duration, a.spots, a.available, a.open, a.questionnaire
                 FROM advertisement_skills ads
                 JOIN advertisement a ON ads.advertisement_id = a.advertisement_id
                 JOIN student_skills ss ON ads.skill_id = ss.skill_id
@@ -139,10 +131,27 @@ public class RecommendationQueries : IRecommendationQueries
             string selectquery = @"
                 SELECT MAX(advertisement_id) FROM advertisement;
             ";
-
+            
+            string checkquery = @"
+                SELECT * 
+                FROM advertisement 
+                WHERE company_id = @CompanyId AND name = @Name;
+            ";
 
 
             using var db_connection = dataService.GetConnection();
+            
+            // Check if the name of the advertisement already exists
+            using (var checkcommand = new MySqlCommand(checkquery, db_connection)) {
+                checkcommand.Parameters.AddWithValue("@CompanyId", companyId);
+                checkcommand.Parameters.AddWithValue("@Name", advertisement.Name);
+
+                using var reader = checkcommand.ExecuteReader();
+
+                if (reader.HasRows) {
+                    return -1;
+                }
+            }
 
             // Insert the advertisement
             using (var insertcommand = new MySqlCommand(insertquery, db_connection))
@@ -263,8 +272,7 @@ public class RecommendationQueries : IRecommendationQueries
         }
     }
 
-    public void MatchAdvertisementForStudent(int advertisementId)
-    {
+    public void MatchAdvertisementForStudent(int advertisementId) {
         try
         {
             // Query to find students with at least 3 skill matches
@@ -348,8 +356,7 @@ public class RecommendationQueries : IRecommendationQueries
         {
             // Query to retrieve student IDs from company_notifications
             string getStudentIdsQuery = @"
-                SELECT
-                    ss.student_id
+                SELECT ss.student_id
                 FROM advertisement_skills ads
                 INNER JOIN advertisement a ON ads.advertisement_id = a.advertisement_id
                 INNER JOIN student_skills ss ON ads.skill_id = ss.skill_id
@@ -369,8 +376,7 @@ public class RecommendationQueries : IRecommendationQueries
 
             // Check if company is the owner of the advertisement
             var advertisement = GetAdvertisement(advertisementId);
-            if (advertisement == null || advertisement.CompanyId != companyId)
-            {
+            if (advertisement == null || advertisement.CompanyId != companyId) {
                 return null;
             }
 
@@ -405,8 +411,10 @@ public class RecommendationQueries : IRecommendationQueries
                     students.Add(student);
                 }
             }
-
-            return students;
+            
+            List<Entity.Student> studentsWithOutInternships = GetStudentWithoutInternships(students);
+            
+            return studentsWithOutInternships;
         }
         catch (Exception ex)
         {
@@ -414,18 +422,23 @@ public class RecommendationQueries : IRecommendationQueries
             return new List<Entity.Student>();
         }
     }
+    
+    private List<Entity.Student> GetStudentWithoutInternships(List<Entity.Student> students) {
+        
+        List<Entity.Student> studentsWithoutInternships = new List<Entity.Student>();
+        foreach (var student in students) {
+            var internships = internship.GetInternshipForStudent(student.StudentId);
+            if (internships == null) {
+                studentsWithoutInternships.Add(student);
+            }
+        }
+        return studentsWithoutInternships;
+    }
 
-    public bool CreateSuggestionsForStudent(int notificationId, int companyId)
+    public bool CreateSuggestionsForStudent(int advertisementId, int studentId, int companyId)
     {
         try
         {
-            // Query to retrieve the notification details from company_notifications
-            string retrieveNotificationQuery = @"
-                SELECT student_id, advertisement_id
-                FROM company_notifications
-                WHERE company_notification_id = @NotificationId AND company_id = @CompanyId;
-            ";
-
             // Query to insert the notification into student_notifications
             string insertNotificationQuery = @"
                 INSERT INTO student_notifications (student_id, advertisement_id, type)
@@ -434,22 +447,11 @@ public class RecommendationQueries : IRecommendationQueries
 
             using var db_connection = dataService.GetConnection();
 
-            // Retrieve the notification details
-            int studentId, advertisementId;
-            using (var retrieveCommand = new MySqlCommand(retrieveNotificationQuery, db_connection))
-            {
-                retrieveCommand.Parameters.AddWithValue("@NotificationId", notificationId);
-                using var reader = retrieveCommand.ExecuteReader();
-
-                if (!reader.Read())
-                {
-                    Console.WriteLine($"No company notification found with ID {notificationId} for your company.");
-                    return false;
-                }
-
-                // Extract values from the result
-                studentId = Convert.ToInt32(reader["student_id"]);
-                advertisementId = Convert.ToInt32(reader["advertisement_id"]);
+            
+            // Check if company is the owner of the advertisement
+            var advertisement = GetAdvertisement(advertisementId);
+            if (advertisement == null || advertisement.CompanyId != companyId) {
+                return false;
             }
 
             // Insert the notification into student_notifications

@@ -7,7 +7,7 @@ public interface IRecommendationService {
     bool CreateAdvertisement(int companyId, DTO.AdvertisementRegistration advertisement);
     Advertisement GetAdvertisement(int advertisementId);
     List<Student> GetRecommendedCandidates(int companyId, int advertisementId);
-    bool CreateSuggestionsForStudent(int notificationId, int companyId);
+    bool CreateSuggestionsForStudent(int advertisementId, int studentId, int companyId);
     bool DeleteAdvertisement(int advertisementId, int companyId);
     
 }
