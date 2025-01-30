@@ -33,6 +33,7 @@ function ApplicationsNotifications() {
 
                 // Fetch applications for each advertisement
                 const applications = [];
+
                 for (const ad of advertisementData) {
                     try {
                         const appResponse = await fetch(`${API_SERVER_URL}/api/enrollment/applications/${ad.advertisementId}`, {
@@ -41,14 +42,20 @@ function ApplicationsNotifications() {
                             }
                         });
 
+                        // Gestione esplicita dello status 404
+                        if (appResponse.status === 404) {
+                            console.log(`No applications for ad ${ad.advertisementId}`);
+                            continue;
+                        }
+
                         if (!appResponse.ok) {
                             const message = await getErrorMessage(appResponse);
                             console.error(`Error fetching applications for ad ${ad.advertisementId}:`, message);
-                            continue; // Skip to next advertisement instead of throwing
+                            continue;
                         }
 
                         const appData = await appResponse.json();
-                        if (Array.isArray(appData)) {
+                        if (Array.isArray(appData) && appData.length > 0) {
                             applications.push(...appData);
                         }
                     } catch (error) {
