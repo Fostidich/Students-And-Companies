@@ -46,13 +46,6 @@ public class AuthenticationController : ControllerBase {
             return StatusCode(500, "Internal server error\n");
     }
 
-    [HttpPost("validation/{verificationCode}")]
-    [Authorize]
-    [ProducesResponseType(501)]
-    public IActionResult ValidationCode(int verificationCode) {
-        return StatusCode(501, "Feature not yet implemented\n");
-    }
-
     [HttpPost("login")]
     [SwaggerOperation(Summary = "Log in a user from credentials", Description = "Upon validating credentials, the login token is returned along with the user type. If the username field of the credentials contains the email, the validation will still be processed correctly.")]
     [ProducesResponseType(200)]
@@ -70,13 +63,6 @@ public class AuthenticationController : ControllerBase {
             Token = token,
             UserType = user.UserType.ToString()
         });
-    }
-
-    [HttpPost("logout")]
-    [Authorize]
-    [ProducesResponseType(501)]
-    public IActionResult Logout() {
-        return StatusCode(501, "Feature not yet implemented\n");
     }
 
     [HttpGet]
