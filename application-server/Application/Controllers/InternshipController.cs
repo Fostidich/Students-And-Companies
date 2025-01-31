@@ -22,7 +22,7 @@ public class InternshipController : ControllerBase {
     [SwaggerOperation(Summary = "Get internships for a student", Description = "Get internships for a student. The internships are filtered based on the student ID.")]
     [ProducesResponseType(200)]
     [ProducesResponseType(400)]
-    [ProducesResponseType(500)]
+    [ProducesResponseType(404)]
     public IActionResult GetInternships() {
         // Check role
         string role = User.FindFirst(ClaimTypes.Role).Value;
@@ -39,7 +39,7 @@ public class InternshipController : ControllerBase {
         checkInternships = internship.GetInternshipForStudent(userId);
 
         if (checkInternships == null)
-            return StatusCode(500, "Internal server error\n");
+            return StatusCode(404, "No internships found\n");
 
         internships = checkInternships.ToDto();
 
@@ -166,7 +166,6 @@ public class InternshipController : ControllerBase {
     [SwaggerOperation(Summary = "Get internships from an advertisement", Description = "Get internships from an advertisement. The internships are filtered based on the advertisement ID.")]
     [ProducesResponseType(200)]
     [ProducesResponseType(400)]
-    [ProducesResponseType(500)]
     public IActionResult GetInternshipFromAdvertisement(int advertisementId) {
         // Check role
         string role = User.FindFirst(ClaimTypes.Role).Value;
@@ -196,13 +195,10 @@ public class InternshipController : ControllerBase {
     [Authorize]
     [SwaggerOperation(Summary = "Only for test, don't use", Description = "Delete an internship. The internship is deleted based on the internship ID.")]
     [ProducesResponseType(200)]
-    [ProducesResponseType(400)]
     [ProducesResponseType(404)]
     public IActionResult DeleteInternship(int internshipId) {
         // Check role
         string role = User.FindFirst(ClaimTypes.Role).Value;
-        if (role != UserType.Company.ToString())
-            return BadRequest("Invalid role\n");
 
         // Get user ID from authentication token
         string userIdStr = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
@@ -219,9 +215,8 @@ public class InternshipController : ControllerBase {
     
     [HttpPost("delete/feedback/{internshipId}")]
     [Authorize]
-    [SwaggerOperation(Summary = "Delete your feedback for the internship", Description = "Delete an internship. The internship is deleted based on the internship ID.")]
+    [SwaggerOperation(Summary = "Delete your feedback for the internship", Description = "Delete your feedback for the internship. The feedback is deleted based on the internship ID.")]   
     [ProducesResponseType(200)]
-    [ProducesResponseType(400)]
     [ProducesResponseType(404)]
     public IActionResult DeleteFeedback(int internshipId) {
         // Check role

@@ -166,7 +166,6 @@ public class InternshipQueries : IInternshipQueries {
                 return null;
             }
             
-            
             using var db_connection = dataService.GetConnection();
             using var command = new MySqlCommand(query, db_connection);
             
@@ -323,6 +322,11 @@ public class InternshipQueries : IInternshipQueries {
                 return false;
             }
             
+            var feedback = GetStudentFeedback(internshipId, userId, "Student");
+            if (feedback == null) {
+                return false;
+            }
+            
             using var db_connection = dataService.GetConnection();
             using var command = new MySqlCommand(query, db_connection);
             
@@ -345,6 +349,11 @@ public class InternshipQueries : IInternshipQueries {
             
             // check that the user is a owner of the internship
             if (!IsUserAuthorizedForNotification(internshipId, userId, "Company")) {
+                return false;
+            }
+            
+            var feedback = GetCompanyFeedback(internshipId, userId, "Company");
+            if (feedback == null) {
                 return false;
             }
             

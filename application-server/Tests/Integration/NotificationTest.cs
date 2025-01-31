@@ -30,7 +30,6 @@ public class NotificationTest {
         // Act
         var response = await client.GetAsync("api/notification");
         var responseBody = await response.Content.ReadAsStringAsync();
-        _output.WriteLine(responseBody);
         
         // Assert
         Assert.Equal(200, (int)response.StatusCode);

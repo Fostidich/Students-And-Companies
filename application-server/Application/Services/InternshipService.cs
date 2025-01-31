@@ -106,25 +106,11 @@ public class InternshipService : IInternshipService {
     
     public bool DeleteFeedback(int internshipId, int userId, string role) {
         
-        if(role == UserType.Student.ToString()) {
-            return DeleteStudentFeedback(internshipId, userId);
+        if (role == UserType.Student.ToString()) {
+            return queries.DeleteStudentFeedback(internshipId, userId);
         }
         
-        return DeleteCompanyFeedback(internshipId, userId);
-    }
-    
-    private bool DeleteCompanyFeedback(int internshipId, int userId) {
-        // Delete company feedback
-        bool result = queries.DeleteCompanyFeedback(internshipId, userId);
-        
-        return result;
-    }
-    
-    private bool DeleteStudentFeedback(int internshipId, int userId) {
-        // Delete student feedback
-        bool result = queries.DeleteStudentFeedback(internshipId, userId);
-        
-        return result;
+        return queries.DeleteCompanyFeedback(internshipId, userId);
     }
 
 }

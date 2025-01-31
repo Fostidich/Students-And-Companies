@@ -12,8 +12,8 @@ public class AppDbContext : DbContext {
     public DbSet<Entity.Skill> Skill { get; set; }
     public DbSet<Entity.AdvertisementSkills> AdvertisementSkills { get; set; }
     public DbSet<Entity.Internship> Internship { get; set; }
-    public DbSet<Entity.StudentFeedback> StudentFeedbacks { get; set; }
-    public DbSet<Entity.CompanyFeedback> CompanyFeedbacks { get; set; }
+    public DbSet<Entity.StudentFeedback> StudentFeedback { get; set; }
+    public DbSet<Entity.CompanyFeedback> CompanyFeedback { get; set; }
 
     public AppDbContext(DbContextOptions<AppDbContext> options) : base(options) { }
 

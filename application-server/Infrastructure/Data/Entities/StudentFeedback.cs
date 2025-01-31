@@ -11,8 +11,8 @@ namespace Entity {
 
         public StudentFeedback(IDataReader reader) {
             InternshipId = Convert.ToInt32(reader["internship_id"]);
-            Rating = Convert.ToInt32(reader["student_rating"]);
-            Comment = reader["student_comment"].ToString();
+            Rating = Convert.ToInt32(reader["rating"]);
+            Comment = reader["comment"].ToString();
         }
 
         

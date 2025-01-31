@@ -115,7 +115,7 @@ public class TestSeed {
 
         context.SaveChanges();
 
-        for (int i = 1; i <= numberOfSeeds +3 ; i++) {
+        for (int i = 1; i <= numberOfSeeds + 3 ; i++) {
 
 
             for (int j = 0; j < 3; j++) {
@@ -127,15 +127,13 @@ public class TestSeed {
             }
 
 
-            context.StudentFeedbacks.AddRange(new Entity.StudentFeedback {
+            context.CompanyFeedback.AddRange(new Entity.CompanyFeedback {
                 InternshipId = i,
                 Rating = 10,
                 Comment = "SeedComment"
             });
-
-
-            context.CompanyFeedbacks.AddRange(new Entity.CompanyFeedback
-            {
+            
+            context.StudentFeedback.AddRange(new Entity.StudentFeedback {
                 InternshipId = i,
                 Rating = 10,
                 Comment = "SeedComment"

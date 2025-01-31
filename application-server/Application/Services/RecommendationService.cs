@@ -72,7 +72,6 @@ public class RecommendationService : IRecommendationService {
             queries.MatchAdvertisementForStudent(advId.Value); 
             return true;
         }
-        
         return false;
     }
     
