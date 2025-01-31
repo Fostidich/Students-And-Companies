@@ -1,1 +1,19 @@
 \chapter{Testing}
+
+\begin{figure}[H]
+    \hfill
+    \includegraphics[width=0.2\linewidth]{../assets/tools-logos/xunit.png}
+    \hspace{1cm}
+\end{figure}
+
+As for the testing process, xUnit was used to implement comprehensive and exhaustive integration tests.
+These tests are designed to thoroughly evaluate the application’s behavior by simulating real-world scenarios.
+A real, seeded in-memory database, that mirrors the production environment, was instantiated, ensuring that the tests run against a realistic data set and query behavior.
+Essentially, each test involves launching the entire application, allowing verifing that all components interact correctly during runtime.
+
+Our integration tests cover the full scope of the application’s logic, including database queries, business logic, and API responses.
+Each API endpoint is tested to ensure it responds correctly for every potential status code and response message.
+This exhaustive coverage ensures that all parts of the system, from data access to application responses, function as expected in a controlled test environment.
+
+In the end, about 200 test methods were ran and passed, for a total of about 40 APIs.
+

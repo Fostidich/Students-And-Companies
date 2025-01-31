@@ -1,1 +1,116 @@
 \chapter{Installation guide}
+
+Below are the steps to launch the system applications for local hosting.
+
+\section{Install Docker Compose}
+
+The installation guide can be found at the following link.
+
+\begin{center}
+\url{https://docs.docker.com/compose/install}
+\end{center}
+
+\section{Create the configuration file}
+
+Create, wherever you want, a file named \verb|docker-compose.yml|.
+
+Inside that file write the following text.
+
+\fontsize{7pt}{7pt}\selectfont
+\begin{verbatim}
+services:
+
+  db:
+    image: mysql:latest
+    container_name: sc-mysql-database
+    environment:
+      MYSQL_ROOT_PASSWORD: "IHjw-9940"
+      MYSQL_DATABASE: "students_and_companies"
+      MYSQL_USER: "sc_admin"
+      MYSQL_PASSWORD: "YVxm-3861"
+    ports:
+      - "3380:3306"
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "db"]
+      interval: 1s
+      retries: 300
+
+  sc-web-server:
+    image: fostidich/sc_web_server:latest
+    container_name: sc-web-server
+    environment:
+        VITE_API_SERVER_URL: "http://localhost:5522"
+    ports:
+      - "8080:80"
+
+  sc-application-server:
+    image: fostidich/sc_application_server:latest
+    container_name: sc-application-server
+    environment:
+      JWT_SECRET: "8xzTCUwj0a1CaRttQBtZ5Dc2g78gLfiP"
+      DB_DEFAULT_CONNECTION: "Server=db;Database=students_and_companies;User ID=sc_admin;Password=YVxm-3861;"
+      CONNECTION_URL: "http://0.0.0.0:5000"
+    ports:
+      - "5522:5000"
+    depends_on:
+      db:
+        condition: service_healthy
+\end{verbatim}
+\normalsize
+
+\section{Command line commands}
+
+Open a terminal and navigate to the folder containing the \verb|docker-compose.yml| file that you've just created.
+
+Depending on how Docker Compose has been installed, run the corresponding command: use
+
+\begin{center}
+\verb|docker compose up --pull always|
+\end{center}
+
+if you installed Docker Compose as a plugin; use
+
+\begin{center}
+\verb|docker-compose up --pull always|
+\end{center}
+
+if you installed it as a standalone binary.
+
+\subsection{Notes}
+
+Since Docker Compose can be installed in multiple ways, and since slight differences can be found depending on the running OS, below is a list of possible solutions to try if the previous command fails.
+
+\begin{itemize}
+
+    \item If you're using Docker Desktop, be sure that it has been previously launched.
+    \item If on Windows, try to launch the terminal (CMD or PowerShell) with administrator rights.
+    \item If on MacOS or Linux, try prepending a \verb|sudo| before the previous commands.
+    \item It may happen that the ports that have been set in the \verb|docker-compose.yml| are already in use.
+    If so, feel free to change them, but make sure they still match accordingly.
+
+\end{itemize}
+
+\section{Browser page}
+
+Open the browser and go the the link \url{http://localhost:8080}.
+
+\section{Stopping the container}
+
+To stop the containers, use
+
+\begin{center}
+\verb|docker compose down| \\
+\verb|docker-compose down|
+\end{center}
+
+depending on your installation.
+
+\subsection{Resources cleaning}
+
+To free up space and clean up unused Docker resources, you can run the following command, which will delete all unused containers, images, volumes, and networks.
+
+\begin{center}
+\verb|docker system prune -a|
+\end{center}
+
+

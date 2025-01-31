@@ -91,6 +91,10 @@ public class EnrollmentService : IEnrollmentService {
         return queries.CreateInternship(studentId, companyId, advertisementId, start, end);
     }
 
+    public bool UpdateAdvertisementSpots(int id) {
+        return queries.UpdateAdvertisementSpots(id);
+    }
+
     public bool NotifyStudent(int studentId, int advertisementId, bool accepted) {
         return queries.NotifyStudent(studentId, advertisementId, accepted);
     }

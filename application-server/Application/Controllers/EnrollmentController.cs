@@ -149,6 +149,10 @@ public class EnrollmentController : ControllerBase {
                     application.AdvertisementId, date.DateTime))
             return StatusCode(500, "Internal server error\n");
 
+        // Update advertisement free spots
+        if (!enrollment.UpdateAdvertisementSpots(application.AdvertisementId))
+            return StatusCode(500, "Internal server error\n");
+
         // Reject all other student application
         if (!enrollment.RejectAllApplications(application.StudentId))
             return StatusCode(500, "Internal server error\n");

@@ -15,6 +15,7 @@ public interface IEnrollmentService {
     bool NotifyStudent(int studentId, int advertisementId, bool accepted);
     Internship GetInternship(int id);
     bool RejectAllApplications(int id);
+    bool UpdateAdvertisementSpots(int id);
 
 }
 

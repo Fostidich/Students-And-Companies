@@ -1,1 +1,192 @@
-\chapter{Development and frameworks}
+\chapter{Development, frameworks and tools}
+
+\section{Programming languages}
+
+\subsection{C\#}
+
+\begin{figure}[H]
+    \hfill
+    \includegraphics[width=0.1\linewidth]{../assets/tools-logos/c-sharp.png}
+    \hspace{1cm}
+\end{figure}
+
+C\# was selected as the backend programming language for the application, due to the following advantages.
+
+\begin{itemize}
+
+    \item Platform independence: The .NET Runtime allows to create code that can run on various operating systems without modifications, ensuring a broad compatibility.
+    \item Robust ecosystem: C\# boasts a mature and extensive ecosystem, offering a wide range of libraries and frameworks.
+    This rich set of tools provides a solid foundation for building scalable and maintainable backend solutions.
+    \item Community support: C\# enjoys strong community support, with a vast developer community contributing to its continuous improvement.
+    Regular updates from Microsoft enhance the language reliability and security.
+    \item Object-oriented paradigm: C\# object-oriented programming (OOP) paradigm aligns well with the complexity of web applications.
+    This approach supports the development of modular, extensible, and organized code.
+    \item Readability and maintainability: C\# emphasizes readability and maintainability, making it easy to creating backend code that is not only efficient but also easy to manage in the long term.
+
+\end{itemize}
+
+Furthermore, the decision to utilize C\# for developing the backend of our prototype was influenced by the chance to implement ASP.NET and EF frameworks, which would expedite the development process.
+
+\subsection{JavaScript}
+
+\begin{figure}[H]
+    \hfill
+    \includegraphics[width=0.1\linewidth]{../assets/tools-logos/js.png}
+    \hspace{1cm}
+\end{figure}
+
+JavaScript is the standard language used to develop dynamic and interactive web applications.
+It has been used to create responsive user interfaces and handling client-side scripting for the frontend of the web application.
+
+For an efficient developing process, is has been also integrated Vite.js and NPM into the development workflow, optimizing the frontend development process through rapid prototyping capabilities, efficient dependency management and a streamlined build process.
+
+\section{Frameworks and standards}
+
+\subsection{ASP.NET Core}
+
+\begin{figure}[H]
+    \hfill
+    \includegraphics[width=0.1\linewidth]{../assets/tools-logos/asp-net-core.png}
+    \hspace{1cm}
+\end{figure}
+
+The decision to employ the ASP.NET Core framework for the backend of the application was driven by several advantages.
+
+\begin{itemize}
+
+    \item Comprehensive ecosystem: ASP.NET Core provides a rich ecosystem for building scalable and high-performance applications.
+    Its modular design allows selective use of components, enhancing flexibility.
+    \item Dependency injection: built-in support for dependency injection promotes loose coupling, improving maintainability and testability.
+    \item Middleware pipeline: ASP.NET Core's middleware-based architecture enables clean separation of concerns, improving modularity and readability.
+    \item Integration capabilities: the framework seamlessly integrates with various databases, cloud services, and third-party libraries, making it suitable for enterprise-level applications.
+    \item Minimal APIs and controllers: ASP.NET Core supports both Minimal APIs for lightweight development and MVC/Web API for structured, scalable solutions.
+    \item Cross-platform: it runs on Windows, Linux, and macOS, providing flexibility in development and production deployment.
+
+\end{itemize}
+
+\subsection{EF Core}
+
+\begin{figure}[H]
+    \hfill
+    \includegraphics[width=0.1\linewidth]{../assets/tools-logos/ef-core.png}
+    \hspace{1cm}
+\end{figure}
+
+The adoption of the Entity Framework Core (EF Core) for our backend is based on the following key benefits.
+
+\begin{itemize}
+
+    \item Database independence: EF Core provides a standardized way to interact with databases, enabling easy switches between different database providers (e.g., SQL Server, PostgreSQL, MySQL) without major code changes.
+    \item Object-relational mapping (ORM): EF Core's ORM capabilities simplify the mapping of C\# objects to database entities, reducing the complexity of database interactions and speeding up development.
+    \item Portability: EF Core supports multiple database providers, enhancing portability and minimizing vendor lock-in, allowing the application to run on various relational databases.
+    \item Transaction management: EF Core offers built-in support for transaction management, ensuring data consistency and integrity by managing database transactions efficiently.
+
+\end{itemize}
+
+In this implementation, the DBMS specifically utilized is MySQL, but EF Core would allow to switch to other relational databases with minimal effort and minimal changes in code, for maintaining the benefits of ORM.
+
+\subsection{JWT Authentication}
+
+\begin{figure}[H]
+    \hfill
+    \includegraphics[width=0.1\linewidth]{../assets/tools-logos/jwt.png}
+    \hspace{1cm}
+\end{figure}
+
+JSON Web Token (JWT) authentication was chosen as the preferred method for securing the web application, due to its numerous advantages and compatibility with our development stack.
+
+\begin{itemize}
+
+    \item Stateless authentication: JWT is a stateless authentication mechanism, meaning that the server does not need to store any session information.
+    This aligns well with the RESTful architecture of the application, allowing for scalability and easy maintenance.
+    \item Token-based approach: JWT uses a token-based approach where a compact, URL-safe string is generated, containing information about the user’s identity and additional claims.
+    This token is then sent with each request, eliminating the need for continuous authentication checks against a database.
+    \item Cross-Origin Resource Sharing (CORS) Compatibility: JWT is well-suited for applications with cross-origin requests, providing a secure way to include user authentication information in HTTP requests across different domains.
+    \item Decentralized authorization: JWT allows for decentralized authorization by embedding user roles and permissions directly into the token.
+    This decentralization enhances scalability and reduces the need for frequent database queries during authorization checks.
+    \item Interoperability: JWT is a standardized, open-source format (RFC 7519), ensuring interoperability across different platforms and technologies.
+    This makes it a suitable choice for our diverse tech stack involving C\#, ASP.NET, and React.
+    \item Expiration and refresh mechanism: JWT supports token expiration, enhancing security by limiting the lifespan of tokens.
+    Additionally, a refresh mechanism can be implemented to obtain new tokens without requiring the user to re-enter credentials, providing a seamless user experience.
+
+\end{itemize}
+
+\subsection{React}
+
+\begin{figure}[H]
+    \hfill
+    \includegraphics[width=0.1\linewidth]{../assets/tools-logos/react.png}
+    \hspace{1cm}
+\end{figure}
+
+For the frontend development, React was chosen for the following reasons.
+
+\begin{itemize}
+
+    \item Component-based architecture: React’s component-based architecture promotes reusability and modularity, making it easier to manage complex user interfaces.
+    \item Virtual DOM: React’s use of a virtual DOM enhances performance by minimizing the need for direct manipulation of the actual DOM, resulting in faster updates and improved user experience.
+    \item Declarative syntax: the declarative syntax of React simplifies the process of building interactive user interfaces, making the code more readable and easier to understand.
+    \item Community and ecosystem: React has a vibrant and extensive community, along with a vast ecosystem of libraries and tools, which facilitates rapid development and problem-solving.
+
+\end{itemize}
+
+\section{Tools}
+
+\subsection{Nginx}
+
+\begin{figure}[H]
+    \hfill
+    \includegraphics[width=0.1\linewidth]{../assets/tools-logos/nginx.png}
+    \hspace{1cm}
+\end{figure}
+
+Although not strictly necessary, and outside of the project implementation scope, for a secure and best-practice production deployment (beyond localhost), Nginx plays a key role in request routing and security.
+
+\begin{itemize}
+
+    \item CORS elimination: as a reverse proxy, Nginx serves frontend and backend from the same origin, removing the need for CORS policies.
+    \item HTTPS enablement: Nginx handles TLS termination, securing traffic with HTTPS and offloading SSL processing from backend services.
+    \item Request routing: it efficiently directs incoming requests to the correct backend services based on URL paths or subdomains.
+    \item Load balancing: if needed, Nginx distributes traffic across multiple instances, improving availability and performance.
+    \item Static content hosting: it serves static assets efficiently, reducing backend load and improving response times.
+
+\end{itemize}
+
+Integrating Nginx ensures a secure, scalable, and streamlined production environment.
+
+\subsection{GNU Make}
+
+\begin{figure}[H]
+    \hfill
+    \includegraphics[width=0.1\linewidth]{../assets/tools-logos/make.png}
+    \hspace{1cm}
+\end{figure}
+
+During the project developing process, Make has been used to automate build and run commands of all the necessary applications, like PDFLaTeX, .NET, NPM, Docker, and more.
+It streamlines workflows, ensuring consistency and simplifying complex tasks.
+By packaging commands together, it provides a unified setup for all developers, allowing everyone to use the correct commands without needing to learn their inner workings.
+
+\subsection{Docker}
+
+\begin{figure}[H]
+    \hfill
+    \includegraphics[width=0.1\linewidth]{../assets/tools-logos/docker.png}
+    \hspace{1cm}
+\end{figure}
+
+Docker has been integrated into the project to streamline development, deployment, and execution across different environments.
+Docker images have been created for both the web server and the application server.
+Furthermore, with the use of Docker Compose, the full deployment of the system (frontend, backend and database servers) can be runned all together with a single configuration file.
+It provides various benefits.
+
+\begin{itemize}
+
+    \item Containerization: Docker ensures that applications run consistently across different machines by packaging dependencies and configurations into isolated containers.
+    \item Cross-platform compatibility: it enables seamless execution across various operating systems, making development and deployment more efficient.
+    \item Simplified dependency management: it eliminates conflicts by bundling all necessary libraries and tools within each container.
+    \item Reproducible builds: Docker ensures that every developer and deployment instance runs the same version of the application.
+    \item Scalability and deployment: rapid scaling and deployment is achieved by using container orchestration tools, such as Docker Compose.
+
+\end{itemize}
+
+By using Docker, a uniform and reliable environment in guaranteed, reducing setup complexity and enhancing maintainability.

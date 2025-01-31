@@ -12,4 +12,6 @@ public interface IEnrollmentQueries {
     bool CreateInternship(int studentId, int companyId, int advertisementId, DateTime start, DateTime end);
     bool NotifyStudent(int studentId, int advertisementId, bool accepted);
     bool RejectAllApplications(int id);
+    bool UpdateAdvertisementSpots(int id);
+
 }

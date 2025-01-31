@@ -174,7 +174,7 @@ public class EnrollmentQueries : IEnrollmentQueries {
             string outcome = accepted ? "ACCEPTED" : "REJECTED";
             string query = $@"
                 INSERT INTO student_notifications (student_id, advertisement_id, type)
-                VALUES (@StudentId, @AdvertisementId, {outcome})";
+                VALUES (@StudentId, @AdvertisementId, '{outcome}')";
 
             using var db_connection = dataService.GetConnection();
             using var command = new MySqlCommand(query, db_connection);
@@ -196,7 +196,32 @@ public class EnrollmentQueries : IEnrollmentQueries {
             string query = $@"
                 UPDATE application
                 SET status = 'REJECTED'
-                WHERE student_id = @Id";
+                WHERE student_id = @Id
+                AND status = 'PENDING'";
+
+            using var db_connection = dataService.GetConnection();
+            using var command = new MySqlCommand(query, db_connection);
+
+            command.Parameters.AddWithValue("@Id", id);
+
+            return true;
+        } catch (Exception ex) {
+            Console.WriteLine(ex.Message);
+            return false;
+        }
+    }
+
+    public bool UpdateAdvertisementSpots(int id) {
+        try {
+            string query = @"
+                UPDATE advertisement
+                SET
+                    available = available - 1,
+                    open = CASE
+                        WHEN available = 0 THEN FALSE
+                        ELSE open
+                    END
+                WHERE advertisement_id = @Id";
 
             using var db_connection = dataService.GetConnection();
             using var command = new MySqlCommand(query, db_connection);
