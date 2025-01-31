@@ -111,13 +111,13 @@ function AdvertisementCompany({ advertisement }) {
             </div>
 
             {showDetails && (
-                <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
-                    <div className="bg-white p-6 rounded-lg w-2/3 h-auto relative">
+                <div className=" fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center pt-40 ">
+                    <div className="bg-white p-6 rounded-lg w-2/3 max-h-[90vh] overflow-y-scroll relative pb-16">
                         <button
                             onClick={() => setShowDetails(false)}
                             className="absolute top-2 right-2 text-gray-600 hover:text-gray-800"
                         >
-                            ✕
+                            <h1 className="pr-2 text-2xl">x</h1>
                         </button>
                         <h2 className="text-xl font-bold mb-4">Advertisement Details</h2>
                         <div className=" border p-4 rounded-md space-y-2">
@@ -160,6 +160,7 @@ function AdvertisementCompany({ advertisement }) {
                                         <RecommendedStudent
                                             key={student.studentId}
                                             student={student}
+                                            advertisementId={advertisement.advertisementId}
                                         />)
                                 ):(
                                     <h1>No student recommended yet</h1>
