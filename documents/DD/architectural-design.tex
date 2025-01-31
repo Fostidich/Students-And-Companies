@@ -338,441 +338,505 @@ Then, via the internship manager and the feedback manager components, the feedba
 
 \subsection{Application APIs}
 
-\subsubsection{POST api/authentication/register}
+\subsubsection{POST /api/authentication/register/company}
 \begin{itemize}
-    \item Description: user is registered from form information
-    \item Request body - \verb|{user: RegistrationForm}|
-    \item Response 200 - Ok
-    \item Response 400 - Validation Error \verb|{error: Error}|
+    \item Description: register a company
+    \item Request body: \verb|RegistrationFormCompany|
+    \item Response 200: OK
+    \item Response 400: Bad Request
+    \item Response 500: Internal Server Error
 \end{itemize}
 
-\subsubsection{POST api/authentication/verification/\{verificationID\}}
+\subsubsection{POST /api/authentication/register/student}
 \begin{itemize}
-    \item Description: user is verified through the verification code
-    \item Response 200 - Ok
-    \item Response 400 - Validation Error \verb|{error: Error}|
+    \item Description: register a student
+    \item Request body: \verb|RegistrationFormStudent|
+    \item Response 200: OK
+    \item Response 400: Bad Request
+    \item Response 500: Internal Server Error
 \end{itemize}
 
-\subsubsection{POST api/authentication/login}
+\subsubsection{POST /api/authentication/login}
 \begin{itemize}
-    \item Description: authentication token is returned if credentials are correct
-    \item Request body - \verb|{user: Credentials}|
-    \item Response 200 - OK \verb|{token: String}|
-    \item Response 401 - Unauthorized \verb|{error: Error}|
+    \item Description: log in a user from credentials
+    \item Request body: \verb|Credentials|
+    \item Response 200: OK
+    \item Response 400: Bad Request
+    \item Response 401: Unauthorized
 \end{itemize}
 
-\subsubsection{GET api/profile}
+\subsubsection{GET /api/authentication}
 \begin{itemize}
-    \item Description: user profile information is returned
-    \item Request header - \verb|{Authorization: Bearer <token>}|
-    \item Response 200 - OK \verb|{profile: ProfileData}|
-    \item Response 401 - Unauthorized \verb|{error: Error}|
+    \item Description: check log in token validity
+    \item Response 200: OK
+    \item Response 401: Unauthorized
 \end{itemize}
 
-\subsubsection{GET api/profile/\{profileID\}}
+\subsubsection{POST /api/enrollment/applications/\{id\}}
 \begin{itemize}
-    \item Description: user profile information is returned
-    \item Request header - \verb|{Authorization: Bearer <token>}|
-    \item Response 200 - OK \verb|{profile: ProfileData}|
-    \item Response 401 - Unauthorized \verb|{error: Error}|
+    \item Description: make an application request
+    \item Request body: \verb|ApplicationRegistration|
+    \item Response 200: OK
+    \item Response 400: Bad Request
+    \item Response 500: Internal Server Error
 \end{itemize}
 
-\subsubsection{POST api/profile}
+\subsubsection{GET /api/enrollment/applications/\{id\}}
 \begin{itemize}
-    \item Description: user profile information is updated
-    \item Request header - \verb|{Authorization: Bearer <token>}|
-    \item Request body - \verb|{profile: ProfileData}|
-    \item Response 200 - OK
-    \item Response 400 - Validation Error \verb|{error: Error}|
-    \item Response 401 - Unauthorized \verb|{error: Error}|
+    \item Description: get pending applications
+    \item Response 200: OK
+    \item Response 400: Bad Request
+    \item Response 404: Not Found
+    \item Response 500: Internal Server Error
 \end{itemize}
 
-\subsubsection{GET api/profile/cv/\{cvID\}}
+\subsubsection{POST /api/enrollment/accept/\{id\}}
 \begin{itemize}
-    \item Description: CV file is downloaded
-    \item Request header - \verb|{Authorization: Bearer <token>}|
-    \item Response 200 - OK \verb|{cv: File}|
-    \item Response 400 - Invalid File \verb|{error: Error}|
-    \item Response 401 - Unauthorized \verb|{error: Error}|
+    \item Description: accept an application
+    \item Request body: \verb|Date|
+    \item Response 200: OK
+    \item Response 400: Bad Request
+    \item Response 404: Not Found
+    \item Response 500: Internal Server Error
 \end{itemize}
 
-\subsubsection{GET api/profile/cv}
+\subsubsection{POST /api/enrollment/reject/\{id\}}
 \begin{itemize}
-    \item Description: user CV file is downloaded
-    \item Request header - \verb|{Authorization: Bearer <token>}|
-    \item Response 200 - OK \verb|{cv: File}|
-    \item Response 400 - Invalid File \verb|{error: Error}|
-    \item Response 401 - Unauthorized \verb|{error: Error}|
+    \item Description: reject an application
+    \item Response 200: OK
+    \item Response 400: Bad Request
+    \item Response 404: Not Found
+    \item Response 500: Internal Server Error
 \end{itemize}
 
-\subsubsection{POST api/profile/cv}
+\subsubsection{GET /api/internship}
 \begin{itemize}
-    \item Description: CV file is uploaded
-    \item Request header - \verb|{Authorization: Bearer <token>}|
-    \item Request body - \verb|{cv: File}|
-    \item Response 200 - OK
-    \item Response 400 - Invalid File \verb|{error: Error}|
-    \item Response 401 - Unauthorized \verb|{error: Error}|
+    \item Description: get internships for a student
+    \item Response 200: OK
+    \item Response 400: Bad Request
+    \item Response 404: Not Found
 \end{itemize}
 
-\subsubsection{GET api/recommendation/advertisements}
+\subsubsection{POST /api/internship/\{id\}/feedback/student}
 \begin{itemize}
-    \item Description: a set of advertisements is returned
-    \item Request header - \verb|{Authorization: Bearer <token>}|
-    \item Response 200 - OK \verb|{advertisements: Advertisement[]}|
-    \item Response 400 - Validation Error \verb|{error: Error}|
-    \item Response 401 - Unauthorized \verb|{error: Error}|
+    \item Description: create feedback for a student
+    \item Request body: \verb|Feedback|
+    \item Response 200: OK
+    \item Response 400: Bad Request
 \end{itemize}
 
-\subsubsection{GET api/recommendation/advertisements/\{advertisementID\}}
+\subsubsection{GET /api/internship/\{id\}/feedback/student}
 \begin{itemize}
-    \item Description: a set of advertisements is returned
-    \item Request header - \verb|{Authorization: Bearer <token>}|
-    \item Response 200 - OK \verb|{advertisements: Advertisement}|
-    \item Response 400 - Validation Error \verb|{error: Error}|
-    \item Response 401 - Unauthorized \verb|{error: Error}|
+    \item Description: get the student feedback
+    \item Response 200: OK
+    \item Response 400: Bad Request
 \end{itemize}
 
-\subsubsection{POST api/recommendation/advertisements}
+\subsubsection{POST /api/internship/\{id\}/feedback/company}
 \begin{itemize}
-    \item Description: an advertisement is created or updated
-    \item Request header - \verb|{Authorization: Bearer <token>}|
-    \item Request body - \verb|{advertisement: Advertisement}|
-    \item Response 201 - Created
-    \item Response 400 - Validation Error \verb|{error: Error}|
-    \item Response 401 - Unauthorized \verb|{error: Error}|
+    \item Description: create feedback for a company
+    \item Request body: \verb|Feedback|
+    \item Response 200: OK
+    \item Response 400: Bad Request
 \end{itemize}
 
-\subsubsection{GET api/recommendation/candidates}
+\subsubsection{GET /api/internship/\{id\}/feedback/company}
 \begin{itemize}
-    \item Description: a set of candidates is returned
-    \item Request header - \verb|{Authorization: Bearer <token>}|
-    \item Response 200 - OK \verb|{candidates: Candidate[]}|
-    \item Response 400 - Validation Error \verb|{error: Error}|
-    \item Response 401 - Unauthorized \verb|{error: Error}|
+    \item Description: get the company feedback
+    \item Response 200: OK
+    \item Response 400: Bad Request
 \end{itemize}
 
-\subsubsection{GET api/recommendation/candidates/\{candidateID\}}
+\subsubsection{GET /api/internship/advertisements/\{id\}}
 \begin{itemize}
-    \item Description: a set of candidates is returned
-    \item Request header - \verb|{Authorization: Bearer <token>}|
-    \item Response 200 - OK \verb|{candidates: Candidate}|
-    \item Response 400 - Validation Error \verb|{error: Error}|
-    \item Response 401 - Unauthorized \verb|{error: Error}|
+    \item Description: get internships from an advertisement
+    \item Response 200: OK
+    \item Response 400: Bad Request
 \end{itemize}
 
-\subsubsection{GET api/enrollment/applications}
+\subsubsection{POST /api/internship/delete/\{id\}}
 \begin{itemize}
-    \item Description: application requests are returned
-    \item Request header - \verb|{Authorization: Bearer <token>}|
-    \item Response 200 - OK \verb|{applications: Application[]}|
-    \item Response 400 - Validation Error \verb|{error: Error}|
-    \item Response 401 - Unauthorized \verb|{error: Error}|
+    \item Description: only for test, don't use
+    \item Response 200: OK
+    \item Response 404: Not Found
 \end{itemize}
 
-\subsubsection{POST api/enrollment/applications}
+\subsubsection{POST /api/internship/delete/feedback/\{id\}}
 \begin{itemize}
-    \item Description: the application request is registered
-    \item Request header - \verb|{Authorization: Bearer <token>}|
-    \item Request body - \verb|{application: Application}|
-    \item Response 201 - Created
-    \item Response 400 - Validation Error \verb|{error: Error}|
-    \item Response 401 - Unauthorized \verb|{error: Error}|
+    \item Description: delete your feedback for the internship
+    \item Response 200: OK
+    \item Response 404: Not Found
 \end{itemize}
 
-\subsubsection{GET api/enrollment/applications/\{applicationID\}}
+\subsubsection{GET /api/notification}
 \begin{itemize}
-    \item Description: application request is returned
-    \item Request header - \verb|{Authorization: Bearer <token>}|
-    \item Response 200 - OK \verb|{applications: Application}|
-    \item Response 400 - Validation Error \verb|{error: Error}|
-    \item Response 401 - Unauthorized \verb|{error: Error}|
+    \item Description: get notifications for a student
+    \item Response 200: OK
+    \item Response 400: Bad Request
+    \item Response 404: Not Found
+    \item Response 500: Internal Server Error
 \end{itemize}
 
-
-\subsubsection{POST api/enrollment/application/\{applicationID\}}
+\subsubsection{POST /api/notification/delete/\{id\}}
 \begin{itemize}
-    \item Description: the application request is accepted
-    \item Request header - \verb|{Authorization: Bearer <token>}|
-    \item Response 200 - OK
-    \item Response 400 - Validation Error \verb|{error: Error}|
-    \item Response 401 - Unauthorized \verb|{error: Error}|
+    \item Description: delete a notification for a student
+    \item Response 200: OK
+    \item Response 400: Bad Request
+    \item Response 404: Not Found
 \end{itemize}
 
-\subsubsection{POST api/enrollment/questionnaires}
+\subsubsection{GET /api/profile/company}
 \begin{itemize}
-    \item Description: a custom questionnaire is created
-    \item Request header - \verb|{Authorization: Bearer <token>}|
-    \item Request body - \verb|{questionnaire: Questionnaire}|
-    \item Response 201 - Created
-    \item Response 400 - Validation Error \verb|{error: Error}|
-    \item Response 401 - Unauthorized \verb|{error: Error}|
+    \item Description: get the company profile information
+    \item Response 200: OK
+    \item Response 400: Bad Request
+    \item Response 404: Not Found
 \end{itemize}
 
-\subsubsection{GET api/enrollment/questionnaires/\{questionnaireID\}}
+\subsubsection{POST /api/profile/company}
 \begin{itemize}
-    \item Description: the questionnaire is returned
-    \item Request header - \verb|{Authorization: Bearer <token>}|
-    \item Response 200 - OK \verb|{questionnaire: Questionnaire}|
-    \item Response 400 - Validation Error \verb|{error: Error}|
-    \item Response 401 - Unauthorized \verb|{error: Error}|
+    \item Description: update the profile information of the company
+    \item Request body: \verb|ProfileUpdateCompany|
+    \item Response 200: OK
+    \item Response 400: Bad Request
+    \item Response 500: Internal Server Error
 \end{itemize}
 
-\subsubsection{POST api/enrollment/questionnaires/\{questionnaireID\}}
+\subsubsection{GET /api/profile/student}
 \begin{itemize}
-    \item Description: the filled in questionnaire is stored
-    \item Request header - \verb|{Authorization: Bearer <token>}|
-    \item Request body - \verb|{questionnaire: Questionnaire}|
-    \item Response 201 - Created
-    \item Response 400 - Validation Error \verb|{error: Error}|
-    \item Response 401 - Unauthorized \verb|{error: Error}|
+    \item Description: get the student profile information
+    \item Response 200: OK
+    \item Response 400: Bad Request
+    \item Response 500: Internal Server Error
 \end{itemize}
 
-\subsubsection{GET api/enrollment/proposals}
+\subsubsection{POST /api/profile/student}
 \begin{itemize}
-    \item Description: proposals are returned
-    \item Request header - \verb|{Authorization: Bearer <token>}|
-    \item Response 200 - OK \verb|{proposals: Proposal[]}|
-    \item Response 400 - Validation Error \verb|{error: Error}|
-    \item Response 401 - Unauthorized \verb|{error: Error}|
+    \item Description: update the profile information of the student
+    \item Request body: \verb|ProfileUpdateStudent|
+    \item Response 200: OK
+    \item Response 400: Bad Request
+    \item Response 500: Internal Server Error
 \end{itemize}
 
-\subsubsection{POST api/enrollment/proposals}
+\subsubsection{GET /api/profile/company/\{id\}}
 \begin{itemize}
-    \item Description: a proposal is registered
-    \item Request header - \verb|{Authorization: Bearer <token>}|
-    \item Request body - \verb|{proposal: Proposal}|
-    \item Response 201 - Created
-    \item Response 400 - Validation Error \verb|{error: Error}|
-    \item Response 401 - Unauthorized \verb|{error: Error}|
+    \item Description: get a company profile information
+    \item Response 200: OK
+    \item Response 400: Bad Request
+    \item Response 404: Not Found
 \end{itemize}
 
-\subsubsection{POST api/enrollment/proposals/\{proposalID\}}
+\subsubsection{GET /api/profile/student/\{id\}}
 \begin{itemize}
-    \item Description: the proposal is accepted
-    \item Request header - \verb|{Authorization: Bearer <token>}|
-    \item Response 200 - OK
-    \item Response 400 - Validation Error \verb|{error: Error}|
-    \item Response 401 - Unauthorized \verb|{error: Error}|
+    \item Description: get a student profile information
+    \item Response 200: OK
+    \item Response 400: Bad Request
+    \item Response 404: Not Found
 \end{itemize}
 
-\subsubsection{GET api/internships}
+\subsubsection{GET /api/profile/cv}
 \begin{itemize}
-    \item Description: internships information is returned
-    \item Request header - \verb|{Authorization: Bearer <token>}|
-    \item Response 200 - OK \verb|{internships: Internship[]}|
-    \item Response 400 - Validation Error \verb|{error: Error}|
-    \item Response 401 - Unauthorized \verb|{error: Error}|
+    \item Description: download the CV of the student
+    \item Response 200: OK
+    \item Response 404: Not Found
 \end{itemize}
 
-\subsubsection{GET api/internship/\{internshipID\}/complaints}
+\subsubsection{POST /api/profile/cv}
 \begin{itemize}
-    \item Description: complaints about an internship are returned
-    \item Request header - \verb|{Authorization: Bearer <token>}|
-    \item Response 200 - OK \verb|{complaints: Complaint[]}|
-    \item Response 400 - Validation Error \verb|{error: Error}|
-    \item Response 401 - Unauthorized \verb|{error: Error}|
+    \item Description: upload the CV of a student
+    \item Request body: \verb|CV|
+    \item Response 200: OK
+    \item Response 400: Bad Request
+    \item Response 500: Internal Server Error
 \end{itemize}
 
-\subsubsection{POST api/internship/\{internshipID\}/complaints}
+\subsubsection{GET /api/profile/cv/\{id\}}
 \begin{itemize}
-    \item Description: a complaint about an internship is created
-    \item Request header - \verb|{Authorization: Bearer <token>}|
-    \item Request body - \verb|{complaint: Complaint}|
-    \item Response 201 - Created
-    \item Response 400 - Validation Error \verb|{error: Error}|
-    \item Response 401 - Unauthorized \verb|{error: Error}|
+    \item Description: download the CV of a student
+    \item Response 200: OK
+    \item Response 400: Bad Request
+    \item Response 404: Not Found
 \end{itemize}
 
-\subsubsection{POST api/internship/\{internshipID\}/interrupt}
+\subsubsection{POST /api/profile/cv/delete}
 \begin{itemize}
-    \item Description: the internship is interrupted
-    \item Request header - \verb|{Authorization: Bearer <token>}|
-    \item Response 200 - OK
-    \item Response 400 - Validation Error \verb|{error: Error}|
-    \item Response 401 - Unauthorized \verb|{error: Error}|
+    \item Description: delete the CV of a student
+    \item Response 200: OK
+    \item Response 404: Not Found
 \end{itemize}
 
-\subsubsection{POST api/internships/\{internshipID\}/feedback}
+\subsubsection{POST /api/profile/delete}
 \begin{itemize}
-    \item Description: a filled in feedback form about an internship is stored
-    \item Request header - \verb|{Authorization: Bearer <token>}|
-    \item Request body - \verb|{feedbackForm: FeedbackForm}|
-    \item Response 201 - Created
-    \item Response 400 - Validation Error \verb|{error: Error}|
-    \item Response 401 - Unauthorized \verb|{error: Error}|
+    \item Description: delete the user
+    \item Response 200: OK
+    \item Response 404: Not Found
 \end{itemize}
 
-\subsubsection{GET api/notifications}
+\subsubsection{POST /api/profile/skills}
 \begin{itemize}
-    \item Description: the notifications of the user are returned
-    \item Request header - \verb|{Authorization: Bearer <token>}|
-    \item Response 200 - OK \verb|{notifications: Notification[]}|
-    \item Response 400 - Validation Error \verb|{error: Error}|
-    \item Response 401 - Unauthorized \verb|{error: Error}|
+    \item Description: add a skill into the student profile
+    \item Request body: \verb|SkillRegistration|
+    \item Response 200: OK
+    \item Response 400: Bad Request
+    \item Response 500: Internal Server Error
 \end{itemize}
 
-\subsubsection{GET api/notifications/\{notificationID\}}
+\subsubsection{GET /api/profile/skills}
 \begin{itemize}
-    \item Description: the notification content is returned
-    \item Request header - \verb|{Authorization: Bearer <token>}|
-    \item Response 200 - OK \verb|{notifications: Notification}|
-    \item Response 400 - Validation Error \verb|{error: Error}|
-    \item Response 401 - Unauthorized \verb|{error: Error}|
+    \item Description: get the skills of the student
+    \item Response 200: OK
+    \item Response 400: Bad Request
+    \item Response 404: Not Found
+    \item Response 500: Internal Server Error
+\end{itemize}
+
+\subsubsection{GET /api/profile/skills/\{id\}}
+\begin{itemize}
+    \item Description: get the skills of a student
+    \item Response 200: OK
+    \item Response 400: Bad Request
+    \item Response 404: Not Found
+    \item Response 500: Internal Server Error
+\end{itemize}
+
+\subsubsection{POST /api/profile/skills/delete/\{id\}}
+\begin{itemize}
+    \item Description: delete a skill from profile
+    \item Response 200: OK
+    \item Response 400: Bad Request
+    \item Response 404: Not Found
+\end{itemize}
+
+\subsubsection{GET /api/recommendation/advertisements}
+\begin{itemize}
+    \item Description: get distinct advertisements for a student or for a company
+    \item Response 200: OK
+    \item Response 400: Bad Request
+    \item Response 500: Internal Server Error
+\end{itemize}
+
+\subsubsection{POST /api/recommendation/advertisements}
+\begin{itemize}
+    \item Description: create a new advertisement
+    \item Request body: \verb|AdvertisementRegistration|
+    \item Response 200: OK
+    \item Response 400: Bad Request
+    \item Response 500: Internal Server Error
+\end{itemize}
+
+\subsubsection{GET /api/recommendation/advertisements/\{id\}}
+\begin{itemize}
+    \item Description: get a specific advertisement
+    \item Response 200: OK
+    \item Response 400: Bad Request
+    \item Response 404: Not Found
+\end{itemize}
+
+\subsubsection{GET /api/recommendation/candidates/advertisements/\{id\}}
+\begin{itemize}
+    \item Description: get recommended students for specific advertisements
+    \item Response 200: OK
+    \item Response 400: Bad Request
+\end{itemize}
+
+\subsubsection{POST /api/recommendation/suggestions/advertisement/\{id\}/student/\{id\}}
+\begin{itemize}
+    \item Description: create a new suggestion by a company for one student
+    \item Response 200: OK
+    \item Response 400: Bad Request
+    \item Response 404: Not Found
+\end{itemize}
+
+\subsubsection{POST /api/recommendation/delete/\{id\}}
+\begin{itemize}
+    \item Description: delete an advertisement
+    \item Response 200: OK
+    \item Response 400: Bad Request
+    \item Response 404: Not Found
 \end{itemize}
 
 \subsection{Interface methods}
 
-\subsubsection{Notification interface}
+\subsubsection{IEnrollmentQueries}
 \begin{itemize}
-    \item \verb|List<Notification> getNotificationList(user: User)|
+    \item \verb|Entity.Application GetApplication(int userId, int advertisementId)|
+    \item \verb|Entity.Application GetApplication(int applicationId)|
+    \item \verb|bool CreateApplication(int userId, int advertisementId,| \\ \makebox[10em][l]{} \verb| string questionnaireAnswer)|
+    \item \verb|List<Entity.Application> GetPendingApplications(int id)|
+    \item \verb|bool AcceptApplication(int id)|
+    \item \verb|bool RejectApplication(int id)|
+    \item \verb|bool CreateInternship(int studentId, int companyId,| \\ \makebox[10em][l]{} \verb| int advertisementId, DateTime start, DateTime end)|
+    \item \verb|bool NotifyStudent(int studentId, int advertisementId, bool accepted)|
+    \item \verb|bool RejectAllApplications(int id)|
+    \item \verb|bool UpdateAdvertisementSpots(int id)|
 \end{itemize}
 
-\subsubsection{Profile notification interface}
+\subsubsection{IRecommendationQueries}
 \begin{itemize}
-    \item \verb|boolean notify(user: User, notification: Notification)|
+    \item \verb|List<Entity.Advertisement> GetAdvertisementsOfCompany(int companyId)|
+    \item \verb|List<Entity.Advertisement> GetAdvertisementsForStudent(int studentId)|
+    \item \verb|int? CreateAdvertisement(int companyId,| \\ \makebox[10em][l]{} \verb| Entity.Advertisement advertisement, List<Entity.Skill> skills)|
+    \item \verb|void MatchAdvertisementForStudent(int advertisementId)|
+    \item \verb|Entity.Advertisement GetAdvertisement(int advertisementId)|
+    \item \verb|List<Entity.Student> GetRecommendedCandidates(int companyId,| \\ \makebox[10em][l]{} \verb| int advertisementId)|
+    \item \verb|bool CreateSuggestionsForStudent(int advertisementId, int studentId,| \\ \makebox[10em][l]{} \verb| int companyId)|
+    \item \verb|bool DeleteAdvertisement(int advertisementId, int companyId)|
 \end{itemize}
 
-\subsubsection{Recommendation notification interface}
+\subsubsection{IProfileService}
 \begin{itemize}
-    \item \verb|boolean notify(user: User, notification: Notification)|
+    \item \verb|Company GetCompany(int id)|
+    \item \verb|Student GetStudent(int id)|
+    \item \verb|bool UpdateProfileCompany(int id, DTO.ProfileUpdateCompany updateForm)|
+    \item \verb|bool UpdateProfileStudent(int id, DTO.ProfileUpdateStudent updateForm)|
+    \item \verb|bool IsCompanyUpdateFormValid(DTO.ProfileUpdateCompany updateForm)|
+    \item \verb|bool IsStudentUpdateFormValid(DTO.ProfileUpdateStudent updateForm)|
+    \item \verb|bool CheckCvValidity(IFormFile file)|
+    \item \verb|bool StoreCvFile(int id, IFormFile file)|
+    \item \verb|IFormFile RetrieveCvFile(int id)|
+    \item \verb|bool DeleteCv(int id)|
+    \item \verb|bool DeleteUser(UserType type, int id)|
+    \item \verb|bool AddSkill(int id, string name)|
+    \item \verb|List<Skill> GetSkills(int id)|
+    \item \verb|bool DeleteSkill(int skillId, int studentId)|
 \end{itemize}
 
-\subsubsection{Enrollment notification interface}
+\subsubsection{IRecommendationService}
 \begin{itemize}
-    \item \verb|boolean notify(user: User, notification: Notification)|
+    \item \verb|List<Advertisement> GetAdvertisementsOfCompany(int companyId)|
+    \item \verb|List<Advertisement> GetAdvertisementsForStudent(int studentId)|
+    \item \verb|bool CreateAdvertisement(int companyId,| \\ \makebox[10em][l]{} \verb| DTO.AdvertisementRegistration advertisement)|
+    \item \verb|Advertisement GetAdvertisement(int advertisementId)|
+    \item \verb|List<Student> GetRecommendedCandidates(int companyId, int advertisementId)|
+    \item \verb|bool CreateSuggestionsForStudent(int advertisementId, int studentId,| \\ \makebox[10em][l]{} \verb| int companyId)|
+    \item \verb|bool DeleteAdvertisement(int advertisementId, int companyId)|
 \end{itemize}
 
-\subsubsection{Internship notification interface}
+\subsubsection{IAuthenticationQueries}
 \begin{itemize}
-    \item \verb|boolean notify(user: User, notification: Notification)|
+    \item \verb|bool RegisterCompany(Entity.Company user)|
+    \item \verb|bool RegisterStudent(Entity.Student user)|
+    \item \verb|Entity.Company FindCompanyFromUsername(string username)|
+    \item \verb|Entity.Student FindStudentFromUsername(string username)|
+    \item \verb|Entity.Company FindCompanyFromEmail(string email)|
+    \item \verb|Entity.Student FindStudentFromEmail(string email)|
 \end{itemize}
 
-\subsubsection{Authentication interface}
+\subsubsection{IFileService}
 \begin{itemize}
-    \item \verb|boolean registerUser(user: User)|
-    \item \verb|boolean verifyUser(verificationCode: String)|
-    \item \verb|Token login(credentials: Credentials)|
-    \item \verb|boolean logout(token: Token)|
-    \item \verb|boolean validateToken(token: Token)|
+    \item \verb|string GetCvFilePath(string fileName)|
+    \item \verb|bool SaveFile(string filePath, byte[] fileData)|
+    \item \verb|byte[] RetrieveFile(string filePath)|
+    \item \verb|bool DeleteFile(string filePath)|
 \end{itemize}
 
-\subsubsection{Profile interface}
+\subsubsection{IEnrollmentService}
 \begin{itemize}
-    \item \verb|User getUser(userID: String)|
-    \item \verb|boolean updateProfile(user: User, updates: Map<String, String>)|
-    \item \verb|boolean saveCV(student: Student, cv: File)|
-    \item \verb|boolean postAdvertisement(company: Company, advertisement: Advertisement)|
+    \item \verb|Application GetApplication(int userId, int advertisementId)|
+    \item \verb|Application GetApplication(int applicationId)|
+    \item \verb|bool CreateApplication(int userId, int advertisementId,| \\ \makebox[10em][l]{} \verb| string questionnaireAnswer)|
+    \item \verb|Advertisement GetAdvertisement(int id)|
+    \item \verb|List<Application> GetPendingApplications(int id)|
+    \item \verb|bool CheckStartDateValidity(DateTime date)|
+    \item \verb|bool AcceptApplication(int id)|
+    \item \verb|bool RejectApplication(int id)|
+    \item \verb|bool CreateInternship(int studentId, int companyId,| \\ \makebox[10em][l]{} \verb| int advertisementId, DateTime start)|
+    \item \verb|bool NotifyStudent(int studentId, int advertisementId, bool accepted)|
+    \item \verb|Internship GetInternship(int id)|
+    \item \verb|bool RejectAllApplications(int id)|
+    \item \verb|bool UpdateAdvertisementSpots(int id)|
 \end{itemize}
 
-\subsubsection{Recommendation interface}
+\subsubsection{IInternshipQueries}
 \begin{itemize}
-    \item \verb|List<Advertisement> recommendedAdvertisements(student: Student)|
-    \item \verb|List<Student> recommendedCandidates(company: Company, | \\ \makebox[10em][l]{} \verb|advertisement: Advertisement)|
-    \item \verb|List<Advertisement> searchAdvertisements(searched: String)|
-    \item \verb|List<Student> searchCandidates(searched: String)|
+    \item \verb|Entity.Internship GetInternshipForStudent(int studentId)|
+    \item \verb|List<Entity.Internship> GetInternshipFromAdvertisement(| \\ \makebox[10em][l]{} \verb|int advertisementId, int companyId)|
+    \item \verb|bool CreateStudentFeedback(int internshipId,| \\ \makebox[10em][l]{} \verb| Entity.StudentFeedback feedback, int studentId)|
+    \item \verb|bool CreateCompanyFeedback(int internshipId,| \\ \makebox[10em][l]{} \verb| Entity.CompanyFeedback feedback, int companyId)|
+    \item \verb|Entity.StudentFeedback GetStudentFeedback(int internshipId,| \\ \makebox[10em][l]{} \verb| int userId, string role)|
+    \item \verb|Entity.CompanyFeedback GetCompanyFeedback(int internshipId,| \\ \makebox[10em][l]{} \verb| int userId, string role)|
+    \item \verb|bool DeleteInternship(int internshipId, int userId, string role)|
+    \item \verb|bool DeleteStudentFeedback(int internshipId, int userId)|
+    \item \verb|bool DeleteCompanyFeedback(int internshipId, int userId)|
 \end{itemize}
 
-\subsubsection{Enrollment interface}
+\subsubsection{IDataService}
 \begin{itemize}
-    \item \verb|EnrollmentStatus getEnrollmentStatus(user: User, | \\ \makebox[10em][l]{} \verb|advertisement: Advertisement)|
-    \item \verb|boolean requestApplication(student: Student, | \\ \makebox[10em][l]{} \verb|advertisement: Advertisement)|
-    \item \verb|boolean buildQuestionnaire(company: Company, | \\ \makebox[10em][l]{} \verb|questionnaire: Questionnaire)|
-    \item \verb|List<Questionnaire> getQuestionnaires(company: Company)|
-    \item \verb|boolean sendQuestionnaire(company: Company, student: Student, | \\ \makebox[10em][l]{} \verb|questionnaire: Questionnaire)|
-    \item \verb|boolean fillQuestionnaire(student: Student, | \\ \makebox[10em][l]{} \verb|questionnaire: Questionnaire)|
-    \item \verb|boolean acceptEnrollment(company: Company, student: Student, | \\ \makebox[10em][l]{} \verb|Advertisement: advertisement)|
-    \item \verb|boolean acceptProposal(student: Student, company: Company, | \\ \makebox[10em][l]{} \verb|Advertisement: advertisement)|
+    \item \verb|MySqlConnection GetConnection()|
+    \item \verb|List<Entity.Student> MapToStudents(IDataReader reader)|
+    \item \verb|List<Entity.Company> MapToCompanies(IDataReader reader)|
+    \item \verb|List<Entity.Skill> MapToSkills(IDataReader reader)|
+    \item \verb|List<Entity.Advertisement> MapToAdvertisements(IDataReader reader)|
+    \item \verb|List<Entity.StudentNotifications> MapToStudentNotifications(| \\ \makebox[10em][l]{} \verb|IDataReader reader)|
+    \item \verb|List<Entity.Application> MapToApplications(IDataReader reader)|
+    \item \verb|List<Entity.Internship> MapToInternships(IDataReader reader)|
+    \item \verb|List<Entity.StudentFeedback> MapToStudentFeedback(IDataReader reader)|
+    \item \verb|List<Entity.CompanyFeedback> MapToCompanyFeedback(IDataReader reader)|
+    \item \verb|List<string> MapToStrings(IDataReader reader, string fieldName)|
+    \item \verb|List<int> MapToInts(IDataReader reader, string fieldName)|
 \end{itemize}
 
-\subsubsection{Internship interface}
+\subsubsection{IInternshipService}
 \begin{itemize}
-    \item \verb|Internship getOngoingInternship(student: Student)|
-    \item \verb|List<Internship> getOngoingInternships(company: Company)|
-    \item \verb|boolean registerComplaint(user: User, internship: Internship, | \\ \makebox[10em][l]{} \verb|complaint: Complaint)|
-    \item \verb|List<Complaint> getComplaints(university: University)|
-    \item \verb|boolean interruptInternship(university: University, | \\ \makebox[10em][l]{} \verb|internship: Internship)|
-    \item \verb|boolean registerFeedback(user: User, feedback: Feedback)|
+    \item \verb|Internship GetInternshipForStudent(int studentId)|
+    \item \verb|List<Internship> GetInternshipFromAdvertisement(int advertisementId,| \\ \makebox[10em][l]{} \verb| int companyId)|
+    \item \verb|bool CreateStudentFeedback(int internshipId, DTO.Feedback feedback,| \\ \makebox[10em][l]{} \verb| int studentId)|
+    \item \verb|bool CreateCompanyFeedback(int internshipId, DTO.Feedback feedback,| \\ \makebox[10em][l]{} \verb| int companyId)|
+    \item \verb|DTO.Feedback GetStudentFeedback(int internshipId, int userId, string role)|
+    \item \verb|DTO.Feedback GetCompanyFeedback(int internshipId, int userId, string role)|
+    \item \verb|bool DeleteInternship(int internshipId, int userId, string role)|
+    \item \verb|bool DeleteFeedback(int internshipId, int userId, string role)|
 \end{itemize}
 
-\subsubsection{Email interface}
+\subsubsection{INotificationService}
 \begin{itemize}
-    \item \verb|boolean sendEmail(email: Email, content: String)|
+    \item \verb|List<StudentNotifications> GetStudentNotifications(int studentId)|
+    \item \verb|bool DeleteNotification(int notificationId, int studentId)|
 \end{itemize}
 
-\subsubsection{Suggestion interface}
+\subsubsection{IAuthenticationService}
 \begin{itemize}
-    \item \verb|List<Suggestion> proposeProfileSuggestions(user: User)|
-    \item \verb|List<Suggestion> proposeCVSuggestions(cv: File)|
-    \item \verb|List<Suggestion> proposeAdvertisementSuggestions(| \\ \makebox[10em][l]{} \verb|advertisement: Advertisement)|
+    \item \verb|bool IsCompanyRegistrationValid(DTO.RegistrationFormCompany registrationForm)|
+    \item \verb|bool IsStudentRegistrationValid(DTO.RegistrationFormStudent registrationForm)|
+    \item \verb|bool RegisterCompany(DTO.RegistrationFormCompany registrationForm)|
+    \item \verb|bool RegisterStudent(DTO.RegistrationFormStudent registrationForm)|
+    \item \verb|User ValidateCredentials(DTO.Credentials credentials)|
+    \item \verb|string GenerateToken(User user)|
+    \item \verb|string HashPassword(string salt, string password)|
+    \item \verb|string GenerateSalt()|
+    \item \verb|bool IsValidEmail(string email)|
 \end{itemize}
 
-\subsubsection{Complaint interface}
+\subsubsection{INotificationQueries}
 \begin{itemize}
-    \item \verb|Complaint buildComplaint(user: User, internship: Internship, | \\ \makebox[10em][l]{} \verb|complaint: Complaint)|
-    \item \verb|List<Complaint> adjustComplaints(complaints: List<Complaint>)|
+    \item \verb|List<Entity.StudentNotifications> GetStudentNotifications(int studentId)|
+    \item \verb|bool DeleteNotification(int notificationId, int studentId)|
 \end{itemize}
 
-\subsubsection{Feedback interface}
+\subsubsection{IProfileQueries}
 \begin{itemize}
-    \item \verb|Feedback buildFeedback(user: User, feedback: Feedback)|
-\end{itemize}
-
-\subsubsection{Notification query interface}
-\begin{itemize}
-    \item \verb|User getUser(userID: String)|
-    \item \verb|List<Notification> getNotifications(userID: String)|
-    \item \verb|boolean addNotification(userID: String, notification: Notification)|
-\end{itemize}
-
-\subsubsection{Authentication query interface}
-\begin{itemize}
-    \item \verb|User getUser(credentials: Credentials)|
-    \item \verb|boolean registerUser(user: User)|
-    \item \verb|boolean verifyUser(verificationCode: String)|
-    \item \verb|boolean checkCredentials(credentials: Credentials)|
-    \item \verb|boolean setToken(userID: String, token: Token)|
-    \item \verb|boolean checkToken(userID: String, token: Token)|
-    \item \verb|boolean deleteToken(userID: String)|
-\end{itemize}
-
-\subsubsection{Profile query interface}
-\begin{itemize}
-    \item \verb|User getUser(userID: String)|
-    \item \verb|boolean updateProfile(userID: String, updates: Map<String, String>)|
-    \item \verb|boolean saveCV(userID: String, cv: File)|
-    \item \verb|boolean postAdvertisement(userID: String, advertisement: Advertisement)|
-\end{itemize}
-
-\subsubsection{Recommendation query interface}
-\begin{itemize}
-    \item \verb|User getUser(userID: String)|
-    \item \verb|List<Advertisement> getMatchingAdvertisements(keyWords: List<String>)|
-    \item \verb|List<Student> getMatchingCandidates(keyWords: List<String>)|
-\end{itemize}
-
-\subsubsection{Enrollment query interface}
-\begin{itemize}
-    \item \verb|User getUser(userID: String)|
-    \item \verb|EnrollmentStatus getEnrollmentStatus(userID: String, | \\ \makebox[10em][l]{} \verb|advertisementID: String)|
-    \item \verb|boolean requestApplication(userID: String, advertisementID: String)|
-    \item \verb|boolean buildQuestionnaire(userID: String, questionnaire: Questionnaire)|
-    \item \verb|List<Questionnaire> getQuestionnaires(userID: String)|
-    \item \verb|boolean sendQuestionnaire(companyID: String, studentID: String, | \\ \makebox[10em][l]{} \verb|questionnaireID: String)|
-    \item \verb|boolean fillQuestionnaire(userID: String, questionnaire: Questionnaire)|
-    \item \verb|boolean acceptEnrollment(companyID: String, studentID: String, | \\ \makebox[10em][l]{} \verb|advertisementID: String)|
-    \item \verb|boolean acceptProposal(studentID: String, companyID: String, | \\ \makebox[10em][l]{} \verb|advertisementID: String)|
-\end{itemize}
-
-\subsubsection{Internship query interface}
-\begin{itemize}
-    \item \verb|User getUser(userID: String)|
-    \item \verb|Internship getOngoingInternship(userID: String)|
-    \item \verb|List<Internship> getOngoingInternships(userID: String)|
-    \item \verb|boolean registerComplaint(userID: String, internshipID: String, | \\ \makebox[10em][l]{} \verb|complaint: Complaint)|
-    \item \verb|List<Complaint> getComplaints(userID: String)|
-    \item \verb|boolean interruptInternship(internshipID: String)|
-    \item \verb|boolean registerFeedback(userID: User, feedback: Feedback)|
+    \item \verb|Entity.Company FindCompanyFromId(int id)|
+    \item \verb|Entity.Student FindStudentFromId(int id)|
+    \item \verb|bool UpdateSaltAndPassword(UserType type, int id, string salt, string hash)|
+    \item \verb|bool UpdateUsername(UserType type, int id, string username)|
+    \item \verb|bool UpdateEmail(UserType type, int id, string email)|
+    \item \verb|bool UpdateBio(UserType type, int id, string bio)|
+    \item \verb|bool UpdateHeadquarter(int id, string headquarter)|
+    \item \verb|bool UpdateFiscalCode(int id, string fiscalCode)|
+    \item \verb|bool UpdateVatNumber(int id, string vatNumber)|
+    \item \verb|bool UpdateName(int id, string name)|
+    \item \verb|bool UpdateSurname(int id, string surname)|
+    \item \verb|bool UpdateUniversity(int id, string university)|
+    \item \verb|bool UpdateCourseOfStudy(int id, string courseOfStudy)|
+    \item \verb|bool UpdateGender(int id, char gender)|
+    \item \verb|bool UpdateBirthDate(int id, DateTime birthDate)|
+    \item \verb|bool DeleteUser(UserType type, int id)|
+    \item \verb|int FindSkill(string name)|
+    \item \verb|bool AddSkill(string name)|
+    \item \verb|bool AddSkillToStudent(int studentId, int skillId)|
+    \item \verb|List<Entity.Skill> GetSkills(int id)|
+    \item \verb|bool DeleteSkill(int skillId, int studentId)|
 \end{itemize}
 
 \section{Architectural styles and patterns}
