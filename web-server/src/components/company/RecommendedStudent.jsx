@@ -2,7 +2,7 @@ import PropTypes from "prop-types";
 import { useState } from "react";
 import Cookies from "js-cookie";
 const API_SERVER_URL = window.env?.VITE_API_SERVER_URL || 'http://localhost:5000';
-const authData = JSON.parse(Cookies.get('authData'));
+
 
 function RecommendedStudent({ student }) {
     const [isLoading, setIsLoading] = useState(false);
@@ -22,6 +22,7 @@ function RecommendedStudent({ student }) {
 
     const getStudentCV = async () => {
         setIsDownloading(true);
+        const authData = JSON.parse(Cookies.get('authData'));
         const response = await fetch(`${API_SERVER_URL}/api/profile/cv/${student.studentId}`, {
             headers: {
                 'Authorization': `Bearer ${authData.token}`,
