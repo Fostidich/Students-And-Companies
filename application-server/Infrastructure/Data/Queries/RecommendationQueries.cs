@@ -407,7 +407,9 @@ public class RecommendationQueries : IRecommendationQueries
                 }
             }
             
-            List<Entity.Student> studentsWithOutInternships = GetStudentWithoutInternships(students);
+            List<Entity.Student> studentsWithInternships = GetStudentWithInternships(students);
+            
+            List<Entity.Student> studentsWithOutInternships = students.Except(studentsWithInternships).ToList();
             
             return studentsWithOutInternships;
         }
@@ -418,24 +420,29 @@ public class RecommendationQueries : IRecommendationQueries
         }
     }
     
-    private List<Entity.Student> GetStudentWithoutInternships(List<Entity.Student> students) {
+    private List<Entity.Student> GetStudentWithInternships(List<Entity.Student> students) {
         
-        List<Entity.Student> studentsWithoutInternships = new List<Entity.Student>();
+        List<Entity.Student> studentsWithInternships = new List<Entity.Student>();
         foreach (var student in students) {
             var internships = GetInternshipForStudent(student.StudentId);
-            if (internships == null) {
-                studentsWithoutInternships.Add(student);
+            foreach (var internship in internships) {
+                if (internship.EndDate > DateTime.Now) {
+                    studentsWithInternships.Add(student);
+                    break;
+                }
             }
+
         }
-        return studentsWithoutInternships;
+        return studentsWithInternships;
     }
     
-    private Entity.Internship GetInternshipForStudent(int studentId) {
+    public List<Entity.Internship> GetInternshipForStudent(int studentId) {
         try {
             string query = @"
                 SELECT *
                 FROM internship
-                WHERE student_id = @StudentId;
+                WHERE student_id = @StudentId
+                ORDER BY end_date DESC;
             ";
             
             using var db_connection = dataService.GetConnection();
@@ -445,9 +452,9 @@ public class RecommendationQueries : IRecommendationQueries
             
             using var reader = command.ExecuteReader();
             
-            var internship = dataService.MapToInternships(reader).FirstOrDefault();
+            var internships = dataService.MapToInternships(reader);
             
-            return internship;
+            return internships;
         } catch (Exception ex) {
             Console.WriteLine(ex.Message);
             return null;
@@ -482,7 +489,8 @@ public class RecommendationQueries : IRecommendationQueries
                 checkCommand.Parameters.AddWithValue("@StudentId", studentId);
                 checkCommand.Parameters.AddWithValue("@AdvertisementId", advertisementId);
 
-                var existingCount = Convert.ToInt32(checkCommand.ExecuteScalar());
+                var result = checkCommand.ExecuteScalar();
+                var existingCount = (result != null) ? Convert.ToInt32(result) : 0;
 
                 // If the notification already exists, return false
                 if (existingCount > 0) 

@@ -104,7 +104,8 @@ public class EnrollmentService : IEnrollmentService {
     }
 
     public Internship GetInternship(int id) {
-        return internshipService.GetInternshipForStudent(id);
+        var internship = internshipService.GetInternshipForStudent(id);
+        return internship.FirstOrDefault();
     }
 
 }

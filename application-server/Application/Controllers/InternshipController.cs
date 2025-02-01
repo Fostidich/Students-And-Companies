@@ -33,15 +33,18 @@ public class InternshipController : ControllerBase {
         string userIdStr = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
         int userId = Convert.ToInt32(userIdStr);
 
-        DTO.Internship internships;
-        Internship checkInternships;
+        List<DTO.Internship> internships;
+        List<Internship> checkInternships;
 
         checkInternships = internship.GetInternshipForStudent(userId);
 
         if (checkInternships == null)
-            return StatusCode(404, "No internships found\n");
+            return StatusCode(500, "Internal server error\n");
+        
+        if (checkInternships.Count == 0)
+            return NotFound("No internships found\n");
 
-        internships = checkInternships.ToDto();
+        internships = checkInternships.Select(i => i.ToDto()).ToList();
 
         return Ok(internships);
     }
