@@ -1,59 +1,63 @@
-.PHONY: help clean test web-server web-server-docker application-server application-server-docker db-migration rasd dd itd atd rasd-verbose dd-verbose itd-verbose atd-verbose layout-export
+.PHONY: help clean test web-server web-server-docker application-server application-server-docker db-migration docker-push rasd dd itd atd rasd-verbose dd-verbose itd-verbose atd-verbose layout-export
 
 help:
 ifeq ($(OS),Windows_NT)
 	@cmd /c "echo."
-	@echo    make help                          Print help panel
+	@echo    make help                              Print help panel
 	@cmd /c "echo."
-	@echo    make clean                         Clean project tree from build files
-	@echo    make test                          Launch tests
+	@echo    make clean                             Clean project tree from build files
+	@echo    make test                              Launch tests
 	@cmd /c "echo."
-	@echo    make web-server                    Launch a web server dev run
-	@echo    make web-server-docker             Dockerize web server release app
+	@echo    make web-server                        Launch a web server dev run
+	@echo    make web-server-docker                 Dockerize web server release app
 	@cmd /c "echo."
-	@echo    make application-server            Launch an application server dev run
-	@echo    make application-server-docker     Dockerize application server release app
+	@echo    make application-server                Launch an application server dev run
+	@echo    make application-server-docker         Dockerize application server release app
 	@cmd /c "echo."
-	@echo    make db-migration NAME=<name>      Create a migration for updating the DB
+	@echo    make db-migration NAME=<name>          Create a migration for updating the DB
 	@cmd /c "echo."
-	@echo    make rasd                          Compile RASD.pdf from LaTeX
-	@echo    make dd                            Compile DD.pdf from LaTeX
-	@echo    make itd                           Compile ITD.pdf from LaTeX
-	@echo    make atd                           Compile ATD.pdf from LaTeX
+	@echo    make docker-push REPO=<repo>           Dockerize servers and push images
 	@cmd /c "echo."
-	@echo    make rasd-verbose                  Run pdflatex verbosely for RASD
-	@echo    make dd-verbose                    Run pdflatex verbosely for DD
-	@echo    make itd-verbose                   Run pdflatex verbosely for ITD
-	@echo    make atd-verbose                   Run pdflatex verbosely for ATD
+	@echo    make rasd                              Compile RASD.pdf from LaTeX
+	@echo    make dd                                Compile DD.pdf from LaTeX
+	@echo    make itd                               Compile ITD.pdf from LaTeX
+	@echo    make atd                               Compile ATD.pdf from LaTeX
 	@cmd /c "echo."
-	@echo    make layout-export                 Copy main LaTeX layout to all documents
+	@echo    make rasd-verbose                      Run pdflatex verbosely for RASD
+	@echo    make dd-verbose                        Run pdflatex verbosely for DD
+	@echo    make itd-verbose                       Run pdflatex verbosely for ITD
+	@echo    make atd-verbose                       Run pdflatex verbosely for ATD
+	@cmd /c "echo."
+	@echo    make layout-export                     Copy main LaTeX layout to all documents
 	@cmd /c "echo."
 else
 	@echo ""
-	@echo "    make help                        Print help panel"
+	@echo "    make help                            Print help panel"
 	@echo ""
-	@echo "    make clean                       Clean project tree from build files"
-	@echo "    make test                        Launch tests"
+	@echo "    make clean                           Clean project tree from build files"
+	@echo "    make test                            Launch tests"
 	@echo ""
-	@echo "    make web-server                  Launch a web server dev run"
-	@echo "    make web-server-docker           Dockerize web server release app"
+	@echo "    make web-server                      Launch a web server dev run"
+	@echo "    make web-server-docker               Dockerize web server release app"
 	@echo ""
-	@echo "    make application-server          Launch an application server dev run"
-	@echo "    make application-server-docker   Dockerize application server release app"
+	@echo "    make application-server              Launch an application server dev run"
+	@echo "    make application-server-docker       Dockerize application server release app"
 	@echo ""
-	@echo "    make db-migration NAME=<name>    Create a migration for updating the DB"
+	@echo "    make db-migration NAME=<name>        Create a migration for updating the DB"
 	@echo ""
-	@echo "    make rasd                        Compile RASD.pdf from LaTeX"
-	@echo "    make dd                          Compile DD.pdf from LaTeX"
-	@echo "    make itd                         Compile ITD.pdf from LaTeX"
-	@echo "    make atd                         Compile ATD.pdf from LaTeX"
+	@echo "    make docker-push REPO=<repo>         Dockerize servers and push images"
 	@echo ""
-	@echo "    make rasd-verbose                Run pdflatex verbosely for RASD"
-	@echo "    make dd-verbose                  Run pdflatex verbosely for DD"
-	@echo "    make itd-verbose                 Run pdflatex verbosely for ITD"
-	@echo "    make atd-verbose                 Run pdflatex verbosely for ATD"
+	@echo "    make rasd                            Compile RASD.pdf from LaTeX"
+	@echo "    make dd                              Compile DD.pdf from LaTeX"
+	@echo "    make itd                             Compile ITD.pdf from LaTeX"
+	@echo "    make atd                             Compile ATD.pdf from LaTeX"
 	@echo ""
-	@echo "    make layout-export               Copy main LaTeX layout to all documents"
+	@echo "    make rasd-verbose                    Run pdflatex verbosely for RASD"
+	@echo "    make dd-verbose                      Run pdflatex verbosely for DD"
+	@echo "    make itd-verbose                     Run pdflatex verbosely for ITD"
+	@echo "    make atd-verbose                     Run pdflatex verbosely for ATD"
+	@echo ""
+	@echo "    make layout-export                   Copy main LaTeX layout to all documents"
 	@echo ""
 endif
 
@@ -104,20 +108,29 @@ web-server:
 	npm --prefix web-server run dev
 
 web-server-docker:
-	docker build -t sc-web-server ./web-server
-	docker run --rm -it -p 8080:80 sc-web-server
+	docker build -t sc_web_server ./web-server
+	docker run --rm -it -p 8080:80 sc_web_server
 	docker image prune -f
 
 application-server:
 	ASPNETCORE_ENVIRONMENT=Development dotnet watch run --project application-server --configuration Debug
 
 application-server-docker:
-	docker build -t sc-application-server ./application-server
-	docker run --rm -it -p 4673:5000 sc-application-server
+	docker build -t sc_application_server ./application-server
+	docker run --rm -it -p 4673:5000 sc_application_server
 	docker image prune -f
 
 db-migration:
 	dotnet ef migrations add $(NAME) --project application-server
+
+docker-push:
+	docker system prune -af
+	docker build -t sc_application_server ./application-server
+	docker tag sc_application_server $(REPO)/sc_application_server:latest
+	docker push $(REPO)/sc_application_server:latest
+	docker build -t sc_web_server ./web-server
+	docker tag sc_web_server $(REPO)/sc_web_server:latest
+	docker push $(REPO)/sc_web_server:latest
 
 rasd: layout-export
 ifeq ($(OS),Windows_NT)

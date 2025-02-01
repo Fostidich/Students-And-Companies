@@ -1,18 +1,36 @@
 import PropTypes from "prop-types";
 import { useState } from "react";
 import Cookies from "js-cookie";
+import {getErrorMessage} from "../../utils/errorUtils.js";
 const API_SERVER_URL = window.env?.VITE_API_SERVER_URL || 'http://localhost:5000';
 
 
-function RecommendedStudent({ student }) {
+function RecommendedStudent({ student, advertisementId }) {
     const [isLoading, setIsLoading] = useState(false);
     const [isDownloading, setIsDownloading] = useState(false);
+    const [errorMessage, setErrorMessage] = useState('');
+    const [message, setMessage] = useState('');
 
     const handleNotify = async () => {
         setIsLoading(true);
+        const authData = JSON.parse(Cookies.get('authData'));
         try {
-            // Invia la richiesta di notifica
+            const response = await fetch(`${API_SERVER_URL}/api/recommendation/suggestions/advertisement/${advertisementId}/student/${student.studentId}`, {
+                method: 'POST',
+                headers: {
+                    'Authorization': `Bearer ${authData.token}`,
+                }
+            });
+            console.log(response);
+            if(response.status !== 200) {
+                const message = await getErrorMessage(response);
+                setErrorMessage(message);
 
+            }else {
+                // Notifica inviata con successo
+                setMessage('Request sent successfully');
+                setIsLoading(false);
+            }
         } catch {
             // L'errore è già gestito nel componente padre
         } finally {
@@ -21,6 +39,7 @@ function RecommendedStudent({ student }) {
     };
 
     const getStudentCV = async () => {
+        setErrorMessage('');
         setIsDownloading(true);
         const authData = JSON.parse(Cookies.get('authData'));
         const response = await fetch(`${API_SERVER_URL}/api/profile/cv/${student.studentId}`, {
@@ -52,6 +71,8 @@ function RecommendedStudent({ student }) {
             window.URL.revokeObjectURL(url);
             document.body.removeChild(a);
 
+        }else {
+            setErrorMessage(await getErrorMessage(response));
         }
         setIsDownloading(false);
 
@@ -85,6 +106,8 @@ function RecommendedStudent({ student }) {
                     >
                         {isLoading ? 'Sending...' : 'Request to Apply'}
                     </button>
+                    {errorMessage && <div className="text-red-500 mt-4">{errorMessage}</div>}
+                    {message && <div className="text-green-500 mt-4">{message}</div>}
                 </div>
 
             </div>
@@ -104,6 +127,7 @@ RecommendedStudent.propTypes = {
         courseOfStudy: PropTypes.string.isRequired,
         gender: PropTypes.string.isRequired,
         birthDate: PropTypes.string.isRequired
-    }).isRequired
+    }),
+    advertisementId: PropTypes.number
 };
 export default RecommendedStudent;

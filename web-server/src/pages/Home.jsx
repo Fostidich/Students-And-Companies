@@ -31,7 +31,7 @@ function Home() {
     };
 
     return (
-        <>
+        <div className="pt-0 min-h-screen overflow-y-auto">
             {userType.toLowerCase() === 'student' ? (
                 <div>
                     <div className="pt-8 px-4 flex justify-center ">
@@ -60,7 +60,7 @@ function Home() {
 
             <div className="pt-8">
             </div>
-        </>
+        </div>
 
     );
 }
