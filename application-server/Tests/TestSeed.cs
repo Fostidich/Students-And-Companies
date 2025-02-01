@@ -53,26 +53,20 @@ public class TestSeed {
                 Name = "Skill" + i
             });
 
-            context.StudentSkills.AddRange(new Entity.StudentSkills
-            {
-                StudentId = i,
-                SkillId = i
-            });
-
-
         }
 
         context.SaveChanges();
 
         for (int i = 1; i <= numberOfSeeds + 5; i++) {
 
-            for (int j = 1; j < 5; j++)
-            {
+            for (int j = 0; j < 5; j++) {
+
                 context.StudentSkills.AddRange(new Entity.StudentSkills
                 {
                     StudentId = i,
                     SkillId = i + j
                 });
+
             }
 
             context.Advertisement.AddRange(new Entity.Advertisement
@@ -88,17 +82,15 @@ public class TestSeed {
                 Questionnaire = "SeedQuestionnaire"
             });
 
+            for (int j = 0; j < 5; j++) {
 
-
-            for (int j = 0; j < 5; j++)
-            {
                 context.AdvertisementSkills.AddRange(new Entity.AdvertisementSkills
                 {
                     AdvertisementId = i,
                     SkillId = i + j
                 });
-            }
 
+            }
 
             context.Internship.AddRange(new Entity.Internship
             {
@@ -110,37 +102,39 @@ public class TestSeed {
                 EndDate = new DateTime(2022, 12, 2, 19, 55, 0)
             });
 
-
         }
 
         context.SaveChanges();
 
         for (int i = 1; i <= numberOfSeeds + 3 ; i++) {
 
-
             for (int j = 0; j < 3; j++) {
-                    context.StudentNotifications.AddRange(new Entity.StudentNotifications {
-                        StudentId = i,
-                        AdvertisementId = i + j,
-                        Type = "RECOMMENDED"
-                    });
-            }
 
+                context.StudentNotifications.AddRange(new Entity.StudentNotifications {
+                    StudentId = i,
+                    AdvertisementId = i + j,
+                    Type = "RECOMMENDED"
+                });
+
+            }
 
             context.CompanyFeedback.AddRange(new Entity.CompanyFeedback {
                 InternshipId = i,
                 Rating = 10,
                 Comment = "SeedComment"
             });
-            
+
             context.StudentFeedback.AddRange(new Entity.StudentFeedback {
                 InternshipId = i,
                 Rating = 10,
                 Comment = "SeedComment"
             });
-        }
-    }
 
+        }
+
+        context.SaveChanges();
+
+    }
 
     public class SeedHelper {
 
