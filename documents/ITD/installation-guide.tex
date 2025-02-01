@@ -4,63 +4,25 @@ Below are the steps to launch the system applications for local hosting.
 
 \section{Install Docker Compose}
 
-The installation guide can be found at the following link.
+The installation guide for Docker Compose can be found at the following link.
 
 \begin{center}
 \url{https://docs.docker.com/compose/install}
 \end{center}
 
-\section{Create the configuration file}
+\section{Download the configuration file}
 
-Create, wherever you want, a file named \verb|docker-compose.yml|.
+Download the \verb|docker-compose.yml| file found in the root of the repository.
+To do so, you can simply open a terminal and run the following command.
 
-Inside that file write the following text.
+\begin{center}
+\verb|curl -O https://raw.githubusercontent.com/Fostidich/\| \\
+\verb|OstidichSalariRivitti-StudentsAndCompanies/main/docker-compose.yml|
+\end{center}
 
-\fontsize{7pt}{7pt}\selectfont
-\begin{verbatim}
-services:
+\section{Start the application}
 
-  db:
-    image: mysql:latest
-    container_name: sc-mysql-database
-    environment:
-      MYSQL_ROOT_PASSWORD: "IHjw-9940"
-      MYSQL_DATABASE: "students_and_companies"
-      MYSQL_USER: "sc_admin"
-      MYSQL_PASSWORD: "YVxm-3861"
-    ports:
-      - "3380:3306"
-    healthcheck:
-      test: ["CMD", "mysqladmin", "ping", "-h", "db"]
-      interval: 1s
-      retries: 300
-
-  sc-web-server:
-    image: fostidich/sc_web_server:latest
-    container_name: sc-web-server
-    environment:
-        VITE_API_SERVER_URL: "http://localhost:5522"
-    ports:
-      - "8080:80"
-
-  sc-application-server:
-    image: fostidich/sc_application_server:latest
-    container_name: sc-application-server
-    environment:
-      JWT_SECRET: "8xzTCUwj0a1CaRttQBtZ5Dc2g78gLfiP"
-      DB_DEFAULT_CONNECTION: "Server=db;Database=students_and_companies;User ID=sc_admin;Password=YVxm-3861;"
-      CONNECTION_URL: "http://0.0.0.0:5000"
-    ports:
-      - "5522:5000"
-    depends_on:
-      db:
-        condition: service_healthy
-\end{verbatim}
-\normalsize
-
-\section{Command line commands}
-
-Open a terminal and navigate to the folder containing the \verb|docker-compose.yml| file that you've just created.
+Stay in the folder containing the \verb|docker-compose.yml| file that you've just downloaded.
 
 Depending on how Docker Compose has been installed, run the corresponding command: use
 
@@ -76,7 +38,7 @@ if you installed Docker Compose as a plugin; use
 
 if you installed it as a standalone binary.
 
-\subsection{Notes}
+\subsection{Troubleshoot}
 
 Since Docker Compose can be installed in multiple ways, and since slight differences can be found depending on the running OS, below is a list of possible solutions to try if the previous command fails.
 
@@ -92,7 +54,13 @@ Since Docker Compose can be installed in multiple ways, and since slight differe
 
 \section{Browser page}
 
-Open the browser and go the the link \url{http://localhost:8080}.
+Open the browser and go the the link below.
+
+\begin{center}
+\url{http://localhost:8080}.
+\end{center}
+
+Mind changing the port, if you have modified it.
 
 \section{Stopping the container}
 
@@ -113,4 +81,6 @@ To free up space and clean up unused Docker resources, you can run the following
 \verb|docker system prune -a|
 \end{center}
 
+\subsection{Restart application}
 
+To start the server applications once more, simply repeat the commands found at point 3.
