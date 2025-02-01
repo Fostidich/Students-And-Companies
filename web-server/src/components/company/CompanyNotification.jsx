@@ -8,7 +8,7 @@ function CompanyNotification({pendingApplication}){
     const authData = JSON.parse(Cookies.get('authData'));
     const [showDetails, setShowDetails] = useState(false);
     const [isLoadingStudent, setIsLoadingStudent] = useState(true);
-    const [isLoadingAd, setIsLoadingAd] = useState(true);
+    //const [isLoadingAd, setIsLoadingAd] = useState(true);
     const [profileStudent, setProfileStudent] = useState({
         studentId: '',
         username: '',
@@ -123,6 +123,8 @@ function CompanyNotification({pendingApplication}){
             window.URL.revokeObjectURL(url);
             document.body.removeChild(a);
 
+        }else{
+            setErrorMessage(await getErrorMessage(response));
         }
 
     }
@@ -171,7 +173,7 @@ function CompanyNotification({pendingApplication}){
 
     return (
         <div className="bg-white rounded-lg border p-4 mb-4">
-            {isLoadingStudent || isLoadingAd && <div className="text-center">Loading...</div>}
+            {isLoadingStudent && <div className="text-center">Loading...</div>}
             <div className="flex justify-between items-start">
                 <div>
                     <h1 className="text-xl font-semibold mb-2">{advertisement.name}</h1>
@@ -188,7 +190,7 @@ function CompanyNotification({pendingApplication}){
             </div>
 
             {showDetails && (
-                (isLoadingStudent || isLoadingAd && <div className="text-center">Loading...</div>) ||
+                (isLoadingStudent && <div className="text-center">Loading...</div>) ||
                 <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
                     <div className="bg-white p-6 rounded-lg w-2/3 h-auto relative gap-4">
                         <button
