@@ -463,8 +463,31 @@ public class RecommendationQueries : IRecommendationQueries
                 INSERT INTO student_notifications (student_id, advertisement_id, type)
                 VALUES (@StudentId, @AdvertisementId, 'INVITED');
             ";
-
+            
+            // Query to check if the notification already exists
+            string checkNotificationQuery = @"
+                SELECT COUNT(*) 
+                FROM student_notifications 
+                WHERE student_id = @StudentId 
+                  AND advertisement_id = @AdvertisementId 
+                  AND type = 'INVITED';
+            ";
+            
+            
             using var db_connection = dataService.GetConnection();
+            
+            
+            // Check if the notification already exists
+            using (var checkCommand = new MySqlCommand(checkNotificationQuery, db_connection)) {
+                checkCommand.Parameters.AddWithValue("@StudentId", studentId);
+                checkCommand.Parameters.AddWithValue("@AdvertisementId", advertisementId);
+
+                var existingCount = Convert.ToInt32(checkCommand.ExecuteScalar());
+
+                // If the notification already exists, return false
+                if (existingCount > 0) 
+                    return false;
+            }
 
             
             // Check if company is the owner of the advertisement
