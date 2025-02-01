@@ -235,7 +235,7 @@ namespace ApplicationServer.Migrations
 
                     b.HasKey("InternshipId");
 
-                    b.ToTable("company_feedbacks");
+                    b.ToTable("company_feedback");
                 });
 
             modelBuilder.Entity("Entity.Internship", b =>
@@ -280,8 +280,7 @@ namespace ApplicationServer.Migrations
 
                     b.HasIndex("CompanyId");
 
-                    b.HasIndex("StudentId")
-                        .IsUnique();
+                    b.HasIndex("StudentId");
 
                     b.ToTable("internship");
                 });
@@ -416,7 +415,7 @@ namespace ApplicationServer.Migrations
 
                     b.HasKey("InternshipId");
 
-                    b.ToTable("student_feedbacks");
+                    b.ToTable("student_feedback");
                 });
 
             modelBuilder.Entity("Entity.StudentNotifications", b =>
@@ -544,8 +543,8 @@ namespace ApplicationServer.Migrations
                         .IsRequired();
 
                     b.HasOne("Entity.Student", "Student")
-                        .WithOne("Internship")
-                        .HasForeignKey("Entity.Internship", "StudentId")
+                        .WithMany("Internships")
+                        .HasForeignKey("StudentId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -641,7 +640,7 @@ namespace ApplicationServer.Migrations
                 {
                     b.Navigation("Applications");
 
-                    b.Navigation("Internship");
+                    b.Navigation("Internships");
 
                     b.Navigation("StudentNotifications");
 

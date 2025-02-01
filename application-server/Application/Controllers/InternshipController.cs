@@ -236,7 +236,4 @@ public class InternshipController : ControllerBase {
 
         return NotFound("You don't have this feedback\n");
     }
-    
-    
-    
 }

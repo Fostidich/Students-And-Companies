@@ -7,7 +7,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace ApplicationServer.Migrations
 {
     /// <inheritdoc />
-    public partial class InitialSchema : Migration
+    public partial class firstMigration : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -103,6 +103,8 @@ namespace ApplicationServer.Migrations
                 {
                     advertisement_id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
+                    name = table.Column<string>(type: "varchar(64)", maxLength: 64, nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
                     created_at = table.Column<DateTime>(type: "datetime(6)", nullable: false)
                         .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.ComputedColumn),
                     company_id = table.Column<int>(type: "int", nullable: false),
@@ -123,7 +125,7 @@ namespace ApplicationServer.Migrations
                         column: x => x.company_id,
                         principalTable: "company",
                         principalColumn: "company_id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                 })
                 .Annotation("MySql:CharSet", "utf8mb4");
 
@@ -148,7 +150,7 @@ namespace ApplicationServer.Migrations
                         column: x => x.student_id,
                         principalTable: "student",
                         principalColumn: "student_id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                 })
                 .Annotation("MySql:CharSet", "utf8mb4");
 
@@ -167,7 +169,7 @@ namespace ApplicationServer.Migrations
                         column: x => x.advertisement_id,
                         principalTable: "advertisement",
                         principalColumn: "advertisement_id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_advertisement_skills_skill_skill_id",
                         column: x => x.skill_id,
@@ -187,11 +189,10 @@ namespace ApplicationServer.Migrations
                     advertisement_id = table.Column<int>(type: "int", nullable: false),
                     created_at = table.Column<DateTime>(type: "datetime(6)", nullable: false)
                         .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.ComputedColumn),
-                    status = table.Column<string>(type: "enum('REQUESTED', 'ACCEPTED', 'STARTED')", nullable: false)
+                    status = table.Column<string>(type: "enum('PENDING', 'ACCEPTED', 'REJECTED')", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     questionnaire = table.Column<string>(type: "longtext", nullable: false)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
-                    proposed_start = table.Column<DateTime>(type: "datetime(6)", nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4")
                 },
                 constraints: table =>
                 {
@@ -201,13 +202,13 @@ namespace ApplicationServer.Migrations
                         column: x => x.advertisement_id,
                         principalTable: "advertisement",
                         principalColumn: "advertisement_id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_application_student_student_id",
                         column: x => x.student_id,
                         principalTable: "student",
                         principalColumn: "student_id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                 })
                 .Annotation("MySql:CharSet", "utf8mb4");
 
@@ -233,39 +234,86 @@ namespace ApplicationServer.Migrations
                         column: x => x.advertisement_id,
                         principalTable: "advertisement",
                         principalColumn: "advertisement_id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_internship_company_company_id",
                         column: x => x.company_id,
                         principalTable: "company",
                         principalColumn: "company_id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_internship_student_student_id",
                         column: x => x.student_id,
                         principalTable: "student",
                         principalColumn: "student_id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                 })
                 .Annotation("MySql:CharSet", "utf8mb4");
 
             migrationBuilder.CreateTable(
-                name: "feedback",
+                name: "student_notifications",
                 columns: table => new
                 {
-                    internship_id = table.Column<int>(type: "int", nullable: false),
-                    student_rating = table.Column<int>(type: "int", nullable: false),
-                    company_rating = table.Column<int>(type: "int", nullable: false),
-                    student_comment = table.Column<string>(type: "varchar(1024)", maxLength: 1024, nullable: true)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
-                    company_comment = table.Column<string>(type: "varchar(1024)", maxLength: 1024, nullable: true)
+                    student_notification_id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
+                    student_id = table.Column<int>(type: "int", nullable: false),
+                    advertisement_id = table.Column<int>(type: "int", nullable: false),
+                    type = table.Column<string>(type: "enum('INVITED', 'RECOMMENDED', 'ACCEPTED', 'REJECTED')", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4")
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_feedback", x => x.internship_id);
+                    table.PrimaryKey("PK_student_notifications", x => x.student_notification_id);
                     table.ForeignKey(
-                        name: "FK_feedback_internship_internship_id",
+                        name: "FK_student_notifications_advertisement_advertisement_id",
+                        column: x => x.advertisement_id,
+                        principalTable: "advertisement",
+                        principalColumn: "advertisement_id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_student_notifications_student_student_id",
+                        column: x => x.student_id,
+                        principalTable: "student",
+                        principalColumn: "student_id",
+                        onDelete: ReferentialAction.Cascade);
+                })
+                .Annotation("MySql:CharSet", "utf8mb4");
+
+            migrationBuilder.CreateTable(
+                name: "company_feedback",
+                columns: table => new
+                {
+                    internship_id = table.Column<int>(type: "int", nullable: false),
+                    rating = table.Column<int>(type: "int", nullable: false),
+                    comment = table.Column<string>(type: "varchar(1024)", maxLength: 1024, nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4")
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_company_feedback", x => x.internship_id);
+                    table.ForeignKey(
+                        name: "FK_company_feedback_internship_internship_id",
+                        column: x => x.internship_id,
+                        principalTable: "internship",
+                        principalColumn: "internship_id",
+                        onDelete: ReferentialAction.Cascade);
+                })
+                .Annotation("MySql:CharSet", "utf8mb4");
+
+            migrationBuilder.CreateTable(
+                name: "student_feedback",
+                columns: table => new
+                {
+                    internship_id = table.Column<int>(type: "int", nullable: false),
+                    rating = table.Column<int>(type: "int", nullable: false),
+                    comment = table.Column<string>(type: "varchar(1024)", maxLength: 1024, nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4")
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_student_feedback", x => x.internship_id);
+                    table.ForeignKey(
+                        name: "FK_student_feedback_internship_internship_id",
                         column: x => x.internship_id,
                         principalTable: "internship",
                         principalColumn: "internship_id",
@@ -318,7 +366,12 @@ namespace ApplicationServer.Migrations
             migrationBuilder.CreateIndex(
                 name: "IX_internship_student_id",
                 table: "internship",
-                column: "student_id",
+                column: "student_id");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_skill_name",
+                table: "skill",
+                column: "name",
                 unique: true);
 
             migrationBuilder.CreateIndex(
@@ -332,6 +385,16 @@ namespace ApplicationServer.Migrations
                 table: "student",
                 column: "username",
                 unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_student_notifications_advertisement_id",
+                table: "student_notifications",
+                column: "advertisement_id");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_student_notifications_student_id",
+                table: "student_notifications",
+                column: "student_id");
 
             migrationBuilder.CreateIndex(
                 name: "IX_student_skills_skill_id",
@@ -349,7 +412,13 @@ namespace ApplicationServer.Migrations
                 name: "application");
 
             migrationBuilder.DropTable(
-                name: "feedback");
+                name: "company_feedback");
+
+            migrationBuilder.DropTable(
+                name: "student_feedback");
+
+            migrationBuilder.DropTable(
+                name: "student_notifications");
 
             migrationBuilder.DropTable(
                 name: "student_skills");

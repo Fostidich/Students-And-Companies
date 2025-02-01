@@ -11,8 +11,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ApplicationServer.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20250122203150_SmallChangeInDatabase")]
-    partial class SmallChangeInDatabase
+    [Migration("20250201214712_firstMigration")]
+    partial class firstMigration
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -57,6 +57,12 @@ namespace ApplicationServer.Migrations
                     b.Property<int>("Duration")
                         .HasColumnType("int")
                         .HasColumnName("duration");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(64)
+                        .HasColumnType("varchar(64)")
+                        .HasColumnName("name");
 
                     b.Property<bool>("Open")
                         .HasColumnType("tinyint(1)")
@@ -117,10 +123,6 @@ namespace ApplicationServer.Migrations
 
                     MySqlPropertyBuilderExtensions.UseMySqlComputedColumn(b.Property<DateTime>("CreatedAt"));
 
-                    b.Property<DateTime>("ProposedStart")
-                        .HasColumnType("datetime(6)")
-                        .HasColumnName("proposed_start");
-
                     b.Property<string>("Questionnaire")
                         .IsRequired()
                         .HasColumnType("longtext")
@@ -128,7 +130,7 @@ namespace ApplicationServer.Migrations
 
                     b.Property<string>("Status")
                         .IsRequired()
-                        .HasColumnType("enum('REQUESTED', 'ACCEPTED', 'STARTED')")
+                        .HasColumnType("enum('PENDING', 'ACCEPTED', 'REJECTED')")
                         .HasColumnName("status");
 
                     b.Property<int>("StudentId")
@@ -218,65 +220,25 @@ namespace ApplicationServer.Migrations
                     b.ToTable("company");
                 });
 
-            modelBuilder.Entity("Entity.CompanyNotifications", b =>
-                {
-                    b.Property<int>("CompanyNotificationId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasColumnName("company_notification_id");
-
-                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("CompanyNotificationId"));
-
-                    b.Property<int>("AdvertisementId")
-                        .HasColumnType("int")
-                        .HasColumnName("advertisement_id");
-
-                    b.Property<int>("CompanyId")
-                        .HasColumnType("int")
-                        .HasColumnName("company_id");
-
-                    b.Property<int>("StudentId")
-                        .HasColumnType("int")
-                        .HasColumnName("student_id");
-
-                    b.HasKey("CompanyNotificationId");
-
-                    b.HasIndex("AdvertisementId");
-
-                    b.HasIndex("CompanyId");
-
-                    b.HasIndex("StudentId");
-
-                    b.ToTable("company_notifications");
-                });
-
-            modelBuilder.Entity("Entity.Feedback", b =>
+            modelBuilder.Entity("Entity.CompanyFeedback", b =>
                 {
                     b.Property<int>("InternshipId")
                         .HasColumnType("int")
                         .HasColumnName("internship_id");
 
-                    b.Property<string>("CompanyComment")
+                    b.Property<string>("Comment")
+                        .IsRequired()
                         .HasMaxLength(1024)
                         .HasColumnType("varchar(1024)")
-                        .HasColumnName("company_comment");
+                        .HasColumnName("comment");
 
-                    b.Property<int>("CompanyRating")
+                    b.Property<int>("Rating")
                         .HasColumnType("int")
-                        .HasColumnName("company_rating");
-
-                    b.Property<string>("StudentComment")
-                        .HasMaxLength(1024)
-                        .HasColumnType("varchar(1024)")
-                        .HasColumnName("student_comment");
-
-                    b.Property<int>("StudentRating")
-                        .HasColumnType("int")
-                        .HasColumnName("student_rating");
+                        .HasColumnName("rating");
 
                     b.HasKey("InternshipId");
 
-                    b.ToTable("feedback");
+                    b.ToTable("company_feedback");
                 });
 
             modelBuilder.Entity("Entity.Internship", b =>
@@ -321,8 +283,7 @@ namespace ApplicationServer.Migrations
 
                     b.HasIndex("CompanyId");
 
-                    b.HasIndex("StudentId")
-                        .IsUnique();
+                    b.HasIndex("StudentId");
 
                     b.ToTable("internship");
                 });
@@ -439,6 +400,27 @@ namespace ApplicationServer.Migrations
                     b.ToTable("student");
                 });
 
+            modelBuilder.Entity("Entity.StudentFeedback", b =>
+                {
+                    b.Property<int>("InternshipId")
+                        .HasColumnType("int")
+                        .HasColumnName("internship_id");
+
+                    b.Property<string>("Comment")
+                        .IsRequired()
+                        .HasMaxLength(1024)
+                        .HasColumnType("varchar(1024)")
+                        .HasColumnName("comment");
+
+                    b.Property<int>("Rating")
+                        .HasColumnType("int")
+                        .HasColumnName("rating");
+
+                    b.HasKey("InternshipId");
+
+                    b.ToTable("student_feedback");
+                });
+
             modelBuilder.Entity("Entity.StudentNotifications", b =>
                 {
                     b.Property<int>("StudentNotificationId")
@@ -458,7 +440,7 @@ namespace ApplicationServer.Migrations
 
                     b.Property<string>("Type")
                         .IsRequired()
-                        .HasColumnType("enum('c','r')")
+                        .HasColumnType("enum('INVITED', 'RECOMMENDED', 'ACCEPTED', 'REJECTED')")
                         .HasColumnName("type");
 
                     b.HasKey("StudentNotificationId");
@@ -494,7 +476,7 @@ namespace ApplicationServer.Migrations
                     b.HasOne("Entity.Company", "Company")
                         .WithMany("Advertisements")
                         .HasForeignKey("CompanyId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Company");
@@ -505,7 +487,7 @@ namespace ApplicationServer.Migrations
                     b.HasOne("Entity.Advertisement", "Advertisement")
                         .WithMany("AdvertisementSkills")
                         .HasForeignKey("AdvertisementId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("Entity.Skill", "Skill")
@@ -524,13 +506,13 @@ namespace ApplicationServer.Migrations
                     b.HasOne("Entity.Advertisement", "Advertisement")
                         .WithMany("Applications")
                         .HasForeignKey("AdvertisementId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("Entity.Student", "Student")
                         .WithMany("Applications")
                         .HasForeignKey("StudentId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Advertisement");
@@ -538,38 +520,11 @@ namespace ApplicationServer.Migrations
                     b.Navigation("Student");
                 });
 
-            modelBuilder.Entity("Entity.CompanyNotifications", b =>
-                {
-                    b.HasOne("Entity.Advertisement", "Advertisement")
-                        .WithMany("CompanyNotifications")
-                        .HasForeignKey("AdvertisementId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Entity.Company", "Company")
-                        .WithMany("CompanyNotifications")
-                        .HasForeignKey("CompanyId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Entity.Student", "Student")
-                        .WithMany("CompanyNotifications")
-                        .HasForeignKey("StudentId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Advertisement");
-
-                    b.Navigation("Company");
-
-                    b.Navigation("Student");
-                });
-
-            modelBuilder.Entity("Entity.Feedback", b =>
+            modelBuilder.Entity("Entity.CompanyFeedback", b =>
                 {
                     b.HasOne("Entity.Internship", "Internship")
-                        .WithOne("Feedback")
-                        .HasForeignKey("Entity.Feedback", "InternshipId")
+                        .WithOne("CompanyFeedback")
+                        .HasForeignKey("Entity.CompanyFeedback", "InternshipId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -581,19 +536,19 @@ namespace ApplicationServer.Migrations
                     b.HasOne("Entity.Advertisement", "Advertisement")
                         .WithMany("Internships")
                         .HasForeignKey("AdvertisementId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("Entity.Company", "Company")
                         .WithMany("Internships")
                         .HasForeignKey("CompanyId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("Entity.Student", "Student")
-                        .WithOne("Internship")
-                        .HasForeignKey("Entity.Internship", "StudentId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .WithMany("Internships")
+                        .HasForeignKey("StudentId")
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Advertisement");
@@ -601,6 +556,17 @@ namespace ApplicationServer.Migrations
                     b.Navigation("Company");
 
                     b.Navigation("Student");
+                });
+
+            modelBuilder.Entity("Entity.StudentFeedback", b =>
+                {
+                    b.HasOne("Entity.Internship", "Internship")
+                        .WithOne("StudentFeedback")
+                        .HasForeignKey("Entity.StudentFeedback", "InternshipId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Internship");
                 });
 
             modelBuilder.Entity("Entity.StudentNotifications", b =>
@@ -633,7 +599,7 @@ namespace ApplicationServer.Migrations
                     b.HasOne("Entity.Student", "Student")
                         .WithMany("StudentSkills")
                         .HasForeignKey("StudentId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Skill");
@@ -647,8 +613,6 @@ namespace ApplicationServer.Migrations
 
                     b.Navigation("Applications");
 
-                    b.Navigation("CompanyNotifications");
-
                     b.Navigation("Internships");
 
                     b.Navigation("StudentNotifications");
@@ -658,14 +622,14 @@ namespace ApplicationServer.Migrations
                 {
                     b.Navigation("Advertisements");
 
-                    b.Navigation("CompanyNotifications");
-
                     b.Navigation("Internships");
                 });
 
             modelBuilder.Entity("Entity.Internship", b =>
                 {
-                    b.Navigation("Feedback");
+                    b.Navigation("CompanyFeedback");
+
+                    b.Navigation("StudentFeedback");
                 });
 
             modelBuilder.Entity("Entity.Skill", b =>
@@ -679,9 +643,7 @@ namespace ApplicationServer.Migrations
                 {
                     b.Navigation("Applications");
 
-                    b.Navigation("CompanyNotifications");
-
-                    b.Navigation("Internship");
+                    b.Navigation("Internships");
 
                     b.Navigation("StudentNotifications");
 
