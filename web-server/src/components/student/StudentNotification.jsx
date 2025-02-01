@@ -4,7 +4,7 @@ import Cookies from "js-cookie";
 import {getErrorMessage} from "../../utils/errorUtils.js";
 const API_SERVER_URL = window.env?.VITE_API_SERVER_URL || 'http://localhost:5000';
 
-function StudentNotification({notification}) {
+function StudentNotification({notification, onDelete}) {
     const [showDetails, setShowDetails] = useState(false);
     const [questionnaireAnswer, setQuestionnaireAnswer] = useState('');
     const [errorMessage, setErrorMessage] = useState('');
@@ -38,20 +38,23 @@ function StudentNotification({notification}) {
     }
 
     const deleteNotification = async () => {
-        const authData = JSON.parse(Cookies.get('authData'));
-        const response = await fetch(`${API_SERVER_URL}/api/notification/delete/${notification.studentNotificationId}`, {
-            method: 'POST',
-            headers: {
-                'Authorization': `Bearer ${authData.token}`,
+        try {
+            const authData = JSON.parse(Cookies.get('authData'));
+            const response = await fetch(`${API_SERVER_URL}/api/notification/delete/${notification.studentNotificationId}`, {
+                method: 'POST',
+                headers: {
+                    'Authorization': `Bearer ${authData.token}`,
+                }
+            });
+
+            if (response.ok) {
+                onDelete(notification.studentNotificationId);
+            } else {
+                const message = await getErrorMessage(response);
+                setErrorMessage(message);
             }
-        });
-        if (response.status === 200) {
-            console.log('Notification deleted');
-            //refresh the page
-            window.location.reload();
-        } else {
-            const message = await getErrorMessage(response);
-            console.error('Error deleting notification:', message);
+        } catch {
+            setErrorMessage('Failed to delete notification');
         }
     }
     const handleSubmit = async (e) => {
@@ -146,6 +149,7 @@ StudentNotification.propTypes = {
         studentId: PropTypes.number,
         advertisementId: PropTypes.number,
         type: PropTypes.string,
-    })
+    }),
+    onDelete: PropTypes.func.isRequired
 };
 export default StudentNotification;
