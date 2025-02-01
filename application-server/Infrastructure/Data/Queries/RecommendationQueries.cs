@@ -217,15 +217,13 @@ public class RecommendationQueries : IRecommendationQueries
             foreach (var skill in skills)
             {
                 // Insert skill (ignored if already exists)
-                using (var insertCommand = new MySqlCommand(insertQuery, db_connection))
-                {
+                using (var insertCommand = new MySqlCommand(insertQuery, db_connection)) {
                     insertCommand.Parameters.AddWithValue("@Name", skill.Name);
                     insertCommand.ExecuteNonQuery();
                 }
 
                 // Retrieve the skill ID
-                using (var selectCommand = new MySqlCommand(selectQuery, db_connection))
-                {
+                using (var selectCommand = new MySqlCommand(selectQuery, db_connection)) {
 
                     selectCommand.Parameters.AddWithValue("@Name", skill.Name);
 
@@ -271,17 +269,16 @@ public class RecommendationQueries : IRecommendationQueries
     }
 
     public void MatchAdvertisementForStudent(int advertisementId) {
-        try
-        {
+        try {
             // Query to find students with at least 3 skill matches
             string findStudentsQuery = @"
-            SELECT ss.student_id
+            SELECT ss.student_id, COUNT(*) AS tot
             FROM student_skills ss
             JOIN advertisement_skills ads ON ss.skill_id = ads.skill_id
             WHERE ads.advertisement_id = @AdvertisementId
-            GROUP BY ss.student_id, ads.advertisement_id
-            HAVING COUNT(*) >= 3;
+            GROUP BY ss.student_id
         ";
+            
 
             // Query to insert notifications
             string insertNotificationQuery = @"
@@ -293,28 +290,30 @@ public class RecommendationQueries : IRecommendationQueries
 
             // Find matching students
             List<int> matchingStudentIds = new List<int>();
-            using (var findCommand = new MySqlCommand(findStudentsQuery, db_connection))
-            {
+            using (var findCommand = new MySqlCommand(findStudentsQuery, db_connection)) {
 
                 findCommand.Parameters.AddWithValue("@AdvertisementId", advertisementId);
+                
                 using var reader = findCommand.ExecuteReader();
 
                 while (reader.Read()) {
-                    matchingStudentIds.Add(Convert.ToInt32(reader["StudentId"]));
+                    if(Convert.ToInt32(reader["tot"]) >= 3)
+                        matchingStudentIds.Add(Convert.ToInt32(reader["student_id"]));
                 }
             }
 
             // Insert notifications for matching students
-            foreach (var studentId in matchingStudentIds)
-            {
-                using var insertCommand = new MySqlCommand(insertNotificationQuery, db_connection);
+            foreach (var studentId in matchingStudentIds) {
+                var insertCommand = new MySqlCommand(insertNotificationQuery, db_connection);
                 insertCommand.Parameters.AddWithValue("@StudentId", studentId);
                 insertCommand.Parameters.AddWithValue("@AdvertisementId", advertisementId);
+                
                 insertCommand.ExecuteNonQuery();
+                
             }
+            
         }
-        catch (Exception ex)
-        {
+        catch (Exception ex) {
             Console.WriteLine($"Error matching advertisement to students: {ex.Message}");
         }
     }

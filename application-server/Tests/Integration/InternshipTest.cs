@@ -3,7 +3,6 @@ using System.Net.Http.Json;
 using System.Threading.Tasks;
 using Xunit;
 using Xunit.Abstractions;
-using System.Text.Json;
 
 [Collection("Test collection")]
 public class InternshipTest
@@ -609,6 +608,4 @@ public class InternshipTest
         Assert.Equal(400, (int)response.StatusCode);
         Assert.Contains("Invalid role\n", responseBody);
     }
-    
-    
 }

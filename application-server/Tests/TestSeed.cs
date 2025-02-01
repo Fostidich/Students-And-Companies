@@ -78,7 +78,7 @@ public class TestSeed {
             context.Advertisement.AddRange(new Entity.Advertisement
             {
                 CompanyId = i,
-                Name = "SeedName",
+                Name = "SeedName" + i,
                 CreatedAt = new DateTime(2021, 12, 2, 19, 55, 0),
                 Description = "SeedDescription",
                 Duration = 12,

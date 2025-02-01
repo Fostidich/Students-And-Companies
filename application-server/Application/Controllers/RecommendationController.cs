@@ -21,6 +21,7 @@ public class RecommendationController : ControllerBase {
     [SwaggerOperation(Summary = "Get distinct advertisements for a student or for a company", Description = "Get advertisements for a student or for a company. The advertisements are distinct and are filtered based on the user role: if the user is a student, the advertisements are a recommendation based on the student's skills; if the user is a company, the advertisements are all company's advertisements.")]
     [ProducesResponseType(200)]
     [ProducesResponseType(400)]
+    [ProducesResponseType(404)]
     [ProducesResponseType(500)]
     public IActionResult GetAdvertisements(){
         // Get user role from authentication token
@@ -38,6 +39,9 @@ public class RecommendationController : ControllerBase {
 
             if (checkAdv == null)
                 return StatusCode(500, "Internal server error\n");
+            
+            if (checkAdv.Count == 0)
+                return NotFound("No advertisements found\n");
 
             adv = checkAdv.Select(ad => ad.ToDto()).ToList();
 
@@ -47,13 +51,15 @@ public class RecommendationController : ControllerBase {
 
             if (checkAdv == null)
                 return StatusCode(500, "Internal server error\n");
+            
+            if (checkAdv.Count == 0)
+                return NotFound("No advertisements found\n");
 
             adv = checkAdv.Select(ad => ad.ToDto()).ToList();
         }
         else
             return BadRequest("Invalid user role.");
-
-
+        
         return Ok(adv);
     }
 
@@ -62,7 +68,6 @@ public class RecommendationController : ControllerBase {
     [SwaggerOperation(Summary = "Create a new advertisement", Description = "Create a new advertisement for a company. The advertisement is created based on the data provided in the request body.")]
     [ProducesResponseType(200)]
     [ProducesResponseType(400)]
-    [ProducesResponseType(500)]
     public IActionResult CreateAdvertisement([FromBody] DTO.AdvertisementRegistration advertisement) {
         // Check role
         string role = User.FindFirst(ClaimTypes.Role).Value;
@@ -78,7 +83,7 @@ public class RecommendationController : ControllerBase {
             return Ok("Advertisement registered\n");
         }
 
-        return BadRequest("advertisement with same name already present\n");
+        return BadRequest("invalid registration\n");
     }
 
     [HttpGet("advertisements/{advertisementId}")]
@@ -106,6 +111,7 @@ public class RecommendationController : ControllerBase {
     [Authorize]
     [ProducesResponseType(200)]
     [ProducesResponseType(400)]
+    [ProducesResponseType(404)]
     public IActionResult GetRecommendedCandidates(int advertisementId) {
         // Check ID validity
         if (advertisementId <= 0)
@@ -123,8 +129,11 @@ public class RecommendationController : ControllerBase {
         List<Student> checkstudents = recommendation.GetRecommendedCandidates(userId, advertisementId);
 
         if (checkstudents == null)
-            return BadRequest("You don't have the permission to get the candidates for this advertisement because you are not the owner of the advertisement\n");
+            return BadRequest("You are not the owner of the advertisement or it doesn't exist\n");
 
+        if (checkstudents.Count == 0)
+            return NotFound("No students found\n");
+        
         List<DTO.Student> students = checkstudents.Select(student => student.ToDto()).ToList();
 
         return Ok(students);
