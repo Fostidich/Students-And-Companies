@@ -104,8 +104,12 @@ public class EnrollmentService : IEnrollmentService {
     }
 
     public Internship GetInternship(int id) {
-        var internship = internshipService.GetInternshipForStudent(id);
-        return internship.FirstOrDefault();
+        List<Internship> internships = internshipService.GetInternshipForStudent(id);
+
+        // Select only ongoing internship
+        internships.RemoveAll(i => i.EndDate < DateTime.Today);
+
+        return internships.FirstOrDefault();
     }
 
 }

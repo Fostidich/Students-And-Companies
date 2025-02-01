@@ -27,6 +27,8 @@ public class EnrollmentTest {
 
         // Act
         var response = await client.PostAsJsonAsync($"/api/enrollment/applications/{companyId}", new { QuestionnaireAnswer = "I'm the best!" });
+        var responseBody = await response.Content.ReadAsStringAsync();
+        System.Console.WriteLine(responseBody);
 
         // Assert
         Assert.Equal(200, (int)response.StatusCode);
