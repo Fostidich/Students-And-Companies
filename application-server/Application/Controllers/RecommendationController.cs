@@ -164,7 +164,7 @@ public class RecommendationController : ControllerBase {
         if(suggestionCreated)
             return Ok("Suggestion created\n");
 
-        return NotFound("Student or advertisement not found\n");
+        return NotFound("Student or advertisement not found, or the notification already exist\n");
     }
     
     [HttpPost("delete/{advertisementId}")]

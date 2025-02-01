@@ -1,6 +1,6 @@
+using System;
 using System.Collections.Generic;
 using System.Net.Http;
-using System.Linq;
 using System.Net.Http.Json;
 using System.Text.Json;
 using System.Threading.Tasks;
@@ -574,7 +574,13 @@ public class RecommendationTest {
         
         int studentId = seed.GetNewStudentId();
         
-        var skills = new string[] { "Skill"+studentId, "Skill"+studentId+1, "Skill"+studentId+2, "Skill"+studentId+3, "Skill"+studentId+4 };
+        var skills = new List<object> {
+            new { Name = "Skill1" },
+            new { Name = "Skill2" },
+            new { Name = "Skill3" },
+            new { Name = "Skill4" },
+            new { Name = "Skill5" }
+        };
         
         var advertisement = new {
             Name = "new",
@@ -582,7 +588,7 @@ public class RecommendationTest {
             Duration = 10,
             Spots = 10,
             Questionnaire = "Questionnaire",
-            Skills = new string[] { "Skill"+studentId, "Skill"+studentId+1, "Skill"+studentId+2, "Skill"+studentId+3, "Skill"+studentId+4 }
+            Skills = new string[] { "Skill1", "Skill2", "Skill3", "Skill4", "Skill5" }
         };
         
         var options = new JsonSerializerOptions {
@@ -593,8 +599,9 @@ public class RecommendationTest {
         
         
         // Act
-        await client.PostAsJsonAsync("/api/profile/skills", skills);
-        
+        foreach (var skill in skills) {
+            await client.PostAsJsonAsync("/api/profile/skills", skill);
+        }
         
         logIn.LogInCompany(companyId);
         
@@ -612,10 +619,6 @@ public class RecommendationTest {
         
         var response2 = await client.GetAsync("api/notification");
         var responseBody2 = await response2.Content.ReadAsStringAsync();
-        
-        var notifications = JsonSerializer.Deserialize<List<DTO.StudentNotifications>>(responseBody2, options);
-        
-        _output.WriteLine(notifications.Count.ToString());
 
         
         // Assert
