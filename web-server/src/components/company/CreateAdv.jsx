@@ -51,6 +51,13 @@ function CreateAdv() {
             if (!response.ok) {
                 setError(getErrorMessage(response));
                 throw new Error(`HTTP error! Status: ${response.status}`);
+            }else{
+                setName('');
+                setDescription('');
+                setDuration(0);
+                setSpots(0);
+                setQuestionnaire('');
+                setSkills([]);
             }
             console.log('Advertisement created successfully');
         } catch (err) {

@@ -94,9 +94,11 @@ function RegisterFormStudent({ onRegister }) {
                 <option value="m" className="text-black">Male</option>
                 <option value="f" className="text-black">Female</option>
             </select>
+            <label htmlFor="birthDate" className="text-black flex justify-center items-center">Birth Date</label>
             <input
                 type="date"
                 value={birthDate}
+                placeholder={"Birth Date"}
                 onChange={(e) => setBirthDate(e.target.value)}
                 className="mb-4 px-4 py-2 border rounded-md"/>
             <button
