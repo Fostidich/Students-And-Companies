@@ -65,6 +65,7 @@ function AdvertisementStudent({ advertisement }) {
             setErrorMessage('');
             setErrorMessage(await getErrorMessage(response));
         }
+        setQuestionnaireAnswer('');
 
     }
 
@@ -98,28 +99,39 @@ function AdvertisementStudent({ advertisement }) {
                             ✕
                         </button>
                         <h2 className="text-xl font-bold mb-4">Advertisement Details</h2>
-                        <div className="space-y-2">
-                            <p><strong>ADV ID:</strong> {advertisement.advertisementId}</p>
-                            <p><strong>Created:</strong> {formatDate(advertisement.createdAt)}</p>
-                            <p><strong>Company ID:</strong> {advertisement.companyId}</p>
-                            <p><strong>Description:</strong> {advertisement.description}</p>
-                            <p><strong>Duration:</strong> {advertisement.duration} months</p>
-                            <p><strong>Total Spots:</strong> {advertisement.spots}</p>
-                            <p><strong>Available Spots:</strong> {advertisement.available}</p>
-                            <p><strong>Status:</strong> {advertisement.open ? 'Open' : 'Closed'}</p>
+                        <div className=" border p-4 rounded-md space-y-2">
+                            <h3 className="text-lg font-semibold">
+                                {advertisement.name}
+                            </h3>
+                            <p className="text-sm"><strong>Description:</strong> {advertisement.description}</p>
+                            <div className="mt-2 border-t pt-2">
+                                <p className="text-xs text-gray-600"><strong>ADV ID:</strong> {advertisement.advertisementId}</p>
+                                <p className="text-xs text-gray-600"><strong>Company ID:</strong> {advertisement.companyId}</p>
+                                <p className="text-xs text-gray-600"><strong>Duration:</strong> {advertisement.duration}</p>
+                                <p className="text-xs text-gray-600"><strong>Total spots:</strong> {advertisement.spots}</p>
+                                <p className="text-xs text-gray-600"><strong>Available spots:</strong> {advertisement.available}</p>
+                                <p className="text-xs text-gray-600"><strong>Stutus:</strong> {advertisement.open ? 'Open' : 'Closed'}</p>
+                                <p className="text-xs text-gray-600"><strong>Created:</strong> {formatDate(advertisement.createdAt)}</p>
+                            </div>
                         </div>
-                        <div className=" items-center justify-center">
-                            <form onSubmit={handleSubmit}>
+                        <div className="pt-4 flex items-center justify-center">
+                            <form onSubmit={handleSubmit} className={"w-full"}>
                                 {errorMessage && <div className="text-red-500 mb-4">{errorMessage}</div>}
-                                <p><strong>Questionnaire: </strong> {advertisement.questionnaire}</p>
-                                <input
-                                    type="text"
+                                <p className={"flex"}><strong>Questionnaire: </strong> </p>
+                                <p className={"flex"}>{advertisement.questionnaire}</p>
+                                <textarea
                                     value={questionnaireAnswer}
                                     onChange={(e) => setQuestionnaireAnswer(e.target.value)}
                                     className="border rounded p-2 w-full"
                                     required
+                                    rows="1"
+                                    style={{ resize: 'none', overflow: 'hidden' }}
+                                    onInput={(e) => {
+                                        e.target.style.height = 'auto';
+                                        e.target.style.height = `${e.target.scrollHeight}px`;
+                                    }}
                                 />
-                                <button className=" gap-2  p-2 border rounded-md text-white bg-green-500 hover:bg-green-600" type="submit">Apply</button>
+                                <button className="flex items-center justify-center w-full gap-2 p-2 border rounded-md text-white bg-green-500 hover:bg-green-600" type="submit">Apply</button>
                             </form>
                         </div>
                     </div>
@@ -132,6 +144,7 @@ function AdvertisementStudent({ advertisement }) {
 AdvertisementStudent.propTypes = {
     advertisement: PropTypes.shape({
         advertisementId: PropTypes.number.isRequired,
+        name: PropTypes.string.isRequired,
         createdAt: PropTypes.string.isRequired,
         companyId: PropTypes.number.isRequired,
         description: PropTypes.string.isRequired,

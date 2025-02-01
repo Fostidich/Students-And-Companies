@@ -9,9 +9,9 @@ public class InternshipService : IInternshipService {
         this.queries = queries;
     }
     
-    public Internship GetInternshipForStudent(int studentId) {
+    public List<Internship> GetInternshipForStudent(int studentId) {
         // Get internships for a student
-        Entity.Internship internships = queries.GetInternshipForStudent(studentId);
+        List<Entity.Internship> internships = queries.GetInternshipForStudent(studentId);
         
         // If exceptions occur, return null
         if(internships == null) {
@@ -19,7 +19,9 @@ public class InternshipService : IInternshipService {
         }
         
         // Convert Entity.Internship to Internship
-        Internship intern = new Internship(internships);
+        List<Internship> intern = internships
+            .Select(intern => new Internship(intern))
+            .ToList();
         
         return intern;
     }

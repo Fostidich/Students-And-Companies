@@ -38,7 +38,7 @@ function Welcome({ onLogin }) {
                             onClick={() => setStudent(!student)}
                             className={`px-6 py-2 ${student ? 'bg-green-500 text-white' : 'bg-purple-500 text-white'} rounded-md`}
                         >
-                            {student ? 'Student' : 'Company'}
+                            {student ? 'Company' : 'Student'}
                         </button>
                     )}
                 </div>

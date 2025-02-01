@@ -13,12 +13,13 @@ public class InternshipQueries : IInternshipQueries {
         this.recommendation = recommendation;
     }
     
-    public Entity.Internship GetInternshipForStudent(int studentId) {
+    public List<Entity.Internship> GetInternshipForStudent(int studentId) {
         try {
             string query = @"
                 SELECT *
                 FROM internship
-                WHERE student_id = @StudentId;
+                WHERE student_id = @StudentId
+                ORDER BY end_date DESC;
             ";
             
             using var db_connection = dataService.GetConnection();
@@ -28,9 +29,9 @@ public class InternshipQueries : IInternshipQueries {
             
             using var reader = command.ExecuteReader();
             
-            var internship = dataService.MapToInternships(reader).FirstOrDefault();
+            var internships = dataService.MapToInternships(reader);
             
-            return internship;
+            return internships;
         } catch (Exception ex) {
             Console.WriteLine(ex.Message);
             return null;
@@ -87,7 +88,7 @@ public class InternshipQueries : IInternshipQueries {
             
             // Check if student is the owner of the internship
             var internshipOwner = GetInternshipForStudent(studentId);
-            if (internshipOwner == null || internshipOwner.InternshipId != internshipId) {
+            if (internshipOwner == null || internshipOwner[0].InternshipId != internshipId) {
                 return false;
             }
             
@@ -275,7 +276,7 @@ public class InternshipQueries : IInternshipQueries {
         
         if (role == "Student") {
             var internship = GetInternshipForStudent(userId);
-            return internship != null && internship.InternshipId == internshipId;
+            return internship != null && internship[0].InternshipId == internshipId;
         }
 
         if (role == "Company") {
