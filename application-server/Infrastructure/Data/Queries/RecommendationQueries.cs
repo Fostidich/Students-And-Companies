@@ -248,7 +248,7 @@ public class RecommendationQueries : IRecommendationQueries
         try
         {
             string query = @"
-            INSERT INTO advertisement_skills (advertisement_id, skill_id)
+            INSERT IGNORE INTO advertisement_skills (advertisement_id, skill_id)
             VALUES (@AdvertisementId, @SkillId);
         ";
 
@@ -463,8 +463,7 @@ public class RecommendationQueries : IRecommendationQueries
 
     public bool CreateSuggestionsForStudent(int advertisementId, int studentId, int companyId)
     {
-        try
-        {
+        try {
             // Query to insert the notification into student_notifications
             string insertNotificationQuery = @"
                 INSERT INTO student_notifications (student_id, advertisement_id, type)

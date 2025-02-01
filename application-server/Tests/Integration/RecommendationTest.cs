@@ -625,4 +625,21 @@ public class RecommendationTest {
         Assert.Equal(200, (int)response.StatusCode);
         Assert.Contains(advId.ToString(), responseBody2);
     }
+    
+    [Fact]
+    public async Task CreateSuggestionForOneStudentFromCompany400() {
+        // Arrange
+        int companyId = seed.GetNewCompanyId();
+        logIn.LogInCompany(companyId);
+        
+        int studentId = seed.GetNewStudentId();
+        
+        // Act
+        await client.PostAsync($"api/recommendation/suggestions/advertisement/{companyId}/student/{studentId}", null);
+        var response = await client.PostAsync($"api/recommendation/suggestions/advertisement/{companyId}/student/{studentId}", null);
+        
+        // Assert
+        Assert.Equal(404, (int)response.StatusCode);
+    }
+    
 }

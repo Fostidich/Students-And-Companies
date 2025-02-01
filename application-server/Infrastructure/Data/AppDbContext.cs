@@ -122,8 +122,8 @@ public class AppDbContext : DbContext {
         // Configure the foreign key relationship with Student
         modelBuilder.Entity<Entity.Internship>()
             .HasOne(i => i.Student) // Each internship belongs to one student
-            .WithOne(s => s.Internship) // A student can have one internships
-            .HasForeignKey<Entity.Internship>(i => i.StudentId)
+            .WithMany(s => s.Internships) // A student can have many internships
+            .HasForeignKey(i => i.StudentId)
             .OnDelete(DeleteBehavior.Cascade); // Prevent cascading delete
 
         // Configure the foreign key relationship with Company
