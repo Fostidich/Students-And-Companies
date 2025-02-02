@@ -105,7 +105,7 @@ public class RecommendationQueries : IRecommendationQueries
             var defaultAdvertisements = dataService.MapToAdvertisements(reader);
 
             var advs = defaultAdvertisements.Except(advertisements).ToList();
-            
+
             return advs;
         }
         catch (Exception ex)
@@ -129,16 +129,16 @@ public class RecommendationQueries : IRecommendationQueries
             string selectquery = @"
                 SELECT MAX(advertisement_id) FROM advertisement;
             ";
-            
+
             string checkquery = @"
-                SELECT * 
-                FROM advertisement 
+                SELECT *
+                FROM advertisement
                 WHERE company_id = @CompanyId AND name = @Name;
             ";
 
 
             using var db_connection = dataService.GetConnection();
-            
+
             // Check if the name of the advertisement already exists
             using (var checkcommand = new MySqlCommand(checkquery, db_connection)) {
                 checkcommand.Parameters.AddWithValue("@CompanyId", companyId);
@@ -278,7 +278,7 @@ public class RecommendationQueries : IRecommendationQueries
             WHERE ads.advertisement_id = @AdvertisementId
             GROUP BY ss.student_id
         ";
-            
+
 
             // Query to insert notifications
             string insertNotificationQuery = @"
@@ -293,7 +293,7 @@ public class RecommendationQueries : IRecommendationQueries
             using (var findCommand = new MySqlCommand(findStudentsQuery, db_connection)) {
 
                 findCommand.Parameters.AddWithValue("@AdvertisementId", advertisementId);
-                
+
                 using var reader = findCommand.ExecuteReader();
 
                 while (reader.Read()) {
@@ -307,11 +307,11 @@ public class RecommendationQueries : IRecommendationQueries
                 var insertCommand = new MySqlCommand(insertNotificationQuery, db_connection);
                 insertCommand.Parameters.AddWithValue("@StudentId", studentId);
                 insertCommand.Parameters.AddWithValue("@AdvertisementId", advertisementId);
-                
+
                 insertCommand.ExecuteNonQuery();
-                
+
             }
-            
+
         }
         catch (Exception ex) {
             Console.WriteLine($"Error matching advertisement to students: {ex.Message}");
@@ -406,11 +406,11 @@ public class RecommendationQueries : IRecommendationQueries
                     students.Add(student);
                 }
             }
-            
+
             List<Entity.Student> studentsWithInternships = GetStudentWithInternships(students);
-            
+
             List<Entity.Student> studentsWithOutInternships = students.Except(studentsWithInternships).ToList();
-            
+
             return studentsWithOutInternships;
         }
         catch (Exception ex)
@@ -419,9 +419,9 @@ public class RecommendationQueries : IRecommendationQueries
             return new List<Entity.Student>();
         }
     }
-    
+
     private List<Entity.Student> GetStudentWithInternships(List<Entity.Student> students) {
-        
+
         List<Entity.Student> studentsWithInternships = new List<Entity.Student>();
         foreach (var student in students) {
             var internships = GetInternshipForStudent(student.StudentId);
@@ -435,7 +435,7 @@ public class RecommendationQueries : IRecommendationQueries
         }
         return studentsWithInternships;
     }
-    
+
     public List<Entity.Internship> GetInternshipForStudent(int studentId) {
         try {
             string query = @"
@@ -444,16 +444,16 @@ public class RecommendationQueries : IRecommendationQueries
                 WHERE student_id = @StudentId
                 ORDER BY end_date DESC;
             ";
-            
+
             using var db_connection = dataService.GetConnection();
             using var command = new MySqlCommand(query, db_connection);
-            
+
             command.Parameters.AddWithValue("@StudentId", studentId);
-            
+
             using var reader = command.ExecuteReader();
-            
+
             var internships = dataService.MapToInternships(reader);
-            
+
             return internships;
         } catch (Exception ex) {
             Console.WriteLine(ex.Message);
@@ -469,20 +469,20 @@ public class RecommendationQueries : IRecommendationQueries
                 INSERT INTO student_notifications (student_id, advertisement_id, type)
                 VALUES (@StudentId, @AdvertisementId, 'INVITED');
             ";
-            
+
             // Query to check if the notification already exists
             string checkNotificationQuery = @"
-                SELECT COUNT(*) 
-                FROM student_notifications 
-                WHERE student_id = @StudentId 
-                  AND advertisement_id = @AdvertisementId 
+                SELECT COUNT(*)
+                FROM student_notifications
+                WHERE student_id = @StudentId
+                  AND advertisement_id = @AdvertisementId
                   AND type = 'INVITED';
             ";
-            
-            
+
+
             using var db_connection = dataService.GetConnection();
-            
-            
+
+
             // Check if the notification already exists
             using (var checkCommand = new MySqlCommand(checkNotificationQuery, db_connection)) {
                 checkCommand.Parameters.AddWithValue("@StudentId", studentId);
@@ -492,11 +492,11 @@ public class RecommendationQueries : IRecommendationQueries
                 var existingCount = (result != null) ? Convert.ToInt32(result) : 0;
 
                 // If the notification already exists, return false
-                if (existingCount > 0) 
+                if (existingCount > 0)
                     return false;
             }
 
-            
+
             // Check if company is the owner of the advertisement
             var advertisement = GetAdvertisement(advertisementId);
             if (advertisement == null || advertisement.CompanyId != companyId) {
@@ -515,9 +515,8 @@ public class RecommendationQueries : IRecommendationQueries
 
             return true;
         }
-        catch (Exception ex)
+        catch
         {
-            Console.WriteLine($"Error creating suggestion for student: {ex.Message}");
             return false;
         }
     }

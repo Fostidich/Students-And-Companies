@@ -73,7 +73,6 @@ public class TestSeed {
             {
                 CompanyId = i,
                 Name = "SeedName" + i,
-                CreatedAt = new DateTime(2021, 12, 2, 19, 55, 0),
                 Description = "SeedDescription",
                 Duration = 12,
                 Spots = 3,
@@ -94,7 +93,6 @@ public class TestSeed {
 
             context.Internship.AddRange(new Entity.Internship
             {
-                CreatedAt = new DateTime(2021, 12, 2, 19, 55, 0),
                 AdvertisementId = i,
                 StudentId = i,
                 CompanyId = i,

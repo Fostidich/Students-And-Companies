@@ -11,11 +11,13 @@ public class TestFixture : IDisposable {
     public HttpClient Client { get; }
     public LogInHelper LogIn { get; private set; }
     public TestSeed.SeedHelper Seed { get; }
+    public TestFactory Factory { get; }
 
     private readonly TestFactory factory;
 
     public TestFixture() {
         factory = new TestFactory();
+        Factory = factory;
 
         // Create a client to use in tests
         Client = factory.CreateClient(new WebApplicationFactoryClientOptions {
@@ -23,7 +25,8 @@ public class TestFixture : IDisposable {
         });
 
         // Retrieve services
-        using var scope = factory.Services.CreateScope();
+        IServiceProvider s = Factory.Services;
+        using var scope = s.CreateScope();
         var context = scope.ServiceProvider.GetRequiredService<AppDbContext>();
         var authentication = scope.ServiceProvider.GetRequiredService<IAuthenticationService>();
 

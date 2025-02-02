@@ -105,10 +105,10 @@ public class EnrollmentService : IEnrollmentService {
 
     public Internship GetInternship(int id) {
         List<Internship> internships = internshipService.GetInternshipForStudent(id);
+        if (internships == null) return null;
 
         // Select only ongoing internship
         internships.RemoveAll(i => i.EndDate < DateTime.Today);
-
         return internships.FirstOrDefault();
     }
 
