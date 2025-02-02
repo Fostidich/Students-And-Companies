@@ -79,7 +79,7 @@ public class EnrollmentController : ControllerBase {
         // Check that advertisement exists
         var advertisement = enrollment.GetAdvertisement(advertisementId);
         if (advertisement == null)
-            return BadRequest("Advertisement not found\n");
+            return NotFound("Advertisement not found\n");
 
         // Check that company is the proprietary
         if (advertisement.CompanyId != userId)
