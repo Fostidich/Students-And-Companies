@@ -84,7 +84,7 @@ function CardProfileCompany() {
                     <p className="text-lg font-bold">Vat number: <span className="font-light">{profileData.vatNumber}</span></p>
                     <p className="text-lg font-bold">Your vision: <span className="font-light">{profileData.bio}</span></p>
                 </div>
-                <button className="rounded-xl underline text-blue-500" onClick={() => setIsEditOpen(true)}>Edit ma non funziona bene lato server</button>
+                <button className="rounded-xl underline text-white" onClick={() => setIsEditOpen(true)}>Edit ma non funziona bene lato server</button>
             </div>
 
             {isEditOpen && (

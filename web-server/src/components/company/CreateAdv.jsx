@@ -68,7 +68,7 @@ function CreateAdv() {
     };
 
     return (
-        <div>
+        <div className={"w-full"}>
             <form onSubmit={handleSubmit} className="flex flex-col gap-4">
                 <div>
                     <p className="block font-bold text-2xl p-3">Create a new internship</p>

@@ -68,7 +68,7 @@ function CardProfileStudent (){
                 <p className="text-lg font-bold">Birthdate: <span className="font-light">{birthDate}</span></p>
                 <p className="text-lg font-bold">Your bio: <span className="font-light">{bio}</span></p>
             </div>
-            <button className="  rounded-xl underline text-blue-500">Edit</button>
+            <button className="  rounded-xl underline text-white">Edit</button>
         </div>
 
     );

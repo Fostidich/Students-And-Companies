@@ -173,39 +173,41 @@ function MyInternship() {
     const pastInternships = internships.filter(internship => !isInternshipActive(internship.endDate));
 
     return (
-        <div className="space-y-4 p-4">
+        <div className="columns-1 w-full h-full space-y-4 p-4">
             {activeInternship && (
                 <div className="bg-white rounded-lg p-4 mb-4 shadow">
                     <h1 className="text-xl font-semibold mb-4">Your ongoing internship</h1>
                     <div className="space-y-2">
-                        <p><strong>Advertisement Name:</strong> {advertisements[activeInternship.advertisementId]?.name}</p>
-                        <p><strong>Advertisement Description:</strong> {advertisements[activeInternship.advertisementId]?.description}</p>
-                        <p><strong>Advertisement Duration:</strong> {advertisements[activeInternship.advertisementId]?.duration} months</p>
-                        <p><strong>Internship Start Date:</strong> {formatDate(activeInternship.startDate)}</p>
-                        <p><strong>Internship End Date:</strong> {formatDate(activeInternship.endDate)}</p>
+                        <p><strong>Name:</strong> {advertisements[activeInternship.advertisementId]?.name}</p>
+                        <p><strong>Description:</strong> {advertisements[activeInternship.advertisementId]?.description}</p>
+                        <p><strong>Duration:</strong> {advertisements[activeInternship.advertisementId]?.duration} months</p>
+                        <p><strong>Start Date:</strong> {formatDate(activeInternship.startDate)}</p>
+                        <p><strong>End Date:</strong> {formatDate(activeInternship.endDate)}</p>
                     </div>
                 </div>
             )}
 
             {pastInternships.length > 0 && (
-                <div>
-                    <button
-                        onClick={() => setShowOldInternships(!showOldInternships) || pastInternships.forEach(internship => getFeedback(internship.internshipId)) || pastInternships.forEach(internship => getCompanyFeedback(internship.internshipId))}
-                        className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
-                    >
-                        {showOldInternships ? 'Hide' : 'Show'} Past Internships
-                    </button>
+                <div className={activeInternship ? 'bg-white rounded-lg p-4 shadow' : 'bg-white rounded-lg p-4 shadow mb-4'}>
+                    <div>
+                        <button
+                            onClick={() => setShowOldInternships(!showOldInternships) || pastInternships.forEach(internship => getFeedback(internship.internshipId)) || pastInternships.forEach(internship => getCompanyFeedback(internship.internshipId))}
+                            className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 "
+                        >
+                            {showOldInternships ? 'Hide' : 'Show'} Past Internships
+                        </button>
+                    </div>
 
                     {showOldInternships && (
                         <div className="mt-4 space-y-4">
                             {pastInternships.map(internship => (
                                 <div key={internship.internshipId} className="bg-white rounded-lg p-4 shadow">
                                     <div className="space-y-2">
-                                        <p><strong>Advertisement Name:</strong> {advertisements[internship.advertisementId]?.name}</p>
-                                        <p><strong>Advertisement Description:</strong> {advertisements[internship.advertisementId]?.description}</p>
-                                        <p><strong>Advertisement Duration:</strong> {advertisements[internship.advertisementId]?.duration} months</p>
-                                        <p><strong>Internship Start Date:</strong> {formatDate(internship.startDate)}</p>
-                                        <p><strong>Internship End Date:</strong> {formatDate(internship.endDate)}</p>
+                                        <p><strong>Name:</strong> {advertisements[internship.advertisementId]?.name}</p>
+                                        <p><strong>Description:</strong> {advertisements[internship.advertisementId]?.description}</p>
+                                        <p><strong>Duration:</strong> {advertisements[internship.advertisementId]?.duration} months</p>
+                                        <p><strong>Start Date:</strong> {formatDate(internship.startDate)}</p>
+                                        <p><strong>End Date:</strong> {formatDate(internship.endDate)}</p>
                                         {companyFeedbacks[internship.internshipId] && (
                                             <div className="mt-2 p-2 bg-gray-50 rounded">
                                                 <h3 className="font-semibold">Company Feedback</h3>
