@@ -80,7 +80,6 @@ public class ProfileTest {
     public async Task TestGetCompanyFromToken404() {
         // Arrange
         int companyId = seed.GetNewCompanyId();
-        seed.BlackListStudent(companyId);
         logIn.LogInCompany(companyId);
 
         // Act
@@ -172,7 +171,6 @@ public class ProfileTest {
     public async Task TestGetStudentFromToken404() {
         // Arrange
         int studentId = seed.GetNewStudentId();
-        seed.BlackListCompany(studentId);
         logIn.LogInStudent(studentId);
 
         // Act
@@ -453,7 +451,6 @@ public class ProfileTest {
     public async Task TestGetCompanyFromId404() {
         // Arrange
         int id = seed.GetNewCompanyId();
-        seed.BlackListStudent(id);
         logIn.LogInCompany(id);
 
         // Act
@@ -546,7 +543,6 @@ public class ProfileTest {
     public async Task TestGetStudentFromId404() {
         // Arrange
         int id = seed.GetNewStudentId();
-        seed.BlackListCompany(id);
         logIn.LogInStudent(id);
 
         // Act
@@ -577,7 +573,6 @@ public class ProfileTest {
     public async Task TestDeleteUser200() {
         // Arrange
         int companyId = seed.GetNewCompanyId();
-        seed.BlackListStudent(companyId);
         logIn.LogInCompany(companyId);
 
         // Act
@@ -610,7 +605,6 @@ public class ProfileTest {
     public async Task TestDeleteUser404() {
         // Arrange
         int companyId = seed.GetNewCompanyId();
-        seed.BlackListStudent(companyId);
         logIn.LogInCompany(companyId);
 
         // Act
@@ -713,7 +707,6 @@ public class ProfileTest {
     public async Task TestGetSkillFromToken404() {
         // Arrange
         int id = seed.GetNewStudentId();
-        seed.BlackListCompany(id);
         logIn.LogInStudent(id);
 
         // Act
@@ -778,7 +771,6 @@ public class ProfileTest {
     public async Task TestGetSkillFromId404() {
         // Arrange
         int id = seed.GetNewStudentId();
-        seed.BlackListCompany(id);
         logIn.LogInStudent(id);
 
         // Act
@@ -796,7 +788,6 @@ public class ProfileTest {
     public async Task TestDeleteSkill200() {
         // Arrange
         int id = seed.GetNewStudentId();
-        seed.BlackListCompany(id);
         logIn.LogInStudent(id);
 
         // Act
@@ -810,7 +801,6 @@ public class ProfileTest {
     public async Task TestDeleteSkill400() {
         // Arrange
         int studentId = seed.GetNewStudentId();
-        seed.BlackListCompany(studentId);
         logIn.LogInStudent(studentId);
 
         // Act
@@ -821,7 +811,6 @@ public class ProfileTest {
 
         // Arrange
         int companyId = seed.GetNewCompanyId();
-        seed.BlackListStudent(companyId);
         logIn.LogInCompany(companyId);
 
         // Act
@@ -847,7 +836,6 @@ public class ProfileTest {
     public async Task TestDeleteSkill404() {
         // Arrange
         int studentId = seed.GetNewStudentId();
-        seed.BlackListCompany(studentId);
         logIn.LogInStudent(studentId);
 
         // Act
