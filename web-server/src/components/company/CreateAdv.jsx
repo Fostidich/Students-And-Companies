@@ -11,7 +11,7 @@ function CreateAdv() {
     const [questionnaire, setQuestionnaire] = useState('');
     const [skills, setSkills] = useState([]);
     const [newSkill, setNewSkill] = useState('');
-    const [error, setError] = useState(null);
+    const [error, setError] = useState('');
     const [loading, setLoading] = useState(false);
 
     const handleAddSkill = (e) => {
@@ -49,7 +49,7 @@ function CreateAdv() {
             });
 
             if (!response.ok) {
-                setError(getErrorMessage(response));
+                setError(await getErrorMessage(response));
                 throw new Error(`HTTP error! Status: ${response.status}`);
             }else{
                 setName('');
