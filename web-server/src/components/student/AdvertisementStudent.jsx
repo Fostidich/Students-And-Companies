@@ -74,7 +74,7 @@ function AdvertisementStudent({ advertisement }) {
             <div className="flex justify-between items-start">
                 <div>
                     <h2 className="text-2xl font-bold">{profileCompany.username}</h2>
-                    <p className="text-xl font-semibold mb-2">{advertisement.description}</p>
+                    <p className="text-xl font-semibold mb-2">{advertisement.name}</p>
                     <div className="flex gap-4">
                         <p>Duration: {advertisement.duration} months</p>
                         <p>Spots: {advertisement.spots}</p>
