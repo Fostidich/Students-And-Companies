@@ -75,6 +75,10 @@ function ApplicationsNotifications() {
         fetchData();
     }, []);
 
+    const handleNotification = (applicationId) => {
+        setPendingApplications(prev => prev.filter(application => application.applicationId !== applicationId));
+    };
+
     return (
         <div className="p-8">
             <div className="pt-8 px-4 flex justify-center">
@@ -88,6 +92,7 @@ function ApplicationsNotifications() {
                             <CompanyNotification
                                 key={pendingApplication.applicationId}
                                 pendingApplication={pendingApplication}
+                                handleChange={handleNotification}
                             />
                         ))
                     ) : (

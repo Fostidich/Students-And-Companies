@@ -10,17 +10,15 @@ function AdvertisementCompany({ advertisement }) {
     const [showDetails, setShowDetails] = useState(false);
     const authData = JSON.parse(Cookies.get('authData'));
     const [errorMessage, setErrorMessage] = useState('');
-    const [internship] = useState(
-        {
-            internshipId: 0,
-            createdAt: '',
-            studentId: 0,
-            companyId: 0,
-            advertisementId: 0,
-            startDate: '',
-            endDate: '',
-        }
-    );
+    const [internship] = useState({
+        internshipId: 0,
+        createdAt: '',
+        studentId: 0,
+        companyId: 0,
+        advertisementId: 0,
+        startDate: '',
+        endDate: '',
+    });
     const [internshipList, setInternshipList] = useState([internship]);
     const [profileStudent] = useState({
         studentId: 0,
@@ -36,11 +34,14 @@ function AdvertisementCompany({ advertisement }) {
     });
     const [recommendedStudents, setRecommendedStudents] = useState([profileStudent]);
 
-
+    const isInternshipActive = (endDate) => {
+        return new Date(endDate) > new Date();
+    };
 
     const formatDate = (dateString) => {
         return new Date(dateString).toLocaleDateString();
     };
+
     const getInternshipList = async () => {
         const response = await fetch(`${API_SERVER_URL}/api/internship/advertisements/${advertisement.advertisementId}`, {
             headers: {
@@ -50,12 +51,12 @@ function AdvertisementCompany({ advertisement }) {
         if (response.status === 200) {
             const data = await response.json();
             setInternshipList(data);
-        }else {
+        } else {
             const message = await getErrorMessage(response);
             setErrorMessage(message);
             console.error('Error checking advertisement details:', errorMessage);
         }
-    }
+    };
 
     const getRecommendedStudents = async () => {
         try {
@@ -72,20 +73,17 @@ function AdvertisementCompany({ advertisement }) {
             }
 
             const data = await response.json();
-            // Modifica qui: estrai l'array effettivo dalla risposta
-            const students = data.students || data; // Adatta in base alla struttura reale della risposta
+            const students = data.students || data;
             setRecommendedStudents(students);
-
         } catch (error) {
             console.error('Error fetching recommended students:', error);
             setErrorMessage(error.message);
-            // Resetta la lista in caso di errore
             setRecommendedStudents([]);
         }
-    }
+    };
 
-
-
+    const activeInternships = internshipList.filter(internship => isInternshipActive(internship.endDate));
+    const pastInternships = internshipList.filter(internship => !isInternshipActive(internship.endDate));
 
     return (
         <div className="bg-white rounded-lg border p-4 mb-4">
@@ -111,7 +109,7 @@ function AdvertisementCompany({ advertisement }) {
             </div>
 
             {showDetails && (
-                <div className=" fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center pt-40 ">
+                <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center pt-40">
                     <div className="bg-white p-6 rounded-lg w-2/3 max-h-[90vh] overflow-y-scroll relative pb-16">
                         <button
                             onClick={() => setShowDetails(false)}
@@ -120,10 +118,8 @@ function AdvertisementCompany({ advertisement }) {
                             <h1 className="pr-2 text-2xl">x</h1>
                         </button>
                         <h2 className="text-xl font-bold mb-4">Advertisement Details</h2>
-                        <div className=" border p-4 rounded-md space-y-2">
-                            <h3 className="text-lg font-semibold">
-                                {advertisement.name}
-                            </h3>
+                        <div className="border p-4 rounded-md space-y-2">
+                            <h3 className="text-lg font-semibold">{advertisement.name}</h3>
                             <p className="text-sm"><strong>Description:</strong> {advertisement.description}</p>
                             <p className="text-sm"><strong>Questionnaire:</strong> {advertisement.questionnaire}</p>
                             <div className="mt-2 border-t pt-2">
@@ -132,43 +128,64 @@ function AdvertisementCompany({ advertisement }) {
                                 <p className="text-xs text-gray-600"><strong>Duration:</strong> {advertisement.duration}</p>
                                 <p className="text-xs text-gray-600"><strong>Total spots:</strong> {advertisement.spots}</p>
                                 <p className="text-xs text-gray-600"><strong>Available spots:</strong> {advertisement.available}</p>
-                                <p className="text-xs text-gray-600"><strong>Stutus:</strong> {advertisement.open ? 'Open' : 'Closed'}</p>
+                                <p className="text-xs text-gray-600"><strong>Status:</strong> {advertisement.open ? 'Open' : 'Closed'}</p>
                                 <p className="text-xs text-gray-600"><strong>Created:</strong> {formatDate(advertisement.createdAt)}</p>
                             </div>
                         </div>
-                        <div className=" p-2 rounded-md mt-4 border">
+
+                        {/* Ongoing Internships Section */}
+                        <div className="p-2 rounded-md mt-4 border">
                             <h2 className="text-xl font-bold mb-4">Ongoing internships</h2>
-                            <div className="shadow-md ">
-                                {
-                                    internshipList.length > 0 ? (
-                                        internshipList.map((internship) =>
-                                            <StudentInternship
-                                                key={internship.internshipId}
-                                                internship={internship}
-                                            />)
-                                    ):(
-                                        <p>No student applied yet</p>
-                                    )
-                                }
-                            </div>
-                        </div>
-                        <div className=" p-2 rounded-md mt-4 border">
-                            <h2 className="text-xl font-bold mb-4">Let me suggest some students</h2>
-                            <div className="shadow-md ">
-                                {recommendedStudents.length > 0 ? (
-                                    recommendedStudents.map((student) =>
-                                        <RecommendedStudent
-                                            key={student.studentId}
-                                            student={student}
-                                            advertisementId={advertisement.advertisementId}
-                                        />)
-                                ):(
-                                    <h1>No student recommended yet</h1>
+                            <div className="shadow-md">
+                                {activeInternships.length > 0 ? (
+                                    activeInternships.map((internship) => (
+                                        <StudentInternship
+                                            key={internship.internshipId}
+                                            internship={internship}
+                                            isActive={true}
+                                        />
+                                    ))
+                                ) : (
+                                    <p>No active internships</p>
                                 )}
                             </div>
                         </div>
 
+                        {/* Past Internships Section */}
+                        <div className="p-2 rounded-md mt-4 border">
+                            <h2 className="text-xl font-bold mb-4">Past internships</h2>
+                            <div className="shadow-md">
+                                {pastInternships.length > 0 ? (
+                                    pastInternships.map((internship) => (
+                                        <StudentInternship
+                                            key={internship.internshipId}
+                                            internship={internship}
+                                            isActive={false}
+                                        />
+                                    ))
+                                ) : (
+                                    <p>No past internships</p>
+                                )}
+                            </div>
+                        </div>
 
+                        {/* Recommended Students Section */}
+                        <div className="p-2 rounded-md mt-4 border">
+                            <h2 className="text-xl font-bold mb-4">Let me suggest some students</h2>
+                            <div className="shadow-md">
+                                {recommendedStudents.length > 0 ? (
+                                    recommendedStudents.map((student) => (
+                                        <RecommendedStudent
+                                            key={student.studentId}
+                                            student={student}
+                                            advertisementId={advertisement.advertisementId}
+                                        />
+                                    ))
+                                ) : (
+                                    <h1>No student recommended yet</h1>
+                                )}
+                            </div>
+                        </div>
                     </div>
                 </div>
             )}
