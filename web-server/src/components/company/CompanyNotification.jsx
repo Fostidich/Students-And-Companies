@@ -3,11 +3,12 @@ import Cookies from "js-cookie";
 import {getErrorMessage} from "../../utils/errorUtils";
 import PropTypes from "prop-types";
 const API_SERVER_URL = window.env?.VITE_API_SERVER_URL || 'http://localhost:5000';
-function CompanyNotification({pendingApplication}){
+function CompanyNotification({pendingApplication, handleChange}){
     const [errorMessage, setErrorMessage] = useState('');
     const authData = JSON.parse(Cookies.get('authData'));
     const [showDetails, setShowDetails] = useState(false);
     const [isLoadingStudent, setIsLoadingStudent] = useState(true);
+    const [dateTime, setDateTime] = useState('');
     //const [isLoadingAd, setIsLoadingAd] = useState(true);
     const [profileStudent, setProfileStudent] = useState({
         studentId: '',
@@ -128,10 +129,23 @@ function CompanyNotification({pendingApplication}){
         }
 
     }
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        await acceptApplication();
+    }
 
     const acceptApplication = async () => {
-        const dateTime = new Date().toISOString();
+        if (!dateTime) {
+            setErrorMessage('Please select a date');
+            return;
+        }
+        if (dateTime < new Date().toISOString().split('T')[0]) {
+            setErrorMessage('Please select a future date');
+            return;
+        }
+        setDateTime(new Date(dateTime).toISOString());
         console.log(dateTime);
+
         const response = await fetch(`${API_SERVER_URL}/api/enrollment/accept/${pendingApplication.applicationId}`, {
             method: 'POST',
             headers: {
@@ -143,6 +157,7 @@ function CompanyNotification({pendingApplication}){
         if (response.status === 200) {
             console.log('Application accepted');
             setShowDetails(false);
+            handleChange(pendingApplication.applicationId);
         } else {
             setErrorMessage('');
             setErrorMessage(await getErrorMessage(response));
@@ -160,6 +175,7 @@ function CompanyNotification({pendingApplication}){
         if (response.status === 200) {
             console.log('Application accepted');
             setShowDetails(false);
+            handleChange(pendingApplication.applicationId);
         } else {
             setErrorMessage('');
             setErrorMessage(await getErrorMessage(response));
@@ -210,19 +226,34 @@ function CompanyNotification({pendingApplication}){
                             <button className="bg-blue-500 text-white hover:bg-blue-600 p-2 rounded-md " onClick={getStudentCV}>Download cv</button>
                             <div></div>
                         </div>
-                        <div className="flex justify-between grid grid-cols-2 gap-4">
-                            <button
-                                onClick={() => acceptApplication()}
-                                className="bg-green-500 text-white p-2 rounded-md hover:bg-green-600 ">Accept</button>
-                            <button
-                                onClick={() => rejectApplication()}
-                                className="bg-red-500 text-white p-2 rounded-md hover:bg-red-600 ">
-                                Reject
 
-                            </button>
+                        <form onSubmit={handleSubmit} className={"flex flex-col gap-4 shadow-xl p-4 rounded-md"}>
+                            <div className={"flex flex-col gap-4 border p-4 rounded-md"}>
+                                <label className="text-black flex justify-center items-center font-bold">Start date</label>
+                                <input
+                                    type="date"
+                                    value={dateTime}
+                                    placeholder={"Start date"}
+                                    onChange={(e) => setDateTime(e.target.value)}
+                                    className="mb-4 px-4 py-2 border rounded-md"/>
+                            </div>
 
-                        </div>
-                        {errorMessage && <div className="text-red-500 mb-4">{errorMessage}</div>}
+                            <div className="flex justify-between grid grid-cols-2 gap-4">
+                                <button
+                                    //onClick={() => acceptApplication()}
+                                    type={"submit"}
+                                    className="bg-green-500 text-white p-2 rounded-md hover:bg-green-600 ">Accept
+                                </button>
+                                <button
+                                    onClick={() => rejectApplication()}
+                                    className="bg-red-500 text-white p-2 rounded-md hover:bg-red-600 ">
+                                    Reject
+
+                                </button>
+                            </div>
+                        </form>
+                        <div></div>
+                        {errorMessage && <div className="text-red-500 mt-4 mb-0">{errorMessage}</div>}
 
                     </div>
                 </div>
