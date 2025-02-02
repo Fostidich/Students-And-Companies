@@ -35,7 +35,7 @@ function Home() {
             {userType.toLowerCase() === 'student' ? (
                 <div>
                     <div className="pt-8 px-4 flex justify-center ">
-                        <div className="grid grid-cols-2 gap-4 max-w-6xl">
+                        <div className="grid grid-cols-2 gap-4 w-full">
                             {adv.map((advertisement) =>
                                 <AdvertisementStudent
                                     key={advertisement.advertisementId}

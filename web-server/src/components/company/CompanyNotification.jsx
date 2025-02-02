@@ -144,7 +144,6 @@ function CompanyNotification({pendingApplication, handleChange}){
             return;
         }
         setDateTime(new Date(dateTime).toISOString());
-        console.log(dateTime);
 
         const response = await fetch(`${API_SERVER_URL}/api/enrollment/accept/${pendingApplication.applicationId}`, {
             method: 'POST',
@@ -269,6 +268,7 @@ CompanyNotification.propTypes = {
         questionnaire: PropTypes.string.isRequired,
         status: PropTypes.string.isRequired,
         studentId: PropTypes.number.isRequired,
-    })
+    }),
+    handleChange: PropTypes.func.isRequired,
 };
 export default CompanyNotification;
