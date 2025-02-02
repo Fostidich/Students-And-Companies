@@ -119,7 +119,8 @@ public class InternshipController : ControllerBase {
     [ProducesResponseType(400)]
     public IActionResult GetStudentFeedback(int internshipId) {
 
-        if (internshipId <= 0) return BadRequest("Invalid id\n");
+        if (internshipId <= 0) 
+            return BadRequest("Invalid id\n");
 
         // Get role
         string role = User.FindFirst(ClaimTypes.Role).Value;

@@ -162,7 +162,7 @@ public class InternshipQueries : IInternshipQueries {
                 return null;
             }
             
-            // check that the user is a owner of the internship
+            // check that the user is the owner of the internship
             if (!IsUserAuthorizedForNotification(internshipId, userId, role)) {
                 return null;
             }
@@ -272,11 +272,39 @@ public class InternshipQueries : IInternshipQueries {
         }
     }
     
+    private bool StudentIsTheOwner(int studentId, int internshipId) {
+        try
+        {
+            string query = @"
+                SELECT *
+                FROM internship
+                WHERE internship_id = @InternshipId AND student_id = @StudentId;
+            ";
+
+            using var db_connection = dataService.GetConnection();
+            using var command = new MySqlCommand(query, db_connection);
+
+            command.Parameters.AddWithValue("@InternshipId", internshipId);
+            command.Parameters.AddWithValue("@StudentId", studentId);
+
+            using var reader = command.ExecuteReader();
+
+            if (reader.HasRows) {
+                return true;
+            }
+            return false;
+
+        }
+        catch (Exception ex) {
+            Console.WriteLine(ex.Message);
+            return false;
+        }
+    }
+    
     private bool IsUserAuthorizedForNotification(int internshipId, int userId, string role) {
         
         if (role == "Student") {
-            var internship = GetInternshipForStudent(userId);
-            return internship != null && internship[0].InternshipId == internshipId;
+            return StudentIsTheOwner(userId, internshipId);
         }
 
         if (role == "Company") {

@@ -310,10 +310,10 @@ public class InternshipTest
     public async Task GetStudentFeedbackFromCompany200() {
         // Arrange
         int companyId = seed.GetNewCompanyId();
-        logIn.LogInCompany(companyId);
+        logIn.LogInCompany(companyId+1);
 
         // Act
-        var response = await client.GetAsync($"api/internship/{companyId}/feedback/student");
+        var response = await client.GetAsync($"api/internship/{companyId+1}/feedback/student");
         var responseBody = await response.Content.ReadAsStringAsync();
 
         _output.WriteLine("Response: " + companyId);
