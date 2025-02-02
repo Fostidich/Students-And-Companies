@@ -137,43 +137,27 @@ public class TestSeed {
 
     public class SeedHelper {
 
-        private int companyId;
-        private int studentId;
-        private readonly HashSet<int> blacklistedCompanies = new();
-        private readonly HashSet<int> blacklistedStudents = new();
+        private int id;
 
         public string Password { get; }
 
         protected internal SeedHelper() {
-            companyId = 0;
-            studentId = 0;
+            id = 0;
             Password = "SeedPassword";
         }
 
         public void BlackListCompany(int id) {
-            blacklistedCompanies.Add(id);
-            Console.WriteLine($"Black listed company: {id}");
         }
 
         public void BlackListStudent(int id) {
-            blacklistedStudents.Add(id);
-            Console.WriteLine($"Black listed student: {id}");
         }
 
         public int GetNewCompanyId() {
-            int id;
-            do {
-                id = Interlocked.Increment(ref companyId);
-            } while (blacklistedCompanies.Contains(id));
-            return id;
+            return Interlocked.Increment(ref id);
         }
 
         public int GetNewStudentId() {
-            int id;
-            do {
-                id = Interlocked.Increment(ref studentId);
-            } while (blacklistedStudents.Contains(id));
-            return id;
+            return Interlocked.Increment(ref id);
         }
 
         public string GetNewCompanyUsername() {

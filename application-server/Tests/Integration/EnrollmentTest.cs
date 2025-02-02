@@ -61,7 +61,6 @@ public class EnrollmentTest {
     public async Task TestCreateApplication400NoAdv() {
         // Arrange
         int companyId = seed.GetNewCompanyId();
-        seed.BlackListStudent(companyId);
         logIn.LogInCompany(companyId);
 
         // Act
@@ -254,7 +253,6 @@ public class EnrollmentTest {
     public async Task TestGetPendingApplications404NoAdv() {
         // Arrange
         int companyId = seed.GetNewCompanyId();
-        seed.BlackListStudent(companyId);
         logIn.LogInCompany(companyId);
 
         // Act
