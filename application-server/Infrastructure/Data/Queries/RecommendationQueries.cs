@@ -517,7 +517,7 @@ public class RecommendationQueries : IRecommendationQueries
         }
         catch (Exception ex)
         {
-            Console.WriteLine($"Error creating suggestion for student: {ex.Message}");
+            // you can't add a notification if the student or the advertisement doesn't exist 
             return false;
         }
     }
