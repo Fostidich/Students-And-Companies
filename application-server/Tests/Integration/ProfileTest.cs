@@ -79,7 +79,9 @@ public class ProfileTest {
     [Fact]
     public async Task TestGetCompanyFromToken404() {
         // Arrange
-        logIn.LogInNewCompany();
+        int companyId = seed.GetNewCompanyId();
+        seed.BlackListStudent(companyId);
+        logIn.LogInCompany(companyId);
 
         // Act
         await client.PostAsync("/api/profile/delete", null);
@@ -169,7 +171,9 @@ public class ProfileTest {
     [Fact]
     public async Task TestGetStudentFromToken404() {
         // Arrange
-        logIn.LogInNewStudent();
+        int studentId = seed.GetNewStudentId();
+        seed.BlackListCompany(studentId);
+        logIn.LogInStudent(studentId);
 
         // Act
         var response = await client.PostAsync("/api/profile/delete", null);
@@ -449,6 +453,7 @@ public class ProfileTest {
     public async Task TestGetCompanyFromId404() {
         // Arrange
         int id = seed.GetNewCompanyId();
+        seed.BlackListStudent(id);
         logIn.LogInCompany(id);
 
         // Act
@@ -541,6 +546,7 @@ public class ProfileTest {
     public async Task TestGetStudentFromId404() {
         // Arrange
         int id = seed.GetNewStudentId();
+        seed.BlackListCompany(id);
         logIn.LogInStudent(id);
 
         // Act
@@ -570,7 +576,9 @@ public class ProfileTest {
     [Fact]
     public async Task TestDeleteUser200() {
         // Arrange
-        logIn.LogInNewCompany();
+        int companyId = seed.GetNewCompanyId();
+        seed.BlackListStudent(companyId);
+        logIn.LogInCompany(companyId);
 
         // Act
         var response = await client.PostAsync("/api/profile/delete", null);
@@ -601,7 +609,9 @@ public class ProfileTest {
     [Fact]
     public async Task TestDeleteUser404() {
         // Arrange
-        logIn.LogInNewCompany();
+        int companyId = seed.GetNewCompanyId();
+        seed.BlackListStudent(companyId);
+        logIn.LogInCompany(companyId);
 
         // Act
         await client.PostAsync("/api/profile/delete", null);
@@ -703,6 +713,7 @@ public class ProfileTest {
     public async Task TestGetSkillFromToken404() {
         // Arrange
         int id = seed.GetNewStudentId();
+        seed.BlackListCompany(id);
         logIn.LogInStudent(id);
 
         // Act
@@ -767,6 +778,7 @@ public class ProfileTest {
     public async Task TestGetSkillFromId404() {
         // Arrange
         int id = seed.GetNewStudentId();
+        seed.BlackListCompany(id);
         logIn.LogInStudent(id);
 
         // Act
@@ -784,6 +796,7 @@ public class ProfileTest {
     public async Task TestDeleteSkill200() {
         // Arrange
         int id = seed.GetNewStudentId();
+        seed.BlackListCompany(id);
         logIn.LogInStudent(id);
 
         // Act
@@ -796,7 +809,9 @@ public class ProfileTest {
     [Fact]
     public async Task TestDeleteSkill400() {
         // Arrange
-        logIn.LogInNewStudent();
+        int studentId = seed.GetNewStudentId();
+        seed.BlackListCompany(studentId);
+        logIn.LogInStudent(studentId);
 
         // Act
         var response = await client.PostAsync("/api/profile/skills/delete/0", null);
@@ -805,7 +820,9 @@ public class ProfileTest {
         Assert.Equal(400, (int)response.StatusCode);
 
         // Arrange
-        logIn.LogInNewCompany();
+        int companyId = seed.GetNewCompanyId();
+        seed.BlackListStudent(companyId);
+        logIn.LogInCompany(companyId);
 
         // Act
         response = await client.PostAsync("/api/profile/skills/delete/0", null);
@@ -829,7 +846,9 @@ public class ProfileTest {
     [Fact]
     public async Task TestDeleteSkill404() {
         // Arrange
-        logIn.LogInNewStudent();
+        int studentId = seed.GetNewStudentId();
+        seed.BlackListCompany(studentId);
+        logIn.LogInStudent(studentId);
 
         // Act
         var response = await client.PostAsync("/api/profile/skills/delete/1", null);

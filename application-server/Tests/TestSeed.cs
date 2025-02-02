@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Threading;
 
 public class TestSeed {
@@ -138,6 +139,8 @@ public class TestSeed {
 
         private int companyId;
         private int studentId;
+        private readonly HashSet<int> blacklistedCompanies = new();
+        private readonly HashSet<int> blacklistedStudents = new();
 
         public string Password { get; }
 
@@ -147,20 +150,46 @@ public class TestSeed {
             Password = "SeedPassword";
         }
 
+        public void BlackListCompany(int id) {
+            blacklistedCompanies.Add(id);
+            Console.WriteLine($"Black listed company: {id}");
+        }
+
+        public void BlackListStudent(int id) {
+            blacklistedStudents.Add(id);
+            Console.WriteLine($"Black listed student: {id}");
+        }
+
+        public int GetNewCompanyId() {
+            int id;
+            do {
+                id = Interlocked.Increment(ref companyId);
+            } while (blacklistedCompanies.Contains(id));
+            return id;
+        }
+
+        public int GetNewStudentId() {
+            int id;
+            do {
+                id = Interlocked.Increment(ref studentId);
+            } while (blacklistedStudents.Contains(id));
+            return id;
+        }
+
         public string GetNewCompanyUsername() {
-            return "SeedCompany" + Interlocked.Increment(ref companyId);
+            return "SeedCompany" + GetNewCompanyId();
         }
 
         public string GetNewStudentUsername() {
-            return "SeedStudent" + Interlocked.Increment(ref studentId);
+            return "SeedStudent" + GetNewStudentId();
         }
 
         public string GetNewCompanyEmail() {
-            return "Seed" + Interlocked.Increment(ref companyId) + "@Company.mail";
+            return "Seed" + GetNewCompanyId() + "@Company.mail";
         }
 
         public string GetNewStudentEmail() {
-            return "Seed" + Interlocked.Increment(ref studentId) + "@Student.mail";
+            return "Seed" + GetNewStudentId() + "@Student.mail";
         }
 
         public string GetCompanyUsername(int id) {
@@ -169,14 +198,6 @@ public class TestSeed {
 
         public string GetStudentUsername(int id) {
             return "SeedStudent" + id;
-        }
-
-        public int GetNewCompanyId() {
-            return Interlocked.Increment(ref companyId);
-        }
-
-        public int GetNewStudentId() {
-            return Interlocked.Increment(ref studentId);
         }
 
     }

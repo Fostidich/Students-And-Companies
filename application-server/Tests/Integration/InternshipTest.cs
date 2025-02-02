@@ -25,12 +25,13 @@ public class InternshipTest
     public async Task GetInternshipForStudent200()
     {
         // Arrange
-        logIn.LogInNewStudent();
+        int studentId = seed.GetNewStudentId();
+        logIn.LogInStudent(studentId);
+        _output.WriteLine(studentId.ToString());
 
         // Act
         var response = await client.GetAsync("api/internship");
         var responseBody = await response.Content.ReadAsStringAsync();
-
         // Assert
         Assert.Equal(200, (int)response.StatusCode);
         Assert.Contains("\"internshipId\"", responseBody);
