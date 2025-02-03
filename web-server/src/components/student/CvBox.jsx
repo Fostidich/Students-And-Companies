@@ -48,7 +48,7 @@ function CvBox() {
                 return;
             }
 
-            if (selectedFile.size > 5 * 1024 * 1024) { // 5MB limit
+            if (selectedFile.size > 1 * 1024 * 1024) { // 1MB limit
                 setError('Il file non deve superare i 5MB');
                 setFile(null);
                 return;
