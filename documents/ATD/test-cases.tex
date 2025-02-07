@@ -1,1 +1,61 @@
 \chapter{Test cases}
+\section{Premise}
+It is our duty to point out that after having populated the database with the data provided by the authors,
+the credentials given to us do not allow access to the app and therefore,
+since it is impossible to create an account for a company, it is impossible for us to evaluate certain functionalities
+\section{Testing}
+This section outlines the test procedures we conducted to evaluate both the functionality and adherence to the project product's functions, as outlined in the RASD provided.
+Each test case was designed to include the most relevant usage scenarios from the user's point of view.
+Below is a complete list of the test cases performed to validate product performance and compliance.
+For each one, the objective, the steps performed, the cases considered and the results obtained are indicated.
+
+subsection{Test case 1: SIGN UP AND LOGIN FOR A STUDENT}
+\begin{itemize}
+    \item \textbf{Goal:} To verify that the user can sign up and log in.
+
+    \item \textbf{Steps:}
+    \begin{enumerate}
+        \item Open the application.
+        \item Click on the "Sign up" button.
+        \item Fill in the required fields.
+        \item Click on the "Sign up" button.
+        \item  Fill in the required fields.
+        \item Click on the "Log in" button.
+    \end{enumerate}
+    \item \textbf{Cases:}
+    \begin{itemize}
+        \item The user fills in all the fields correctly.
+        \item The user fills in the fields incorrectly.
+        \item Already existing email.
+        \item Already existing phone number.
+        \item Upload a big file as CV.
+    \end{itemize}
+    \item \textbf{Results:} The user can sign up and log in to the application.
+    A user can sign up with credential that already has been used.
+    The application doesn't check the cv is major than 5 MB (In the RASD is written that the file size limit is 5MB).
+    A user can use an invalid format of the email, the feedback of the system shows that the user has been registered successfully but the user can't log in.
+    \item
+    \end{itemize}
+\section{Further notes}
+
+subsection{Test case 1: SIGN UP AND LOGIN FOR A COMPANY}
+\begin{itemize}
+    \item \textbf{Goal:} To verify that the user can sign up and log in.
+
+    \item \textbf{Steps:}
+    \begin{enumerate}
+        \item Open the application.
+        \item Click on the "Contact us" button.
+    \end{enumerate}
+    \item \textbf{Cases:}
+    \begin{itemize}
+        \item The company contact the platform to create an account.
+    \end{itemize}
+    \item \textbf{Results:} The company can't contact the platform to create an account.
+    This process can't be tested because the button doesn't work.
+\end{itemize}
+
+
+
+
+\section{Further notes}
