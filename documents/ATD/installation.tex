@@ -1,1 +1,59 @@
 \chapter{Installation}
+
+\section{Environment Setup}
+\begin{enumerate}
+    \item We utilized \textbf{macOS} as our testing environment.
+    \item We cloned the repository:
+    \begin{verbatim}
+    git clone git@github.com:felixsrp/RojasJinLe.git
+    cd RojasJinLe/
+    \end{verbatim}
+\end{enumerate}
+
+\section{Backend Installation}
+\begin{enumerate}
+    \item We moved into the backend directory:
+    \begin{verbatim}
+    cd backend/
+    \end{verbatim}
+    \item We installed \textbf{Node.js (v16.x) and npm} on the machine.
+    \item We installed \textbf{Docker Desktop for macOS}.
+    \item We ensured Docker was running and started the necessary containers:
+    \begin{verbatim}
+    docker compose up -d postgres adminer maildev
+    \end{verbatim}
+    \item We installed backend dependencies:
+    \begin{verbatim}
+    npm install
+    \end{verbatim}
+    \item We copied the environment variables file:
+    \begin{verbatim}
+    cp .env.example .env
+    \end{verbatim}
+    \item We ran the database migrations:
+    \begin{verbatim}
+    npm run migration:run
+    \end{verbatim}
+    \item We populated the database with test data:
+    \begin{verbatim}
+    npm run seed:run:relational
+    \end{verbatim}
+    \item We started the backend server:
+    \begin{verbatim}
+    npm run start:dev
+    \end{verbatim}
+    \item We accessed the backend API at \textbf{http://localhost:3000}.
+\end{enumerate}
+
+\section{Frontend Installation}
+\begin{enumerate}
+    \item We downloaded and installed \textbf{Android Studio} from the official website.
+    \item We launched the \textbf{Android Emulator} using the \textbf{Virtual Device Manager}.
+    \item We installed the application by dragging and dropping the APK into the emulator.
+    \item We verified that the application launched correctly.
+\end{enumerate}
+
+\section{Conclusion}
+The installation process proceeded smoothly without any issues.
+
+
