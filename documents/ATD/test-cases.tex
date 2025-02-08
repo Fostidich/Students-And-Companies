@@ -96,20 +96,43 @@ According to the project specification, this feature is not implemented.
 
 \subsection{INTERNSHIP SEARCH AND RECOMMENDATION}\label{subsec:internship-search-and-recommendation}
 \begin{itemize}
-    \item \textbf{Goal:}
+    \item \textbf{Goal:} Verify that the system allows companies to create internships, students to search for internships using skills and filters, and students to receive personalized internship recommendations.
 
     \item \textbf{Steps:}
     \begin{enumerate}
-        \item
-
+        \item Log in as a \textbf{Company}.
+        \item Navigate to the "add internship" section.
+        \item Fill in the internship details, including the required skills.
+        \item Click the "Submit" button.
+        \item Log out and switch to a \textbf{Student} account.
+        \item Navigate to the "Application" section.
+        \item Use the search bar to enter one of the required skills (e.g., "Python").
+        \item Verify that the newly created internship appears in the results.
+        \item Apply the "Location" filter with different values (e.g., "Amsterdam", "Remote", "Milan").
+        \item Observe whether the internship results change based on the selected location.
+        \item Navigate to the "Recommendations" section to view personalized suggestions.
     \end{enumerate}
     \item \textbf{Cases:}
     \begin{itemize}
-        \item
+        \item Correct flow
     \end{itemize}
     \item \textbf{Results:}
+    \begin{itemize}
+        \item \textbf{Successes:}
+        \begin{itemize}
+            \item The system correctly allows companies to create internships.
+            \item Searching for internships using skills works as expected.
+        \end{itemize}
+        \item \textbf{Issues Found:}
+        \begin{itemize}
+            \item The location filter does not work properly; results remain the same regardless of the selected location.
+            \item The recommendation system is unstable: initially, it provided suggestions correctly. Later, it caused critical errors, such as the student being unexpectedly switched into a company profile previously accessed, or the application crashing when clicking on the "Recommendations" section.
+        \end{itemize}
+        \item The feature to save internships to "Favorites" has not been implemented.
+    \end{itemize}
 
 \end{itemize}
+
 
 \subsection{INTERNSHIP APPLICATION PROCESS}\label{subsec:internship-application-process}
 \begin{itemize}
@@ -136,20 +159,38 @@ According to the project specification, this feature is not implemented.
 
 \subsection{QUESTIONNAIRE AND INTERVIEW}\label{subsec:questionnaire-and-interview}
 \begin{itemize}
-    \item \textbf{Goal:}
+    \item \textbf{Goal:} Verify that the system allows companies to add questionnaires and interviews for candidates, and that students can see the added links.
 
     \item \textbf{Steps:}
     \begin{enumerate}
-        \item
-
+        \item Log in as a \textbf{Company}.
+        \item click on the internship in which you want to add the questionnaire and the interview for the new candidate.
+        \item Select a new candidate from the list.
+        \item Click on the "Add Questionnaire" button.
+        \item Enter the questionnaire details, including a link to the form.
+        \item Click "Confirm" and verify that the questionnaire is added to the candidate’s profile.
+        \item Click on the "Add Interview" button.
+        \item Enter the interview details, including a date, time, and a link to the meeting.
+        \item Click "Confirm" and verify that the interview is added to the candidate’s profile.
+        \item Log out and switch to a \textbf{Student} account.
+        \item Navigate to the "Application" section.
+        \item Verify that the Questionnaire link appears in the corresponding section.
+        \item Verify that the Interview link appears in the corresponding section.
     \end{enumerate}
-    \item \textbf{Cases:}
-    \begin{itemize}
-        \item
-    \end{itemize}
-    \item \textbf{Results:}
 
+    \item \textbf{Test Cases:}
+    \begin{itemize}
+        \item Correct flow
+    \end{itemize}
+
+    \item \textbf{Results:}
+    \begin{itemize}
+        \item Companies can successfully add questionnaires to candidates.
+        \item Companies can successfully add interviews to candidates.
+        \item Students can see both the questionnaire and interview links in their application section.
+    \end{itemize}
 \end{itemize}
+
 
 \subsection{NOTIFICATIONS AND REMINDERS}\label{subsec:notifications-and-reminders}
 \begin{itemize}
@@ -173,20 +214,47 @@ According to the project specification, this feature is not implemented.
 
 \subsection{COMPLAINTS AND FEEDBACK}\label{subsec:complaints-and-feedback}
 \begin{itemize}
-    \item \textbf{Goal:}
+    \item \textbf{Goal:} Verify whether the system allows students and companies to submit feedback about internships and whether the feedback is used for optimizing the recommendation algorithm.
 
     \item \textbf{Steps:}
     \begin{enumerate}
-        \item
-
+        \item Log in as a \textbf{Student}.
+        \item Navigate to the Profile section.
+        \item Click on the "Send Feedback" button.
+        \item Select a rating.
+        \item Write a comment.
+        \item Click "Submit".
+        \item Repeat the same steps while logged in as a \textbf{Company}.
     \end{enumerate}
-    \item \textbf{Cases:}
-    \begin{itemize}
-        \item
-    \end{itemize}
-    \item \textbf{Results:}
 
+    \item \textbf{Test Cases:}
+    \begin{itemize}
+        \item Correct flow – The user submits feedback with a rating and a comment.
+        \item Feedback submission with an empty or incomplete comment field.
+        \item Multiple submissions – The user submits feedback multiple times.
+    \end{itemize}
+
+    \item \textbf{Results:}
+    \begin{itemize}
+        \item \textbf{Successes:}
+        \begin{itemize}
+            \item The system allows students and companies to submit feedback correctly.
+            \item Feedback is only submitted when both a rating and a comment are provided.
+        \end{itemize}
+        \item \textbf{Issues Found:}
+        \begin{itemize}
+            \item Users can submit feedback multiple times without restriction.
+            \item There is no way to view submitted feedback after sending it.
+        \end{itemize}
+        \item \textbf{Not Implemented:}
+        \begin{itemize}
+            \item \textbf{R27:} the system does not use feedback for internships ended.
+            \item \textbf{R28:} According to the project specification, this feature is not implemented.
+            \item \textbf{R29:} According to the project specification, this feature is not implemented.
+        \end{itemize}
+    \end{itemize}
 \end{itemize}
+
 
 \subsection{CHATROOM}\label{subsec:chatroom}
 According to the project specification, this feature is not implemented.
