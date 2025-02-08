@@ -1,8 +1,5 @@
 \chapter{Test cases}
-\section{Premise}
-It is our duty to point out that after having populated the database with the data provided by the authors,
-the credentials given to us do not allow access to the app and therefore,
-since it is impossible to create an account for a company, it is impossible for us to evaluate certain functionalities
+
 \section{Testing}
 This section outlines the test procedures we conducted to evaluate both the functionality and adherence to the project product's functions, as outlined in the RASD provided.
 Each test case was designed to include the most relevant usage scenarios from the user's point of view.
@@ -51,6 +48,65 @@ For each one, the objective, the steps performed, the cases considered and the r
     \end{itemize}
     \item \textbf{Results:} The company can't contact the platform to create an account.
     This process can't be tested because the button doesn't work.
+\end{itemize}
+
+\subsection{PROFILE AND CV MANAGEMENT}\label{subsec:profile-and-cv-management}
+\begin{itemize}
+    \item \textbf{Goal:} To verify that the user can upload the CV.
+
+    \item \textbf{Steps:}
+    \begin{enumerate}
+        \item Open the application.
+        \item Click on the "Sign up" button.
+        \item Fill in the required fields including the CV.
+        \item Click on the "Sign up" button.
+    \end{enumerate}
+    \item \textbf{Cases:}
+    \begin{itemize}
+        \item Upload a big file as CV.
+    \end{itemize}
+    \item \textbf{Results:} The user can sign up and log in to the application.
+    The application doesn't check the cv is major than 5 MB (In the RASD is written that the file size limit is 5MB R8).
+    The system can't give the possibility to the user to update the CV in any time after the registration (RASD R11).
+\end{itemize}
+
+
+\subsection{INTERNSHIP MANAGEMENT}\label{subsec:internship-management}
+\begin{itemize}
+    \item \textbf{Goal:} To verify that the company can create edit and delete an internship.
+
+    \item \textbf{Steps:}
+    \begin{enumerate}
+        \item Login in the application.
+
+    \end{enumerate}
+    \item \textbf{Cases:}
+    \begin{itemize}
+        \item Create a new internship.
+        \item Edit an internship.
+        \item Delete an internship.
+    \end{itemize}
+    \item \textbf{Results:} The company can create an internship.
+
+\end{itemize}
+
+\subsection{CV/INTERNSHIP DESCRIPTION SUGGESTION}\label{subsec:cv-internship-description-suggestion}
+\begin{itemize}
+    \item \textbf{Goal:} To verify that the company can create edit and delete an internship.
+
+    \item \textbf{Steps:}
+    \begin{enumerate}
+        \item Login in the application.
+
+    \end{enumerate}
+    \item \textbf{Cases:}
+    \begin{itemize}
+        \item Create a new internship.
+        \item Edit an internship.
+        \item Delete an internship.
+    \end{itemize}
+    \item \textbf{Results:} The company can create an internship.
+
 \end{itemize}
 
 
