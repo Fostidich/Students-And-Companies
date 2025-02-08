@@ -27,11 +27,19 @@ For each one, the objective, the steps performed, the cases considered and the r
         \item Already existing phone number.
         \item Upload a big file as CV.
     \end{itemize}
-    \item \textbf{Results:} The user can sign up and log in to the application.
-    A user can sign up with credential that already has been used.
-    The application doesn't check the cv is major than 5 MB (In the RASD is written that the file size limit is 5MB).
-    A user can use an invalid format of the email, the feedback of the system shows that the user has been registered successfully but the user can't log in.
+    \item \textbf{Results:}
+    \begin{itemize}
+        \item \textbf{Successes:}
+        \begin{itemize}
+            \item The user can sign up and log in to the application.
+        \end{itemize}
+        \item \textbf{Issues Found:}
+        \begin{itemize}
+            \item A user can sign up with credential that already has been used or in any case the app does not give errors if the email or phone number has already been used for another account.
+            \item A user can use an invalid format of the email, the feedback of the system shows that the user has been registered successfully but the user can't log in.
+        \end{itemize}
     \end{itemize}
+\end{itemize}
 
 \subsection{SIGN UP AND LOGIN FOR A COMPANY}\label{subsec:sign-up-and-login-for-a-company}
 \begin{itemize}
@@ -46,8 +54,13 @@ For each one, the objective, the steps performed, the cases considered and the r
     \begin{itemize}
         \item The company contact the platform to create an account.
     \end{itemize}
-    \item \textbf{Results:} The company can't contact the platform to create an account.
-    This process can't be tested because the button doesn't work.
+    \item \textbf{Results:}
+    \begin{itemize}
+        \item \textbf{Issues Found:}
+        \begin{itemize}
+            \item The company can't contact the platform to create an account. This process can't be tested because the button doesn't work.
+        \end{itemize}
+    \end{itemize}
 \end{itemize}
 
 \subsection{PROFILE AND CV MANAGEMENT}\label{subsec:profile-and-cv-management}
@@ -65,9 +78,16 @@ For each one, the objective, the steps performed, the cases considered and the r
     \begin{itemize}
         \item Upload a big file as CV.
     \end{itemize}
-    \item \textbf{Results:} The user can sign up and log in to the application.
-    The application doesn't check the cv is major than 5 MB (In the RASD is written that the file size limit is 5MB R8).
-    The system can't give the possibility to the user to update the CV in any time after the registration (RASD R11).
+    \item \textbf{Results:}
+    \item \textbf{Successes:}
+    \begin{itemize}
+        \item The user can sign up and log in to the application.
+    \end{itemize}
+    \item \textbf{Issues Found:}
+    \begin{itemize}
+        \item The application doesn't check the cv is major than 5 MB (In the RASD is written that the file size limit is 5MB R8).
+        \item The system can't give the possibility to the user to update the CV in any time after the registration (RASD R11).
+    \end{itemize}
 \end{itemize}
 
 
@@ -86,8 +106,15 @@ For each one, the objective, the steps performed, the cases considered and the r
         \item Edit an internship.
         \item Delete an internship.
     \end{itemize}
-    \item \textbf{Results:} The company can create an internship, but can't edit or delete it (RASD R13).
-
+    \item \textbf{Results:}
+    \item \textbf{Successes:}
+    \begin{itemize}
+        \item The company can create an internship.
+    \end{itemize}
+    \item \textbf{Issues Found:}
+    \begin{itemize}
+        \item The company can't edit or delete an internship (RASD R13).
+    \end{itemize}
 \end{itemize}
 
 \subsection{CV/INTERNSHIP DESCRIPTION SUGGESTION}\label{subsec:cv-internship-description-suggestion}
@@ -152,9 +179,13 @@ According to the project specification, this feature is not implemented.
         \item Student apply for more than one internship.
     \end{itemize}
     \item \textbf{Results:}
-    The company can't see the CV of the student, but only a file example (RASD R15).
-    A student can apply for other internships even if he has already an ongoing internship and then a new company can accept the application so the student can have more than one ongoing internship.
-
+    \begin{itemize}
+        \item \textbf{Issue found:}
+        \begin{itemize}
+            \item The company can't see the CV uploaded by the student, but only a dummy document (RASD R15).
+            \item A student can apply for other internships even if he has already an ongoing internship and then a new company can accept the application so the student can have more than one ongoing internship.
+        \end{itemize}
+    \end{itemize}
 \end{itemize}
 
 \subsection{QUESTIONNAIRE AND INTERVIEW}\label{subsec:questionnaire-and-interview}
