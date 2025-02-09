@@ -79,14 +79,16 @@ For each one, the objective, the steps performed, the cases considered and the r
         \item Upload a big file as CV.
     \end{itemize}
     \item \textbf{Results:}
-    \item \textbf{Successes:}
     \begin{itemize}
-        \item The user can sign up and log in to the application.
-    \end{itemize}
-    \item \textbf{Issues Found:}
-    \begin{itemize}
-        \item The application doesn't check the cv is major than 5 MB (In the RASD is written that the file size limit is 5MB R8).
-        \item The system can't give the possibility to the user to update the CV in any time after the registration (RASD R11).
+        \item \textbf{Successes:}
+        \begin{itemize}
+            \item The user can sign up and log in to the application.
+        \end{itemize}
+        \item \textbf{Issues Found:}
+        \begin{itemize}
+            \item The application doesn't check the cv is major than 5 MB (In the RASD is written that the file size limit is 5MB R8).
+            \item The system can't give the possibility to the user to update the CV in any time after the registration (RASD R11).
+        \end{itemize}
     \end{itemize}
 \end{itemize}
 
@@ -107,13 +109,15 @@ For each one, the objective, the steps performed, the cases considered and the r
         \item Delete an internship.
     \end{itemize}
     \item \textbf{Results:}
-    \item \textbf{Successes:}
     \begin{itemize}
-        \item The company can create an internship.
-    \end{itemize}
-    \item \textbf{Issues Found:}
-    \begin{itemize}
-        \item The company can't edit or delete an internship (RASD R13).
+        \item \textbf{Successes:}
+        \begin{itemize}
+            \item The company can create an internship.
+        \end{itemize}
+        \item \textbf{Issues Found:}
+        \begin{itemize}
+            \item The company can't edit or delete an internship (RASD R13).
+        \end{itemize}
     \end{itemize}
 \end{itemize}
 
@@ -238,8 +242,14 @@ According to the project specification, this feature is not implemented.
         \item The user receives a reminder.
     \end{itemize}
     \item \textbf{Results:}
-    The user has no the notification button (RASD R26),
-    however there is the recommendation button, but if a student clicks on it, the app crashes.
+    \begin{itemize}
+        \item \textbf{Not implemented:}
+        \begin{itemize}
+            \item The user has no the notification button (RASD R26).
+        \end{itemize}
+    \end{itemize}
+
+    However, there is the recommendation button, but if a student clicks on it, the app crashes.
 
 \end{itemize}
 
@@ -290,7 +300,8 @@ According to the project specification, this feature is not implemented.
 \subsection{CHATROOM}\label{subsec:chatroom}
 According to the project specification, this feature is not implemented.
 
-
+\newpage
 \section{Further notes}\label{sec:further-notes}
-We would have advised the development team to create a website instead of an app (for android only) as it would have been much more to implement. Furthermore, the app does not work properly as it crashes if the ‘recommendation’ button is clicked, the company can only download a dummy document instead of the real CV uploaded by the student.
-However, the prototype provided to us does not seem to implement all the functions in the project specification correctly, it is not user-friendly.
+We would have suggested that the development team consider creating a website instead of an Android-only app, as it might have been more practical to implement.
+Additionally, we noticed some issues with the app’s functionality—for example, clicking the ‘recommendation’ button causes it to crash, and the company is only able to download a dummy document instead of the actual CV uploaded by the student.
+Moreover, the prototype we received does not appear to fully align with the project specifications, and its usability could be improved.
