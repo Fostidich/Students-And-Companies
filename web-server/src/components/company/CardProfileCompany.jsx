@@ -128,7 +128,7 @@ function CardProfileCompany() {
     };
 
     return (
-        <div className="relative">
+        <div>
             {/* Feedback Message */}
             {feedbackMessage.message && (
                 <div className={`fixed top-4 right-4 p-4 rounded-lg shadow-lg transition-all duration-500 ${
