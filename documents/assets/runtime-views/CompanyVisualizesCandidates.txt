@@ -10,7 +10,7 @@ participant "QueryService" as QS
 BI->WS:recommendedCandidates(advertisement)
 activate BI
 activate WS
-WS->RD:api/candidates
+WS->RD:/api/recommendation/candidates/advertisements/{id}
 activate RD
 RD->AS:validateToken(token)
 activate AS
@@ -21,9 +21,9 @@ deactivate QS
 RD<--AS:
 deactivate AS
 
-RD->RS:recommendedCandidates(company, advertisement)
+RD->RS:getRecommendedCandidates(companyId, advertisementId)
 activate RS
-RS->QS:getMatchingCandidates(keyWords)
+RS->QS:getRecommendedCandidates(keyWords)
 activate QS
 RS->QS:Student[]
 deactivate QS

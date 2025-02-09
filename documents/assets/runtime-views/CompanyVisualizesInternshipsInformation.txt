@@ -10,7 +10,7 @@ participant "QueryService" as QS
 BI->WS:getOngoingInternships()
 activate BI
 activate WS
-WS->RD:api/internships
+WS->RD:api/internship/advertisements/{id}
 activate RD
 RD->AS:validateToken(token)
 activate AS
@@ -21,9 +21,9 @@ deactivate QS
 RD<--AS:
 deactivate AS
 
-RD->IM:getOngoingInternships(company)
+RD->IM:getInternshipFromAdvertisement(advertisementId, companyId)
 activate IM
-IM->QS:getOngoingInternships(userID)
+IM->QS:getInternshipFromAdvertisement(advertisementId, companyId)
 activate QS
 IM<--QS:Internship[]
 deactivate QS

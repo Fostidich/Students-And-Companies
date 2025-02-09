@@ -21,9 +21,9 @@ deactivate QS
 RD<--AS:
 deactivate AS
 
-RD->IM:getOngoingInternship(student)
+RD->IM:getInternshipForStudent(studentId)
 activate IM
-IM->QS:getOngoingInternship(userID)
+IM->QS:getInternshipForStudent(studentId)
 activate QS
 IM<--QS:Internship
 deactivate QS

@@ -21,9 +21,9 @@ deactivate QS
 RD<--AS:
 deactivate AS
 
-RD->RS:recommendedAdvertisements(student)
+RD->RS:GetAdvertisementsForStudent(student)
 activate RS
-RS->QS:getMatchingAdvertisements(keyWords)
+RS->QS:GetAdvertisementsForStudent(student)
 activate QS
 RS->QS:Advertisement[]
 deactivate QS
