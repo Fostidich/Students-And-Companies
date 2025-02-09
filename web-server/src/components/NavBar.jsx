@@ -5,7 +5,7 @@ const Navbar = () => {
     const authData = JSON.parse(Cookies.get('authData'));
     const userType = authData.userType
     return (
-        <nav className="bg-white p-4 flex items-center justify-between w-full shadow-md px-9 fixed top-0 left-0 z-50">
+        <nav className="bg-white p-2 flex items-center justify-between w-full shadow-md px-9 fixed top-0 left-0">
             <div className="flex items-center">
                 <img onClick={() => window.location.href = "/"}
                     src="/logo.svg"

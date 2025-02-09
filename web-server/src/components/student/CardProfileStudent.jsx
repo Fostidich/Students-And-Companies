@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import Cookies from 'js-cookie';
-
+import {getErrorMessage} from "../../utils/errorUtils.js";
 const API_SERVER_URL = window.env?.VITE_API_SERVER_URL || 'http://localhost:5000';
 
 function CardProfileStudent() {
@@ -14,6 +14,7 @@ function CardProfileStudent() {
     const [birthDate, setBirthDate] = useState('');
     const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
     const [feedbackMessage, setFeedbackMessage] = useState({ type: '', message: '' });
+    const [errorMessage, setErrorMessage] = useState('');
 
     // Form state
     const [formData, setFormData] = useState({
@@ -133,6 +134,7 @@ function CardProfileStudent() {
                 setIsEditDialogOpen(false);
                 setPassword('');
             } else {
+                setErrorMessage(await getErrorMessage(response));
                 console.error('Error updating profile:', response.status);
                 showFeedback('error', 'Could not update profile. Please try again.');
             }
@@ -320,6 +322,7 @@ function CardProfileStudent() {
                                 </button>
                             </div>
                         </form>
+                        {errorMessage && <div className="text-red-500 mb-4">{errorMessage}</div>}
                     </div>
                 </div>
             )}
