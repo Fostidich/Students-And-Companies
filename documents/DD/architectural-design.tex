@@ -337,15 +337,27 @@ If that is the case, the DB is updated accordingly.
     }
 \end{figure}
 
-\item \subsubsection{ParticipantFillsFeedbackForm}
+\item \subsubsection{StudentFillsFeedbackForm}
 
-To provide a feedback about a finished internship, the participant is before hand authenticated by means of the token found in the header of the request.
+To provide a feedback about a finished internship, the student is before hand authenticated by means of the token found in the header of the request.
 Then, via the internship manager and the feedback manager components, the feedback form is accepted, validated and inserted into the DB.
 
 \begin{figure}[H]
     \centering
     \fcolorbox{black}{white}{
-        \includegraphics[width=0.8\linewidth]{../assets/runtime-views/ParticipantFillsFeedbackForm.png}
+        \includegraphics[width=0.8\linewidth]{../assets/runtime-views/StudentFillsFeedbackForm.png}
+    }
+\end{figure}
+
+\item \subsubsection{CompanyFillsFeedbackForm}
+
+To provide a feedback about a finished internship, the company is before hand authenticated by means of the token found in the header of the request.
+Then, via the internship manager and the feedback manager components, the feedback form is accepted, validated and inserted into the DB.
+
+\begin{figure}[H]
+    \centering
+    \fcolorbox{black}{white}{
+        \includegraphics[width=0.8\linewidth]{../assets/runtime-views/CompanyFillsFeedbackForm.png}
     }
 \end{figure}
 
