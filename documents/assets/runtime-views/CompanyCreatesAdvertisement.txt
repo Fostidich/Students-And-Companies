@@ -12,7 +12,7 @@ participant "QueryService" as QS
 BI->WS:postAdvertisement(advertisement)
 activate BI
 activate WS
-WS->RD: api/advertisements
+WS->RD: api/recommendation/advertisements
 activate RD
 RD->AS:validateToken(token)
 activate AS
@@ -23,9 +23,9 @@ deactivate QS
 RD<--AS:
 deactivate AS
 
-RD->PM:postAdvertisement(company, advertisement)
+RD->PM:createAdvertisement(companyId, advertisement)
 activate PM
-PM->QS:postAdvertisement(userID, advertisement)
+PM->QS:createAdvertisement(companyId, advertisement)
 activate QS
 PM<--QS:
 deactivate QS
@@ -34,7 +34,7 @@ RD<--PM:
 parallel
 WS<--RD:201
 deactivate RD
-PM->SS:proposeAdvertisementSuggestions(advertisement)
+PM->SS:createSuggestionsForStudent(advertisementId, studentId, companyId)
 activate SS
 parallel off
 
