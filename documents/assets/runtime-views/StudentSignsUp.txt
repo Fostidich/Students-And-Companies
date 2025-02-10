@@ -1,4 +1,4 @@
-title UserSignsUp
+title StudentSignsUp
 
 participant "BrowserInterface" as BI
 participant "WebServer" as WS
@@ -7,14 +7,14 @@ participant "AuthenticationService" as AS
 participant "EmailService" as ES
 participant "QueryService" as QS
 
-BI->WS:registerUser(user)
+BI->WS:registerStudent(user)
 activate BI
 activate WS
-WS->RD:api/register
+WS->RD:api/authentication/register/student
 activate RD
-RD->AS:registerUser(user)
+RD->AS:registerStudent(user)
 activate AS
-AS->QS:registerUser(user)
+AS->QS:registerStudent(user)
 activate QS
 AS<--QS:
 deactivate QS

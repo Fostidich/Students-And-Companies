@@ -9,11 +9,11 @@ participant "QueryService" as QS
 BI->WS:login(credentials)
 activate BI
 activate WS
-WS->RD:api/login
+WS->RD:api/authentication/login
 activate RD
 RD->AS:login(credentials)
 activate AS
-AS->QS:checkCredentials(credentials)
+AS->QS:validateCredentials(credentials)
 activate QS
 AS<--QS:
 deactivate QS

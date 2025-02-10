@@ -1,0 +1,50 @@
+title CompanySignsUp
+
+participant "BrowserInterface" as BI
+participant "WebServer" as WS
+participant "RequestDispatcher" as RD
+participant "AuthenticationService" as AS
+participant "EmailService" as ES
+participant "QueryService" as QS
+
+BI->WS:registerCompany(user)
+activate BI
+activate WS
+WS->RD:api/authentication/register/company
+activate RD
+RD->AS:registerCompany(user)
+activate AS
+AS->QS:registerCompany(user)
+activate QS
+AS<--QS:
+deactivate QS
+AS->ES:sendEmail(email, verificationCode)
+activate ES
+AS<--ES:
+deactivate ES
+RD<--AS:
+deactivate AS
+WS<--RD:201
+deactivate RD
+BI<--WS:
+deactivate WS
+deactivate BI
+
+BI->WS:verifyUser(verificationCode)
+activate BI
+activate WS
+WS->RD:api/register/verification/{ID}
+activate RD
+RD->AS:verifyUser(verificationCode)
+activate AS
+AS->QS:verifyUser(verificationCode)
+activate QS
+AS<--QS:
+deactivate QS
+RD<--AS:
+deactivate AS
+WS<--RD: 201
+deactivate RD
+BI<--WS:
+deactivate WS
+deactivate BI

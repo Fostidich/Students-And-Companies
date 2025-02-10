@@ -137,7 +137,7 @@ The diagrams include the component described in the previous sections, and the e
 
 \begin{enumerate}[label=\textbf{RV\arabic* -}]
 
-\item \subsubsection{UserSignsUp}
+\item \subsubsection{StudentSignsUp}
 
 To register into the system, the user fills in the registration form and submits it.
 The registration form fields vary based on whether signing up it is a student or a company.
@@ -150,7 +150,24 @@ The user, by clicking on the link, confirms the registration.
 \begin{figure}[H]
     \centering
     \fcolorbox{black}{white}{
-        \includegraphics[width=0.8\linewidth]{../assets/runtime-views/UserSignsUp.png}
+        \includegraphics[width=0.8\linewidth]{../assets/runtime-views/StudentSignsUp.png}
+    }
+\end{figure}
+
+\item \subsubsection{CompanySignsUp}
+
+To register into the system, the user fills in the registration form and submits it.
+The registration form fields vary based on whether signing up it is a student or a company.
+The whole process is mainly handled by the authentication service component, that interacts with the query service to validate the information and to insert the new user into the DB.
+The application server checks that information is valid, and that the user is not already registered.
+Then, the system will insert the user into the DB and send an email to the user.
+The email contains a link with the verification code.
+The user, by clicking on the link, confirms the registration.
+
+\begin{figure}[H]
+    \centering
+    \fcolorbox{black}{white}{
+        \includegraphics[width=0.8\linewidth]{../assets/runtime-views/CompanySignsUp.png}
     }
 \end{figure}
 
