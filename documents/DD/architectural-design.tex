@@ -394,6 +394,13 @@ Then, via the internship manager and the feedback manager components, the feedba
     \item Response 401: Unauthorized
 \end{itemize}
 
+\subsubsection{POST api/authentication/verification/\{id\}}
+\begin{itemize}
+    \item Description: user is verified through the verification code
+    \item Response 200 - Ok
+    \item Response 400 - Bad Request
+\end{itemize}
+
 \subsubsection{GET /api/authentication}
 \begin{itemize}
     \item Description: check log in token validity
@@ -417,6 +424,51 @@ Then, via the internship manager and the feedback manager components, the feedba
     \item Response 400: Bad Request
     \item Response 404: Not Found
     \item Response 500: Internal Server Error
+\end{itemize}
+
+\subsubsection{POST api/enrollment/questionnaires}
+\begin{itemize}
+    \item Description: a custom questionnaire is created
+    \item Request body - \verb|Questionnaire|
+    \item Response 200 - Ok
+    \item Response 400 - Bad Request
+\end{itemize}
+
+\subsubsection{GET api/enrollment/questionnaires/\{id\}}
+\begin{itemize}
+    \item Description: the questionnaire is returned
+    \item Response 200 - Ok \verb|Questionnaire|
+    \item Response 400 - Bad Request
+\end{itemize}
+
+\subsubsection{POST api/enrollment/questionnaires/\{id\}}
+\begin{itemize}
+    \item Description: the filled in questionnaire is stored
+    \item Request body - \verb|Questionnaire|
+    \item Response 200 - Ok
+    \item Response 400 - Bad Request
+\end{itemize}
+
+\subsubsection{GET api/enrollment/proposals}
+\begin{itemize}
+    \item Description: proposals are returned
+    \item Response 200 - Ok \verb|Proposal[]|
+    \item Response 400 - Bad Request
+\end{itemize}
+
+\subsubsection{POST api/enrollment/proposals}
+\begin{itemize}
+    \item Description: a proposal is registered
+    \item Request body - \verb|Proposal|
+    \item Response 200 - Ok
+    \item Response 400 - Bad Request
+\end{itemize}
+
+\subsubsection{POST api/enrollment/proposals/\{id\}}
+\begin{itemize}
+    \item Description: the proposal is accepted
+    \item Response 200 - OK
+    \item Response 400 - Bad Request
 \end{itemize}
 
 \subsubsection{POST /api/enrollment/accept/\{id\}}
@@ -490,10 +542,32 @@ Then, via the internship manager and the feedback manager components, the feedba
     \item Response 404: Not Found
 \end{itemize}
 
+\subsubsection{GET api/internship/\{id\}/complaints}
+\begin{itemize}
+    \item Description: complaints about an internship are returned
+    \item Response 200 - OK \verb|Complaint[]|
+    \item Response 400 - Bad Request
+\end{itemize}
+
+\subsubsection{POST api/internship/\{id\}/complaints}
+\begin{itemize}
+    \item Description: a complaint about an internship is created
+    \item Request body - \verb|Complaint|
+    \item Response 200 - Ok
+    \item Response 400 - Bad Request
+\end{itemize}
+
+\subsubsection{POST api/internship/\{id\}/interrupt}
+\begin{itemize}
+    \item Description: the internship is interrupted
+    \item Response 200 - Ok
+    \item Response 400 - Bad Request
+\end{itemize}
+
 \subsubsection{POST /api/internship/delete/feedback/\{id\}}
 \begin{itemize}
     \item Description: delete your feedback for the internship
-    \item Response 200: OK
+    \item Response 200: Ok
     \item Response 404: Not Found
 \end{itemize}
 
@@ -758,6 +832,24 @@ Then, via the internship manager and the feedback manager components, the feedba
     \item \verb|bool SaveFile(string filePath, byte[] fileData)|
     \item \verb|byte[] RetrieveFile(string filePath)|
     \item \verb|bool DeleteFile(string filePath)|
+\end{itemize}
+
+\subsubsection{IEmailService}
+\begin{itemize}
+    \item \verb|boolean sendEmail(email: Email, content: String)|
+\end{itemize}
+
+\subsubsection{ISuggestionService}
+\begin{itemize}
+    \item \verb|List<Suggestion> proposeProfileSuggestions(user: User)|
+    \item \verb|List<Suggestion> proposeCVSuggestions(cv: File)|
+    \item \verb|List<Suggestion> proposeAdvertisementSuggestions(| \\ \makebox[10em][l]{} \verb|advertisement: Advertisement)|
+\end{itemize}
+
+\subsubsection{IComplaintService}
+\begin{itemize}
+    \item \verb|Complaint buildComplaint(user: User, internship: Internship, | \\ \makebox[10em][l]{} \verb|complaint: Complaint)|
+    \item \verb|List<Complaint> adjustComplaints(complaints: List<Complaint>)|
 \end{itemize}
 
 \subsubsection{IEnrollmentService}
