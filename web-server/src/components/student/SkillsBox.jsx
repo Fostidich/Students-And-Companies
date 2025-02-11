@@ -111,7 +111,7 @@ const SkillsBox = () => {
                 />
                 <button
                     type="submit"
-                    className={`bg-blue-500 text-white px-4 py-2 rounded ${loading ? 'opacity-50' : ''}`}
+                    className={`text-white bg-[#2c2c2c] hover:bg-[#1e1e1e] px-4 py-2 rounded ${loading ? 'opacity-50' : ''}`}
                     disabled={loading}
                 >
                     {loading ? 'Adding...' : 'Add'}

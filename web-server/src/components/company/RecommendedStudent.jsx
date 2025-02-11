@@ -95,7 +95,7 @@ function RecommendedStudent({ student, advertisementId }) {
                     <button
                         onClick={getStudentCV}
                         disabled={isDownloading}
-                        className="mt-3 m-1 bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 disabled:bg-gray-400"
+                        className="mt-3 m-1  px-4 py-2 rounded text-white bg-[#2c2c2c] hover:bg-[#1e1e1e] disabled:bg-gray-400"
                     >
                         {isDownloading ? 'Downloading...' : 'Download CV'}
                     </button>

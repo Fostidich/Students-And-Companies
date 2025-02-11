@@ -23,7 +23,7 @@ function Profile({onLogout}) {
     const userType = authData.userType;
 
     return (
-        <div className="flex flex-wrap p-8">
+        <div className="flex flex-wrap ">
             <div className="w-full md:w-1/2 p-4 items-center">
                 {userType.toLowerCase() === 'student' ? (<CardProfileStudent/>) : (<CardProfileCompany/>)}
                 {userType.toLowerCase() === 'student' ?
@@ -50,8 +50,8 @@ function Profile({onLogout}) {
                     </div>
                 }
             </div>
-            <div className="w-full md:w-1/2 p-4 items-center">
-                <button className="border p-4 bg-red-600 text-white rounded-xl" onClick={handleLogoutClick}>Logout</button>
+            <div className="w-full p-4">
+                <button className="border p-4 bg-red-500 hover:bg-red-600 text-white font-semibold rounded-xl float-right" onClick={handleLogoutClick}>Logout</button>
             </div>
 
         </div>

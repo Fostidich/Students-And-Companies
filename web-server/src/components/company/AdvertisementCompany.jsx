@@ -102,14 +102,14 @@ function AdvertisementCompany({ advertisement }) {
                         getInternshipList();
                         getRecommendedStudents();
                     }}
-                    className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
+                    className=" px-4 py-2 rounded text-white bg-[#2c2c2c] hover:bg-[#1e1e1e]"
                 >
                     View Details
                 </button>
             </div>
 
             {showDetails && (
-                <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center pt-40">
+                <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center pt-40 pb-40">
                     <div className="bg-white p-6 rounded-lg w-2/3 max-h-[90vh] overflow-y-scroll relative pb-16">
                         <button
                             onClick={() => setShowDetails(false)}

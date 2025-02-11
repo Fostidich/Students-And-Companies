@@ -34,8 +34,8 @@ function Home() {
         <div className="pt-0 min-h-screen overflow-y-auto">
             {userType.toLowerCase() === 'student' ? (
                 <div>
-                    <div className="pt-8 px-4 flex justify-center ">
-                        <div className="grid grid-cols-2 gap-4 w-full">
+                    <div className="pt-4 px-4 flex justify-center ">
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 w-full">
                             {adv.map((advertisement) =>
                                 <AdvertisementStudent
                                     key={advertisement.advertisementId}
@@ -46,7 +46,7 @@ function Home() {
                 </div>
 
             ) : (
-                <div className="pt-8 px-4 flex justify-center ">
+                <div className="pt-4 px-4 flex justify-center ">
                     <div className="grid grid-cols-1 gap-4 w-full">
                         {adv.map((advertisement) =>
                             <AdvertisementCompany

@@ -134,7 +134,7 @@ function CreateAdv() {
                         <button
                             type="button"
                             onClick={handleAddSkill}
-                            className="bg-blue-500 text-white px-4 py-2 rounded"
+                            className="text-white bg-[#2c2c2c] hover:bg-[#1e1e1e] px-4 py-2 rounded"
                         >
                             Add
                         </button>
@@ -146,7 +146,7 @@ function CreateAdv() {
                                 <button
                                     type="button"
                                     onClick={() => handleDeleteSkill(skill)}
-                                    className="ml-2 text-red-500"
+                                    className="ml-2 text-red-500 hover:text-red-600"
                                 >
                                     x
                                 </button>
@@ -155,7 +155,7 @@ function CreateAdv() {
                     </div>
                 </div>
                 {error && <div className="text-red-500">{error}</div>}
-                <button type="submit" className="bg-green-500 text-white px-4 py-2 rounded" disabled={loading}>
+                <button type="submit" className="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded" disabled={loading}>
                     {loading ? 'Submitting...' : 'Submit'}
                 </button>
             </form>

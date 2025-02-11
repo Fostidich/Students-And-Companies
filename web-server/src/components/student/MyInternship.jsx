@@ -192,7 +192,7 @@ function MyInternship() {
                     <div>
                         <button
                             onClick={() => setShowOldInternships(!showOldInternships) || pastInternships.forEach(internship => getFeedback(internship.internshipId)) || pastInternships.forEach(internship => getCompanyFeedback(internship.internshipId))}
-                            className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 "
+                            className=" px-4 py-2 rounded text-white bg-[#2c2c2c] hover:bg-[#1e1e1e] "
                         >
                             {showOldInternships ? 'Hide' : 'Show'} Past Internships
                         </button>
@@ -278,7 +278,7 @@ function MyInternship() {
                                 </button>
                                 <button
                                     type="submit"
-                                    className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
+                                    className="px-4 py-2  rounded text-white bg-[#2c2c2c] hover:bg-[#1e1e1e]"
                                 >
                                     Submit
                                 </button>

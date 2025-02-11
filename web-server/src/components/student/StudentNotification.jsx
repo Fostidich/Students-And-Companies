@@ -130,39 +130,39 @@ function StudentNotification({notification, onDelete}) {
 
     return(
         <div>
-            <div className="bg-white p-4 rounded-lg shadow-xl mb-4">
+            <div className="bg-white p-4 rounded-lg shadow-xl mb-4 border">
                 {
                     notification.type === 'INVITED' ? (
-                        <p className="text-sm text-blue-500">You have been invited from the company to apply for this advertisement</p>
+                        <p className="text-sm font-medium flex justify-around rounded-md bg-blue-500 text-white">You have been invited from the company to apply for this advertisement</p>
                     ):(<div></div>)
                 }
                 {
                     notification.type === 'RECOMMENDED' ? (
-                        <p className="text-sm  text-purple-500">Let me recommend you this internship, you fit well</p>
+                        <p className="text-sm font-medium flex justify-around rounded-md bg-purple-500 text-white">Let me recommend you this internship, you fit well</p>
                     ):(<div></div>)
                 }
                 {
                     notification.type === 'ACCEPTED' ? (
-                        <p className="text-sm text-green-500">You have been accepted for this advertisement</p>
+                        <p className="text-sm font-medium flex justify-around rounded-md bg-green-500 text-white">You have been accepted for this advertisement</p>
                     ):(<div></div>)
                 }
                 {
                     notification.type === 'REJECTED' ? (
-                        <p className="text-sm text-red-500">You have been rejected for this advertisement</p>
+                        <p className="text-sm font-medium flex justify-around rounded-md bg-red-500 text-white">You have been rejected for this advertisement</p>
                     ):(<div></div>)
                 }
                 <div className="space-y-2">
-                    <button onClick={deleteNotification} className="text-red-500 float-right">Delete</button>
                     <h1 className="text-sm"><strong>Company:</strong> {profileCompany.username}</h1>
                     <h2 className="text-sm"><strong>Name:</strong> {advertisement.name}</h2>
                     <p className="text-sm"><strong>Description:</strong> {advertisement.description}</p>
 
                     <button
                         onClick={() => setShowDetails(true)}
-                        className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
+                        className=" px-4 py-2 rounded text-white bg-[#2c2c2c] hover:bg-[#1e1e1e]"
                     >
                         View Details
                     </button>
+                    <button onClick={deleteNotification} className="text-white float-right rounded-md bg-red-500 hover:bg-red-600 px-4 py-2">Delete</button>
                 </div>
             </div>
             {showDetails && (

@@ -198,7 +198,7 @@ function CompanyNotification({pendingApplication, handleChange}){
                 </div>
                 <button
                     onClick={() => setShowDetails(true) }
-                    className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
+                    className=" px-4 py-2 rounded text-white bg-[#2c2c2c] hover:bg-[#1e1e1e]"
                 >
                     View Details
                 </button>
@@ -222,7 +222,7 @@ function CompanyNotification({pendingApplication, handleChange}){
                             <p><strong>Questionnaire response:</strong> {pendingApplication.questionnaire}</p>
                             <p><strong>Created:</strong> {formatDate(pendingApplication.createdAt)}</p>
                             <p><strong>Status:</strong> {pendingApplication.status}</p>
-                            <button className="bg-blue-500 text-white hover:bg-blue-600 p-2 rounded-md " onClick={getStudentCV}>Download cv</button>
+                            <button className="text-white bg-[#2c2c2c] hover:bg-[#1e1e1e] p-2 rounded-md " onClick={getStudentCV}>Download cv</button>
                             <div></div>
                         </div>
 
