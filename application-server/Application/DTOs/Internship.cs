@@ -1,9 +1,11 @@
 using System;
 
-namespace DTO {
+namespace DTO
+{
 
-    public class Internship {
-        
+    public class Internship
+    {
+
         public int InternshipId { get; set; }
         public DateTime CreatedAt { get; set; }
         public int StudentId { get; set; }

@@ -1,4 +1,5 @@
-public interface IAuthenticationService {
+public interface IAuthenticationService
+{
 
     bool IsCompanyRegistrationValid(DTO.RegistrationFormCompany registrationForm);
     bool IsStudentRegistrationValid(DTO.RegistrationFormStudent registrationForm);

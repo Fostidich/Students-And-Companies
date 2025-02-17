@@ -1,9 +1,11 @@
 using System;
 
-namespace DTO {
+namespace DTO
+{
 
-    public class Advertisement {
-        
+    public class Advertisement
+    {
+
         public int AdvertisementId { get; set; }
         public string Name { get; set; }
         public DateTime CreatedAt { get; set; }

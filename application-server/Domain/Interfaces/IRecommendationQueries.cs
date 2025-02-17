@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 
-public interface IRecommendationQueries {
+public interface IRecommendationQueries
+{
 
     List<Entity.Advertisement> GetAdvertisementsOfCompany(int companyId);
     List<Entity.Advertisement> GetAdvertisementsForStudent(int studentId);

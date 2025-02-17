@@ -2,7 +2,8 @@ using System.Data;
 using System.Collections.Generic;
 using MySql.Data.MySqlClient;
 
-public interface IDataService {
+public interface IDataService
+{
 
     MySqlConnection GetConnection();
     List<Entity.Student> MapToStudents(IDataReader reader);

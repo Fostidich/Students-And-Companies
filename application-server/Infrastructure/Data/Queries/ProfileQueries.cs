@@ -3,16 +3,20 @@ using System.Linq;
 using System.Collections.Generic;
 using MySql.Data.MySqlClient;
 
-public class ProfileQueries : IProfileQueries {
+public class ProfileQueries : IProfileQueries
+{
 
     private readonly IDataService dataService;
 
-    public ProfileQueries(IDataService dataService) {
+    public ProfileQueries(IDataService dataService)
+    {
         this.dataService = dataService;
     }
 
-    public Entity.Company FindCompanyFromId(int id) {
-        try {
+    public Entity.Company FindCompanyFromId(int id)
+    {
+        try
+        {
             string query = @"
                 SELECT *
                 FROM company
@@ -27,14 +31,18 @@ public class ProfileQueries : IProfileQueries {
 
             var companies = dataService.MapToCompanies(reader);
             return companies.FirstOrDefault();
-        } catch (Exception ex) {
+        }
+        catch (Exception ex)
+        {
             Console.WriteLine(ex.Message);
             return null;
         }
     }
 
-    public Entity.Student FindStudentFromId(int id) {
-        try {
+    public Entity.Student FindStudentFromId(int id)
+    {
+        try
+        {
             string query = @"
                 SELECT *
                 FROM student
@@ -49,14 +57,18 @@ public class ProfileQueries : IProfileQueries {
 
             var students = dataService.MapToStudents(reader);
             return students.FirstOrDefault();
-        } catch (Exception ex) {
+        }
+        catch (Exception ex)
+        {
             Console.WriteLine(ex.Message);
             return null;
         }
     }
 
-    public bool UpdateSaltAndPassword(UserType type, int id, string salt, string hash) {
-        try {
+    public bool UpdateSaltAndPassword(UserType type, int id, string salt, string hash)
+    {
+        try
+        {
             string tableName = type == UserType.Company ? "company" : "student";
             string idColumn = type == UserType.Company ? "company_id" : "student_id";
             string query = $@"
@@ -74,14 +86,18 @@ public class ProfileQueries : IProfileQueries {
             int rowsAffected = command.ExecuteNonQuery();
 
             return rowsAffected > 0;
-        } catch (Exception ex) {
+        }
+        catch (Exception ex)
+        {
             Console.WriteLine(ex.Message);
             return false;
         }
     }
 
-    public bool UpdateUsername(UserType type, int id, string username) {
-        try {
+    public bool UpdateUsername(UserType type, int id, string username)
+    {
+        try
+        {
             string tableName = type == UserType.Company ? "company" : "student";
             string idColumn = type == UserType.Company ? "company_id" : "student_id";
             string query = $@"
@@ -98,14 +114,18 @@ public class ProfileQueries : IProfileQueries {
             int rowsAffected = command.ExecuteNonQuery();
 
             return rowsAffected > 0;
-        } catch (Exception ex) {
+        }
+        catch (Exception ex)
+        {
             Console.WriteLine(ex.Message);
             return false;
         }
     }
 
-    public bool UpdateEmail(UserType type, int id, string email) {
-        try {
+    public bool UpdateEmail(UserType type, int id, string email)
+    {
+        try
+        {
             string tableName = type == UserType.Company ? "company" : "student";
             string idColumn = type == UserType.Company ? "company_id" : "student_id";
             string query = $@"
@@ -122,14 +142,18 @@ public class ProfileQueries : IProfileQueries {
             int rowsAffected = command.ExecuteNonQuery();
 
             return rowsAffected > 0;
-        } catch (Exception ex) {
+        }
+        catch (Exception ex)
+        {
             Console.WriteLine(ex.Message);
             return false;
         }
     }
 
-    public bool UpdateBio(UserType type, int id, string bio) {
-        try {
+    public bool UpdateBio(UserType type, int id, string bio)
+    {
+        try
+        {
             string tableName = type == UserType.Company ? "company" : "student";
             string idColumn = type == UserType.Company ? "company_id" : "student_id";
             string query = $@"
@@ -146,14 +170,18 @@ public class ProfileQueries : IProfileQueries {
             int rowsAffected = command.ExecuteNonQuery();
 
             return rowsAffected > 0;
-        } catch (Exception ex) {
+        }
+        catch (Exception ex)
+        {
             Console.WriteLine(ex.Message);
             return false;
         }
     }
 
-    public bool UpdateHeadquarter(int id, string headquarter) {
-        try {
+    public bool UpdateHeadquarter(int id, string headquarter)
+    {
+        try
+        {
             string query = $@"
                 UPDATE company
                 SET headquarter = @Headquarter
@@ -168,14 +196,18 @@ public class ProfileQueries : IProfileQueries {
             int rowsAffected = command.ExecuteNonQuery();
 
             return rowsAffected > 0;
-        } catch (Exception ex) {
+        }
+        catch (Exception ex)
+        {
             Console.WriteLine(ex.Message);
             return false;
         }
     }
 
-    public bool UpdateFiscalCode(int id, string fiscalCode) {
-        try {
+    public bool UpdateFiscalCode(int id, string fiscalCode)
+    {
+        try
+        {
             string query = $@"
                 UPDATE company
                 SET fiscal_code = @FiscalCode
@@ -190,14 +222,18 @@ public class ProfileQueries : IProfileQueries {
             int rowsAffected = command.ExecuteNonQuery();
 
             return rowsAffected > 0;
-        } catch (Exception ex) {
+        }
+        catch (Exception ex)
+        {
             Console.WriteLine(ex.Message);
             return false;
         }
     }
 
-    public bool UpdateVatNumber(int id, string vatNumber) {
-        try {
+    public bool UpdateVatNumber(int id, string vatNumber)
+    {
+        try
+        {
             string query = $@"
                 UPDATE company
                 SET vat_number = @VatNumber
@@ -212,14 +248,18 @@ public class ProfileQueries : IProfileQueries {
             int rowsAffected = command.ExecuteNonQuery();
 
             return rowsAffected > 0;
-        } catch (Exception ex) {
+        }
+        catch (Exception ex)
+        {
             Console.WriteLine(ex.Message);
             return false;
         }
     }
 
-    public bool UpdateName(int id, string name) {
-        try {
+    public bool UpdateName(int id, string name)
+    {
+        try
+        {
             string query = $@"
                 UPDATE student
                 SET name = @Name
@@ -234,14 +274,18 @@ public class ProfileQueries : IProfileQueries {
             int rowsAffected = command.ExecuteNonQuery();
 
             return rowsAffected > 0;
-        } catch (Exception ex) {
+        }
+        catch (Exception ex)
+        {
             Console.WriteLine(ex.Message);
             return false;
         }
     }
 
-    public bool UpdateSurname(int id, string surname) {
-        try {
+    public bool UpdateSurname(int id, string surname)
+    {
+        try
+        {
             string query = $@"
                 UPDATE student
                 SET surname = @Surname
@@ -256,14 +300,18 @@ public class ProfileQueries : IProfileQueries {
             int rowsAffected = command.ExecuteNonQuery();
 
             return rowsAffected > 0;
-        } catch (Exception ex) {
+        }
+        catch (Exception ex)
+        {
             Console.WriteLine(ex.Message);
             return false;
         }
     }
 
-    public bool UpdateUniversity(int id, string university) {
-        try {
+    public bool UpdateUniversity(int id, string university)
+    {
+        try
+        {
             string query = $@"
                 UPDATE student
                 SET university = @University
@@ -278,14 +326,18 @@ public class ProfileQueries : IProfileQueries {
             int rowsAffected = command.ExecuteNonQuery();
 
             return rowsAffected > 0;
-        } catch (Exception ex) {
+        }
+        catch (Exception ex)
+        {
             Console.WriteLine(ex.Message);
             return false;
         }
     }
 
-    public bool UpdateCourseOfStudy(int id, string courseOfStudy) {
-        try {
+    public bool UpdateCourseOfStudy(int id, string courseOfStudy)
+    {
+        try
+        {
             string query = $@"
                 UPDATE student
                 SET course_of_study = @CourseOfStudy
@@ -300,14 +352,18 @@ public class ProfileQueries : IProfileQueries {
             int rowsAffected = command.ExecuteNonQuery();
 
             return rowsAffected > 0;
-        } catch (Exception ex) {
+        }
+        catch (Exception ex)
+        {
             Console.WriteLine(ex.Message);
             return false;
         }
     }
 
-    public bool UpdateGender(int id, char gender) {
-        try {
+    public bool UpdateGender(int id, char gender)
+    {
+        try
+        {
             string query = $@"
                 UPDATE student
                 SET gender = @Gender
@@ -322,14 +378,18 @@ public class ProfileQueries : IProfileQueries {
             int rowsAffected = command.ExecuteNonQuery();
 
             return rowsAffected > 0;
-        } catch (Exception ex) {
+        }
+        catch (Exception ex)
+        {
             Console.WriteLine(ex.Message);
             return false;
         }
     }
 
-    public bool UpdateBirthDate(int id, DateTime birthDate) {
-        try {
+    public bool UpdateBirthDate(int id, DateTime birthDate)
+    {
+        try
+        {
             string query = $@"
                 UPDATE student
                 SET birth_date = @BirthDate
@@ -344,14 +404,18 @@ public class ProfileQueries : IProfileQueries {
             int rowsAffected = command.ExecuteNonQuery();
 
             return rowsAffected > 0;
-        } catch (Exception ex) {
+        }
+        catch (Exception ex)
+        {
             Console.WriteLine(ex.Message);
             return false;
         }
     }
 
-    public bool DeleteUser(UserType type, int id) {
-        try {
+    public bool DeleteUser(UserType type, int id)
+    {
+        try
+        {
             string tableName = type == UserType.Company ? "company" : "student";
             string idColumn = type == UserType.Company ? "company_id" : "student_id";
             string query = $@"
@@ -366,14 +430,18 @@ public class ProfileQueries : IProfileQueries {
             int rowsAffected = command.ExecuteNonQuery();
 
             return rowsAffected > 0;
-        } catch (Exception ex) {
+        }
+        catch (Exception ex)
+        {
             Console.WriteLine(ex.Message);
             return false;
         }
     }
 
-    public int FindSkill(string name) {
-        try {
+    public int FindSkill(string name)
+    {
+        try
+        {
             string query = $@"
                 SELECT skill_id
                 FROM skill
@@ -388,14 +456,18 @@ public class ProfileQueries : IProfileQueries {
 
             var ids = dataService.MapToInts(reader, "skill_id");
             return ids.FirstOrDefault();
-        } catch (Exception ex) {
+        }
+        catch (Exception ex)
+        {
             Console.WriteLine(ex.Message);
             return 0;
         }
     }
 
-    public bool AddSkill(string name) {
-        try {
+    public bool AddSkill(string name)
+    {
+        try
+        {
             string query = $@"
                 INSERT INTO skill (name)
                 VALUES (@Name)";
@@ -405,17 +477,21 @@ public class ProfileQueries : IProfileQueries {
 
             command.Parameters.AddWithValue("@Name", name);
 
-	        int rowsAffected = command.ExecuteNonQuery();
+            int rowsAffected = command.ExecuteNonQuery();
 
-	        return rowsAffected > 0;
-        } catch (Exception ex) {
+            return rowsAffected > 0;
+        }
+        catch (Exception ex)
+        {
             Console.WriteLine(ex.Message);
             return false;
         }
     }
 
-    public bool AddSkillToStudent(int studentId, int skillId) {
-        try {
+    public bool AddSkillToStudent(int studentId, int skillId)
+    {
+        try
+        {
             string query = $@"
                 INSERT IGNORE INTO student_skills (student_id, skill_id)
                 VALUES (@StudentId, @SkillId)";
@@ -426,17 +502,21 @@ public class ProfileQueries : IProfileQueries {
             command.Parameters.AddWithValue("@StudentId", studentId);
             command.Parameters.AddWithValue("@SkillId", skillId);
 
-	        command.ExecuteNonQuery();
+            command.ExecuteNonQuery();
 
-	        return true;
-        } catch (Exception ex) {
+            return true;
+        }
+        catch (Exception ex)
+        {
             Console.WriteLine(ex.Message);
             return false;
         }
     }
 
-    public List<Entity.Skill> GetSkills(int id) {
-        try {
+    public List<Entity.Skill> GetSkills(int id)
+    {
+        try
+        {
             string query = $@"
                 SELECT s.skill_id, name
                 FROM skill AS s
@@ -453,14 +533,18 @@ public class ProfileQueries : IProfileQueries {
 
             var skills = dataService.MapToSkills(reader);
             return skills;
-        } catch (Exception ex) {
+        }
+        catch (Exception ex)
+        {
             Console.WriteLine(ex.Message);
             return null;
         }
     }
 
-    public bool DeleteSkill(int skillId, int studentId) {
-        try {
+    public bool DeleteSkill(int skillId, int studentId)
+    {
+        try
+        {
             string query = $@"
                 DELETE FROM student_skills
                 WHERE skill_id = @SkillId
@@ -475,7 +559,9 @@ public class ProfileQueries : IProfileQueries {
             int rowsAffected = command.ExecuteNonQuery();
 
             return rowsAffected > 0;
-        } catch (Exception ex) {
+        }
+        catch (Exception ex)
+        {
             Console.WriteLine(ex.Message);
             return false;
         }

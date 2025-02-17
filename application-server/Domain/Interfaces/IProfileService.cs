@@ -1,7 +1,8 @@
 using Microsoft.AspNetCore.Http;
 using System.Collections.Generic;
 
-public interface IProfileService {
+public interface IProfileService
+{
 
     Company GetCompany(int id);
     Student GetStudent(int id);

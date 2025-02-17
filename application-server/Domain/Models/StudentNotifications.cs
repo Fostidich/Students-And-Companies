@@ -1,19 +1,23 @@
-public class StudentNotifications {
+public class StudentNotifications
+{
 
     public int StudentNotificationId { get; set; }
     public int StudentId { get; set; }
     public int AdvertisementId { get; set; }
     public string Type { get; set; }
 
-    public StudentNotifications (Entity.StudentNotifications studentNotifications) {
+    public StudentNotifications(Entity.StudentNotifications studentNotifications)
+    {
         StudentNotificationId = studentNotifications.StudentNotificationId;
         StudentId = studentNotifications.StudentId;
         AdvertisementId = studentNotifications.AdvertisementId;
         Type = studentNotifications.Type;
     }
 
-    public DTO.StudentNotifications ToDto() {
-        return new DTO.StudentNotifications {
+    public DTO.StudentNotifications ToDto()
+    {
+        return new DTO.StudentNotifications
+        {
             StudentNotificationId = StudentNotificationId,
             StudentId = StudentId,
             AdvertisementId = AdvertisementId,

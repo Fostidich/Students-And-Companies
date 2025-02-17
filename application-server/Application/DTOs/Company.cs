@@ -1,6 +1,8 @@
-namespace DTO {
+namespace DTO
+{
 
-    public class Company {
+    public class Company
+    {
 
         public int CompanyId { get; set; }
         public string Username { get; set; }

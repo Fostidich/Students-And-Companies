@@ -8,11 +8,13 @@ using Swashbuckle.AspNetCore.Annotations;
 
 [ApiController]
 [Route("api/internship")]
-public class InternshipController : ControllerBase {
+public class InternshipController : ControllerBase
+{
 
     private readonly IInternshipService internship;
 
-    public InternshipController(IInternshipService service) {
+    public InternshipController(IInternshipService service)
+    {
         this.internship = service;
     }
 
@@ -23,7 +25,8 @@ public class InternshipController : ControllerBase {
     [ProducesResponseType(200)]
     [ProducesResponseType(400)]
     [ProducesResponseType(404)]
-    public IActionResult GetInternships() {
+    public IActionResult GetInternships()
+    {
         // Check role
         string role = User.FindFirst(ClaimTypes.Role).Value;
         if (role != UserType.Student.ToString())
@@ -40,7 +43,7 @@ public class InternshipController : ControllerBase {
 
         if (checkInternships == null)
             return StatusCode(500, "Internal server error\n");
-        
+
         if (checkInternships.Count == 0)
             return NotFound("No internships found\n");
 
@@ -55,7 +58,8 @@ public class InternshipController : ControllerBase {
     [SwaggerOperation(Summary = "Create feedback for a student", Description = "Create feedback for a student. The feedback is created based on the internship ID.")]
     [ProducesResponseType(200)]
     [ProducesResponseType(400)]
-    public IActionResult CreateStudentFeedback(int internshipId, [FromBody] DTO.Feedback feedback) {
+    public IActionResult CreateStudentFeedback(int internshipId, [FromBody] DTO.Feedback feedback)
+    {
 
         if (internshipId <= 0) return BadRequest("Invalid id\n");
 
@@ -86,7 +90,8 @@ public class InternshipController : ControllerBase {
     [SwaggerOperation(Summary = "Create feedback for a company", Description = "Create feedback for a company. The feedback is created based on the internship ID.")]
     [ProducesResponseType(200)]
     [ProducesResponseType(400)]
-    public IActionResult CreateCompanyFeedback(int internshipId, [FromBody] DTO.Feedback feedback) {
+    public IActionResult CreateCompanyFeedback(int internshipId, [FromBody] DTO.Feedback feedback)
+    {
 
         if (internshipId <= 0) return BadRequest("Invalid id\n");
 
@@ -117,9 +122,10 @@ public class InternshipController : ControllerBase {
     [SwaggerOperation(Summary = "Get the student feedback", Description = "Get the student feedback. The feedback is filtered based on the internship ID.")]
     [ProducesResponseType(200)]
     [ProducesResponseType(400)]
-    public IActionResult GetStudentFeedback(int internshipId) {
+    public IActionResult GetStudentFeedback(int internshipId)
+    {
 
-        if (internshipId <= 0) 
+        if (internshipId <= 0)
             return BadRequest("Invalid id\n");
 
         // Get role
@@ -129,9 +135,9 @@ public class InternshipController : ControllerBase {
         string userIdStr = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
         int userId = Convert.ToInt32(userIdStr);
 
-        DTO.Feedback feedback= internship.GetStudentFeedback(internshipId, userId, role);
+        DTO.Feedback feedback = internship.GetStudentFeedback(internshipId, userId, role);
 
-        if(feedback != null)
+        if (feedback != null)
             return Ok(feedback);
 
         return BadRequest("You don't have the permission to see this feedback or the feedback doesn't exist yet\n");
@@ -144,7 +150,8 @@ public class InternshipController : ControllerBase {
     [SwaggerOperation(Summary = "Get the company feedback", Description = "Get the company feedback. The feedback is filtered based on the internship ID.")]
     [ProducesResponseType(200)]
     [ProducesResponseType(400)]
-    public IActionResult GetCompanyFeedback(int internshipId) {
+    public IActionResult GetCompanyFeedback(int internshipId)
+    {
 
         if (internshipId <= 0) return BadRequest("Invalid id\n");
 
@@ -155,9 +162,9 @@ public class InternshipController : ControllerBase {
         string userIdStr = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
         int userId = Convert.ToInt32(userIdStr);
 
-        DTO.Feedback feedback= internship.GetCompanyFeedback(internshipId, userId, role);
+        DTO.Feedback feedback = internship.GetCompanyFeedback(internshipId, userId, role);
 
-        if(feedback != null)
+        if (feedback != null)
             return Ok(feedback);
 
         return BadRequest("You don't have the permission to see this feedback or the feedback doesn't exist yet\n");
@@ -170,7 +177,8 @@ public class InternshipController : ControllerBase {
     [SwaggerOperation(Summary = "Get internships from an advertisement", Description = "Get internships from an advertisement. The internships are filtered based on the advertisement ID.")]
     [ProducesResponseType(200)]
     [ProducesResponseType(400)]
-    public IActionResult GetInternshipFromAdvertisement(int advertisementId) {
+    public IActionResult GetInternshipFromAdvertisement(int advertisementId)
+    {
         // Check role
         string role = User.FindFirst(ClaimTypes.Role).Value;
         if (role != UserType.Company.ToString())
@@ -193,14 +201,15 @@ public class InternshipController : ControllerBase {
 
         return Ok(internships);
     }
-    
-    
+
+
     [HttpPost("delete/{internshipId}")]
     [Authorize]
     [SwaggerOperation(Summary = "Only for test, don't use", Description = "Delete an internship. The internship is deleted based on the internship ID.")]
     [ProducesResponseType(200)]
     [ProducesResponseType(404)]
-    public IActionResult DeleteInternship(int internshipId) {
+    public IActionResult DeleteInternship(int internshipId)
+    {
         // Check role
         string role = User.FindFirst(ClaimTypes.Role).Value;
 
@@ -215,14 +224,15 @@ public class InternshipController : ControllerBase {
 
         return NotFound("You don't have the permission to delete this internship\n");
     }
-    
-    
+
+
     [HttpPost("delete/feedback/{internshipId}")]
     [Authorize]
-    [SwaggerOperation(Summary = "Delete your feedback for the internship", Description = "Delete your feedback for the internship. The feedback is deleted based on the internship ID.")]   
+    [SwaggerOperation(Summary = "Delete your feedback for the internship", Description = "Delete your feedback for the internship. The feedback is deleted based on the internship ID.")]
     [ProducesResponseType(200)]
     [ProducesResponseType(404)]
-    public IActionResult DeleteFeedback(int internshipId) {
+    public IActionResult DeleteFeedback(int internshipId)
+    {
         // Check role
         string role = User.FindFirst(ClaimTypes.Role).Value;
 

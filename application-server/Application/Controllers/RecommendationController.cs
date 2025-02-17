@@ -8,11 +8,13 @@ using Swashbuckle.AspNetCore.Annotations;
 
 [ApiController]
 [Route("api/recommendation")]
-public class RecommendationController : ControllerBase {
+public class RecommendationController : ControllerBase
+{
 
     private readonly IRecommendationService recommendation;
 
-    public RecommendationController(IRecommendationService service) {
+    public RecommendationController(IRecommendationService service)
+    {
         this.recommendation = service;
     }
 
@@ -23,7 +25,8 @@ public class RecommendationController : ControllerBase {
     [ProducesResponseType(400)]
     [ProducesResponseType(404)]
     [ProducesResponseType(500)]
-    public IActionResult GetAdvertisements(){
+    public IActionResult GetAdvertisements()
+    {
         // Get user role from authentication token
         string role = User.FindFirst(ClaimTypes.Role)?.Value;
 
@@ -34,24 +37,26 @@ public class RecommendationController : ControllerBase {
         List<DTO.Advertisement> adv;
         List<Advertisement> checkAdv;
 
-        if (role == UserType.Student.ToString()) {
+        if (role == UserType.Student.ToString())
+        {
             checkAdv = recommendation.GetAdvertisementsForStudent(userId);
 
             if (checkAdv == null)
                 return StatusCode(500, "Internal server error\n");
-            
+
             if (checkAdv.Count == 0)
                 return NotFound("No advertisements found\n");
 
             adv = checkAdv.Select(ad => ad.ToDto()).ToList();
 
         }
-        else if (role == UserType.Company.ToString()) {
+        else if (role == UserType.Company.ToString())
+        {
             checkAdv = recommendation.GetAdvertisementsOfCompany(userId);
 
             if (checkAdv == null)
                 return StatusCode(500, "Internal server error\n");
-            
+
             if (checkAdv.Count == 0)
                 return NotFound("No advertisements found\n");
 
@@ -59,7 +64,7 @@ public class RecommendationController : ControllerBase {
         }
         else
             return BadRequest("Invalid user role.");
-        
+
         return Ok(adv);
     }
 
@@ -68,7 +73,8 @@ public class RecommendationController : ControllerBase {
     [SwaggerOperation(Summary = "Create a new advertisement", Description = "Create a new advertisement for a company. The advertisement is created based on the data provided in the request body.")]
     [ProducesResponseType(200)]
     [ProducesResponseType(400)]
-    public IActionResult CreateAdvertisement([FromBody] DTO.AdvertisementRegistration advertisement) {
+    public IActionResult CreateAdvertisement([FromBody] DTO.AdvertisementRegistration advertisement)
+    {
         // Check role
         string role = User.FindFirst(ClaimTypes.Role).Value;
         if (role != UserType.Company.ToString())
@@ -77,9 +83,10 @@ public class RecommendationController : ControllerBase {
         // Get user ID from authentication token
         string userIdStr = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
         int userId = Convert.ToInt32(userIdStr);
-        
+
         // Add advertisement data to DB
-        if (recommendation.CreateAdvertisement(userId, advertisement)){
+        if (recommendation.CreateAdvertisement(userId, advertisement))
+        {
             return Ok("Advertisement registered\n");
         }
 
@@ -92,7 +99,8 @@ public class RecommendationController : ControllerBase {
     [ProducesResponseType(200)]
     [ProducesResponseType(400)]
     [ProducesResponseType(404)]
-    public IActionResult GetAdvertisement(int advertisementId) {
+    public IActionResult GetAdvertisement(int advertisementId)
+    {
         // Check ID validity
         if (advertisementId <= 0)
             return BadRequest("Invalid id\n");
@@ -112,7 +120,8 @@ public class RecommendationController : ControllerBase {
     [ProducesResponseType(200)]
     [ProducesResponseType(400)]
     [ProducesResponseType(404)]
-    public IActionResult GetRecommendedCandidates(int advertisementId) {
+    public IActionResult GetRecommendedCandidates(int advertisementId)
+    {
         // Check ID validity
         if (advertisementId <= 0)
             return BadRequest("Invalid id\n");
@@ -133,7 +142,7 @@ public class RecommendationController : ControllerBase {
 
         if (checkstudents.Count == 0)
             return NotFound("No students found\n");
-        
+
         List<DTO.Student> students = checkstudents.Select(student => student.ToDto()).ToList();
 
         return Ok(students);
@@ -146,7 +155,8 @@ public class RecommendationController : ControllerBase {
     [ProducesResponseType(200)]
     [ProducesResponseType(400)]
     [ProducesResponseType(404)]
-    public IActionResult CreateSuggestion(int advertisementId, int studentId) {
+    public IActionResult CreateSuggestion(int advertisementId, int studentId)
+    {
         // Check ID validity
         if (advertisementId <= 0 || studentId <= 0)
             return BadRequest("Invalid id\n");
@@ -161,19 +171,20 @@ public class RecommendationController : ControllerBase {
 
         bool suggestionCreated = recommendation.CreateSuggestionsForStudent(advertisementId, studentId, userId);
 
-        if(suggestionCreated)
+        if (suggestionCreated)
             return Ok("Suggestion created\n");
 
         return NotFound("Student or advertisement not found, or the notification already exist\n");
     }
-    
+
     [HttpPost("delete/{advertisementId}")]
     [Authorize]
     [SwaggerOperation(Summary = "Delete an advertisement", Description = "Delete an advertisement. The advertisement is deleted based on the advertisement ID.")]
     [ProducesResponseType(200)]
     [ProducesResponseType(400)]
     [ProducesResponseType(404)]
-    public IActionResult DeleteAdvertisement(int advertisementId) {
+    public IActionResult DeleteAdvertisement(int advertisementId)
+    {
         // Check role
         string role = User.FindFirst(ClaimTypes.Role).Value;
         if (role != UserType.Company.ToString())

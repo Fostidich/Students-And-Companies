@@ -1,6 +1,7 @@
 using System;
 
-public class Student : User {
+public class Student : User
+{
 
     public string Bio { get; set; }
     public string Name { get; set; }
@@ -10,7 +11,8 @@ public class Student : User {
     public char Gender { get; set; }
     public DateTime BirthDate { get; set; }
 
-    public Student(DTO.RegistrationFormStudent registrationForm) {
+    public Student(DTO.RegistrationFormStudent registrationForm)
+    {
         UserType = UserType.Student;
         Username = registrationForm.Username;
         Email = registrationForm.Email;
@@ -23,7 +25,8 @@ public class Student : User {
         BirthDate = registrationForm.BirthDate;
     }
 
-    public Student(Entity.Student entity) {
+    public Student(Entity.Student entity)
+    {
         UserType = UserType.Student;
         Id = entity.StudentId;
         Salt = entity.Salt;
@@ -39,8 +42,10 @@ public class Student : User {
         BirthDate = entity.BirthDate;
     }
 
-    public DTO.Student ToDto() {
-        return new DTO.Student {
+    public DTO.Student ToDto()
+    {
+        return new DTO.Student
+        {
             StudentId = Id,
             Username = Username,
             Email = Email,
@@ -54,8 +59,10 @@ public class Student : User {
         };
     }
 
-    public Entity.Student ToEntity() {
-        return new Entity.Student {
+    public Entity.Student ToEntity()
+    {
+        return new Entity.Student
+        {
             StudentId = Id,
             CreatedAt = CreatedAt,
             Salt = Salt,

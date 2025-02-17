@@ -1,6 +1,7 @@
 using System;
 
-public class Application {
+public class Application
+{
 
     public int ApplicationId { get; set; }
     public int StudentId { get; set; }
@@ -9,7 +10,8 @@ public class Application {
     public string Status { get; set; }
     public String Questionnaire { get; set; }
 
-    public Application(Entity.Application entity) {
+    public Application(Entity.Application entity)
+    {
         ApplicationId = entity.ApplicationId;
         StudentId = entity.StudentId;
         AdvertisementId = entity.AdvertisementId;
@@ -18,8 +20,10 @@ public class Application {
         Questionnaire = entity.Questionnaire;
     }
 
-    public DTO.Application ToDto() {
-        return new DTO.Application {
+    public DTO.Application ToDto()
+    {
+        return new DTO.Application
+        {
             ApplicationId = ApplicationId,
             StudentId = StudentId,
             AdvertisementId = AdvertisementId,

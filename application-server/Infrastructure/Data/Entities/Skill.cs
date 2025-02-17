@@ -4,13 +4,16 @@ using System;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Collections.Generic;
 
-namespace Entity {
+namespace Entity
+{
 
-    public class Skill {
+    public class Skill
+    {
 
         public Skill() { }
 
-        public Skill(IDataReader reader) {
+        public Skill(IDataReader reader)
+        {
             SkillId = Convert.ToInt32(reader["skill_id"]);
             Name = reader["name"].ToString();
         }

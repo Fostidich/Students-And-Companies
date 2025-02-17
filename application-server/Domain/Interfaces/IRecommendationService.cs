@@ -1,7 +1,8 @@
 using System.Collections.Generic;
 
-public interface IRecommendationService {
-    
+public interface IRecommendationService
+{
+
     List<Advertisement> GetAdvertisementsOfCompany(int companyId);
     List<Advertisement> GetAdvertisementsForStudent(int studentId);
     bool CreateAdvertisement(int companyId, DTO.AdvertisementRegistration advertisement);
@@ -9,5 +10,5 @@ public interface IRecommendationService {
     List<Student> GetRecommendedCandidates(int companyId, int advertisementId);
     bool CreateSuggestionsForStudent(int advertisementId, int studentId, int companyId);
     bool DeleteAdvertisement(int advertisementId, int companyId);
-    
+
 }

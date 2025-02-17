@@ -4,13 +4,16 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Collections.Generic;
 
-namespace Entity {
+namespace Entity
+{
 
-    public class Advertisement {
+    public class Advertisement
+    {
 
         public Advertisement() { }
 
-        public Advertisement(IDataReader reader) {
+        public Advertisement(IDataReader reader)
+        {
             AdvertisementId = Convert.ToInt32(reader["advertisement_id"]);
             Name = reader["name"].ToString();
             CreatedAt = DateTime.Parse(reader["created_at"].ToString());
@@ -27,7 +30,7 @@ namespace Entity {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int AdvertisementId { get; set; }
-        
+
         [Required(ErrorMessage = "Field is required")]
         [MaxLength(64, ErrorMessage = "Value cannot be more than 64 characters long")]
         public string Name { get; set; }
@@ -71,9 +74,9 @@ namespace Entity {
         public ICollection<Entity.Application> Applications { get; set; }
         public ICollection<Entity.Internship> Internships { get; set; }
         public ICollection<Entity.StudentNotifications> StudentNotifications { get; set; }
-        
-        
-        
+
+
+
         public override bool Equals(object obj)
         {
             if (obj is Advertisement other)

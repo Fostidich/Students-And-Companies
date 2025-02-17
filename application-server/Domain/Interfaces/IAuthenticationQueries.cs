@@ -1,4 +1,5 @@
-public interface IAuthenticationQueries {
+public interface IAuthenticationQueries
+{
 
     bool RegisterCompany(Entity.Company user);
     bool RegisterStudent(Entity.Student user);

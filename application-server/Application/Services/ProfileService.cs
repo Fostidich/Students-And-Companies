@@ -3,7 +3,8 @@ using System.Linq;
 using System.Collections.Generic;
 using Microsoft.AspNetCore.Http;
 
-public class ProfileService : IProfileService {
+public class ProfileService : IProfileService
+{
 
     private readonly IProfileQueries queries;
     private readonly IAuthenticationService authentication;
@@ -13,14 +14,16 @@ public class ProfileService : IProfileService {
     public ProfileService(IProfileQueries queries,
             IAuthenticationService authentication,
             IAuthenticationQueries authenticationQueries,
-            IFileService files) {
+            IFileService files)
+    {
         this.queries = queries;
         this.authentication = authentication;
         this.authenticationQueries = authenticationQueries;
         this.files = files;
     }
 
-    public Company GetCompany(int id) {
+    public Company GetCompany(int id)
+    {
         // Search user in the DB
         Entity.Company user = queries.FindCompanyFromId(id);
 
@@ -29,7 +32,8 @@ public class ProfileService : IProfileService {
         return new Company(user);
     }
 
-    public Student GetStudent(int id) {
+    public Student GetStudent(int id)
+    {
         // Search user in the DB
         Entity.Student user = queries.FindStudentFromId(id);
 
@@ -38,11 +42,13 @@ public class ProfileService : IProfileService {
         return new Student(user);
     }
 
-    public bool UpdateProfileCompany(int userId, DTO.ProfileUpdateCompany updateForm) {
+    public bool UpdateProfileCompany(int userId, DTO.ProfileUpdateCompany updateForm)
+    {
         bool errors = false;
 
         // Change password
-        if (!string.IsNullOrWhiteSpace(updateForm.Password)) {
+        if (!string.IsNullOrWhiteSpace(updateForm.Password))
+        {
             // Retrieve salt and hashed password
             var salt = authentication.GenerateSalt();
             var hash = authentication.HashPassword(salt, updateForm.Password);
@@ -53,37 +59,43 @@ public class ProfileService : IProfileService {
         }
 
         // Update username
-        if (!string.IsNullOrWhiteSpace(updateForm.Username)) {
+        if (!string.IsNullOrWhiteSpace(updateForm.Username))
+        {
             if (!queries.UpdateUsername(UserType.Company, userId, updateForm.Username))
                 errors = true;
         }
 
         // Update email
-        if (!string.IsNullOrWhiteSpace(updateForm.Email)) {
+        if (!string.IsNullOrWhiteSpace(updateForm.Email))
+        {
             if (!queries.UpdateEmail(UserType.Company, userId, updateForm.Email))
                 errors = true;
         }
 
         // Update bio
-        if (!string.IsNullOrWhiteSpace(updateForm.Bio)) {
+        if (!string.IsNullOrWhiteSpace(updateForm.Bio))
+        {
             if (!queries.UpdateBio(UserType.Company, userId, updateForm.Bio))
                 errors = true;
         }
 
         // Update headquarter
-        if (!string.IsNullOrWhiteSpace(updateForm.Headquarter)) {
+        if (!string.IsNullOrWhiteSpace(updateForm.Headquarter))
+        {
             if (!queries.UpdateHeadquarter(userId, updateForm.Headquarter))
                 errors = true;
         }
 
         // Update fiscal code
-        if (!string.IsNullOrWhiteSpace(updateForm.FiscalCode)) {
+        if (!string.IsNullOrWhiteSpace(updateForm.FiscalCode))
+        {
             if (!queries.UpdateFiscalCode(userId, updateForm.FiscalCode))
                 errors = true;
         }
 
         // Update VAT number
-        if (!string.IsNullOrWhiteSpace(updateForm.VatNumber)) {
+        if (!string.IsNullOrWhiteSpace(updateForm.VatNumber))
+        {
             if (!queries.UpdateVatNumber(userId, updateForm.VatNumber))
                 errors = true;
         }
@@ -91,70 +103,81 @@ public class ProfileService : IProfileService {
         return !errors;
     }
 
-    public bool UpdateProfileStudent(int userId, DTO.ProfileUpdateStudent updateForm) {
+    public bool UpdateProfileStudent(int userId, DTO.ProfileUpdateStudent updateForm)
+    {
         bool errors = false;
 
         // Change password
-        if (!string.IsNullOrWhiteSpace(updateForm.Password)) {
+        if (!string.IsNullOrWhiteSpace(updateForm.Password))
+        {
             // Retrieve salt and hashed password
             var salt = authentication.GenerateSalt();
             var hash = authentication.HashPassword(salt, updateForm.Password);
 
             // Update salt and password
             if (!queries.UpdateSaltAndPassword(UserType.Student, userId, salt, hash))
-                errors = true;;
+                errors = true; ;
         }
 
         // Update username
-        if (!string.IsNullOrWhiteSpace(updateForm.Username)) {
+        if (!string.IsNullOrWhiteSpace(updateForm.Username))
+        {
             if (!queries.UpdateUsername(UserType.Student, userId, updateForm.Username))
                 errors = true;
         }
 
         // Update email
-        if (!string.IsNullOrWhiteSpace(updateForm.Email)) {
+        if (!string.IsNullOrWhiteSpace(updateForm.Email))
+        {
             if (!queries.UpdateEmail(UserType.Student, userId, updateForm.Email))
                 errors = true;
         }
 
         // Update bio
-        if (!string.IsNullOrWhiteSpace(updateForm.Bio)) {
+        if (!string.IsNullOrWhiteSpace(updateForm.Bio))
+        {
             if (!queries.UpdateBio(UserType.Student, userId, updateForm.Bio))
                 errors = true;
         }
 
         // Update name
-        if (!string.IsNullOrWhiteSpace(updateForm.Name)) {
+        if (!string.IsNullOrWhiteSpace(updateForm.Name))
+        {
             if (!queries.UpdateName(userId, updateForm.Name))
                 errors = true;
         }
 
         // Update surname
-        if (!string.IsNullOrWhiteSpace(updateForm.Surname)) {
+        if (!string.IsNullOrWhiteSpace(updateForm.Surname))
+        {
             if (!queries.UpdateSurname(userId, updateForm.Surname))
                 errors = true;
         }
 
         // Update university
-        if (!string.IsNullOrWhiteSpace(updateForm.University)) {
+        if (!string.IsNullOrWhiteSpace(updateForm.University))
+        {
             if (!queries.UpdateUniversity(userId, updateForm.University))
                 errors = true;
         }
 
         // Update course of study
-        if (!string.IsNullOrWhiteSpace(updateForm.CourseOfStudy)) {
+        if (!string.IsNullOrWhiteSpace(updateForm.CourseOfStudy))
+        {
             if (!queries.UpdateCourseOfStudy(userId, updateForm.CourseOfStudy))
                 errors = true;
         }
 
         // Update gender
-        if (updateForm.Gender != null) {
+        if (updateForm.Gender != null)
+        {
             if (!queries.UpdateGender(userId, updateForm.Gender.Value))
                 errors = true;
         }
 
         // Update birth date
-        if (updateForm.BirthDate != null) {
+        if (updateForm.BirthDate != null)
+        {
             if (!queries.UpdateBirthDate(userId, updateForm.BirthDate.Value))
                 errors = true;
         }
@@ -162,12 +185,14 @@ public class ProfileService : IProfileService {
         return !errors;
     }
 
-    public bool IsCompanyUpdateFormValid(DTO.ProfileUpdateCompany updateForm) {
+    public bool IsCompanyUpdateFormValid(DTO.ProfileUpdateCompany updateForm)
+    {
         var username = updateForm.Username;
         var email = updateForm.Email;
 
         // Check username uniqueness
-        if (!string.IsNullOrWhiteSpace(username)) {
+        if (!string.IsNullOrWhiteSpace(username))
+        {
             if (authenticationQueries.FindCompanyFromUsername(username) != null)
                 return false;
             if (authenticationQueries.FindStudentFromUsername(username) != null)
@@ -175,7 +200,8 @@ public class ProfileService : IProfileService {
         }
 
         // Check email uniqueness
-        if (!string.IsNullOrWhiteSpace(email)) {
+        if (!string.IsNullOrWhiteSpace(email))
+        {
             if (authenticationQueries.FindCompanyFromEmail(email.ToLowerInvariant()) != null)
                 return false;
             if (authenticationQueries.FindStudentFromEmail(email.ToLowerInvariant()) != null)
@@ -186,12 +212,14 @@ public class ProfileService : IProfileService {
         return true;
     }
 
-    public bool IsStudentUpdateFormValid(DTO.ProfileUpdateStudent updateForm) {
+    public bool IsStudentUpdateFormValid(DTO.ProfileUpdateStudent updateForm)
+    {
         var username = updateForm.Username;
         var email = updateForm.Email;
 
         // Check username uniqueness
-        if (!string.IsNullOrWhiteSpace(username)) {
+        if (!string.IsNullOrWhiteSpace(username))
+        {
             if (authenticationQueries.FindStudentFromUsername(username) != null)
                 return false;
             if (authenticationQueries.FindCompanyFromUsername(username) != null)
@@ -199,7 +227,8 @@ public class ProfileService : IProfileService {
         }
 
         // Check email uniqueness
-        if (!string.IsNullOrWhiteSpace(email)) {
+        if (!string.IsNullOrWhiteSpace(email))
+        {
             if (authenticationQueries.FindStudentFromEmail(email.ToLowerInvariant()) != null)
                 return false;
             if (authenticationQueries.FindCompanyFromEmail(email.ToLowerInvariant()) != null)
@@ -211,7 +240,8 @@ public class ProfileService : IProfileService {
     }
 
 
-    public bool CheckCvValidity(IFormFile file) {
+    public bool CheckCvValidity(IFormFile file)
+    {
         // Check actual file presence
         if (file == null || file.Length == 0)
             return false;
@@ -227,7 +257,8 @@ public class ProfileService : IProfileService {
         return true;
     }
 
-    public bool StoreCvFile(int userId, IFormFile file) {
+    public bool StoreCvFile(int userId, IFormFile file)
+    {
         // Convert file form to byte array
         byte[] fileBytes;
         using var memoryStream = new MemoryStream();
@@ -239,17 +270,21 @@ public class ProfileService : IProfileService {
 
         // Store file in file system
         return files.SaveFile(filePath, fileBytes);
-   }
+    }
 
-    public IFormFile RetrieveCvFile(int userId) {
+    public IFormFile RetrieveCvFile(int userId)
+    {
         // Compute file path
         string filePath = files.GetCvFilePath(userId.ToString());
 
         // Retrieve file from file system
         byte[] fileBytes;
-        try {
+        try
+        {
             fileBytes = files.RetrieveFile(filePath);
-        } catch {
+        }
+        catch
+        {
             fileBytes = null;
         }
 
@@ -259,13 +294,15 @@ public class ProfileService : IProfileService {
 
         // Convert file to form file
         var stream = new MemoryStream(fileBytes);
-        return new FormFile(stream, 0, fileBytes.Length, null, Path.GetFileName(filePath)) {
+        return new FormFile(stream, 0, fileBytes.Length, null, Path.GetFileName(filePath))
+        {
             Headers = new HeaderDictionary(),
             ContentType = "application/pdf"
         };
     }
 
-    public bool DeleteCv(int userId) {
+    public bool DeleteCv(int userId)
+    {
         // Compute file path
         string filePath = files.GetCvFilePath(userId.ToString());
 
@@ -273,16 +310,19 @@ public class ProfileService : IProfileService {
         return files.DeleteFile(filePath);
     }
 
-    public bool DeleteUser(UserType userType, int userId) {
+    public bool DeleteUser(UserType userType, int userId)
+    {
         return queries.DeleteUser(userType, userId);
     }
 
-    public bool AddSkill(int studentId, string name) {
+    public bool AddSkill(int studentId, string name)
+    {
         // Find skill id
         int skillId = queries.FindSkill(name);
 
         // Add skill if not present
-        if (skillId == 0) {
+        if (skillId == 0)
+        {
             // Add new skill
             if (!queries.AddSkill(name))
                 return false;
@@ -299,7 +339,8 @@ public class ProfileService : IProfileService {
         return queries.AddSkillToStudent(studentId, skillId);
     }
 
-    public List<Skill> GetSkills(int id) {
+    public List<Skill> GetSkills(int id)
+    {
         // Retrieve skills
         List<Entity.Skill> skillsEntity = queries.GetSkills(id);
 
@@ -312,7 +353,8 @@ public class ProfileService : IProfileService {
         return skills;
     }
 
-    public bool DeleteSkill(int skillId, int studentId) {
+    public bool DeleteSkill(int skillId, int studentId)
+    {
         return queries.DeleteSkill(skillId, studentId);
     }
 

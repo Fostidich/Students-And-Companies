@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 
-public interface IInternshipQueries {
+public interface IInternshipQueries
+{
     List<Entity.Internship> GetInternshipForStudent(int studentId);
     List<Entity.Internship> GetInternshipFromAdvertisement(int advertisementId, int companyId);
     bool CreateStudentFeedback(int internshipId, Entity.StudentFeedback feedback, int studentId);

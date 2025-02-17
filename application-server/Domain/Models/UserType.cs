@@ -1,4 +1,5 @@
-public enum UserType {
+public enum UserType
+{
     Student,
     Company
 }

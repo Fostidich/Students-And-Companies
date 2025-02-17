@@ -7,7 +7,8 @@ using System.IdentityModel.Tokens.Jwt;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.Extensions.Configuration;
 
-public class AuthenticationService : IAuthenticationService {
+public class AuthenticationService : IAuthenticationService
+{
 
     private readonly IAuthenticationQueries queries;
     private string jwtIssuer;
@@ -15,7 +16,8 @@ public class AuthenticationService : IAuthenticationService {
     private string jwtSecret;
     private int expirationHours;
 
-    public AuthenticationService(IAuthenticationQueries queries, IConfiguration configuration) {
+    public AuthenticationService(IAuthenticationQueries queries, IConfiguration configuration)
+    {
         this.queries = queries;
         this.jwtIssuer = configuration["Jwt:Issuer"];
         this.jwtAudience = configuration["Jwt:Audience"];
@@ -23,7 +25,8 @@ public class AuthenticationService : IAuthenticationService {
         this.expirationHours = Convert.ToInt32(configuration["Jwt:ExpirationHours"]);
     }
 
-    public bool IsCompanyRegistrationValid(DTO.RegistrationFormCompany registrationForm) {
+    public bool IsCompanyRegistrationValid(DTO.RegistrationFormCompany registrationForm)
+    {
         // Check that username and email are unique
         if (queries.FindCompanyFromEmail(registrationForm.Email.ToLowerInvariant()) != null) return false;
         if (queries.FindCompanyFromUsername(registrationForm.Username) != null) return false;
@@ -34,7 +37,8 @@ public class AuthenticationService : IAuthenticationService {
         return true;
     }
 
-    public bool IsStudentRegistrationValid(DTO.RegistrationFormStudent registrationForm) {
+    public bool IsStudentRegistrationValid(DTO.RegistrationFormStudent registrationForm)
+    {
         // Check that username and email are unique
         if (queries.FindStudentFromEmail(registrationForm.Email.ToLowerInvariant()) != null) return false;
         if (queries.FindStudentFromUsername(registrationForm.Username) != null) return false;
@@ -45,7 +49,8 @@ public class AuthenticationService : IAuthenticationService {
         return true;
     }
 
-    public bool RegisterCompany(DTO.RegistrationFormCompany registrationForm) {
+    public bool RegisterCompany(DTO.RegistrationFormCompany registrationForm)
+    {
         // Retrieve salt and hashed password
         var salt = GenerateSalt();
         var hash = HashPassword(salt, registrationForm.Password);
@@ -57,7 +62,8 @@ public class AuthenticationService : IAuthenticationService {
         return queries.RegisterCompany(user);
     }
 
-    public bool RegisterStudent(DTO.RegistrationFormStudent registrationForm) {
+    public bool RegisterStudent(DTO.RegistrationFormStudent registrationForm)
+    {
         // Retrieve salt and hashed password
         var salt = GenerateSalt();
         var hash = HashPassword(salt, registrationForm.Password);
@@ -69,23 +75,29 @@ public class AuthenticationService : IAuthenticationService {
         return queries.RegisterStudent(user);
     }
 
-    public User ValidateCredentials(DTO.Credentials credentials) {
+    public User ValidateCredentials(DTO.Credentials credentials)
+    {
         // Search for credentials in the DB
         User user = null;
-        if (!IsValidEmail(credentials.Username)) {
+        if (!IsValidEmail(credentials.Username))
+        {
             var student = queries.FindStudentFromUsername(credentials.Username);
             if (student != null)
                 user = new Student(student);
-            else {
+            else
+            {
                 var company = queries.FindCompanyFromUsername(credentials.Username);
                 if (company != null)
                     user = new Company(company);
             }
-        } else {
+        }
+        else
+        {
             var student = queries.FindStudentFromEmail(credentials.Username);
             if (student != null)
                 user = new Student(student);
-            else {
+            else
+            {
                 var company = queries.FindCompanyFromEmail(credentials.Username);
                 if (company != null)
                     user = new Company(company);
@@ -103,9 +115,10 @@ public class AuthenticationService : IAuthenticationService {
             return user;
         else
             return null;
-   }
+    }
 
-    public string GenerateToken(User user) {
+    public string GenerateToken(User user)
+    {
         // Define claim fields in the token
         var claims = new[] {
             new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
@@ -127,7 +140,8 @@ public class AuthenticationService : IAuthenticationService {
         return new JwtSecurityTokenHandler().WriteToken(token);
     }
 
-    public string GenerateSalt() {
+    public string GenerateSalt()
+    {
         // Generate a cryptographic random salt
         byte[] saltBytes = new byte[16];
         using var rng = RandomNumberGenerator.Create();
@@ -135,7 +149,8 @@ public class AuthenticationService : IAuthenticationService {
         return Convert.ToBase64String(saltBytes);
     }
 
-    public string HashPassword(string salt, string password) {
+    public string HashPassword(string salt, string password)
+    {
         // Combine the salt with the password and hash them
         using var sha256 = SHA256.Create();
         string saltedPassword = salt + password;
@@ -143,7 +158,8 @@ public class AuthenticationService : IAuthenticationService {
         return Convert.ToBase64String(hashBytes);
     }
 
-    public bool IsValidEmail(string email) {
+    public bool IsValidEmail(string email)
+    {
         var emailRegex = @"^[^@\s]+@[^@\s]+\.[^@\s]+$";
         return Regex.IsMatch(email, emailRegex, RegexOptions.IgnoreCase);
     }

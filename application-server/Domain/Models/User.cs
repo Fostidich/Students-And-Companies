@@ -1,6 +1,7 @@
 using System;
 
-public abstract class User {
+public abstract class User
+{
 
     public int Id { get; set; }
     public string Username { get; set; }

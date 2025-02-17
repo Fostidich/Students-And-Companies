@@ -4,13 +4,16 @@ using System.Collections.Generic;
 using System.Data;
 using System;
 
-namespace Entity {
+namespace Entity
+{
 
-    public class Company {
+    public class Company
+    {
 
         public Company() { }
 
-        public Company(IDataReader reader) {
+        public Company(IDataReader reader)
+        {
             CompanyId = Convert.ToInt32(reader["company_id"]);
             CreatedAt = DateTime.Parse(reader["created_at"].ToString());
             Email = reader["email"].ToString();

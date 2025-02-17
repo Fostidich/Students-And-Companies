@@ -3,13 +3,16 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Data;
 
-namespace Entity {
-    
-    public class CompanyFeedback {
-        
+namespace Entity
+{
+
+    public class CompanyFeedback
+    {
+
         public CompanyFeedback() { }
 
-        public CompanyFeedback(IDataReader reader) {
+        public CompanyFeedback(IDataReader reader)
+        {
             InternshipId = Convert.ToInt32(reader["internship_id"]);
             Rating = Convert.ToInt32(reader["rating"]);
             Comment = reader["comment"].ToString();
@@ -31,8 +34,8 @@ namespace Entity {
         // Navigation property
 
         public Entity.Internship Internship { get; set; }
-        
-    
+
+
     }
 }
 

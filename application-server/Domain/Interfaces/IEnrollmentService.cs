@@ -1,7 +1,8 @@
 using System.Collections.Generic;
 using System;
 
-public interface IEnrollmentService {
+public interface IEnrollmentService
+{
 
     Application GetApplication(int userId, int advertisementId);
     Application GetApplication(int applicationId);

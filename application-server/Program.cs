@@ -15,9 +15,11 @@ using Microsoft.IdentityModel.Tokens;
 using Microsoft.EntityFrameworkCore;
 using dotenv.net;
 
-public class Program {
+public class Program
+{
 
-    public static void Main(string[] args) {
+    public static void Main(string[] args)
+    {
         DotEnv.Load();
 
         var app = CreateWebApplication(args);
@@ -26,7 +28,8 @@ public class Program {
         Console.WriteLine("Stopping application server...");
     }
 
-    public static WebApplication CreateWebApplication(string[] args) {
+    public static WebApplication CreateWebApplication(string[] args)
+    {
         var builder = WebApplication.CreateBuilder(args);
         ConfigureServices(builder);
         var app = builder.Build();
@@ -35,13 +38,15 @@ public class Program {
         return app;
     }
 
-    public static void ConfigureMiddleware(WebApplication app) {
+    public static void ConfigureMiddleware(WebApplication app)
+    {
         // Apply pending migrations
         using var scope = app.Services.CreateScope();
         var dbContext = scope.ServiceProvider.GetRequiredService<AppDbContext>();
         dbContext.Database.Migrate();
 
-        if (app.Environment.IsDevelopment()) {
+        if (app.Environment.IsDevelopment())
+        {
             // Open Swagger web page
             app.UseSwagger();
             app.UseSwaggerUI();
@@ -55,7 +60,8 @@ public class Program {
         app.MapControllers().RequireCors();
     }
 
-    public static void ConfigureServices(WebApplicationBuilder builder) {
+    public static void ConfigureServices(WebApplicationBuilder builder)
+    {
         ConfigureBuilderConfiguration(builder);
         ConfigureBuilderInjections(builder);
         ConfigureBuilderJwtToken(builder);
@@ -72,25 +78,33 @@ public class Program {
         builder.Services.AddControllers();
     }
 
-    private static void ConfigureBuilderConfiguration(WebApplicationBuilder builder) {
+    private static void ConfigureBuilderConfiguration(WebApplicationBuilder builder)
+    {
         // Manage app settings configuration with dotenv
         string jwtSecretEnv = Environment.GetEnvironmentVariable("JWT_SECRET");
-        if (string.IsNullOrWhiteSpace(jwtSecretEnv)) {
+        if (string.IsNullOrWhiteSpace(jwtSecretEnv))
+        {
             string jwtSecretStd = builder.Configuration["Jwt:Secret"];
             Console.WriteLine($"No JWT secret found in .env: using \"{jwtSecretStd}\".");
-        } else {
+        }
+        else
+        {
             builder.Configuration["Jwt:Secret"] = jwtSecretEnv;
         }
         string dbDefaultConnectionEnv = Environment.GetEnvironmentVariable("DB_DEFAULT_CONNECTION");
-        if (string.IsNullOrWhiteSpace(dbDefaultConnectionEnv)) {
+        if (string.IsNullOrWhiteSpace(dbDefaultConnectionEnv))
+        {
             string dbDefaultConnectionStd = builder.Configuration["DbDefaultConnection"];
             Console.WriteLine($"No DB default connection found in .env: using \"{dbDefaultConnectionStd}\".");
-        } else {
+        }
+        else
+        {
             builder.Configuration["DbDefaultConnection"] = dbDefaultConnectionEnv;
         }
     }
 
-    private static void ConfigureBuilderInjections(WebApplicationBuilder builder) {
+    private static void ConfigureBuilderInjections(WebApplicationBuilder builder)
+    {
         // Add interfaces for constructors
         builder.Services.AddScoped<IDataService, DataService>();
         builder.Services.AddScoped<IFileService, FileService>();
@@ -108,29 +122,35 @@ public class Program {
         builder.Services.AddScoped<IRecommendationQueries, RecommendationQueries>();
     }
 
-    private static void ConfigureBuilderJwtToken(WebApplicationBuilder builder) {
+    private static void ConfigureBuilderJwtToken(WebApplicationBuilder builder)
+    {
         // Add JWT authentication
         string jwtIssuer = builder.Configuration["Jwt:Issuer"];
         string jwtAudience = builder.Configuration["Jwt:Audience"];
         string jwtSecret = builder.Configuration["Jwt:Secret"];
-        builder.Services.AddAuthentication(options => {
+        builder.Services.AddAuthentication(options =>
+        {
             options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
             options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
         })
-            .AddJwtBearer(options => {
-                options.TokenValidationParameters = new TokenValidationParameters {
+            .AddJwtBearer(options =>
+            {
+                options.TokenValidationParameters = new TokenValidationParameters
+                {
                     ValidateIssuer = true,
                     ValidateAudience = true,
                     ValidateLifetime = true,
                     ValidateIssuerSigningKey = true,
                     ValidIssuer = jwtIssuer,
                     ValidAudience = jwtAudience,
-                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtSecret))};
+                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtSecret))
+                };
             });
         builder.Services.AddAuthorization();
     }
 
-    private static void ConfigureBuilderDataProtection(WebApplicationBuilder builder) {
+    private static void ConfigureBuilderDataProtection(WebApplicationBuilder builder)
+    {
         // Add keys data protection
         string directory = Path.Combine(
                 Environment.GetFolderPath(Environment.SpecialFolder.UserProfile),
@@ -138,27 +158,32 @@ public class Program {
         Directory.CreateDirectory(directory);
         builder.Services.AddDataProtection()
             .PersistKeysToFileSystem(new DirectoryInfo(directory))
-            .UseCryptographicAlgorithms(new AuthenticatedEncryptorConfiguration() {
+            .UseCryptographicAlgorithms(new AuthenticatedEncryptorConfiguration()
+            {
                 EncryptionAlgorithm = EncryptionAlgorithm.AES_256_CBC,
                 ValidationAlgorithm = ValidationAlgorithm.HMACSHA256
             });
     }
 
-    private static void ConfigureBuilderApiExplorer(WebApplicationBuilder builder) {
+    private static void ConfigureBuilderApiExplorer(WebApplicationBuilder builder)
+    {
         // Add APIs summary web page
         builder.Services.AddEndpointsApiExplorer();
-        builder.Services.AddSwaggerGen(c => {
-                c.EnableAnnotations();
-                c.SwaggerDoc(
-                "v1",
-                new OpenApiInfo {
-                    Title = "Students and Companies - Application server",
-                    Version = "v1"
-                }
-            );
+        builder.Services.AddSwaggerGen(c =>
+        {
+            c.EnableAnnotations();
+            c.SwaggerDoc(
+            "v1",
+            new OpenApiInfo
+            {
+                Title = "Students and Companies - Application server",
+                Version = "v1"
+            }
+        );
             c.AddSecurityDefinition(
                 "Bearer",
-                new OpenApiSecurityScheme {
+                new OpenApiSecurityScheme
+                {
                     Name = "Authorization",
                     Type = SecuritySchemeType.ApiKey,
                     Scheme = "Bearer",
@@ -182,7 +207,8 @@ public class Program {
         });
     }
 
-    private static void ConfigureBuilderDbConnection(WebApplicationBuilder builder) {
+    private static void ConfigureBuilderDbConnection(WebApplicationBuilder builder)
+    {
         // Retrieve DB connection
         builder.Services.AddDbContext<AppDbContext>(options =>
             options.UseMySql(
@@ -192,22 +218,29 @@ public class Program {
         );
     }
 
-    private static void ConfigureBuilderUrls(WebApplicationBuilder builder) {
+    private static void ConfigureBuilderUrls(WebApplicationBuilder builder)
+    {
         // Set up URL on which to listen
         string deafultUrlEnv = Environment.GetEnvironmentVariable("CONNECTION_URL");
-        if (string.IsNullOrWhiteSpace(deafultUrlEnv)) {
+        if (string.IsNullOrWhiteSpace(deafultUrlEnv))
+        {
             string defaultUrlStd = builder.Configuration["ConnectionUrl"];
             Console.WriteLine($"No connection URL found in .env: using \"{defaultUrlStd}\".");
-        } else {
+        }
+        else
+        {
             builder.Configuration["ConnectionUrl"] = deafultUrlEnv;
         }
         builder.WebHost.UseUrls(builder.Configuration["ConnectionUrl"]);
-   }
+    }
 
-    private static void ConfigureBuilderCors(WebApplicationBuilder builder) {
+    private static void ConfigureBuilderCors(WebApplicationBuilder builder)
+    {
         // Add the CORS policy
-        builder.Services.AddCors(options => {
-            options.AddDefaultPolicy(builder => {
+        builder.Services.AddCors(options =>
+        {
+            options.AddDefaultPolicy(builder =>
+            {
                 builder
                     .AllowAnyOrigin()
                     .AllowAnyHeader()

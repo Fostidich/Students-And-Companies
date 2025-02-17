@@ -1,8 +1,10 @@
 using System;
 
-namespace DTO {
+namespace DTO
+{
 
-    public class Application {
+    public class Application
+    {
 
         public int ApplicationId { get; set; }
         public int StudentId { get; set; }

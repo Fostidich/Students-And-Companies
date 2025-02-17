@@ -1,7 +1,8 @@
 using System.Collections.Generic;
 using System;
 
-public interface IEnrollmentQueries {
+public interface IEnrollmentQueries
+{
 
     Entity.Application GetApplication(int userId, int advertisementId);
     Entity.Application GetApplication(int applicationId);

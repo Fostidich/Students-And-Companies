@@ -1,8 +1,10 @@
 using System.ComponentModel.DataAnnotations;
 
-namespace DTO {
-        
-    public class Feedback {
+namespace DTO
+{
+
+    public class Feedback
+    {
 
         [Required(ErrorMessage = "Field is required")]
         [Range(1, 10, ErrorMessage = "Value must be between 1 and 10")]

@@ -1,11 +1,13 @@
-public class Company : User {
+public class Company : User
+{
 
     public string Bio { get; set; }
     public string Headquarter { get; set; }
     public string FiscalCode { get; set; }
     public string VatNumber { get; set; }
 
-    public Company(DTO.RegistrationFormCompany registrationForm) {
+    public Company(DTO.RegistrationFormCompany registrationForm)
+    {
         UserType = UserType.Company;
         Username = registrationForm.Username;
         Email = registrationForm.Email;
@@ -15,7 +17,8 @@ public class Company : User {
         VatNumber = registrationForm.VatNumber;
     }
 
-    public Company(Entity.Company entity) {
+    public Company(Entity.Company entity)
+    {
         UserType = UserType.Company;
         Id = entity.CompanyId;
         Username = entity.Username;
@@ -29,8 +32,10 @@ public class Company : User {
         VatNumber = entity.VatNumber;
     }
 
-    public DTO.Company ToDto() {
-        return new DTO.Company {
+    public DTO.Company ToDto()
+    {
+        return new DTO.Company
+        {
             CompanyId = Id,
             Username = Username,
             Email = Email,
@@ -41,8 +46,10 @@ public class Company : User {
         };
     }
 
-    public Entity.Company ToEntity() {
-        return new Entity.Company {
+    public Entity.Company ToEntity()
+    {
+        return new Entity.Company
+        {
             CompanyId = Id,
             CreatedAt = CreatedAt,
             Salt = Salt,

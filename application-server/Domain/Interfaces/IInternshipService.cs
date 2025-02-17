@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 
-public interface IInternshipService {
+public interface IInternshipService
+{
     List<Internship> GetInternshipForStudent(int studentId);
     List<Internship> GetInternshipFromAdvertisement(int advertisementId, int companyId);
     bool CreateStudentFeedback(int internshipId, DTO.Feedback feedback, int studentId);
