@@ -134,7 +134,7 @@ function CvBox() {
                     <form onSubmit={handleSubmit} className="flex flex-col gap-4">
                         <div className="flex flex-col gap-2">
                             <label htmlFor="cv-upload" className="font-medium">
-                                Carica il tuo CV (PDF, max 5MB)
+                                Upload your CV (PDF, max 5MB)
                             </label>
                             <input
                                 id="cv-upload"
@@ -150,7 +150,7 @@ function CvBox() {
                             disabled={!file || loading}
                             className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 disabled:bg-gray-300 disabled:cursor-not-allowed"
                         >
-                            {loading ? 'Caricamento...' : 'Carica CV'}
+                            {loading ? 'Loading...' : 'Upload your CV'}
                         </button>
                     </form>
                 </div>
