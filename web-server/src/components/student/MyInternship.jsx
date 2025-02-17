@@ -82,7 +82,24 @@ function MyInternship() {
     );
 
     if (!response.ok) return null;
-    return await response.json();
+    const adv = await response.json();
+    const username = await getCompanyUsername(adv.companyId);
+    return { ...adv, username };
+  };
+
+  const getCompanyUsername = async (companyId) => {
+    const authData = JSON.parse(Cookies.get("authData"));
+    const response = await fetch(
+      `${API_SERVER_URL}/api/profile/company/${companyId}`,
+      {
+        headers: {
+          Authorization: `Bearer ${authData.token}`,
+        },
+      },
+    );
+    if (!response.ok) return null;
+    const company = await response.json();
+    return company.username;
   };
 
   const getCompanyFeedback = async (internshipId) => {
@@ -258,6 +275,10 @@ function MyInternship() {
                   className="bg-white rounded-lg p-4 shadow"
                 >
                   <div className="space-y-2">
+                    <p>
+                      <strong>Company name:</strong>{" "}
+                      {advertisements[internship.advertisementId]?.username}
+                    </p>
                     <p>
                       <strong>Name:</strong>{" "}
                       {advertisements[internship.advertisementId]?.name}
