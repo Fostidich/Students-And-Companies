@@ -1,8 +1,10 @@
 using System.ComponentModel.DataAnnotations;
 
-namespace DTO {
+namespace DTO
+{
 
-    public class Credentials {
+    public class Credentials
+    {
 
         [Required(ErrorMessage = "Field is required")]
         public string Username { get; set; }

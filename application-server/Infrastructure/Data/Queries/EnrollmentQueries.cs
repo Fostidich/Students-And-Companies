@@ -3,16 +3,20 @@ using System.Collections.Generic;
 using System.Linq;
 using MySql.Data.MySqlClient;
 
-public class EnrollmentQueries : IEnrollmentQueries {
+public class EnrollmentQueries : IEnrollmentQueries
+{
 
     private readonly IDataService dataService;
 
-    public EnrollmentQueries(IDataService dataService) {
+    public EnrollmentQueries(IDataService dataService)
+    {
         this.dataService = dataService;
     }
 
-    public Entity.Application GetApplication(int userId, int advertisementId) {
-        try {
+    public Entity.Application GetApplication(int userId, int advertisementId)
+    {
+        try
+        {
             string query = @"
                 SELECT *
                 FROM application
@@ -29,14 +33,18 @@ public class EnrollmentQueries : IEnrollmentQueries {
 
             var applications = dataService.MapToApplications(reader);
             return applications.FirstOrDefault();
-        } catch (Exception ex) {
+        }
+        catch (Exception ex)
+        {
             Console.WriteLine(ex.Message);
             return null;
         }
     }
 
-    public Entity.Application GetApplication(int applicationId) {
-        try {
+    public Entity.Application GetApplication(int applicationId)
+    {
+        try
+        {
             string query = @"
                 SELECT *
                 FROM application
@@ -51,14 +59,18 @@ public class EnrollmentQueries : IEnrollmentQueries {
 
             var applications = dataService.MapToApplications(reader);
             return applications.FirstOrDefault();
-        } catch (Exception ex) {
+        }
+        catch (Exception ex)
+        {
             Console.WriteLine(ex.Message);
             return null;
         }
     }
 
-    public bool CreateApplication(int userId, int advertisementId, string questionnaireAnswer) {
-        try {
+    public bool CreateApplication(int userId, int advertisementId, string questionnaireAnswer)
+    {
+        try
+        {
             string query = $@"
                 INSERT INTO application (student_id, advertisement_id, status, questionnaire)
                 VALUES (@StudentId, @AdvertisementId, 'PENDING', @Questionnaire)";
@@ -70,17 +82,21 @@ public class EnrollmentQueries : IEnrollmentQueries {
             command.Parameters.AddWithValue("@AdvertisementId", advertisementId);
             command.Parameters.AddWithValue("@Questionnaire", questionnaireAnswer);
 
-	        int rowsAffected = command.ExecuteNonQuery();
+            int rowsAffected = command.ExecuteNonQuery();
 
-	        return rowsAffected > 0;
-        } catch (Exception ex) {
+            return rowsAffected > 0;
+        }
+        catch (Exception ex)
+        {
             Console.WriteLine(ex.Message);
             return false;
         }
     }
 
-    public List<Entity.Application> GetPendingApplications(int id) {
-        try {
+    public List<Entity.Application> GetPendingApplications(int id)
+    {
+        try
+        {
             string query = @"
                 SELECT *
                 FROM application
@@ -96,14 +112,18 @@ public class EnrollmentQueries : IEnrollmentQueries {
 
             var applications = dataService.MapToApplications(reader);
             return applications;
-        } catch (Exception ex) {
+        }
+        catch (Exception ex)
+        {
             Console.WriteLine(ex.Message);
             return null;
         }
     }
 
-    public bool AcceptApplication(int id) {
-        try {
+    public bool AcceptApplication(int id)
+    {
+        try
+        {
             string query = $@"
                 UPDATE application
                 SET status = 'ACCEPTED'
@@ -117,14 +137,18 @@ public class EnrollmentQueries : IEnrollmentQueries {
             int rowsAffected = command.ExecuteNonQuery();
 
             return rowsAffected > 0;
-        } catch (Exception ex) {
+        }
+        catch (Exception ex)
+        {
             Console.WriteLine(ex.Message);
             return false;
         }
     }
 
-    public bool RejectApplication(int id) {
-        try {
+    public bool RejectApplication(int id)
+    {
+        try
+        {
             string query = $@"
                 UPDATE application
                 SET status = 'REJECTED'
@@ -138,15 +162,19 @@ public class EnrollmentQueries : IEnrollmentQueries {
             int rowsAffected = command.ExecuteNonQuery();
 
             return rowsAffected > 0;
-        } catch (Exception ex) {
+        }
+        catch (Exception ex)
+        {
             Console.WriteLine(ex.Message);
             return false;
         }
     }
 
 
-    public bool CreateInternship(int studentId, int companyId, int advertisementId, DateTime start, DateTime end) {
-        try {
+    public bool CreateInternship(int studentId, int companyId, int advertisementId, DateTime start, DateTime end)
+    {
+        try
+        {
             string query = $@"
                 INSERT INTO internship (student_id, company_id, advertisement_id, start_date, end_date)
                 VALUES (@StudentId, @CompanyId, @AdvertisementId, @StartDate, @EndDate)";
@@ -160,17 +188,21 @@ public class EnrollmentQueries : IEnrollmentQueries {
             command.Parameters.AddWithValue("@StartDate", start);
             command.Parameters.AddWithValue("@EndDate", end);
 
-	        int rowsAffected = command.ExecuteNonQuery();
+            int rowsAffected = command.ExecuteNonQuery();
 
-	        return rowsAffected > 0;
-        } catch (Exception ex) {
+            return rowsAffected > 0;
+        }
+        catch (Exception ex)
+        {
             Console.WriteLine(ex.Message);
             return false;
         }
     }
 
-    public bool NotifyStudent(int studentId, int advertisementId, bool accepted) {
-        try {
+    public bool NotifyStudent(int studentId, int advertisementId, bool accepted)
+    {
+        try
+        {
             string outcome = accepted ? "ACCEPTED" : "REJECTED";
             string query = $@"
                 INSERT INTO student_notifications (student_id, advertisement_id, type)
@@ -182,17 +214,21 @@ public class EnrollmentQueries : IEnrollmentQueries {
             command.Parameters.AddWithValue("@StudentId", studentId);
             command.Parameters.AddWithValue("@AdvertisementId", advertisementId);
 
-	        int rowsAffected = command.ExecuteNonQuery();
+            int rowsAffected = command.ExecuteNonQuery();
 
-	        return rowsAffected > 0;
-        } catch (Exception ex) {
+            return rowsAffected > 0;
+        }
+        catch (Exception ex)
+        {
             Console.WriteLine(ex.Message);
             return false;
         }
     }
 
-    public bool RejectAllApplications(int id) {
-        try {
+    public bool RejectAllApplications(int id)
+    {
+        try
+        {
             string query = $@"
                 UPDATE application
                 SET status = 'REJECTED'
@@ -205,14 +241,18 @@ public class EnrollmentQueries : IEnrollmentQueries {
             command.Parameters.AddWithValue("@Id", id);
 
             return true;
-        } catch (Exception ex) {
+        }
+        catch (Exception ex)
+        {
             Console.WriteLine(ex.Message);
             return false;
         }
     }
 
-    public bool UpdateAdvertisementSpots(int id) {
-        try {
+    public bool UpdateAdvertisementSpots(int id)
+    {
+        try
+        {
             string query = @"
                 UPDATE advertisement
                 SET
@@ -231,7 +271,9 @@ public class EnrollmentQueries : IEnrollmentQueries {
             int rowsAffected = command.ExecuteNonQuery();
 
             return rowsAffected > 0;
-        } catch (Exception ex) {
+        }
+        catch (Exception ex)
+        {
             Console.WriteLine(ex.Message);
             return false;
         }

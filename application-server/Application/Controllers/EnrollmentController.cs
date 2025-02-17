@@ -8,11 +8,13 @@ using Swashbuckle.AspNetCore.Annotations;
 
 [ApiController]
 [Route("api/enrollment")]
-public class EnrollmentController : ControllerBase {
+public class EnrollmentController : ControllerBase
+{
 
     private readonly IEnrollmentService enrollment;
 
-    public EnrollmentController(IEnrollmentService service) {
+    public EnrollmentController(IEnrollmentService service)
+    {
         this.enrollment = service;
     }
 
@@ -22,7 +24,8 @@ public class EnrollmentController : ControllerBase {
     [ProducesResponseType(200)]
     [ProducesResponseType(400)]
     [ProducesResponseType(500)]
-    public IActionResult CreateApplication([FromBody] DTO.ApplicationRegistration application, int advertisementId) {
+    public IActionResult CreateApplication([FromBody] DTO.ApplicationRegistration application, int advertisementId)
+    {
         // Check id validity
         if (advertisementId <= 0)
             return BadRequest("Invalid advertisement ID\n");
@@ -62,7 +65,8 @@ public class EnrollmentController : ControllerBase {
     [ProducesResponseType(400)]
     [ProducesResponseType(404)]
     [ProducesResponseType(500)]
-    public IActionResult GetPendingApplications(int advertisementId) {
+    public IActionResult GetPendingApplications(int advertisementId)
+    {
         // Check id validity
         if (advertisementId <= 0)
             return BadRequest("Invalid advertisement ID\n");
@@ -107,7 +111,8 @@ public class EnrollmentController : ControllerBase {
     [ProducesResponseType(400)]
     [ProducesResponseType(404)]
     [ProducesResponseType(500)]
-    public IActionResult AcceptApplication([FromBody] DTO.Date date, int applicationId) {
+    public IActionResult AcceptApplication([FromBody] DTO.Date date, int applicationId)
+    {
         // Check id validity
         if (applicationId <= 0)
             return BadRequest("Invalid application ID\n");
@@ -171,7 +176,8 @@ public class EnrollmentController : ControllerBase {
     [ProducesResponseType(400)]
     [ProducesResponseType(404)]
     [ProducesResponseType(500)]
-    public IActionResult RejectApplication(int applicationId) {
+    public IActionResult RejectApplication(int applicationId)
+    {
         // Check id validity
         if (applicationId <= 0)
             return BadRequest("Invalid application ID\n");

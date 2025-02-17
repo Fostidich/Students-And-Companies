@@ -1,8 +1,10 @@
 using System.ComponentModel.DataAnnotations;
 
-namespace DTO {
+namespace DTO
+{
 
-    public class ProfileUpdateCompany {
+    public class ProfileUpdateCompany
+    {
 
         [MaxLength(32, ErrorMessage = "Value is too long")]
         [MinLength(4, ErrorMessage = "Value is too short")]

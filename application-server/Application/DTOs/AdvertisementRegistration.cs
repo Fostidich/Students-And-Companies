@@ -1,9 +1,11 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
-namespace DTO {
+namespace DTO
+{
 
-    public class AdvertisementRegistration {
+    public class AdvertisementRegistration
+    {
 
         [Required(ErrorMessage = "Field is required")]
         [MaxLength(64, ErrorMessage = "Value cannot be more than 64 characters long")]

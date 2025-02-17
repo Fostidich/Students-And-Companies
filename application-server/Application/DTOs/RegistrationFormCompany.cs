@@ -1,8 +1,10 @@
 using System.ComponentModel.DataAnnotations;
 
-namespace DTO {
+namespace DTO
+{
 
-    public class RegistrationFormCompany {
+    public class RegistrationFormCompany
+    {
 
         [Required(ErrorMessage = "Field is required")]
         [MaxLength(32, ErrorMessage = "Value is too long")]

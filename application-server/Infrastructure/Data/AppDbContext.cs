@@ -1,7 +1,8 @@
 using Microsoft.EntityFrameworkCore;
 using System.Linq;
 
-public class AppDbContext : DbContext {
+public class AppDbContext : DbContext
+{
 
     public DbSet<Entity.Student> Student { get; set; }
     public DbSet<Entity.StudentNotifications> StudentNotifications { get; set; }
@@ -17,13 +18,16 @@ public class AppDbContext : DbContext {
 
     public AppDbContext(DbContextOptions<AppDbContext> options) : base(options) { }
 
-    protected override void OnModelCreating(ModelBuilder modelBuilder) {
+    protected override void OnModelCreating(ModelBuilder modelBuilder)
+    {
         base.OnModelCreating(modelBuilder);
 
         // Convert table names to snake_case
-        foreach (var entity in modelBuilder.Model.GetEntityTypes()) {
+        foreach (var entity in modelBuilder.Model.GetEntityTypes())
+        {
             entity.SetTableName(ToSnakeCase(entity.GetTableName()));
-            foreach (var property in entity.GetProperties()) {
+            foreach (var property in entity.GetProperties())
+            {
                 property.SetColumnName(ToSnakeCase(property.Name));
             }
         }
@@ -50,7 +54,7 @@ public class AppDbContext : DbContext {
         modelBuilder.Entity<Entity.Company>()
             .HasIndex(c => c.Email)
             .IsUnique();
-        
+
         // Ensures that the Name field in the Skill table is unique
         modelBuilder.Entity<Entity.Skill>()
             .HasIndex(s => s.Name)
@@ -146,7 +150,7 @@ public class AppDbContext : DbContext {
             .WithOne(i => i.StudentFeedback) // Each internship has one feedback
             .HasForeignKey<Entity.StudentFeedback>(f => f.InternshipId)
             .OnDelete(DeleteBehavior.Cascade); // Delete feedback when the internship is deleted
-        
+
         modelBuilder.Entity<Entity.CompanyFeedback>()
             .HasOne(f => f.Internship) // Each feedback is linked to one internship
             .WithOne(i => i.CompanyFeedback) // Each internship has one feedback
@@ -158,7 +162,7 @@ public class AppDbContext : DbContext {
             .WithMany(a => a.StudentNotifications)
             .HasForeignKey(e => e.AdvertisementId)
             .OnDelete(DeleteBehavior.Cascade);
-        
+
         modelBuilder.Entity<Entity.StudentNotifications>()
             .HasOne(e => e.Student)
             .WithMany(s => s.StudentNotifications)
@@ -166,7 +170,8 @@ public class AppDbContext : DbContext {
             .OnDelete(DeleteBehavior.Cascade);
     }
 
-    private string ToSnakeCase(string name) {
+    private string ToSnakeCase(string name)
+    {
         return string.Concat(
             name.Select((x, i) => i > 0 && char.IsUpper(x)
                 ? "_" + char.ToLower(x)

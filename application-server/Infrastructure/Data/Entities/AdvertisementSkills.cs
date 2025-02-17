@@ -3,13 +3,16 @@ using System.ComponentModel.DataAnnotations.Schema;
 using System.Data;
 using System;
 
-namespace Entity {
+namespace Entity
+{
 
-    public class AdvertisementSkills {
+    public class AdvertisementSkills
+    {
 
         public AdvertisementSkills() { }
 
-        public AdvertisementSkills(IDataReader reader) {
+        public AdvertisementSkills(IDataReader reader)
+        {
             AdvertisementId = Convert.ToInt32(reader["advertisement_id"]);
             SkillId = Convert.ToInt32(reader["skill_id"]);
         }

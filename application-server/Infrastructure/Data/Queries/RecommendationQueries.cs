@@ -140,13 +140,15 @@ public class RecommendationQueries : IRecommendationQueries
             using var db_connection = dataService.GetConnection();
 
             // Check if the name of the advertisement already exists
-            using (var checkcommand = new MySqlCommand(checkquery, db_connection)) {
+            using (var checkcommand = new MySqlCommand(checkquery, db_connection))
+            {
                 checkcommand.Parameters.AddWithValue("@CompanyId", companyId);
                 checkcommand.Parameters.AddWithValue("@Name", advertisement.Name);
 
                 using var reader = checkcommand.ExecuteReader();
 
-                if (reader.HasRows) {
+                if (reader.HasRows)
+                {
                     return -1;
                 }
             }
@@ -217,13 +219,15 @@ public class RecommendationQueries : IRecommendationQueries
             foreach (var skill in skills)
             {
                 // Insert skill (ignored if already exists)
-                using (var insertCommand = new MySqlCommand(insertQuery, db_connection)) {
+                using (var insertCommand = new MySqlCommand(insertQuery, db_connection))
+                {
                     insertCommand.Parameters.AddWithValue("@Name", skill.Name);
                     insertCommand.ExecuteNonQuery();
                 }
 
                 // Retrieve the skill ID
-                using (var selectCommand = new MySqlCommand(selectQuery, db_connection)) {
+                using (var selectCommand = new MySqlCommand(selectQuery, db_connection))
+                {
 
                     selectCommand.Parameters.AddWithValue("@Name", skill.Name);
 
@@ -268,8 +272,10 @@ public class RecommendationQueries : IRecommendationQueries
         }
     }
 
-    public void MatchAdvertisementForStudent(int advertisementId) {
-        try {
+    public void MatchAdvertisementForStudent(int advertisementId)
+    {
+        try
+        {
             // Query to find students with at least 3 skill matches
             string findStudentsQuery = @"
             SELECT ss.student_id, COUNT(*) AS tot
@@ -290,20 +296,23 @@ public class RecommendationQueries : IRecommendationQueries
 
             // Find matching students
             List<int> matchingStudentIds = new List<int>();
-            using (var findCommand = new MySqlCommand(findStudentsQuery, db_connection)) {
+            using (var findCommand = new MySqlCommand(findStudentsQuery, db_connection))
+            {
 
                 findCommand.Parameters.AddWithValue("@AdvertisementId", advertisementId);
 
                 using var reader = findCommand.ExecuteReader();
 
-                while (reader.Read()) {
-                    if(Convert.ToInt32(reader["tot"]) >= 3)
+                while (reader.Read())
+                {
+                    if (Convert.ToInt32(reader["tot"]) >= 3)
                         matchingStudentIds.Add(Convert.ToInt32(reader["student_id"]));
                 }
             }
 
             // Insert notifications for matching students
-            foreach (var studentId in matchingStudentIds) {
+            foreach (var studentId in matchingStudentIds)
+            {
                 var insertCommand = new MySqlCommand(insertNotificationQuery, db_connection);
                 insertCommand.Parameters.AddWithValue("@StudentId", studentId);
                 insertCommand.Parameters.AddWithValue("@AdvertisementId", advertisementId);
@@ -313,7 +322,8 @@ public class RecommendationQueries : IRecommendationQueries
             }
 
         }
-        catch (Exception ex) {
+        catch (Exception ex)
+        {
             Console.WriteLine($"Error matching advertisement to students: {ex.Message}");
         }
     }
@@ -371,7 +381,8 @@ public class RecommendationQueries : IRecommendationQueries
 
             // Check if company is the owner of the advertisement
             var advertisement = GetAdvertisement(advertisementId);
-            if (advertisement == null || advertisement.CompanyId != companyId) {
+            if (advertisement == null || advertisement.CompanyId != companyId)
+            {
                 return null;
             }
 
@@ -420,13 +431,17 @@ public class RecommendationQueries : IRecommendationQueries
         }
     }
 
-    private List<Entity.Student> GetStudentWithInternships(List<Entity.Student> students) {
+    private List<Entity.Student> GetStudentWithInternships(List<Entity.Student> students)
+    {
 
         List<Entity.Student> studentsWithInternships = new List<Entity.Student>();
-        foreach (var student in students) {
+        foreach (var student in students)
+        {
             var internships = GetInternshipForStudent(student.StudentId);
-            foreach (var internship in internships) {
-                if (internship.EndDate > DateTime.Now) {
+            foreach (var internship in internships)
+            {
+                if (internship.EndDate > DateTime.Now)
+                {
                     studentsWithInternships.Add(student);
                     break;
                 }
@@ -436,8 +451,10 @@ public class RecommendationQueries : IRecommendationQueries
         return studentsWithInternships;
     }
 
-    public List<Entity.Internship> GetInternshipForStudent(int studentId) {
-        try {
+    public List<Entity.Internship> GetInternshipForStudent(int studentId)
+    {
+        try
+        {
             string query = @"
                 SELECT *
                 FROM internship
@@ -455,7 +472,9 @@ public class RecommendationQueries : IRecommendationQueries
             var internships = dataService.MapToInternships(reader);
 
             return internships;
-        } catch (Exception ex) {
+        }
+        catch (Exception ex)
+        {
             Console.WriteLine(ex.Message);
             return null;
         }
@@ -463,7 +482,8 @@ public class RecommendationQueries : IRecommendationQueries
 
     public bool CreateSuggestionsForStudent(int advertisementId, int studentId, int companyId)
     {
-        try {
+        try
+        {
             // Query to insert the notification into student_notifications
             string insertNotificationQuery = @"
                 INSERT INTO student_notifications (student_id, advertisement_id, type)
@@ -484,7 +504,8 @@ public class RecommendationQueries : IRecommendationQueries
 
 
             // Check if the notification already exists
-            using (var checkCommand = new MySqlCommand(checkNotificationQuery, db_connection)) {
+            using (var checkCommand = new MySqlCommand(checkNotificationQuery, db_connection))
+            {
                 checkCommand.Parameters.AddWithValue("@StudentId", studentId);
                 checkCommand.Parameters.AddWithValue("@AdvertisementId", advertisementId);
 
@@ -499,7 +520,8 @@ public class RecommendationQueries : IRecommendationQueries
 
             // Check if company is the owner of the advertisement
             var advertisement = GetAdvertisement(advertisementId);
-            if (advertisement == null || advertisement.CompanyId != companyId) {
+            if (advertisement == null || advertisement.CompanyId != companyId)
+            {
                 return false;
             }
 
@@ -546,7 +568,9 @@ public class RecommendationQueries : IRecommendationQueries
             command.ExecuteNonQuery();
 
             return true;
-        } catch (Exception ex) {
+        }
+        catch (Exception ex)
+        {
             Console.WriteLine(ex.Message);
             return false;
         }

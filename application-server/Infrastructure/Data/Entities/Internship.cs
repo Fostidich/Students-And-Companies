@@ -3,13 +3,16 @@ using System.Data;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace Entity {
+namespace Entity
+{
 
-    public class Internship {
+    public class Internship
+    {
 
         public Internship() { }
 
-        public Internship(IDataReader reader) {
+        public Internship(IDataReader reader)
+        {
             InternshipId = Convert.ToInt32(reader["internship_id"]);
             CreatedAt = DateTime.Parse(reader["created_at"].ToString());
             StudentId = Convert.ToInt32(reader["student_id"]);
@@ -52,7 +55,7 @@ namespace Entity {
         public Entity.Student Student { get; set; }
         public Entity.Company Company { get; set; }
         public Entity.Advertisement Advertisement { get; set; }
-        
+
         public Entity.StudentFeedback StudentFeedback { get; set; }
         public Entity.CompanyFeedback CompanyFeedback { get; set; }
 

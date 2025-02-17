@@ -9,11 +9,13 @@ using Swashbuckle.AspNetCore.Annotations;
 
 [ApiController]
 [Route("api/profile")]
-public class ProfileController : ControllerBase {
+public class ProfileController : ControllerBase
+{
 
     private readonly IProfileService profile;
 
-    public ProfileController(IProfileService service) {
+    public ProfileController(IProfileService service)
+    {
         this.profile = service;
     }
 
@@ -23,7 +25,8 @@ public class ProfileController : ControllerBase {
     [ProducesResponseType(200)]
     [ProducesResponseType(400)]
     [ProducesResponseType(404)]
-    public IActionResult GetCompanyFromToken() {
+    public IActionResult GetCompanyFromToken()
+    {
         // Check role
         string role = User.FindFirst(ClaimTypes.Role).Value;
         if (role != UserType.Company.ToString())
@@ -47,7 +50,8 @@ public class ProfileController : ControllerBase {
     [ProducesResponseType(200)]
     [ProducesResponseType(400)]
     [ProducesResponseType(500)]
-    public IActionResult GetStudentFromToken() {
+    public IActionResult GetStudentFromToken()
+    {
         // Check role
         string role = User.FindFirst(ClaimTypes.Role).Value;
         if (role != UserType.Student.ToString())
@@ -71,7 +75,8 @@ public class ProfileController : ControllerBase {
     [ProducesResponseType(200)]
     [ProducesResponseType(400)]
     [ProducesResponseType(500)]
-    public IActionResult UpdateProfileCompany([FromBody] DTO.ProfileUpdateCompany updateForm) {
+    public IActionResult UpdateProfileCompany([FromBody] DTO.ProfileUpdateCompany updateForm)
+    {
         // Check role
         string role = User.FindFirst(ClaimTypes.Role).Value;
         if (role != UserType.Company.ToString())
@@ -98,7 +103,8 @@ public class ProfileController : ControllerBase {
     [ProducesResponseType(200)]
     [ProducesResponseType(400)]
     [ProducesResponseType(500)]
-    public IActionResult UpdateProfileStudent([FromBody] DTO.ProfileUpdateStudent updateForm) {
+    public IActionResult UpdateProfileStudent([FromBody] DTO.ProfileUpdateStudent updateForm)
+    {
         // Check role
         string role = User.FindFirst(ClaimTypes.Role).Value;
         if (role != UserType.Student.ToString())
@@ -125,7 +131,8 @@ public class ProfileController : ControllerBase {
     [ProducesResponseType(200)]
     [ProducesResponseType(400)]
     [ProducesResponseType(404)]
-    public IActionResult GetCompanyFromId(int companyId) {
+    public IActionResult GetCompanyFromId(int companyId)
+    {
         // Check ID validity
         if (companyId <= 0) return BadRequest("Invalid id\n");
 
@@ -143,7 +150,8 @@ public class ProfileController : ControllerBase {
     [ProducesResponseType(200)]
     [ProducesResponseType(400)]
     [ProducesResponseType(404)]
-    public IActionResult GetStudentFromId(int studentId) {
+    public IActionResult GetStudentFromId(int studentId)
+    {
         // Check ID validity
         if (studentId <= 0) return BadRequest("Invalid id\n");
 
@@ -160,7 +168,8 @@ public class ProfileController : ControllerBase {
     [SwaggerOperation(Summary = "Download the CV of the student", Description = "The CV PDF file of the logged in user, if a student, is returned, if it was previously uploaded.")]
     [ProducesResponseType(200)]
     [ProducesResponseType(404)]
-    public IActionResult DownloadCvFromToken() {
+    public IActionResult DownloadCvFromToken()
+    {
         // Check role
         string role = User.FindFirst(ClaimTypes.Role).Value;
         if (role != UserType.Student.ToString())
@@ -186,7 +195,8 @@ public class ProfileController : ControllerBase {
     [ProducesResponseType(200)]
     [ProducesResponseType(400)]
     [ProducesResponseType(404)]
-    public IActionResult DownloadCv(int studentId) {
+    public IActionResult DownloadCv(int studentId)
+    {
         // Check ID validity
         if (studentId <= 0) return BadRequest("Invalid id\n");
 
@@ -206,7 +216,8 @@ public class ProfileController : ControllerBase {
     [ProducesResponseType(200)]
     [ProducesResponseType(400)]
     [ProducesResponseType(500)]
-    public IActionResult UploadCv(IFormFile cv) {
+    public IActionResult UploadCv(IFormFile cv)
+    {
         // Check role
         string role = User.FindFirst(ClaimTypes.Role).Value;
         if (role != UserType.Student.ToString())
@@ -232,7 +243,8 @@ public class ProfileController : ControllerBase {
     [SwaggerOperation(Summary = "Delete the CV of a student", Description = "The user, if a student, can delete the CV PDF file that, if previously uploaded, is stored among other user profile information.")]
     [ProducesResponseType(200)]
     [ProducesResponseType(404)]
-    public IActionResult DeleteCv() {
+    public IActionResult DeleteCv()
+    {
         // Check role
         string role = User.FindFirst(ClaimTypes.Role).Value;
         if (role != UserType.Student.ToString())
@@ -254,7 +266,8 @@ public class ProfileController : ControllerBase {
     [SwaggerOperation(Summary = "Delete the user", Description = "The logged in user is deleted from the system.")]
     [ProducesResponseType(200)]
     [ProducesResponseType(404)]
-    public IActionResult DeleteUser() {
+    public IActionResult DeleteUser()
+    {
         // Get role from authentication token
         string roleStr = User.FindFirst(ClaimTypes.Role).Value;
         UserType userType = UserType.Company;
@@ -278,7 +291,8 @@ public class ProfileController : ControllerBase {
     [ProducesResponseType(200)]
     [ProducesResponseType(400)]
     [ProducesResponseType(500)]
-    public IActionResult AddSkill([FromBody] DTO.SkillRegistration skill) {
+    public IActionResult AddSkill([FromBody] DTO.SkillRegistration skill)
+    {
         // Check role
         string role = User.FindFirst(ClaimTypes.Role).Value;
         if (role != UserType.Student.ToString())
@@ -302,7 +316,8 @@ public class ProfileController : ControllerBase {
     [ProducesResponseType(400)]
     [ProducesResponseType(404)]
     [ProducesResponseType(500)]
-    public IActionResult GetSkillsFromToken() {
+    public IActionResult GetSkillsFromToken()
+    {
         // Check role
         string role = User.FindFirst(ClaimTypes.Role).Value;
         if (role != UserType.Student.ToString())
@@ -335,7 +350,8 @@ public class ProfileController : ControllerBase {
     [ProducesResponseType(400)]
     [ProducesResponseType(404)]
     [ProducesResponseType(500)]
-    public IActionResult GetSkillsFromId(int studentId) {
+    public IActionResult GetSkillsFromId(int studentId)
+    {
         // Check ID validity
         if (studentId <= 0) return BadRequest("Invalid id\n");
 
@@ -361,7 +377,8 @@ public class ProfileController : ControllerBase {
     [ProducesResponseType(200)]
     [ProducesResponseType(400)]
     [ProducesResponseType(404)]
-    public IActionResult DeleteSkill(int skillId) {
+    public IActionResult DeleteSkill(int skillId)
+    {
         // Check ID validity
         if (skillId <= 0) return BadRequest("Invalid id\n");
 

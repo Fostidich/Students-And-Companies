@@ -1,6 +1,8 @@
-namespace DTO {
+namespace DTO
+{
 
-    public class StudentNotifications {
+    public class StudentNotifications
+    {
 
         public int StudentNotificationId { get; set; }
         public int StudentId { get; set; }

@@ -4,27 +4,30 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Collections.Generic;
 
-namespace Entity {
+namespace Entity
+{
 
-    public class Student {
+    public class Student
+    {
 
-		public Student() { }
+        public Student() { }
 
-        public Student(IDataReader reader) {
-			StudentId = Convert.ToInt32(reader["student_id"]);
-			CreatedAt = DateTime.Parse(reader["created_at"].ToString());
-			Email = reader["email"].ToString();
-			Username = reader["username"].ToString();
-			Salt = reader["salt"].ToString();
-			HashedPassword = reader["hashed_password"].ToString();
-			Bio = reader["bio"] != DBNull.Value ? reader["bio"].ToString() : null;
-			Name = reader["name"].ToString();
-			Surname = reader["surname"].ToString();
-			University = reader["university"].ToString();
-			CourseOfStudy = reader["course_of_study"].ToString();
-			Gender = reader["gender"].ToString()[0];
-			BirthDate = DateTime.Parse(reader["birth_date"].ToString());
-		}
+        public Student(IDataReader reader)
+        {
+            StudentId = Convert.ToInt32(reader["student_id"]);
+            CreatedAt = DateTime.Parse(reader["created_at"].ToString());
+            Email = reader["email"].ToString();
+            Username = reader["username"].ToString();
+            Salt = reader["salt"].ToString();
+            HashedPassword = reader["hashed_password"].ToString();
+            Bio = reader["bio"] != DBNull.Value ? reader["bio"].ToString() : null;
+            Name = reader["name"].ToString();
+            Surname = reader["surname"].ToString();
+            University = reader["university"].ToString();
+            CourseOfStudy = reader["course_of_study"].ToString();
+            Gender = reader["gender"].ToString()[0];
+            BirthDate = DateTime.Parse(reader["birth_date"].ToString());
+        }
 
 
         [Key]
@@ -46,7 +49,7 @@ namespace Entity {
         [RegularExpression(@"^[a-zA-Z0-9._-]+$", ErrorMessage = "Invalid characters")]
         public string Username { get; set; }
 
-		[Required(ErrorMessage = "Field is required")]
+        [Required(ErrorMessage = "Field is required")]
         [StringLength(24, ErrorMessage = "Value cannot be more than 24 characters long")]
         public string Salt { get; set; }
 
@@ -74,7 +77,7 @@ namespace Entity {
         public string CourseOfStudy { get; set; }
 
         [Required(ErrorMessage = "Field is required")]
-		[Column(TypeName = "enum('m','f')")]
+        [Column(TypeName = "enum('m','f')")]
         public char Gender { get; set; }
 
         [Required(ErrorMessage = "Field is required")]
@@ -82,13 +85,13 @@ namespace Entity {
         public DateTime BirthDate { get; set; }
 
 
-		// Navigation properties
+        // Navigation properties
 
-		public ICollection<Entity.Internship> Internships { get; set; }
+        public ICollection<Entity.Internship> Internships { get; set; }
         public ICollection<Entity.StudentSkills> StudentSkills { get; set; }
-		public ICollection<Entity.Application> Applications { get; set; }
-		public ICollection<Entity.StudentNotifications> StudentNotifications { get; set; }
-		
+        public ICollection<Entity.Application> Applications { get; set; }
+        public ICollection<Entity.StudentNotifications> StudentNotifications { get; set; }
+
     }
 
 }

@@ -1,9 +1,11 @@
 using System;
 using System.ComponentModel.DataAnnotations;
 
-namespace DTO {
+namespace DTO
+{
 
-    public class Date {
+    public class Date
+    {
 
         [Required(ErrorMessage = "Field is required")]
         public DateTime DateTime { get; set; }

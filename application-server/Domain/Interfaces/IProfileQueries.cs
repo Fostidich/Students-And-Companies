@@ -1,7 +1,8 @@
 using System;
 using System.Collections.Generic;
 
-public interface IProfileQueries {
+public interface IProfileQueries
+{
 
     Entity.Company FindCompanyFromId(int id);
     Entity.Student FindStudentFromId(int id);

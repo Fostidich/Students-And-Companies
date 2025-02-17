@@ -4,11 +4,13 @@ using Swashbuckle.AspNetCore.Annotations;
 
 [ApiController]
 [Route("api/authentication")]
-public class AuthenticationController : ControllerBase {
+public class AuthenticationController : ControllerBase
+{
 
     private readonly IAuthenticationService authentication;
 
-    public AuthenticationController(IAuthenticationService service) {
+    public AuthenticationController(IAuthenticationService service)
+    {
         this.authentication = service;
     }
 
@@ -17,7 +19,8 @@ public class AuthenticationController : ControllerBase {
     [ProducesResponseType(200)]
     [ProducesResponseType(400)]
     [ProducesResponseType(500)]
-    public IActionResult RegisterCompany([FromBody] DTO.RegistrationFormCompany registrationForm) {
+    public IActionResult RegisterCompany([FromBody] DTO.RegistrationFormCompany registrationForm)
+    {
         // Check registration form validity
         if (!authentication.IsCompanyRegistrationValid(registrationForm))
             return BadRequest("Validation error\n");
@@ -34,7 +37,8 @@ public class AuthenticationController : ControllerBase {
     [ProducesResponseType(200)]
     [ProducesResponseType(400)]
     [ProducesResponseType(500)]
-    public IActionResult RegisterStudent([FromBody] DTO.RegistrationFormStudent registrationForm) {
+    public IActionResult RegisterStudent([FromBody] DTO.RegistrationFormStudent registrationForm)
+    {
         // Check registration form validity
         if (!authentication.IsStudentRegistrationValid(registrationForm))
             return BadRequest("Validation error\n");
@@ -51,7 +55,8 @@ public class AuthenticationController : ControllerBase {
     [ProducesResponseType(200)]
     [ProducesResponseType(400)]
     [ProducesResponseType(401)]
-    public IActionResult Login([FromBody] DTO.Credentials credentials) {
+    public IActionResult Login([FromBody] DTO.Credentials credentials)
+    {
         // Check that credentials are correct
         User user = authentication.ValidateCredentials(credentials);
         if (user == null)
@@ -59,7 +64,8 @@ public class AuthenticationController : ControllerBase {
 
         // Generate token from user data
         string token = authentication.GenerateToken(user);
-        return Ok(new DTO.SuccessfulLogin {
+        return Ok(new DTO.SuccessfulLogin
+        {
             Token = token,
             UserType = user.UserType.ToString()
         });
@@ -70,7 +76,8 @@ public class AuthenticationController : ControllerBase {
     [SwaggerOperation(Summary = "Check log in token validity", Description = "The authorization token, generated at log in time, if found in the header is validated, generating either an Ok or Unauthorized response.")]
     [ProducesResponseType(200)]
     [ProducesResponseType(401)]
-    public IActionResult CheckToken() {
+    public IActionResult CheckToken()
+    {
         return Ok();
     }
 

@@ -2,20 +2,23 @@ using System.Collections.Generic;
 using System.Linq;
 using System;
 
-public class EnrollmentService : IEnrollmentService {
+public class EnrollmentService : IEnrollmentService
+{
 
     private readonly IEnrollmentQueries queries;
     private readonly IRecommendationQueries recommendationQueries;
     private readonly IInternshipService internshipService;
 
     public EnrollmentService(IEnrollmentQueries queries,
-            IRecommendationQueries recommendationQueries, IInternshipService internshipService) {
+            IRecommendationQueries recommendationQueries, IInternshipService internshipService)
+    {
         this.queries = queries;
         this.recommendationQueries = recommendationQueries;
         this.internshipService = internshipService;
     }
 
-    public Application GetApplication(int userId, int advertisementId) {
+    public Application GetApplication(int userId, int advertisementId)
+    {
         // Get application
         var found = queries.GetApplication(userId, advertisementId);
 
@@ -26,7 +29,8 @@ public class EnrollmentService : IEnrollmentService {
             return null;
     }
 
-    public Application GetApplication(int applicationId) {
+    public Application GetApplication(int applicationId)
+    {
         // Get application
         var found = queries.GetApplication(applicationId);
 
@@ -37,11 +41,13 @@ public class EnrollmentService : IEnrollmentService {
             return null;
     }
 
-    public bool CreateApplication(int userId, int advertisementId, string questionnaireAnswer) {
+    public bool CreateApplication(int userId, int advertisementId, string questionnaireAnswer)
+    {
         return queries.CreateApplication(userId, advertisementId, questionnaireAnswer);
     }
 
-    public Advertisement GetAdvertisement(int advertisementId) {
+    public Advertisement GetAdvertisement(int advertisementId)
+    {
         // Get advertisement
         var found = recommendationQueries.GetAdvertisement(advertisementId);
 
@@ -52,7 +58,8 @@ public class EnrollmentService : IEnrollmentService {
             return null;
     }
 
-    public List<Application> GetPendingApplications(int id) {
+    public List<Application> GetPendingApplications(int id)
+    {
         // Get application
         var found = queries.GetPendingApplications(id);
 
@@ -63,21 +70,25 @@ public class EnrollmentService : IEnrollmentService {
             return null;
     }
 
-    public bool CheckStartDateValidity(DateTime date) {
+    public bool CheckStartDateValidity(DateTime date)
+    {
         var today = DateTime.Today;
         var maxDate = today.AddYears(5);
         return date > today && date < maxDate;
     }
 
-    public bool AcceptApplication(int id) {
+    public bool AcceptApplication(int id)
+    {
         return queries.AcceptApplication(id);
     }
 
-    public bool RejectApplication(int id) {
+    public bool RejectApplication(int id)
+    {
         return queries.RejectApplication(id);
     }
 
-    public bool CreateInternship(int studentId, int companyId, int advertisementId, DateTime start) {
+    public bool CreateInternship(int studentId, int companyId, int advertisementId, DateTime start)
+    {
         // Find advertisement
         var advertisement = recommendationQueries.GetAdvertisement(advertisementId);
 
@@ -91,19 +102,23 @@ public class EnrollmentService : IEnrollmentService {
         return queries.CreateInternship(studentId, companyId, advertisementId, start, end);
     }
 
-    public bool UpdateAdvertisementSpots(int id) {
+    public bool UpdateAdvertisementSpots(int id)
+    {
         return queries.UpdateAdvertisementSpots(id);
     }
 
-    public bool NotifyStudent(int studentId, int advertisementId, bool accepted) {
+    public bool NotifyStudent(int studentId, int advertisementId, bool accepted)
+    {
         return queries.NotifyStudent(studentId, advertisementId, accepted);
     }
 
-    public bool RejectAllApplications(int id) {
+    public bool RejectAllApplications(int id)
+    {
         return queries.RejectAllApplications(id);
     }
 
-    public Internship GetInternship(int id) {
+    public Internship GetInternship(int id)
+    {
         List<Internship> internships = internshipService.GetInternshipForStudent(id);
         if (internships == null) return null;
 

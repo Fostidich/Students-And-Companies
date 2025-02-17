@@ -1,9 +1,11 @@
 using System;
 using System.IO;
 
-public class FileService : IFileService {
+public class FileService : IFileService
+{
 
-    public string GetCvFilePath(string fileName) {
+    public string GetCvFilePath(string fileName)
+    {
         // Combine path using the appropriate separator
         string directory = Path.Combine(
             Environment.GetFolderPath(Environment.SpecialFolder.UserProfile),
@@ -19,20 +21,26 @@ public class FileService : IFileService {
         return Path.Combine(directory, fullFileName);
     }
 
-    public bool SaveFile(string filePath, byte[] fileData) {
+    public bool SaveFile(string filePath, byte[] fileData)
+    {
         // Try to save the file to the disk
-        try {
+        try
+        {
             File.WriteAllBytes(filePath, fileData);
             return true;
-        } catch (Exception ex) {
+        }
+        catch (Exception ex)
+        {
             Console.WriteLine(ex.Message);
             return false;
         }
     }
 
-    public byte[] RetrieveFile(string filePath) {
+    public byte[] RetrieveFile(string filePath)
+    {
         // Check if the file exists before trying to read
-        if (File.Exists(filePath)) {
+        if (File.Exists(filePath))
+        {
             // Read the file as a byte array
             byte[] fileData = File.ReadAllBytes(filePath);
             return fileData;
@@ -41,17 +49,22 @@ public class FileService : IFileService {
         throw new FileNotFoundException("The file was not found", filePath);
     }
 
-    public bool DeleteFile(string filePath) {
+    public bool DeleteFile(string filePath)
+    {
         // File does not exist
-        if (!File.Exists(filePath)) {
+        if (!File.Exists(filePath))
+        {
             return false;
         }
 
         // Try to delete file
-        try {
+        try
+        {
             File.Delete(filePath);
             return true;
-        } catch (Exception ex) {
+        }
+        catch (Exception ex)
+        {
             Console.WriteLine(ex.Message);
             return false;
         }
