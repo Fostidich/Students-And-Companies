@@ -18,10 +18,9 @@ public class InternshipController : ControllerBase
         this.internship = service;
     }
 
-
     [HttpGet]
     [Authorize]
-    [SwaggerOperation(Summary = "Get internships for a student", Description = "Get internships for a student. The internships are filtered based on the student ID.")]
+    [SwaggerOperation(Summary = "Get internships data of the student", Description = "Return internships information of the student with the provided ID.")]
     [ProducesResponseType(200)]
     [ProducesResponseType(400)]
     [ProducesResponseType(404)]
@@ -45,22 +44,21 @@ public class InternshipController : ControllerBase
             return StatusCode(500, "Internal server error\n");
 
         if (checkInternships.Count == 0)
-            return NotFound("No internships found\n");
+            return NotFound("No internship found\n");
 
         internships = checkInternships.Select(i => i.ToDto()).ToList();
 
         return Ok(internships);
     }
 
-
     [HttpPost("{internshipId}/feedback/student")]
     [Authorize]
-    [SwaggerOperation(Summary = "Create feedback for a student", Description = "Create feedback for a student. The feedback is created based on the internship ID.")]
+    [SwaggerOperation(Summary = "Create a feedback for an internship", Description = "The student creates a feedback for the internship with the provied ID.")]
     [ProducesResponseType(200)]
     [ProducesResponseType(400)]
     public IActionResult CreateStudentFeedback(int internshipId, [FromBody] DTO.Feedback feedback)
     {
-
+        // Check id validity
         if (internshipId <= 0) return BadRequest("Invalid id\n");
 
         // Check role
@@ -77,22 +75,17 @@ public class InternshipController : ControllerBase
         if (created)
             return Ok("Feedback created\n");
 
-        return BadRequest("You can't create this feedback, and there are 3 possible reasons: " +
-                          "1. The internship isn't finished yet; " +
-                          "2. You don't have the permission to create this feedback; " +
-                          "3. The feedback already exists\n");
-
+        return BadRequest("The feedback cannot be created\n");
     }
-
 
     [HttpPost("{internshipId}/feedback/company")]
     [Authorize]
-    [SwaggerOperation(Summary = "Create feedback for a company", Description = "Create feedback for a company. The feedback is created based on the internship ID.")]
+    [SwaggerOperation(Summary = "Create a feedback for an internship", Description = "The company creates a feedback for the internship with the provied ID.")]
     [ProducesResponseType(200)]
     [ProducesResponseType(400)]
     public IActionResult CreateCompanyFeedback(int internshipId, [FromBody] DTO.Feedback feedback)
     {
-
+        // Check id validity
         if (internshipId <= 0) return BadRequest("Invalid id\n");
 
         // Check role
@@ -109,22 +102,17 @@ public class InternshipController : ControllerBase
         if (created)
             return Ok("Feedback created\n");
 
-        return BadRequest("You can't create this feedback, and there are 3 possible reasons: " +
-                          "1. The internship isn't finished yet; " +
-                          "2. You don't have the permission to create this feedback; " +
-                          "3. The feedback already exists\n");
-
+        return BadRequest("The feedback cannot be created\n");
     }
-
 
     [HttpGet("{internshipId}/feedback/student")]
     [Authorize]
-    [SwaggerOperation(Summary = "Get the student feedback", Description = "Get the student feedback. The feedback is filtered based on the internship ID.")]
+    [SwaggerOperation(Summary = "Get the feedback made by the student", Description = "Return the feedback made by the student for the internship with the provided ID.")]
     [ProducesResponseType(200)]
     [ProducesResponseType(400)]
     public IActionResult GetStudentFeedback(int internshipId)
     {
-
+        // Check id validity
         if (internshipId <= 0)
             return BadRequest("Invalid id\n");
 
@@ -140,19 +128,17 @@ public class InternshipController : ControllerBase
         if (feedback != null)
             return Ok(feedback);
 
-        return BadRequest("You don't have the permission to see this feedback or the feedback doesn't exist yet\n");
-
+        return BadRequest("The feedback cannot be retrieved\n");
     }
-
 
     [HttpGet("{internshipId}/feedback/company")]
     [Authorize]
-    [SwaggerOperation(Summary = "Get the company feedback", Description = "Get the company feedback. The feedback is filtered based on the internship ID.")]
+    [SwaggerOperation(Summary = "Get the feedback made by the company", Description = "Return the feedback made by the company for the internship with the provided ID.")]
     [ProducesResponseType(200)]
     [ProducesResponseType(400)]
     public IActionResult GetCompanyFeedback(int internshipId)
     {
-
+        // Check id validity
         if (internshipId <= 0) return BadRequest("Invalid id\n");
 
         // Get role
@@ -167,14 +153,12 @@ public class InternshipController : ControllerBase
         if (feedback != null)
             return Ok(feedback);
 
-        return BadRequest("You don't have the permission to see this feedback or the feedback doesn't exist yet\n");
-
+        return BadRequest("The feedback cannot be retrieved\n");
     }
-
 
     [HttpGet("advertisements/{advertisementId}")]
     [Authorize]
-    [SwaggerOperation(Summary = "Get internships from an advertisement", Description = "Get internships from an advertisement. The internships are filtered based on the advertisement ID.")]
+    [SwaggerOperation(Summary = "Get ongoing internships from the advertisement", Description = "Return the ongoing internships relative to the advertisement with the provided ID.")]
     [ProducesResponseType(200)]
     [ProducesResponseType(400)]
     public IActionResult GetInternshipFromAdvertisement(int advertisementId)
@@ -188,24 +172,22 @@ public class InternshipController : ControllerBase
         string userIdStr = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
         int userId = Convert.ToInt32(userIdStr);
 
-
         List<DTO.Internship> internships;
         List<Internship> checkInternships;
 
         checkInternships = internship.GetInternshipFromAdvertisement(advertisementId, userId);
 
         if (checkInternships == null)
-            return BadRequest("You don't have the permission to see this internship\n");
+            return BadRequest("The internship data cannot be retrieved\n");
 
         internships = checkInternships.Select(internship => internship.ToDto()).ToList();
 
         return Ok(internships);
     }
 
-
     [HttpPost("delete/{internshipId}")]
     [Authorize]
-    [SwaggerOperation(Summary = "Only for test, don't use", Description = "Delete an internship. The internship is deleted based on the internship ID.")]
+    [SwaggerOperation(Summary = "Delete an internship", Description = "The internship with the provided ID is deleted.")]
     [ProducesResponseType(200)]
     [ProducesResponseType(404)]
     public IActionResult DeleteInternship(int internshipId)
@@ -222,13 +204,12 @@ public class InternshipController : ControllerBase
         if (deleted)
             return Ok("Internship deleted\n");
 
-        return NotFound("You don't have the permission to delete this internship\n");
+        return NotFound("No internship found\n");
     }
-
 
     [HttpPost("delete/feedback/{internshipId}")]
     [Authorize]
-    [SwaggerOperation(Summary = "Delete your feedback for the internship", Description = "Delete your feedback for the internship. The feedback is deleted based on the internship ID.")]
+    [SwaggerOperation(Summary = "Delete the feedback made for an internship", Description = "The feedback previously submitted on the internship with the provided ID is deleted.")]
     [ProducesResponseType(200)]
     [ProducesResponseType(404)]
     public IActionResult DeleteFeedback(int internshipId)
@@ -245,6 +226,7 @@ public class InternshipController : ControllerBase
         if (deleted)
             return Ok("Feedback deleted\n");
 
-        return NotFound("You don't have this feedback\n");
+        return NotFound("No feedback found\n");
     }
+
 }

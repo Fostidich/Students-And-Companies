@@ -20,7 +20,7 @@ public class NotificationController : ControllerBase
 
     [HttpGet]
     [Authorize]
-    [SwaggerOperation(Summary = "Get notifications for a student", Description = "Get notifications for a student. The notifications are filtered based on the student ID.")]
+    [SwaggerOperation(Summary = "Get notifications of the student", Description = "Return the notifications of the student with the provided ID.")]
     [ProducesResponseType(200)]
     [ProducesResponseType(400)]
     [ProducesResponseType(404)]
@@ -42,23 +42,22 @@ public class NotificationController : ControllerBase
             return StatusCode(500, "Internal server error\n");
 
         if (checkNotifications.Count == 0)
-            return NotFound("You don't have notifications\n");
+            return NotFound("No notification found\n");
 
         List<DTO.StudentNotifications> notifications = checkNotifications.Select(not => not.ToDto()).ToList();
 
         return Ok(notifications);
     }
 
-
     [HttpPost("delete/{notificationId}")]
     [Authorize]
-    [SwaggerOperation(Summary = "Delete a notification for a student", Description = "Delete a notification for a student. The notification is deleted based on the notification ID.")]
+    [SwaggerOperation(Summary = "Delete the notification of the student", Description = "The notification with the provided ID is deleted (marked as read) from the student notification panel.")]
     [ProducesResponseType(200)]
     [ProducesResponseType(400)]
     [ProducesResponseType(404)]
     public IActionResult DeleteNotification(int notificationId)
     {
-
+        // Check id validity
         if (notificationId <= 0) return BadRequest("Invalid id\n");
 
         // Check role
@@ -73,7 +72,7 @@ public class NotificationController : ControllerBase
         bool result = notification.DeleteNotification(notificationId, userId);
 
         if (!result)
-            return NotFound("You don't have this notification\n");
+            return NotFound("No notification found\n");
 
         return Ok("Notification deleted\n");
     }
