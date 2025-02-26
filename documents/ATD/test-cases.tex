@@ -1,23 +1,23 @@
 \chapter{Test cases}
 
 \section{Testing}
-This section outlines the test procedures we conducted to evaluate both the functionality and adherence to the project product's functions, as outlined in the RASD provided.
+This section outlines the test procedures we conducted to evaluate both the functionality and adherence to the
+project product's functions, as outlined in the RASD.
 Each test case was designed to include the most relevant usage scenarios from the user's point of view.
 Below is a complete list of the test cases performed to validate product performance and compliance.
 For each one, the objective, the steps performed, the cases considered and the results obtained are indicated.
 
-\subsection{SIGN UP AND LOGIN FOR A STUDENT}\label{subsec:sign-up-and-login-for-a-student}
+\subsection{Sign up and login for a student}
 \begin{itemize}
-    \item \textbf{Goal:} To verify that the user can sign up and log in.
+    \item \textbf{Goal:} Verify that the student can sign up and log in.
 
     \item \textbf{Steps:}
     \begin{enumerate}
         \item Open the application.
         \item Click on the "Sign up" button.
         \item Fill in the required fields.
-        \item Click on the "Sign up" button.
-        \item  Fill in the required fields.
         \item Click on the "Log in" button.
+        \item Fill in the required fields.
     \end{enumerate}
     \item \textbf{Cases:}
     \begin{itemize}
@@ -35,15 +35,17 @@ For each one, the objective, the steps performed, the cases considered and the r
         \end{itemize}
         \item \textbf{Issues Found:}
         \begin{itemize}
-            \item A user can sign up with credential that already has been used or in any case the app does not give errors if the email or phone number has already been used for another account.
-            \item A user can use an invalid format of the email, the feedback of the system shows that the user has been registered successfully but the user can't log in.
+            \item A user can sign up with credentials that have already been used, or anyway the app does not provide errors if the email or
+                phone number have already been used for another account.
+            \item A user can use an invalid format for the email, the feedback of the system shows that the user has been registered successfully
+                but the user can't log in.
         \end{itemize}
     \end{itemize}
 \end{itemize}
 
-\subsection{SIGN UP AND LOGIN FOR A COMPANY}\label{subsec:sign-up-and-login-for-a-company}
+\subsection{Sign up and login for a company}
 \begin{itemize}
-    \item \textbf{Goal:} To verify that the user can sign up and log in.
+    \item \textbf{Goal:} Verify that the company can sign up and log in.
 
     \item \textbf{Steps:}
     \begin{enumerate}
@@ -52,7 +54,7 @@ For each one, the objective, the steps performed, the cases considered and the r
     \end{enumerate}
     \item \textbf{Cases:}
     \begin{itemize}
-        \item The company contact the platform to create an account.
+        \item The company contacts the platform to create an account.
     \end{itemize}
     \item \textbf{Results:}
     \begin{itemize}
@@ -63,9 +65,9 @@ For each one, the objective, the steps performed, the cases considered and the r
     \end{itemize}
 \end{itemize}
 
-\subsection{PROFILE AND CV MANAGEMENT}\label{subsec:profile-and-cv-management}
+\subsection{Profile and CV management}
 \begin{itemize}
-    \item \textbf{Goal:} To verify that the user can upload the CV.
+    \item \textbf{Goal:} Verify that the user can upload the CV.
 
     \item \textbf{Steps:}
     \begin{enumerate}
@@ -86,16 +88,15 @@ For each one, the objective, the steps performed, the cases considered and the r
         \end{itemize}
         \item \textbf{Issues Found:}
         \begin{itemize}
-            \item The application doesn't check the cv is major than 5 MB (In the RASD is written that the file size limit is 5MB R8).
-            \item The system can't give the possibility to the user to update the CV in any time after the registration (RASD R11).
+            \item The application doesn't check if the CV is bigger than 5 MB (it is written that the file size limit is 5MB - RASD R8).
+            \item The system can't give the possibility to the user to update the CV after the registration (RASD R11).
         \end{itemize}
     \end{itemize}
 \end{itemize}
 
-
-\subsection{INTERNSHIP MANAGEMENT}\label{subsec:internship-management}
+\subsection{Internship management}
 \begin{itemize}
-    \item \textbf{Goal:} To verify that the company can create edit and delete an internship.
+    \item \textbf{Goal:} Verify that the company can create, edit and delete an internship.
 
     \item \textbf{Steps:}
     \begin{enumerate}
@@ -121,21 +122,21 @@ For each one, the objective, the steps performed, the cases considered and the r
     \end{itemize}
 \end{itemize}
 
-\subsection{CV/INTERNSHIP DESCRIPTION SUGGESTION}\label{subsec:cv-internship-description-suggestion}
+\subsection{CV/internship description suggestion}
 According to the project specification, this feature is not implemented.
 
-
-\subsection{INTERNSHIP SEARCH AND RECOMMENDATION}\label{subsec:internship-search-and-recommendation}
+\subsection{Internship search and recommendation}
 \begin{itemize}
-    \item \textbf{Goal:} Verify that the system allows companies to create internships, students to search for internships using skills and filters, and students to receive personalized internship recommendations.
+    \item \textbf{Goal:} Verify that the system allows companies to create internships, students to search for internships
+        using skills and filters, and students to receive personalized internship recommendations.
 
     \item \textbf{Steps:}
     \begin{enumerate}
-        \item Log in as a \textbf{Company}.
-        \item Navigate to the "add internship" section.
+        \item Log in as a company.
+        \item Navigate to the "Add Internship" section.
         \item Fill in the internship details, including the required skills.
         \item Click the "Submit" button.
-        \item Log out and switch to a \textbf{Student} account.
+        \item Log out and switch to a student account.
         \item Navigate to the "Application" section.
         \item Use the search bar to enter one of the required skills (e.g., "Python").
         \item Verify that the newly created internship appears in the results.
@@ -145,7 +146,7 @@ According to the project specification, this feature is not implemented.
     \end{enumerate}
     \item \textbf{Cases:}
     \begin{itemize}
-        \item Correct flow
+        \item Correct flow.
     \end{itemize}
     \item \textbf{Results:}
     \begin{itemize}
@@ -157,17 +158,18 @@ According to the project specification, this feature is not implemented.
         \item \textbf{Issues Found:}
         \begin{itemize}
             \item The location filter does not work properly; results remain the same regardless of the selected location.
-            \item The recommendation system is unstable: initially, it provided suggestions correctly. Later, it caused critical errors, such as the student being unexpectedly switched into a company profile previously accessed, or the application crashing when clicking on the "Recommendations" section.
+            \item The recommendation system is unstable: initially, it provided suggestions correctly.
+                Later, it caused critical errors, such as the student being unexpectedly switched into a company profile
+                previously accessed, or the application crashing when clicking on the "Recommendations" section.
         \end{itemize}
         \item The feature to save internships to "Favorites" has not been implemented.
     \end{itemize}
 
 \end{itemize}
 
-
-\subsection{INTERNSHIP APPLICATION PROCESS}\label{subsec:internship-application-process}
+\subsection{Internship application process}
 \begin{itemize}
-    \item \textbf{Goal:} To verify the hiring process.
+    \item \textbf{Goal:} Verify the hiring process.
 
     \item \textbf{Steps:}
     \begin{enumerate}
@@ -187,19 +189,20 @@ According to the project specification, this feature is not implemented.
         \item \textbf{Issue found:}
         \begin{itemize}
             \item The company can't see the CV uploaded by the student, but only a dummy document (RASD R15).
-            \item A student can apply for other internships even if he has already an ongoing internship and then a new company can accept the application so the student can have more than one ongoing internship.
+            \item A student can apply for other internships even if he has already an ongoing internship, and a new company can
+                accept the application such that the student can have more than one ongoing internship.
         \end{itemize}
     \end{itemize}
 \end{itemize}
 
-\subsection{QUESTIONNAIRE AND INTERVIEW}\label{subsec:questionnaire-and-interview}
+\subsection{Questionnaire and interview}
 \begin{itemize}
     \item \textbf{Goal:} Verify that the system allows companies to add questionnaires and interviews for candidates, and that students can see the added links.
 
     \item \textbf{Steps:}
     \begin{enumerate}
-        \item Log in as a \textbf{Company}.
-        \item click on the internship in which you want to add the questionnaire and the interview for the new candidate.
+        \item Log in as a company.
+        \item Click on the internship in which to add the questionnaire and the interview for the new candidate.
         \item Select a new candidate from the list.
         \item Click on the "Add Questionnaire" button.
         \item Enter the questionnaire details, including a link to the form.
@@ -207,15 +210,15 @@ According to the project specification, this feature is not implemented.
         \item Click on the "Add Interview" button.
         \item Enter the interview details, including a date, time, and a link to the meeting.
         \item Click "Confirm" and verify that the interview is added to the candidate’s profile.
-        \item Log out and switch to a \textbf{Student} account.
+        \item Log out and switch to a student account.
         \item Navigate to the "Application" section.
-        \item Verify that the Questionnaire link appears in the corresponding section.
-        \item Verify that the Interview link appears in the corresponding section.
+        \item Verify that the questionnaire link appears in the corresponding section.
+        \item Verify that the interview link appears in the corresponding section.
     \end{enumerate}
 
     \item \textbf{Test Cases:}
     \begin{itemize}
-        \item Correct flow
+        \item Correct flow.
     \end{itemize}
 
     \item \textbf{Results:}
@@ -226,10 +229,9 @@ According to the project specification, this feature is not implemented.
     \end{itemize}
 \end{itemize}
 
-
-\subsection{NOTIFICATIONS AND REMINDERS}\label{subsec:notifications-and-reminders}
+\subsection{Notifications and reminders}
 \begin{itemize}
-    \item \textbf{Goal:} To verify that the user can receive notifications and reminders.
+    \item \textbf{Goal:} Verify that the user can receive notifications and reminders.
 
     \item \textbf{Steps:}
     \begin{enumerate}
@@ -245,7 +247,7 @@ According to the project specification, this feature is not implemented.
     \begin{itemize}
         \item \textbf{Not implemented:}
         \begin{itemize}
-            \item The user has no the notification button (RASD R26).
+            \item The user has no notification button (RASD R26).
         \end{itemize}
     \end{itemize}
 
@@ -253,19 +255,20 @@ According to the project specification, this feature is not implemented.
 
 \end{itemize}
 
-\subsection{COMPLAINTS AND FEEDBACK}\label{subsec:complaints-and-feedback}
+\subsection{Complaints and feedback}
 \begin{itemize}
-    \item \textbf{Goal:} Verify whether the system allows students and companies to submit feedback about internships and whether the feedback is used for optimizing the recommendation algorithm.
+    \item \textbf{Goal:} Verify whether the system allows students and companies to submit feedback about internships
+        and whether the feedback is used for optimizing the recommendation algorithm.
 
     \item \textbf{Steps:}
     \begin{enumerate}
-        \item Log in as a \textbf{Student}.
-        \item Navigate to the Profile section.
+        \item Log in as a student.
+        \item Navigate to the profile section.
         \item Click on the "Send Feedback" button.
         \item Select a rating.
         \item Write a comment.
         \item Click "Submit".
-        \item Repeat the same steps while logged in as a \textbf{Company}.
+        \item Repeat the same steps while logged in as a company.
     \end{enumerate}
 
     \item \textbf{Test Cases:}
@@ -279,29 +282,30 @@ According to the project specification, this feature is not implemented.
     \begin{itemize}
         \item \textbf{Successes:}
         \begin{itemize}
-            \item The system allows students and companies to submit feedback correctly.
+            \item The system allows students and companies to submit feedbacks correctly.
             \item Feedback is only submitted when both a rating and a comment are provided.
         \end{itemize}
         \item \textbf{Issues Found:}
         \begin{itemize}
-            \item Users can submit feedback multiple times without restriction.
-            \item There is no way to view submitted feedback after sending it.
+            \item Users can submit feedback multiple times without restrictions.
+            \item There is no way to view the submitted feedback after sending it.
         \end{itemize}
         \item \textbf{Not Implemented:}
         \begin{itemize}
-            \item \textbf{R27:} the system does not use feedback for internships ended.
-            \item \textbf{R28:} According to the project specification, this feature is not implemented.
-            \item \textbf{R29:} According to the project specification, this feature is not implemented.
+            \item The system does not use feedbacks for the ended internships (RASD R27).
+            \item According to the project specifications, this feature is not implemented (RASD R28).
+            \item According to the project specifications, this feature is not implemented (RASD R29).
         \end{itemize}
     \end{itemize}
 \end{itemize}
 
+\subsection{Chatroom}
+According to the project specifications, this feature is not implemented.
 
-\subsection{CHATROOM}\label{subsec:chatroom}
-According to the project specification, this feature is not implemented.
-
-\newpage
-\section{Further notes}\label{sec:further-notes}
-We would have suggested that the development team consider creating a website instead of an Android-only app, as it might have been more practical to implement.
-Additionally, we noticed some issues with the app’s functionality—for example, clicking the ‘recommendation’ button causes it to crash, and the company is only able to download a dummy document instead of the actual CV uploaded by the student.
+\section{Further notes}
+We would have suggested that the development team considered creating a website instead of an Android-only app, as it might
+have been more practical to implement.
+Additionally, we noticed some issues with the app’s functionalities, for example, clicking the ‘Recommendation’ button causes
+it to crash, and the company is only able to download a dummy document instead of the actual CV uploaded by the student.
 Moreover, the prototype we received does not appear to fully align with the project specifications, and its usability could be improved.
+
